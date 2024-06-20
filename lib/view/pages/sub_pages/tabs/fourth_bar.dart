@@ -7,32 +7,31 @@ class FourthBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: ListView(
-      scrollDirection: Axis.vertical,
-      children: [
-        kHiegth25,
-        const FoodItemCard(
-          name: "Italian Piza",
-          image: "assets/image/pizza_1_image.png",
-        ),
-        kHiegth20,
-        const FoodItemCard(
-          name: "Italian Piza",
-          image: "assets/image/pizza_2_image.png",
-        ),
-        kHiegth20,
-        const FoodItemCard(
-          name: "Italian Piza",
-          image: "assets/image/pizza_3_image.png",
-        ),
-        kHiegth20,
-        const FoodItemCard(
-          name: "Italian Piza",
-          image: "assets/image/pizza_4_image.png",
-        ),
-        kHiegth20,
-      ],
-    ));
+    return ListView(
+          scrollDirection: Axis.vertical,
+          children: [
+    kHiegth25,
+    const FoodItemCard(
+      name: "Italian Piza",
+      image: "assets/image/pizza_1_image.png",
+    ),
+    kHiegth20,
+    const FoodItemCard(
+      name: "Italian Piza",
+      image: "assets/image/pizza_2_image.png",
+    ),
+    kHiegth20,
+    const FoodItemCard(
+      name: "Italian Piza",
+      image: "assets/image/pizza_3_image.png",
+    ),
+    kHiegth20,
+    const FoodItemCard(
+      name: "Italian Piza",
+      image: "assets/image/pizza_4_image.png",
+    ),
+    kHiegth20,
+          ],
+        );
   }
 }

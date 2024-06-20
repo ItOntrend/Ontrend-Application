@@ -17,83 +17,85 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Lottie.network(
-                "https://lottie.host/70646229-eaba-423c-9627-40ccd7e521eb/t7ganPjNoQ.json",
-                fit: BoxFit.cover),
-            kHiegth70,
-            const Text(
-              "Welcome back!",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.w500,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Lottie.network(
+                  "https://lottie.host/70646229-eaba-423c-9627-40ccd7e521eb/t7ganPjNoQ.json",
+                  fit: BoxFit.cover),
+              kHiegth70,
+              const Text(
+                "Welcome back!",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            kHiegth30,
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: Column(
-                children: [
-                  const MainTextField(hintText: "Email ID"),
-                  kHiegth20,
-                  const MainTextFieldPass(hintText: "Password"),
-                  kHiegth20,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: () => Get.to(
-                          const ForgotPassword(),
-                        ),
-                        child: const Text(
-                          "Forgot Password?",
-                          style: TextStyle(
-                            color: kBlue,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
+              kHiegth30,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: Column(
+                  children: [
+                    const MainTextField(hintText: "Email ID"),
+                    kHiegth20,
+                    const MainTextFieldPass(hintText: "Password"),
+                    kHiegth20,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () => Get.to(
+                            const ForgotPassword(),
+                          ),
+                          child: const Text(
+                            "Forgot Password?",
+                            style: TextStyle(
+                              color: kBlue,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            kHiegth90,
-            GestureDetector(
-              onTap: () => Get.to(
-                const NavigationManu(),
-              ),
-              child: const MainBotton(name: "Login"),
-            ),
-            kHiegth35,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Don’t have an account? ",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
+                      ],
+                    ),
+                  ],
                 ),
-                GestureDetector(
-                  onTap: () => Get.to(
-                    SingUpPage(),
-                  ),
-                  child: const Text(
-                    "Sign Up",
+              ),
+              kHiegth90,
+              GestureDetector(
+                onTap: () => Get.to(
+                  const NavigationManu(),
+                ),
+                child: const MainBotton(name: "Login"),
+              ),
+              kHiegth35,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Don’t have an account? ",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
-                      color: kBlue,
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  GestureDetector(
+                    onTap: () => Get.to(
+                      SingUpPage(),
+                    ),
+                    child: const Text(
+                      "Sign Up",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: kBlue,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

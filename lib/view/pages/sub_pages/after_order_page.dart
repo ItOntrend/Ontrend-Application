@@ -19,9 +19,9 @@ class AfterOrderPage extends StatelessWidget {
                   Image.asset("assets/image/delivery_map_image.png"),
                   IconButton(
                     onPressed: () {
-                      Get.to(NavigationManu());
+                      Get.to(const NavigationManu());
                     },
-                    icon: CircleAvatar(
+                    icon: const CircleAvatar(
                         backgroundColor: kWhite,
                         radius: 24,
                         child: Icon(Icons.arrow_back_ios_new_outlined)),
@@ -29,7 +29,9 @@ class AfterOrderPage extends StatelessWidget {
                 ],
               ),
             ),
-            Image.asset("assets/image/deliver_proccess.png"),
+            Image.asset(
+              "assets/image/deliver_proccess.png",
+            ),
           ],
         ),
       ),

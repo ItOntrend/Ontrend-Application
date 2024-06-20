@@ -33,10 +33,8 @@ class ExploreCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Positioned.fill(
-            child: Image.asset(
-              image,
-            ),
+          Image.asset(
+            image,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),

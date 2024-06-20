@@ -9,11 +9,11 @@ class OffersAndBenefitsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 91.h,
       padding: const EdgeInsets.symmetric(
         horizontal: 24,
         vertical: 12,
       ),
+      height: 91.h,
       width: double.infinity,
       decoration: BoxDecoration(
         color: kLiteBackground,
@@ -26,7 +26,7 @@ class OffersAndBenefitsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             height: 34.h,
             width: 312.w,
             decoration: BoxDecoration(
@@ -37,26 +37,24 @@ class OffersAndBenefitsCard extends StatelessWidget {
                 8,
               ),
             ),
-            child: const Expanded(
-              child: TextField(
-                enabled: true,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  fillColor: kWhite,
-                  hoverColor: kWhite,
-                  hintText: "Type a coupon code here",
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w300,
-                  ),
-                  suffixIcon: Text(
-                    "Apply",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: kOrange,
-                    ),
+            child: TextField(
+              enabled: true,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                fillColor: kWhite,
+                hoverColor: kWhite,
+                hintText: "Type a coupon code here",
+                hintStyle: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w300,
+                ),
+                suffixIcon: Text(
+                  "Apply",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: kOrange,
                   ),
                 ),
               ),

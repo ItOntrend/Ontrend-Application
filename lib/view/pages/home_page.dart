@@ -6,6 +6,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_pag
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/burger_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/pizza_search_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/offer_label.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
@@ -29,33 +30,40 @@ class HomePage extends StatelessWidget {
           padding: const EdgeInsets.only(left: 20),
           child: Image.asset("assets/icons/location_icon.png"),
         ),
-        title: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Janub Ad Dahariz",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
+        title: GestureDetector(
+          onTap: () {
+            Get.to(
+              SelectLocationPage(),
+            );
+          },
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Janub Ad Dahariz",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "Salala, Oman",
-                  style: TextStyle(
-                    color: kBlue,
-                    fontSize: 10,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Salala, Oman",
+                    style: TextStyle(
+                      color: kBlue,
+                      fontSize: 10,
+                    ),
                   ),
-                ),
-                Icon(
-                  Icons.keyboard_arrow_down,
-                  size: 16,
-                ),
-              ],
-            ),
-          ],
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    size: 16,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         actions: [
           Padding(

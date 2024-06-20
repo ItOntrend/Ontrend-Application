@@ -102,7 +102,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                   ],
                 ),
               ),
-              OneTextHeading(heading: "Offers % Benefits"),
+              OneTextHeading(heading: "Offers & Benefits"),
               kHiegth15,
               OffersAndBenefitsCard(),
               kHiegth15,

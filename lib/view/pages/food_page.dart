@@ -76,8 +76,8 @@ class FoodPage extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
+      body: SafeArea(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
@@ -119,31 +119,29 @@ class FoodPage extends StatelessWidget {
               kHiegth25,
               SizedBox(
                 height: 260,
-                child: Expanded(
-                  child: ListView(
-                    // This next line does the trick.
-                    scrollDirection: Axis.horizontal,
-                    children: const <Widget>[
-                      TrendingCards(
-                        image: "assets/image/trending_image_1.png",
-                        offerLabel: OfferLabel(offerlabel: "50% OFF"),
-                        brandName: "La Pino’z Pizza",
-                      ),
-                      kWidth20,
-                      TrendingCards(
-                        image: "assets/image/trending_image_2.png",
-                        offerLabel: OfferLabel(offerlabel: "40% OFF"),
-                        brandName: "Dough & Cream",
-                      ),
-                      kWidth20,
-                      TrendingCards(
-                        image: "assets/image/trending_image_3.png",
-                        offerLabel: OfferLabel(offerlabel: "10% OFF"),
-                        brandName: "Paneer",
-                      ),
-                      kWidth20,
-                    ],
-                  ),
+                child: ListView(
+                  // This next line does the trick.
+                  scrollDirection: Axis.horizontal,
+                  children: const <Widget>[
+                    TrendingCards(
+                      image: "assets/image/trending_image_1.png",
+                      offerLabel: OfferLabel(offerlabel: "50% OFF"),
+                      brandName: "La Pino’z Pizza",
+                    ),
+                    kWidth20,
+                    TrendingCards(
+                      image: "assets/image/trending_image_2.png",
+                      offerLabel: OfferLabel(offerlabel: "40% OFF"),
+                      brandName: "Dough & Cream",
+                    ),
+                    kWidth20,
+                    TrendingCards(
+                      image: "assets/image/trending_image_3.png",
+                      offerLabel: OfferLabel(offerlabel: "10% OFF"),
+                      brandName: "Paneer",
+                    ),
+                    kWidth20,
+                  ],
                 ),
               ),
 
@@ -152,58 +150,16 @@ class FoodPage extends StatelessWidget {
               kHiegth20,
               SizedBox(
                 height: 250,
-                child: Expanded(
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(
-                            const BurgerSearchPage(),
-                          );
-                        },
-                        child: const SizedBox(
-                          height: 180,
-                          width: 120,
-                          child: CategoryCard(
-                            categoryImage: "assets/image/burger_image.png",
-                            categoryName: "Burger",
-                            categoryName1: "Puttu",
-                            categoryImage1: "assets/image/puttu_image.png",
-                          ),
-                        ),
-                      ),
-                      kWidth35,
-                      const SizedBox(
-                        height: 180,
-                        width: 120,
-                        child: CategoryCard(
-                          categoryImage: "assets/image/cake_image.png",
-                          categoryName: "Cake",
-                          categoryName1: "Chinese",
-                          categoryImage1: "assets/image/chinese_image.png",
-                        ),
-                      ),
-                      kWidth35,
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(
-                            const PizzaSearchPage(),
-                          );
-                        },
-                        child: const SizedBox(
-                          height: 180,
-                          width: 120,
-                          child: CategoryCard(
-                            categoryImage: "assets/image/pizza_image.png",
-                            categoryName: "Pizza",
-                            categoryName1: "Idli",
-                            categoryImage1: "assets/image/idli_image.png",
-                          ),
-                        ),
-                      ),
-                      kWidth35,
-                      const SizedBox(
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(
+                          const BurgerSearchPage(),
+                        );
+                      },
+                      child: const SizedBox(
                         height: 180,
                         width: 120,
                         child: CategoryCard(
@@ -213,19 +169,26 @@ class FoodPage extends StatelessWidget {
                           categoryImage1: "assets/image/puttu_image.png",
                         ),
                       ),
-                      kWidth35,
-                      const SizedBox(
-                        height: 180,
-                        width: 120,
-                        child: CategoryCard(
-                          categoryImage: "assets/image/cake_image.png",
-                          categoryName: "Cake",
-                          categoryName1: "Chinese",
-                          categoryImage1: "assets/image/chinese_image.png",
-                        ),
+                    ),
+                    kWidth35,
+                    const SizedBox(
+                      height: 180,
+                      width: 120,
+                      child: CategoryCard(
+                        categoryImage: "assets/image/cake_image.png",
+                        categoryName: "Cake",
+                        categoryName1: "Chinese",
+                        categoryImage1: "assets/image/chinese_image.png",
                       ),
-                      kWidth35,
-                      const SizedBox(
+                    ),
+                    kWidth35,
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(
+                          const PizzaSearchPage(),
+                        );
+                      },
+                      child: const SizedBox(
                         height: 180,
                         width: 120,
                         child: CategoryCard(
@@ -235,8 +198,41 @@ class FoodPage extends StatelessWidget {
                           categoryImage1: "assets/image/idli_image.png",
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    kWidth35,
+                    const SizedBox(
+                      height: 180,
+                      width: 120,
+                      child: CategoryCard(
+                        categoryImage: "assets/image/burger_image.png",
+                        categoryName: "Burger",
+                        categoryName1: "Puttu",
+                        categoryImage1: "assets/image/puttu_image.png",
+                      ),
+                    ),
+                    kWidth35,
+                    const SizedBox(
+                      height: 180,
+                      width: 120,
+                      child: CategoryCard(
+                        categoryImage: "assets/image/cake_image.png",
+                        categoryName: "Cake",
+                        categoryName1: "Chinese",
+                        categoryImage1: "assets/image/chinese_image.png",
+                      ),
+                    ),
+                    kWidth35,
+                    const SizedBox(
+                      height: 180,
+                      width: 120,
+                      child: CategoryCard(
+                        categoryImage: "assets/image/pizza_image.png",
+                        categoryName: "Pizza",
+                        categoryName1: "Idli",
+                        categoryImage1: "assets/image/idli_image.png",
+                      ),
+                    ),
+                  ],
                 ),
               ),
               kHiegth20,
@@ -246,11 +242,8 @@ class FoodPage extends StatelessWidget {
               kHiegth20,
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ProfilePage(),
-                    ),
+                  Get.to(
+                    const ProfilePage(),
                   );
                 },
                 child: const ExploreCard(

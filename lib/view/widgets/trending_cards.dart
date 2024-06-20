@@ -17,19 +17,24 @@ class TrendingCards extends StatelessWidget {
     return Container(
       height: 176,
       width: 140,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          10,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
             children: [
               Image.asset(image),
-              offerLabel,
+              Positioned(top: 111, child: offerLabel),
             ],
           ),
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(vertical: 8).copyWith(left: 4),
             child: Text(
+              maxLines: 1,
               brandName,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,

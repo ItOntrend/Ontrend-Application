@@ -88,3 +88,8 @@ const kWidth35 = SizedBox(
 final kWidth140 = SizedBox(
   width: 140.w,
 );
+
+const kDiver10 = Divider(
+  endIndent: 10,
+  indent: 10,
+);

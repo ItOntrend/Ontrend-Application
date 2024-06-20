@@ -12,14 +12,15 @@ class OfferLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(right: 0, left: 0),
+      height: 65,
+      width: 138,
       padding: const EdgeInsets.only(left: 10, bottom: 10, top: 4),
-      height: 80,
-      width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.4),
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10),
         ),
       ),
       child: Column(
