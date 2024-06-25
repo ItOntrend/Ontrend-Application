@@ -9,12 +9,15 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/tabs/second_bar
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/tabs/third_bar.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({super.key, this.initialTabIndex});
+
+  final int? initialTabIndex;
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
+      initialIndex: initialTabIndex!,
       child: Scaffold(
         // bottomNavigationBar: ,
         body: SafeArea(

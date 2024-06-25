@@ -37,7 +37,7 @@ class OffersAndBenefitsCard extends StatelessWidget {
                 8,
               ),
             ),
-            child: TextField(
+            child: const TextField(
               enabled: true,
               decoration: InputDecoration(
                 border: InputBorder.none,

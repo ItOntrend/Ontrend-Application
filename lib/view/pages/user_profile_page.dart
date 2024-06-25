@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/change_textfield.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_tile.dart';
 
 class UserProfilePage extends StatelessWidget {
@@ -9,59 +12,78 @@ class UserProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userController = Get.find<UserController>();
     return Scaffold(
+      backgroundColor: kWhite,
       appBar: AppBar(
+        backgroundColor: kWhite,
+        leading: const SizedBox(),
         centerTitle: true,
         title: const Text(
           "My Profile",
         ),
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.arrow_back_ios_new_sharp,
-          ),
-        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Center(
-          child: Column(
-            children: [
-              CircleAvatar(
-                backgroundColor: kGrey.shade300,
-                radius: 92,
-                child: const Center(
+        padding: const EdgeInsets.symmetric(horizontal: 22),
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                CircleAvatar(
+                  backgroundColor: kGrey.shade300,
+                  radius: 92,
+                  child: const Center(
                     child: Icon(
-                  Iconsax.user,
-                  size: 70,
-                  color: kBlack,
-                )),
-              ),
-              kHiegth20,
-              const Text("Mohammed Abdullah"),
-              kHiegth15,
-              const Text("@UserId498"),
-              kHiegth25,
-              const MainTile(
-                name: "My Orders",
-                icon: "assets/icons/my_orders_icon.png",
-              ),
-              kHiegth25,
-              const MainTile(
-                name: "Personal Details",
-                icon: "assets/icons/personal_details_icon.png",
-              ),
-              kHiegth25,
-              const MainTile(
-                name: "Settings",
-                icon: "assets/icons/settings_icon.png",
-              ),
-              kHiegth25,
-              const MainTile(
-                name: "Log Out",
-                icon: "assets/icons/power_icon.png",
-              ),
-            ],
+                      Iconsax.user,
+                      size: 70,
+                      color: kBlack,
+                    ),
+                  ),
+                ),
+                kHiegth20,
+                Obx(() => Text(
+                      "${userController.firstName.value} ${userController.lastName.value}",
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w700),
+                    )),
+                kHiegth15,
+                const ChangeTextfield(
+                  hintText: "*Name...",
+                  initialValue: "Muhammed",
+                ),
+                kHiegth20,
+                const ChangeTextfield(
+                  hintText: "*Email...",
+                  initialValue: "test@gmail.com",
+                ),
+                kHiegth20,
+                const ChangeTextfield(
+                  hintText: "Nationality",
+                  initialValue: "Oman",
+                ),
+                kHiegth25,
+                const MainTile(
+                  name: "My Orders",
+                  icon: "assets/icons/my_orders_icon.png",
+                ),
+                kHiegth25,
+                const MainTile(
+                  name: "Help",
+                  icon: "assets/icons/help_icon.png",
+                ),
+                kHiegth25,
+                const MainTile(
+                  name: "Contact Us",
+                  icon: "assets/icons/call_icon.png",
+                ),
+                kHiegth25,
+                const MainTile(
+                  name: "Log Out",
+                  icon: "assets/icons/power_icon.png",
+                ),
+                kHiegth20,
+              ],
+            ),
           ),
         ),
       ),

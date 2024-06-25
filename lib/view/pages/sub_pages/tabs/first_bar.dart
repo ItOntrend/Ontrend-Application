@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/item_view_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/item_food_card.dart';
 
 class FirstBar extends StatefulWidget {
@@ -18,14 +16,9 @@ class _FirstBarState extends State<FirstBar> {
       scrollDirection: Axis.vertical,
       children: [
         kHiegth30,
-        GestureDetector(
-          onTap: () => Get.to(
-            const ItemViewPage(),
-          ),
-          child: const FoodItemCard(
-            name: "Cheese Burger",
-            image: "assets/image/cheese_burger_image.png",
-          ),
+        const FoodItemCard(
+          name: "Cheese Burger",
+          image: "assets/image/cheese_burger_image.png",
         ),
         kHiegth20,
         const FoodItemCard(

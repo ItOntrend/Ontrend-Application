@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "192511537789",
+    "project_id": "ontrend-db",
+    "storage_bucket": "ontrend-db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192511537789:android:28d4ddef7465a0faf47714",
+        "android_client_info": {
+          "package_name": "com.ontrend.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192511537789-qeefjdbksoclpuud8bpp9710apq0uft7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3aMrrW0c68KIOwHFc-w-MyMxE-MvIBLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192511537789-qeefjdbksoclpuud8bpp9710apq0uft7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "192511537789-ol7ihhuct6jdggp5orue6ja8fhumbtqf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ontrendFoodAndECommerce"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

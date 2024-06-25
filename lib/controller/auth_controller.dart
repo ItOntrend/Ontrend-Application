@@ -1,0 +1,80 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/repository/auth_repository.dart';
+import 'package:ontrend_food_and_e_commerce/utils/enums/auth_status.dart';
+import 'package:ontrend_food_and_e_commerce/utils/exception/auth_exception.dart';
+import 'package:ontrend_food_and_e_commerce/utils/utils.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/navigation_manu.dart';
+
+class AuthController extends GetxController {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final forgotController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final nationalityController = TextEditingController();
+  final numberController = TextEditingController(); 
+  final formKey = GlobalKey<FormState>();
+  RxBool isLoading = RxBool(false);
+
+  Future<void> onLogin(BuildContext context) async {
+    Utils.instance.showLoader();
+
+    final status = await AuthRepository.login(
+      email: emailController.text.trim(),
+      pass: passwordController.text.trim(),
+    );
+    Utils.instance.hideLoader();
+    if (status == AuthStatus.successful) {
+      Get.to(const NavigationManu());
+    } else {
+      final errorMsg = AuthExceptionHandler.generateExceptionMessage(status);
+      Utils.instance.showSnackbar(context: context, message: errorMsg);
+    }
+  }
+
+  Future<void> onSignUp(BuildContext context) async {
+    Utils.instance.showLoader();
+
+    final status = await AuthRepository.signUp(
+      email: emailController.text.trim(),
+      pass: passwordController.text.trim(),
+      firstName: firstNameController.text.trim(),
+      lastName: lastNameController.text.trim(),
+      nationality: nationalityController.text.trim(),
+      number: numberController.text.trim(),
+    );
+    Utils.instance.hideLoader();
+    if (status == AuthStatus.successful) {
+      Get.to(const NavigationManu());
+    } else {
+      String errorMsg;
+      switch (status) {
+        case AuthStatus.invalidPhoneNumber:
+          errorMsg = 'Invalid phone number. Please enter a valid 10-digit phone number.';
+          break;
+        case AuthStatus.invalidPassword:
+          errorMsg = 'Invalid password. Password must contain at least one special character, one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long.';
+          break;
+        default:
+          errorMsg = AuthExceptionHandler.generateExceptionMessage(status);
+      }
+      Utils.instance.showSnackbar(context: context, message: errorMsg);
+    }
+  }
+  Future<void> onForgotPassword(BuildContext context) async {
+    Utils.instance.showLoader();
+
+    final status = await AuthRepository.forgotPassword(
+      email: forgotController.text.trim(),
+    );
+    Utils.instance.hideLoader();
+    if (status == AuthStatus.successful) {
+      Utils.instance.showSnackbar(
+          context: context, message: 'Password reset email sent!');
+    } else {
+      final errorMsg = AuthExceptionHandler.generateExceptionMessage(status);
+      Utils.instance.showSnackbar(context: context, message: errorMsg);
+    }
+  }
+}

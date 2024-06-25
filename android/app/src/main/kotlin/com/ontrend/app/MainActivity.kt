@@ -1,4 +1,4 @@
-package com.example.ontrend_food_and_e_commerce
+package com.ontrend.app
 
 import io.flutter.embedding.android.FlutterActivity
 

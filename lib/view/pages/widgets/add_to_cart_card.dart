@@ -55,7 +55,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: Offset(0, 6), // changes position of shadow
+            offset: const Offset(0, 6), // changes position of shadow
           ),
         ],
       ),

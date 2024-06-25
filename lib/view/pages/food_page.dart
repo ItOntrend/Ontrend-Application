@@ -21,7 +21,9 @@ class FoodPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: kWhite,
       appBar: AppBar(
+        // backgroundColor: kWhite,
         centerTitle: false,
         leading: Padding(
           padding: const EdgeInsets.only(left: 20),
@@ -122,23 +124,51 @@ class FoodPage extends StatelessWidget {
                 child: ListView(
                   // This next line does the trick.
                   scrollDirection: Axis.horizontal,
-                  children: const <Widget>[
-                    TrendingCards(
-                      image: "assets/image/trending_image_1.png",
-                      offerLabel: OfferLabel(offerlabel: "50% OFF"),
-                      brandName: "La Pino’z Pizza",
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(
+                          const PizzaSearchPage(),
+                        );
+                      },
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.to(
+                            const BurgerSearchPage(),
+                          );
+                        },
+                        child: const TrendingCards(
+                          image: "assets/image/trending_image_1.png",
+                          offerLabel: OfferLabel(offerlabel: "50% OFF"),
+                          brandName: "La Pino’z Pizza",
+                        ),
+                      ),
                     ),
                     kWidth20,
-                    TrendingCards(
-                      image: "assets/image/trending_image_2.png",
-                      offerLabel: OfferLabel(offerlabel: "40% OFF"),
-                      brandName: "Dough & Cream",
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(
+                          const PizzaSearchPage(),
+                        );
+                      },
+                      child: const TrendingCards(
+                        image: "assets/image/trending_image_2.png",
+                        offerLabel: OfferLabel(offerlabel: "40% OFF"),
+                        brandName: "Dough & Cream",
+                      ),
                     ),
                     kWidth20,
-                    TrendingCards(
-                      image: "assets/image/trending_image_3.png",
-                      offerLabel: OfferLabel(offerlabel: "10% OFF"),
-                      brandName: "Paneer",
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(
+                          const BurgerSearchPage(),
+                        );
+                      },
+                      child: const TrendingCards(
+                        image: "assets/image/trending_image_3.png",
+                        offerLabel: OfferLabel(offerlabel: "10% OFF"),
+                        brandName: "Paneer",
+                      ),
                     ),
                     kWidth20,
                   ],
@@ -171,6 +201,24 @@ class FoodPage extends StatelessWidget {
                       ),
                     ),
                     kWidth35,
+                    SizedBox(
+                      height: 180,
+                      width: 120,
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.to(
+                            const PizzaSearchPage(),
+                          );
+                        },
+                        child: const CategoryCard(
+                          categoryImage: "assets/image/pizza_image.png",
+                          categoryName: "Pizza",
+                          categoryName1: "Idli",
+                          categoryImage1: "assets/image/idli_image.png",
+                        ),
+                      ),
+                    ),
+                    kWidth35,
                     const SizedBox(
                       height: 180,
                       width: 120,
@@ -179,24 +227,6 @@ class FoodPage extends StatelessWidget {
                         categoryName: "Cake",
                         categoryName1: "Chinese",
                         categoryImage1: "assets/image/chinese_image.png",
-                      ),
-                    ),
-                    kWidth35,
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(
-                          const PizzaSearchPage(),
-                        );
-                      },
-                      child: const SizedBox(
-                        height: 180,
-                        width: 120,
-                        child: CategoryCard(
-                          categoryImage: "assets/image/pizza_image.png",
-                          categoryName: "Pizza",
-                          categoryName1: "Idli",
-                          categoryImage1: "assets/image/idli_image.png",
-                        ),
                       ),
                     ),
                     kWidth35,
@@ -247,16 +277,16 @@ class FoodPage extends StatelessWidget {
                   );
                 },
                 child: const ExploreCard(
-                  image: "assets/image/Dominos_card_image.png",
+                  image: "assets/image/Dominos_card_image.png", tabIndex: 3,
                 ),
               ),
               kHiegth20,
               const ExploreCard(
-                image: "assets/image/explore_image.png",
+                image: "assets/image/explore_image.png", tabIndex: 3,
               ),
               kHiegth20,
               const ExploreCard(
-                image: "assets/image/explore_image_two.png",
+                image: "assets/image/explore_image_two.png", tabIndex: 3,
               ),
               kHiegth20,
             ],

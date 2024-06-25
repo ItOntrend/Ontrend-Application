@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
 
-class MainTextFieldPass extends StatefulWidget {
-  const MainTextFieldPass({
+class MainTextFieldPassword extends StatefulWidget {
+  const MainTextFieldPassword({
     super.key,
     required this.hintText,
+    this.controller,
+    this.validator,
   });
   final String hintText;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   @override
-  State<MainTextFieldPass> createState() => _MainTextFieldPassState();
+  State<MainTextFieldPassword> createState() => _MainTextFieldPassSPassword();
 }
 
-class _MainTextFieldPassState extends State<MainTextFieldPass> {
+class _MainTextFieldPassSPassword extends State<MainTextFieldPassword> {
   bool _obscureText = true;
 
   void _toggleVisibility() {
@@ -43,7 +47,9 @@ class _MainTextFieldPassState extends State<MainTextFieldPass> {
             ),
           ],
         ),
-        child: TextField(
+        child: TextFormField(
+          controller: widget.controller,
+          validator: widget.validator,
           obscureText: _obscureText,
           enabled: true,
           decoration: InputDecoration(

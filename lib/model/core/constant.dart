@@ -9,15 +9,23 @@ const kHiegth2 = SizedBox(
 const kHiegth6 = SizedBox(
   height: 6,
 );
-
+final kHiegth5 = SizedBox(
+  height: 5.h,
+);
 const kHiegth9 = SizedBox(
   height: 9,
 );
 const kHiegth10 = SizedBox(
   height: 10,
 );
+final kHiegth13 = SizedBox(
+  height: 13.h,
+);
 const kHiegth15 = SizedBox(
   height: 15,
+);
+final kHiegth18 = SizedBox(
+  height: 18.h,
 );
 final kHiegth20 = SizedBox(
   height: 20.h,
@@ -70,8 +78,11 @@ const kWidth6 = SizedBox(
 const kWidth10 = SizedBox(
   width: 10,
 );
-const kWidth15 = SizedBox(
-  width: 15,
+final kWidth15 = SizedBox(
+  width: 15.w,
+);
+final kWidth18 = SizedBox(
+  width: 18.w,
 );
 const kWidth20 = SizedBox(
   width: 20,
@@ -89,6 +100,10 @@ final kWidth140 = SizedBox(
   width: 140.w,
 );
 
+const kDiver = Divider(
+  endIndent: 0,
+  indent: 0,
+);
 const kDiver10 = Divider(
   endIndent: 10,
   indent: 10,

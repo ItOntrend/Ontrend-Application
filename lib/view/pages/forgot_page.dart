@@ -3,11 +3,18 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/main_text_field.dart';
+import 'package:ontrend_food_and_e_commerce/repository/auth_repository.dart';
+import 'package:ontrend_food_and_e_commerce/utils/enums/auth_status.dart';
+import 'package:ontrend_food_and_e_commerce/utils/exception/auth_exception.dart';
+import 'package:ontrend_food_and_e_commerce/utils/utils.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/main_textfield.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_botton.dart';
 
 class ForgotPassword extends StatelessWidget {
-  const ForgotPassword({super.key});
+  ForgotPassword({super.key});
+  final emailController = TextEditingController();
+  final numberController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,56 +37,72 @@ class ForgotPassword extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 22,
                 ),
-                child: Column(
-                  children: [
-                    kHiegth30,
-                    const Text(
-                      "Forgot Password",
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w500,
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      kHiegth30,
+                      const Text(
+                        "Forgot Password",
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    kHiegth25,
-                    Text(
-                      "You will receive your password on your\nregistered email or phone",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 19,
-                        color: kBlackOpacity6,
-                        fontWeight: FontWeight.w400,
+                      kHiegth25,
+                      Text(
+                        "You will receive your password on your\nregistered email or phone",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 19,
+                          color: kBlackOpacity6,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    kHiegth76,
-                    const MainTextField(
-                      hintText: "Email ID or Phone No",
-                    ),
-                    kHiegth60,
-                    const MainBotton(
-                      name: "Send",
-                    ),
-                    // kHiegth35,
-                    // const Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     Text(
-                    //       "Go back to Login? ",
-                    //       style: TextStyle(
-                    //         fontSize: 16,
-                    //         fontWeight: FontWeight.w400,
-                    //       ),
-                    //     ),
-                    //     Text(
-                    //       "Sign In",
-                    //       style: TextStyle(
-                    //         fontSize: 16,
-                    //         fontWeight: FontWeight.w400,
-                    //         color: kBlue,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
+                      kHiegth76,
+                      MainTextField(
+                        controller: emailController,
+                        hintText: "Email ID or Phone No",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          if (!GetUtils.isEmail(value)) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
+                      ),
+                      kHiegth60,
+                      GestureDetector(
+                        onTap: () => onSubmit(context),
+                        child: const MainBotton(
+                          name: "Send",
+                        ),
+                      ),
+                      // kHiegth35,
+                      // const Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Text(
+                      //       "Go back to Login? ",
+                      //       style: TextStyle(
+                      //         fontSize: 16,
+                      //         fontWeight: FontWeight.w400,
+                      //       ),
+                      //     ),
+                      //     Text(
+                      //       "Sign In",
+                      //       style: TextStyle(
+                      //         fontSize: 16,
+                      //         fontWeight: FontWeight.w400,
+                      //         color: kBlue,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -87,5 +110,25 @@ class ForgotPassword extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void onSubmit(BuildContext context) async {
+    if (formKey.currentState!.validate()) {
+      final status = await AuthRepository.forgotPassword(
+          email: emailController.text.trim());
+      if (status == AuthStatus.successful) {
+        Utils.instance.showSnackbar(
+          context: context,
+          message: 'Password reset email sent successfully',
+        );
+        Get.back(); // Go back to the previous screen
+      } else {
+        final errorMsg = AuthExceptionHandler.generateExceptionMessage(status);
+        Utils.instance.showSnackbar(
+          context: context,
+          message: errorMsg,
+        );
+      }
+    }
   }
 }

@@ -45,7 +45,16 @@ dependencies:
   flutter_screenutil: ^5.9.3
   flutter_rating_bar: ^4.0.1
   another_flutter_splash_screen: ^1.2.0
-
+  flutter_spinkit: ^5.2.1
+  change_app_package_name: ^1.2.0
+  firebase_core: ^3.1.0
+  firebase_auth: ^5.1.0
+  cloud_firestore: ^5.0.1
+  connectivity_plus: ^6.0.3
+  country_picker: ^2.0.26
+  persistent_bottom_nav_bar: ^5.0.2
+  
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

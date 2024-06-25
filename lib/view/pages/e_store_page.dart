@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+// import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 
 class EStorePage extends StatelessWidget {
   const EStorePage({super.key});
@@ -7,9 +7,10 @@ class EStorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: kWhite,
       body: Center(
-        child: Lottie.network(
-          "https://lottie.host/172ad539-7a9e-45ac-97cd-8c8a34c8c0f7/dBVnzYixTm.json",
+        child: Image.asset(
+          "assets/lottie_animation/coming_soon_animation.gif",
         ),
       ),
     );

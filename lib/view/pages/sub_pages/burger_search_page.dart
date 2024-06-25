@@ -63,17 +63,23 @@ class BurgerSearchPage extends StatelessWidget {
                 child: ListView(
                   scrollDirection: Axis.vertical,
                   children: [
-                    ExploreCard(image: "assets/image/explore_burger_one.png"),
+                    const ExploreCard(
+                        image: "assets/image/explore_burger_one.png", tabIndex: 0,),
                     kHiegth20,
-                    ExploreCard(image: "assets/image/explore_burger_two.png"),
+                    const ExploreCard(
+                        image: "assets/image/explore_burger_two.png", tabIndex: 1,),
                     kHiegth20,
-                    ExploreCard(image: "assets/image/explore_burger_one.png"),
+                    const ExploreCard(
+                        image: "assets/image/explore_burger_one.png", tabIndex: 0,),
                     kHiegth20,
-                    ExploreCard(image: "assets/image/explore_burger_two.png"),
+                    const ExploreCard(
+                        image: "assets/image/explore_burger_two.png", tabIndex: 1,),
                     kHiegth20,
-                    ExploreCard(image: "assets/image/explore_burger_one.png"),
+                    const ExploreCard(
+                        image: "assets/image/explore_burger_one.png", tabIndex: 0,),
                     kHiegth20,
-                    ExploreCard(image: "assets/image/explore_burger_two.png"),
+                    const ExploreCard(
+                        image: "assets/image/explore_burger_two.png", tabIndex: 1,),
                     kHiegth20,
                   ],
                 ),

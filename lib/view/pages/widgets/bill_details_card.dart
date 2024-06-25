@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/order_complete_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/payment_option_page.dart';
 
 class BillDetailsCard extends StatelessWidget {
   const BillDetailsCard({super.key});
@@ -93,49 +94,56 @@ class BillDetailsCard extends StatelessWidget {
             ],
           ),
           kHiegth10,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                height: 29.h,
-                width: 49.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    10,
+          GestureDetector(
+            onTap: () {
+              Get.to(
+                const PaymentOptionPage(),
+              );
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  height: 29.h,
+                  width: 49.w,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      10,
+                    ),
+                    border: Border.all(
+                      color: kGrey,
+                    ),
                   ),
-                  border: Border.all(
-                    color: kGrey,
-                  ),
-                ),
-                child: Image.asset(
-                  "assets/image/visa_image.png",
-                ),
-              ),
-              const Spacer(),
-              const Text(
-                "Change",
-                style: TextStyle(
-                  color: kGreen,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              kWidth10,
-              Container(
-                height: 18.h,
-                width: 18.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: kOrange,
+                  child: Image.asset(
+                    "assets/image/visa_image.png",
                   ),
                 ),
-                child: Icon(
-                  Icons.arrow_forward_ios,
-                  size: 12,
+                const Spacer(),
+                const Text(
+                  "Change",
+                  style: TextStyle(
+                    color: kGreen,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
+                kWidth10,
+                Container(
+                  height: 18.h,
+                  width: 18.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: kOrange,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 12,
+                  ),
+                ),
+              ],
+            ),
           ),
           kHiegth10,
           GestureDetector(

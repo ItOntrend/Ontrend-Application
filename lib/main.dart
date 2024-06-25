@@ -1,12 +1,21 @@
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
+import 'package:ontrend_food_and_e_commerce/firebase_options.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/utils/init_services.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/login_page.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initServices();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -20,9 +29,12 @@ class MyApp extends StatelessWidget {
         designSize: const Size(430, 932),
         builder: (context, _) {
           return GetMaterialApp(
+            initialBinding: BindingsBuilder(() {
+              Get.put(UserController());
+            }),
             debugShowCheckedModeBanner: false,
             title: 'OnTrend App',
-            theme: ThemeData(primarySwatch: Colors.orange),
+            theme: ThemeData(),
             home: FlutterSplashScreen(
               duration: const Duration(milliseconds: 3000),
               backgroundColor: kWhite,
@@ -49,7 +61,7 @@ class MyApp extends StatelessWidget {
                   kHiegth50,
                 ],
               ),
-              nextScreen: const LoginPage(),
+              nextScreen: LoginPage(),
             ),
           );
         });

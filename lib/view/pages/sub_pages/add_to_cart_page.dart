@@ -17,6 +17,7 @@ class AddToCartPage extends StatefulWidget {
 }
 
 class _AddToCartPageState extends State<AddToCartPage> {
+  List<Map<String, dynamic>> cartItems = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,32 +84,40 @@ class _AddToCartPageState extends State<AddToCartPage> {
                   ),
                   border: Border.all(color: kGrey.shade400),
                 ),
-                child: const Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AddToCartCard(
-                      itemName: "Mango Shake",
-                      itemPrice: "OMR 120",
-                      image: "assets/image/add_to_cart_image.png",
+                    ListView.builder(
+                      shrinkWrap: true, // Wrap content to avoid overflow
+                      itemCount:
+                          cartItems.length, // Use the length of cartItems
+                      itemBuilder: (context, index) {
+                        return AddToCartCard(
+                          // Pass data from cartItems
+                          itemName: cartItems[index]['itemName'],
+                          itemPrice: cartItems[index]['itemPrice'],
+                          image: cartItems[index]['image'],
+                        );
+                      },
                     ),
                     kHiegth9,
-                    AddToCartCard(
+                    const AddToCartCard(
                       itemName: "Tomato Pizza",
-                      itemPrice: "OMR 100",
+                      itemPrice: "\OMR100",
                       image: "assets/image/add_to_cart_image_two.png",
                     ),
                     kHiegth9,
-                    AddingMoreItemCard(),
+                    const AddingMoreItemCard(),
                   ],
                 ),
               ),
-              OneTextHeading(heading: "Offers & Benefits"),
+              const OneTextHeading(heading: "Offers & Benefits"),
               kHiegth15,
-              OffersAndBenefitsCard(),
+              const OffersAndBenefitsCard(),
               kHiegth15,
-              OneTextHeading(heading: "Bill Details"),
+              const OneTextHeading(heading: "Bill Details"),
               kHiegth15,
-              BillDetailsCard(),
+              const BillDetailsCard(),
               kHiegth15,
               Container(
                 height: 64.h,

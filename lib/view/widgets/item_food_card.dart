@@ -1,11 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/item_view_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/add_button.dart';
 
-class FoodItemCard extends StatelessWidget {
-  const FoodItemCard({super.key, required this.name, required this.image});
+class FoodItemCard extends StatefulWidget {
+  const FoodItemCard({
+    Key? key,
+    required this.name,
+    required this.image,
+  }) : super(key: key);
 
   final String name;
   final String image;
+
+  @override
+  _FoodItemCardState createState() => _FoodItemCardState();
+}
+
+class _FoodItemCardState extends State<FoodItemCard> {
+  int itemCount = 0;
+
+  void incrementCount() {
+    setState(() {
+      itemCount++;
+    });
+  }
+
+  void decrementCount() {
+    setState(() {
+      if (itemCount > 0) {
+        itemCount--;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +52,21 @@ class FoodItemCard extends StatelessWidget {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: Offset(0, 3), // changes position of shadow
+              offset: const Offset(0, 3),
             ),
           ],
-          color: Colors.white, // Ensure the container has a background color
+          color: Colors.white,
         ),
         child: Stack(
           children: [
             Align(
               alignment: Alignment.topRight,
-              child: Image.asset(image),
+              child: GestureDetector(
+                onTap: () => Get.to(
+                  const ItemViewPage(),
+                ),
+                child: Image.asset(widget.image),
+              ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +76,7 @@ class FoodItemCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      name,
+                      widget.name,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
@@ -76,22 +110,26 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    Container(
-                      height: 32,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: kOrange,
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Add",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: kWhite,
+                    GestureDetector(
+                      onTap: () {
+                        final snackBar = SnackBar(
+                          content: const Text('Yay! Added to your cart'),
+                          action: SnackBarAction(
+                            label: 'View Cart',
+                            onPressed: () {
+                              Get.to(const AddToCartPage());
+                            },
                           ),
-                        ),
+                        );
+
+                        // Find the ScaffoldMessenger in the widget tree
+                        // and use it to show a SnackBar.
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      },
+                      child: AddButton(
+                        onIncrement: incrementCount,
+                        onDecrement: decrementCount,
+                        count: itemCount,
                       ),
                     ),
                   ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/navigation_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
@@ -17,14 +18,20 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_home.dart';
 
 class HomePage extends StatelessWidget {
+  final NavigationController? controller;
   const HomePage({
     super.key,
+    this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
+    final navigationController = Get.find<NavigationController>();
+
     return Scaffold(
+      // backgroundColor: kWhite,
       appBar: AppBar(
+        // backgroundColor: kWhite,
         centerTitle: false,
         leading: Padding(
           padding: const EdgeInsets.only(left: 20),
@@ -33,7 +40,7 @@ class HomePage extends StatelessWidget {
         title: GestureDetector(
           onTap: () {
             Get.to(
-              SelectLocationPage(),
+              const SelectLocationPage(),
             );
           },
           child: const Column(
@@ -101,7 +108,7 @@ class HomePage extends StatelessWidget {
               children: [
                 // Search bar
                 TextField(
-                  enabled: false,
+                  enabled: true,
                   decoration: InputDecoration(
                     prefixIcon: Image.asset("assets/icons/search_icon.png"),
                     suffixIcon: Row(
@@ -140,16 +147,21 @@ class HomePage extends StatelessWidget {
                   name: "E Shop",
                 ),
                 kHiegth20,
-                const Row(
+                Row(
                   children: [
-                    OurServiceCard(
+                    const OurServiceCard(
                       name: 'Groceries',
                       image: "assets/image/grocerry_image.png",
                     ),
                     kWidth20,
-                    OurServiceCard(
-                      name: 'Food',
-                      image: "assets/image/service_food_image.png",
+                    GestureDetector(
+                      onTap: () {
+                        navigationController.selectedIndex.value = 1;
+                      },
+                      child: const OurServiceCard(
+                        name: 'Food',
+                        image: "assets/image/service_food_image.png",
+                      ),
                     ),
                   ],
                 ),
@@ -193,10 +205,17 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       kWidth20,
-                      const TrendingCards(
-                        image: "assets/image/trending_image_3.png",
-                        offerLabel: OfferLabel(offerlabel: "10% OFF"),
-                        brandName: "Paneer",
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(
+                            const BurgerSearchPage(),
+                          );
+                        },
+                        child: const TrendingCards(
+                          image: "assets/image/trending_image_3.png",
+                          offerLabel: OfferLabel(offerlabel: "10% OFF"),
+                          brandName: "Paneer",
+                        ),
                       ),
                       kWidth20,
                     ],
