@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
@@ -18,13 +19,22 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Lottie.network(
-                "https://lottie.host/70646229-eaba-423c-9627-40ccd7e521eb/t7ganPjNoQ.json",
-                fit: BoxFit.cover,
+              SizedBox(
+                height: 271.h,
+                width: double.infinity,
+                child: Lottie.asset(
+                  "assets/lottie_animation/login_lottie.json",
+                  fit: BoxFit.cover,
+                ),
+                // Image.asset(
+                //   "assets/lottie_animation/login_animation.gif",
+                //   fit: BoxFit.cover,
+                // )
               ),
               kHiegth70,
               const Text(
@@ -91,11 +101,11 @@ class LoginPage extends StatelessWidget {
               ),
               kHiegth90,
               GestureDetector(
-                onTap: () => Get.to(
+                onTap: () => Get.offAll(
                   const NavigationManu(),
                 ),
                 child: GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (authController.formKey.currentState!.validate()) {
                         authController.onLogin(context);
                       }
@@ -128,7 +138,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ],
               ),
-              kHiegth25,
+              // kHiegth25,
             ],
           ),
         ),

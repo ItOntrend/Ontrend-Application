@@ -80,5 +80,7 @@ abstract class AuthRepository {
     return _status;
   }
 
-  // Future<void> onForgetPassword() async {}
+  static Future<void> onLogOut()async{
+    await FirebaseConstants.authInstance.signOut();
+  }
 }

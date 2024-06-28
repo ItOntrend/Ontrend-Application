@@ -20,7 +20,7 @@ class ProfileCard extends StatelessWidget {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 5,
               blurRadius: 7,
-              offset:const Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ]),
       child: Column(
@@ -32,7 +32,10 @@ class ProfileCard extends StatelessWidget {
                 width: 84,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: kGreen,
+                ),
+                child: Image.asset(
+                  "assets/image/pizza_logo_image.jpg",
+                  fit: BoxFit.cover,
                 ),
               ),
               kWidth20,
@@ -40,7 +43,7 @@ class ProfileCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Dominos Pizza",
+                    "Pizza Hut",
                     style: TextStyle(
                       fontSize: 21,
                       fontWeight: FontWeight.bold,
@@ -100,7 +103,7 @@ class ProfileCard extends StatelessWidget {
               ),
               VerticalDivider(
                 thickness: 10,
-                color: kBlue,
+                color: kBlack,
               ),
               Column(
                 children: [

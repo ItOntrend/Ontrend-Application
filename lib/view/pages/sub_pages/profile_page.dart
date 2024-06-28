@@ -19,7 +19,7 @@ class ProfilePage extends StatelessWidget {
       length: 4,
       initialIndex: initialTabIndex!,
       child: Scaffold(
-        // bottomNavigationBar: ,
+        backgroundColor: kWhite,
         body: SafeArea(
           child: Column(
             children: [
@@ -49,9 +49,12 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                      left: 50,
-                      child: Image.asset("assets/image/big_pizza.png")),
-                  const ProfileCard(),
+                    left: 50,
+                    child: Image.asset("assets/image/big_pizza.png"),
+                  ),
+                  const Positioned(
+                    child: ProfileCard(),
+                  ),
                 ],
               ),
               kHiegth20,
@@ -70,7 +73,7 @@ class ProfilePage extends StatelessWidget {
                   TabBarOneCard(tabname: "Pizza"),
                 ],
               ),
-              const Expanded(
+              Expanded(
                 child: TabBarView(
                   children: [
                     // 40% offer

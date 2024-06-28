@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/map_page.dart';
 
 class SelectLocationPage extends StatelessWidget {
   const SelectLocationPage({super.key});
@@ -50,11 +51,16 @@ class SelectLocationPage extends StatelessWidget {
                   "assets/svg/small_location_orange_icon.svg",
                 ),
                 kWidth15,
-                const Text(
-                  "Use my current location",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
+                TextButton(
+                  onPressed: () {
+                    Get.to(const MapPage());
+                  },
+                  child: const Text(
+                    "Use my current location",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
                   ),
                 )
               ],

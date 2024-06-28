@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 
 class BurgerSearchPage extends StatelessWidget {
   const BurgerSearchPage({super.key});
@@ -16,29 +17,8 @@ class BurgerSearchPage extends StatelessWidget {
           ),
           child: Column(
             children: [
-              TextField(
-                enabled: false,
-                decoration: InputDecoration(
-                  prefixIcon: Image.asset("assets/icons/search_icon.png"),
-                  suffixIcon: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        color: Colors.grey.shade400,
-                        width: 1,
-                        height: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Image.asset("assets/icons/mic_icon.png"),
-                    ],
-                  ),
-                  hintText: "Burger...",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                      10,
-                    ),
-                  ),
-                ),
+              const TextfieldWithMic(
+                hintText: "Burger...",
               ),
               kHiegth20,
               Row(
@@ -64,22 +44,34 @@ class BurgerSearchPage extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   children: [
                     const ExploreCard(
-                        image: "assets/image/explore_burger_one.png", tabIndex: 0,),
+                      image: "assets/image/explore_burger_one.png",
+                      tabIndex: 0,
+                    ),
                     kHiegth20,
                     const ExploreCard(
-                        image: "assets/image/explore_burger_two.png", tabIndex: 1,),
+                      image: "assets/image/explore_burger_two.png",
+                      tabIndex: 1,
+                    ),
                     kHiegth20,
                     const ExploreCard(
-                        image: "assets/image/explore_burger_one.png", tabIndex: 0,),
+                      image: "assets/image/explore_burger_one.png",
+                      tabIndex: 0,
+                    ),
                     kHiegth20,
                     const ExploreCard(
-                        image: "assets/image/explore_burger_two.png", tabIndex: 1,),
+                      image: "assets/image/explore_burger_two.png",
+                      tabIndex: 1,
+                    ),
                     kHiegth20,
                     const ExploreCard(
-                        image: "assets/image/explore_burger_one.png", tabIndex: 0,),
+                      image: "assets/image/explore_burger_one.png",
+                      tabIndex: 0,
+                    ),
                     kHiegth20,
                     const ExploreCard(
-                        image: "assets/image/explore_burger_two.png", tabIndex: 1,),
+                      image: "assets/image/explore_burger_two.png",
+                      tabIndex: 1,
+                    ),
                     kHiegth20,
                   ],
                 ),

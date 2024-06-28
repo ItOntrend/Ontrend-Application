@@ -17,10 +17,10 @@ class TwoTextHeading extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const Text(
-          "View All",
-          style: TextStyle(fontSize: 18, color: Colors.black45),
-        ),
+        // const Text(
+        //   "View All",
+        //   style: TextStyle(fontSize: 18, color: Colors.black45),
+        // ), 
       ],
     );
   }

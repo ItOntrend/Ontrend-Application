@@ -33,11 +33,11 @@ class NotificationPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0), // Rounded corners
                 ),
                 child: TabBar(
-                  overlayColor: WidgetStatePropertyAll(kTransparent),
-                  indicatorPadding: EdgeInsets.symmetric(horizontal: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  labelStyle: TextStyle(color: kWhite),
-                  unselectedLabelStyle: TextStyle(color: kBlack),
+                  overlayColor: const WidgetStatePropertyAll(kTransparent),
+                  indicatorPadding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  labelStyle: const TextStyle(color: kWhite),
+                  unselectedLabelStyle: const TextStyle(color: kBlack),
                   // indicatorColor: kBlue,
                   dividerColor: kTransparent,
                   isScrollable: false, // Disable scrolling

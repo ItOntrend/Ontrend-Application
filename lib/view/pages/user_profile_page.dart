@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:ontrend_food_and_e_commerce/controller/auth_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
@@ -8,7 +9,9 @@ import 'package:ontrend_food_and_e_commerce/view/pages/widgets/change_textfield.
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_tile.dart';
 
 class UserProfilePage extends StatelessWidget {
-  const UserProfilePage({super.key});
+   UserProfilePage({super.key});
+
+  final authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +80,15 @@ class UserProfilePage extends StatelessWidget {
                   icon: "assets/icons/call_icon.png",
                 ),
                 kHiegth25,
-                const MainTile(
-                  name: "Log Out",
-                  icon: "assets/icons/power_icon.png",
+                GestureDetector(
+                  onTap: ()async {
+                    await authController.onLogOut();
+                    Get.back();
+                  },
+                  child: const MainTile(
+                    name: "Log Out",
+                    icon: "assets/icons/power_icon.png",
+                  ),
                 ),
                 kHiegth20,
               ],

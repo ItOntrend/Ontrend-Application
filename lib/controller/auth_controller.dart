@@ -13,7 +13,7 @@ class AuthController extends GetxController {
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final nationalityController = TextEditingController();
-  final numberController = TextEditingController(); 
+  final numberController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   RxBool isLoading = RxBool(false);
 
@@ -46,15 +46,17 @@ class AuthController extends GetxController {
     );
     Utils.instance.hideLoader();
     if (status == AuthStatus.successful) {
-      Get.to(const NavigationManu());
+      Get.offAll(const NavigationManu());
     } else {
       String errorMsg;
       switch (status) {
         case AuthStatus.invalidPhoneNumber:
-          errorMsg = 'Invalid phone number. Please enter a valid 10-digit phone number.';
+          errorMsg =
+              'Invalid phone number. Please enter a valid 10-digit phone number.';
           break;
         case AuthStatus.invalidPassword:
-          errorMsg = 'Invalid password. Password must contain at least one special character, one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long.';
+          errorMsg =
+              'Invalid password. Password must contain at least one special character, one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long.';
           break;
         default:
           errorMsg = AuthExceptionHandler.generateExceptionMessage(status);
@@ -62,6 +64,7 @@ class AuthController extends GetxController {
       Utils.instance.showSnackbar(context: context, message: errorMsg);
     }
   }
+
   Future<void> onForgotPassword(BuildContext context) async {
     Utils.instance.showLoader();
 
@@ -71,10 +74,14 @@ class AuthController extends GetxController {
     Utils.instance.hideLoader();
     if (status == AuthStatus.successful) {
       Utils.instance.showSnackbar(
-          context: context, message: 'Password reset email sent!');
+          context: context, message: 'Password reset email has been sent!');
     } else {
       final errorMsg = AuthExceptionHandler.generateExceptionMessage(status);
       Utils.instance.showSnackbar(context: context, message: errorMsg);
     }
+  }
+
+  Future<void> onLogOut() async {
+    await AuthRepository.onLogOut();
   }
 }

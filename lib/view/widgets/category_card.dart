@@ -1,45 +1,45 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:ontrend_food_and_e_commerce/Model/core/constant.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard({
     super.key,
-    required this.categoryName1,
-    required this.categoryImage1,
     required this.categoryName,
     required this.categoryImage,
+    required this.onTap,
   });
 
   final String categoryName;
   final String categoryImage;
-  final String categoryName1;
-  final String categoryImage1;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.asset(
-          categoryImage,
+    return Padding(
+      padding: const EdgeInsets.only(right: 20),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(70),
+              child: CachedNetworkImage(
+                height: 70,
+                width: 70,
+                imageUrl: categoryImage,
+              ),
+            ),
+            Text(
+              categoryName,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+          ],
         ),
-        Text(
-          categoryName,
-          style: const TextStyle(
-            fontSize: 20,
-          ),
-        ),
-        kHiegth30,
-        Image.asset(
-          categoryImage1,
-        ),
-        Text(
-          categoryName1,
-          style: const TextStyle(
-            fontSize: 20,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

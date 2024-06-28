@@ -13,7 +13,7 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/main_botton.dart';
 class ForgotPassword extends StatelessWidget {
   ForgotPassword({super.key});
   final emailController = TextEditingController();
-  final numberController = TextEditingController();
+  // final numberController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override

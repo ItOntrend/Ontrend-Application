@@ -20,7 +20,7 @@ class BillDetailsCard extends StatelessWidget {
         horizontal: 12,
         vertical: 8,
       ),
-      height: 210.h,
+      height: 230.h,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(

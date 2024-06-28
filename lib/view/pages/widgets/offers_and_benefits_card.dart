@@ -13,7 +13,7 @@ class OffersAndBenefitsCard extends StatelessWidget {
         horizontal: 24,
         vertical: 12,
       ),
-      height: 91.h,
+      height: 107.h,
       width: double.infinity,
       decoration: BoxDecoration(
         color: kLiteBackground,
@@ -27,7 +27,7 @@ class OffersAndBenefitsCard extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            height: 34.h,
+            height: 40.h,
             width: 312.w,
             decoration: BoxDecoration(
               border: Border.all(

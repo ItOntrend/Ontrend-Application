@@ -18,7 +18,7 @@ class AddButton extends StatelessWidget {
 
   void _showSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(
-      margin: const EdgeInsets.only(bottom: 6, left: 24, right: 24),
+      duration: const Duration(seconds: 10),
       backgroundColor: kGreen,
       content: const Text(
         'Item added',
@@ -26,6 +26,7 @@ class AddButton extends StatelessWidget {
       ),
       action: SnackBarAction(
         label: 'View Cart',
+        textColor: kWhite,
         onPressed: () {
           Get.to(const AddToCartPage());
         },

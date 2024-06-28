@@ -17,7 +17,7 @@ class PizzaSearchPage extends StatelessWidget {
           child: Column(
             children: [
               TextField(
-                enabled: false,
+                enabled: true,
                 decoration: InputDecoration(
                   prefixIcon: Image.asset("assets/icons/search_icon.png"),
                   suffixIcon: Row(
@@ -67,17 +67,35 @@ class PizzaSearchPage extends StatelessWidget {
                 child: ListView(
                   scrollDirection: Axis.vertical,
                   children: [
-                    const ExploreCard(image: "assets/image/explore_image.png", tabIndex: 3,),
+                    const ExploreCard(
+                      image: "assets/image/explore_image.png",
+                      tabIndex: 3,
+                    ),
                     kHiegth20,
-                    const ExploreCard(image: "assets/image/explore_image.png", tabIndex: 3,),
+                    const ExploreCard(
+                      image: "assets/image/explore_image.png",
+                      tabIndex: 3,
+                    ),
                     kHiegth20,
-                    const ExploreCard(image: "assets/image/explore_image.png", tabIndex: 3,),
+                    const ExploreCard(
+                      image: "assets/image/explore_image.png",
+                      tabIndex: 3,
+                    ),
                     kHiegth20,
-                    const ExploreCard(image: "assets/image/explore_image.png", tabIndex: 3,),
+                    const ExploreCard(
+                      image: "assets/image/explore_image.png",
+                      tabIndex: 3,
+                    ),
                     kHiegth20,
-                    const ExploreCard(image: "assets/image/explore_image.png", tabIndex: 3,),
+                    const ExploreCard(
+                      image: "assets/image/explore_image.png",
+                      tabIndex: 3,
+                    ),
                     kHiegth20,
-                    const ExploreCard(image: "assets/image/explore_image.png", tabIndex: 3,),
+                    const ExploreCard(
+                      image: "assets/image/explore_image.png",
+                      tabIndex: 3,
+                    ),
                     kHiegth20,
                   ],
                 ),

@@ -7,6 +7,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/widgets/offers_and_benefi
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/add_to_cart_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/adding_more_item_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/bill_details_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/terms_and_condition.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 
 class AddToCartPage extends StatefulWidget {
@@ -21,7 +22,9 @@ class _AddToCartPageState extends State<AddToCartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kWhite,
       appBar: AppBar(
+        backgroundColor: kWhite,
         centerTitle: false,
         leading: IconButton(
           onPressed: () {
@@ -119,25 +122,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
               kHiegth15,
               const BillDetailsCard(),
               kHiegth15,
-              Container(
-                height: 64.h,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: kGrey,
-                  ),
-                ),
-                child: const Center(
-                  child: Text(
-                    "Terms & Conditions",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
+              const TermsAndCondition(),
               kHiegth20,
             ],
           ),

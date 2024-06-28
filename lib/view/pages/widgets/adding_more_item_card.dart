@@ -63,7 +63,7 @@ class AddingMoreItemCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                "Add more items",
+                "Add cooking requests",
                 style: TextStyle(
                   color: Colors.black54,
                   fontSize: 14,

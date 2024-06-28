@@ -8,7 +8,8 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.da
 class ExploreCard extends StatelessWidget {
   const ExploreCard({
     super.key,
-    required this.image, required this.tabIndex,
+    required this.image,
+    required this.tabIndex,
   });
 
   final String image;
@@ -18,10 +19,12 @@ class ExploreCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to( ProfilePage(initialTabIndex: tabIndex,));
+        Get.to(ProfilePage(
+          initialTabIndex: tabIndex,
+        ));
       },
       child: Container(
-        height: 296.h,
+        height: 286.h,
         width: double.infinity,
         decoration: BoxDecoration(
           color: kWhite,
@@ -42,6 +45,8 @@ class ExploreCard extends StatelessWidget {
           children: [
             Image.asset(
               image,
+              height: 163.h,
+              width: double.infinity,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
@@ -54,14 +59,14 @@ class ExploreCard extends StatelessWidget {
                       const Text(
                         "Domino's Pizza",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 19,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6),
-                        height: 30.h,
-                        width: 64.w,
+                        height: 29.h,
+                        width: 63.w,
                         decoration: BoxDecoration(
                           color: kGreen,
                           borderRadius: BorderRadius.circular(8),
@@ -86,7 +91,7 @@ class ExploreCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  kHiegth10,
+                  kHiegth6,
                   Row(
                     children: [
                       const Text(
