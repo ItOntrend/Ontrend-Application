@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
+import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/item_view_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/add_button.dart';
@@ -10,31 +12,35 @@ class FoodItemCard extends StatefulWidget {
     Key? key,
     required this.name,
     required this.image,
+    required this.price,
+    required this.description,
   }) : super(key: key);
 
   final String name;
   final String image;
+  final int price;
+  final String description;
 
   @override
   _FoodItemCardState createState() => _FoodItemCardState();
 }
 
 class _FoodItemCardState extends State<FoodItemCard> {
-  int itemCount = 0;
+  // int itemCount = 0;
 
-  void incrementCount() {
-    setState(() {
-      itemCount++;
-    });
-  }
+  // void incrementCount() {
+  //   setState(() {
+  //     itemCount++;
+  //   });
+  // }
 
-  void decrementCount() {
-    setState(() {
-      if (itemCount > 0) {
-        itemCount--;
-      }
-    });
-  }
+  // void decrementCount() {
+  //   setState(() {
+  //     if (itemCount > 0) {
+  //       itemCount--;
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +48,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         margin: const EdgeInsets.symmetric(horizontal: 18),
-        height: 164,
+        height: 168.h,
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -65,7 +71,12 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 onTap: () => Get.to(
                   const ItemViewPage(),
                 ),
-                child: Image.asset(widget.image),
+                child: Image.network(
+                  widget.image,
+                  fit: BoxFit.cover,
+                  height: 100.h,
+                  width: 150.w,
+                ),
               ),
             ),
             Column(
@@ -84,21 +95,22 @@ class _FoodItemCardState extends State<FoodItemCard> {
                     ),
                   ],
                 ),
-                const Text(
-                  "OMR120",
-                  style: TextStyle(decoration: TextDecoration.lineThrough),
-                ),
-                const Text(
-                  "Get for OMR 100",
-                  style: TextStyle(
+                // const Text(
+                //   "OMR120",
+                //   style: TextStyle(decoration: TextDecoration.lineThrough),
+                // ),
+                Text(
+                  '${widget.price}',
+                  style: const TextStyle(
                     fontSize: 14,
                     color: kOrange,
                   ),
                 ),
-                const Text(
-                  "A cheeseburger is a\nhamburger with a slice of\nmelted cheese on top of...",
-                  style: TextStyle(fontSize: 12),
+                Text(
+                  widget.description,
+                  style: const TextStyle(fontSize: 12),
                 ),
+                kHiegth15,
                 Row(
                   children: [
                     const Text(
@@ -106,7 +118,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
-                        color: kOrange,
+                       color: kOrange,
                       ),
                     ),
                     const Spacer(),
@@ -126,11 +138,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                         // and use it to show a SnackBar.
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
-                      child: AddButton(
-                        onIncrement: incrementCount,
-                        onDecrement: decrementCount,
-                        count: itemCount,
-                      ),
+                      child: const AddButton(),
                     ),
                   ],
                 )

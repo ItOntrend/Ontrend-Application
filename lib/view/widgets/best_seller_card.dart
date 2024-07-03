@@ -1,76 +1,107 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/constant.dart';
 
 class BestSellerCard extends StatelessWidget {
   final String imagePath;
-  final String title;
-  final String description;
+  final int price;
+  final String vendor;
+  // final String title;
+  final String name;
+  final VoidCallback onTap;
 
   const BestSellerCard({
     super.key,
     required this.imagePath,
-    required this.title,
-    required this.description,
+    // required this.title,
+    required this.name,
+    required this.onTap,
+    required this.price,
+    required this.vendor,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 210,
-        width: 166,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(right: 20, bottom: 30),
+        height: 230.h,
+        width: 156.w,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            alignment: Alignment.topCenter,
-            fit: BoxFit.cover,
-            image: AssetImage(imagePath),
-          ),
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              offset: const Offset(0, 4),
+              color: Colors.black.withOpacity(0.3),
+              offset: const Offset(2, 2),
               blurRadius: 6,
+              spreadRadius: 1,
             ),
           ],
         ),
-        child: Column(
-          children: [
-            const Spacer(),
-            Container(
-              height: 75,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: kWhite,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Image.network(
+                  imagePath,
+                  fit: BoxFit.cover,
                 ),
               ),
-              child: Column(
-                children: [
-                  kHiegth6,
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: kOrange,
-                    ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ).copyWith(bottom: 10),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
+                      border: Border.all(color: kGrey)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      kHiegth6,
+                      Text(
+                        '$price.00',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: kOrange,
+                        ),
+                      ),
+                      kHiegth6,
+                      Text(
+                        name,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: kBlack,
+                        ),
+                      ),
+                      Text(
+                        vendor,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: kGrey,
+                        ),
+                      ),
+                    ],
                   ),
-                  kHiegth6,
-                  Text(
-                    description,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: kBlack,
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ],
-        ));
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

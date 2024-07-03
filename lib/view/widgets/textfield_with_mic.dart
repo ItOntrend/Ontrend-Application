@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 
 class TextfieldWithMic extends StatelessWidget {
   const TextfieldWithMic({
@@ -12,6 +13,7 @@ class TextfieldWithMic extends StatelessWidget {
     return TextField(
       enabled: true,
       decoration: InputDecoration(
+        fillColor: kWhite,  
         prefixIcon: Image.asset("assets/icons/search_icon.png"),
         suffixIcon: Row(
           mainAxisSize: MainAxisSize.min,

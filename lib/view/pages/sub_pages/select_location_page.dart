@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/map_page.dart';
 
 class SelectLocationPage extends StatelessWidget {
   const SelectLocationPage({super.key});
@@ -53,7 +52,7 @@ class SelectLocationPage extends StatelessWidget {
                 kWidth15,
                 TextButton(
                   onPressed: () {
-                    Get.to(const MapPage());
+                    // Get.to(const MapPage());
                   },
                   child: const Text(
                     "Use my current location",
@@ -68,24 +67,24 @@ class SelectLocationPage extends StatelessWidget {
             kHiegth10,
             kDiver10,
             kHiegth20,
-            Row(
-              children: [
-                SvgPicture.asset(
-                  "assets/svg/small_add_orange_icon.svg",
-                ),
-                kWidth15,
-                const Text(
-                  "Add  new address",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-            kHiegth10,
-            kDiver10,
-            kHiegth28,
+            // Row(
+            //   children: [
+            //     SvgPicture.asset(
+            //       "assets/svg/small_add_orange_icon.svg",
+            //     ),
+            //     kWidth15,
+            //     const Text(
+            //       "Add  new address",
+            //       style: TextStyle(
+            //         fontWeight: FontWeight.w700,
+            //         fontSize: 16,
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // kHiegth10,
+            // kDiver10,
+            // kHiegth28,
             const Text(
               "SAVED ADDRESSES",
               style: TextStyle(
@@ -99,17 +98,17 @@ class SelectLocationPage extends StatelessWidget {
               leading: SvgPicture.asset(
                 "assets/svg/small_location_grey_icon.svg",
               ),
-              title: Text(
+              title: const Text(
                 "My Office",
               ),
-              subtitle: Text("#314 ABC Building, Oman . 13m"),
+              subtitle: const Text("#314 ABC Building, Oman . 13m"),
             ),
             ListTile(
               leading: SvgPicture.asset(
                 "assets/svg/small_location_grey_icon.svg",
               ),
-              title: Text("My Home"),
-              subtitle: Text("#314 ABC Building, Oman . 13m"),
+              title: const Text("My Home"),
+              subtitle: const Text("#314 ABC Building, Oman . 13m"),
             ),
           ],
         ),

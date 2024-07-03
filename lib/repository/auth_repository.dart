@@ -29,11 +29,13 @@ abstract class AuthRepository {
     required String lastName,
     required String nationality,
     required String number,
+    required String role,
+    required DateTime timeStamp,
   }) async {
     AuthStatus _status;
 
     // Validate phone number (10 digits)
-    if (!RegExp(r'^\d{10}$').hasMatch(number)) {
+    if (!RegExp(r'^\d{8}$').hasMatch(number)) {
       print('Invalid phone number');
       return AuthStatus.invalidPhoneNumber;
     }
@@ -57,6 +59,8 @@ abstract class AuthRepository {
           'nationality': nationality,
           'number': number,
           'email': email,
+          'role': role,
+          'timeStamp': timeStamp,
         });
         _status = AuthStatus.successful;
       } else {

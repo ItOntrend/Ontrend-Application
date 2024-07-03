@@ -9,7 +9,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/widgets/change_textfield.
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_tile.dart';
 
 class UserProfilePage extends StatelessWidget {
-   UserProfilePage({super.key});
+  UserProfilePage({super.key});
 
   final authController = Get.find<AuthController>();
 
@@ -44,26 +44,40 @@ class UserProfilePage extends StatelessWidget {
                   ),
                 ),
                 kHiegth20,
-                Obx(() => Text(
-                      "${userController.firstName.value} ${userController.lastName.value}",
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w700),
-                    )),
+                Obx(() {
+                  final userDetail = userController.userDetail;
+                  return Text(
+                    "${userDetail['firstName']} ${userDetail['lastName']}",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  );
+                }),
                 kHiegth15,
-                const ChangeTextfield(
-                  hintText: "*Name...",
-                  initialValue: "Muhammed",
-                ),
+                Obx(() {
+                  final userDetail = userController.userDetail;
+                  return ChangeTextfield(
+                    hintText: "*Name...",
+                    initialValue: userDetail['firstName'] ?? '',
+                  );
+                }),
                 kHiegth20,
-                const ChangeTextfield(
-                  hintText: "*Email...",
-                  initialValue: "test@gmail.com",
-                ),
+                Obx(() {
+                  final userDetail = userController.userDetail;
+                  return ChangeTextfield(
+                    hintText: "*Email...",
+                    initialValue: userDetail['email'] ?? '',
+                  );
+                }),
                 kHiegth20,
-                const ChangeTextfield(
-                  hintText: "Nationality",
-                  initialValue: "Oman",
-                ),
+                Obx(() {
+                  final userDetail = userController.userDetail;
+                  return ChangeTextfield(
+                    hintText: "Nationality",
+                    initialValue: userDetail['nationality'] ?? '',
+                  );
+                }),
                 kHiegth25,
                 const MainTile(
                   name: "My Orders",
@@ -81,7 +95,7 @@ class UserProfilePage extends StatelessWidget {
                 ),
                 kHiegth25,
                 GestureDetector(
-                  onTap: ()async {
+                  onTap: () async {
                     await authController.onLogOut();
                     Get.back();
                   },
@@ -90,7 +104,7 @@ class UserProfilePage extends StatelessWidget {
                     icon: "assets/icons/power_icon.png",
                   ),
                 ),
-                kHiegth20,
+                kHiegth140,
               ],
             ),
           ),

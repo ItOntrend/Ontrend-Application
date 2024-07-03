@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/auth_controller.dart';
-import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/login_page.dart';
@@ -13,7 +12,7 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/main_botton.dart';
 class SingUpPage extends StatelessWidget {
   SingUpPage({super.key});
   final authController = Get.put(AuthController());
-  final userController = Get.find<UserController>();
+  // final userController = Get.find<UserController>();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -92,7 +91,7 @@ class SingUpPage extends StatelessWidget {
                   },
                   onCountrySelected: (String country) {
                     authController.nationalityController.text = country;
-                    userController.nationality.value = country;
+                    // userController.nationality.value = country;
                   },
                 ),
                 kHiegth24,
@@ -122,13 +121,13 @@ class SingUpPage extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     if (_formKey.currentState?.validate() ?? false) {
-                      userController.setUserData(
-                        firstName: authController.firstNameController.text,
-                        lastName: authController.lastNameController.text,
-                        email: authController.emailController.text,
-                        nationality: authController.nationalityController.text,
-                        number: authController.numberController.text,
-                      );
+                      // userController.setUserData(
+                      //   firstName: authController.firstNameController.text,
+                      //   lastName: authController.lastNameController.text,
+                      //   email: authController.emailController.text,
+                      //   nationality: authController.nationalityController.text,
+                      //   number: authController.numberController.text,
+                      // );
                       authController.onSignUp(context);
                     }
                   },

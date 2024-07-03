@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/count_controller.dart';
+// import 'package:ontrend_food_and_e_commerce/view/widgets/count_controller.dart';
 
 class AddButton extends StatelessWidget {
-  final Function() onIncrement;
-  final Function() onDecrement;
-  final int count;
+  // final Function() onIncrement;
+  // final Function() onDecrement;
+  // final int count;
 
   const AddButton({
     Key? key,
-    required this.onIncrement,
-    required this.onDecrement,
-    required this.count,
+    // required this.onIncrement,
+    // required this.onDecrement,
+    // required this.count,
   }) : super(key: key);
 
   void _showSnackBar(BuildContext context, String message) {
@@ -28,7 +28,9 @@ class AddButton extends StatelessWidget {
         label: 'View Cart',
         textColor: kWhite,
         onPressed: () {
-          Get.to(const AddToCartPage());
+          Get.to(
+            const AddToCartPage(),
+          );
         },
       ),
     );
@@ -37,6 +39,16 @@ class AddButton extends StatelessWidget {
     // and use it to show a SnackBar.
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+  //   void _addItemToCart(BuildContext context) {
+  //   final cart = FlutterCart();
+  //   cart.addItemToCart(
+  //     productId: productId,
+  //     productName: productName,
+  //     unitPrice: productPrice,
+  //     quantity: 1,
+  //   );
+  //   _showSnackBar(context, 'Item added to cart');
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -51,19 +63,27 @@ class AddButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           color: kOrange,
         ),
-        child: Center(
-          child: CountController(
-            onIncrement: () {
-              onIncrement();
-              _showSnackBar(context, 'Incremented!');
-            },
-            onDecrement: () {
-              onDecrement();
-              _showSnackBar(context, 'Decremented!');
-            },
-            count: count,
+        child: const Center(
+            child: Text(
+          "Add",
+          style: TextStyle(
+            fontSize: 19,
+            fontWeight: FontWeight.w500,
+            color: kWhite,
           ),
-        ),
+        )
+            // CountController(
+            //   onIncrement: () {
+            //     onIncrement();
+            //     _showSnackBar(context, 'Incremented!');
+            //   },
+            //   onDecrement: () {
+            //     onDecrement();
+            //     _showSnackBar(context, 'Decremented!');
+            //   },
+            //   count: count,
+            // ),
+            ),
       ),
     );
   }

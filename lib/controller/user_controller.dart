@@ -7,6 +7,22 @@ class UserController extends GetxController {
   var nationality = ''.obs;
   var number = ''.obs;
 
+  RxMap<String, String> userDetail = RxMap<String, String>();
+
+  @override
+  void onInit() {
+    super.onInit();
+    everAll([firstName, lastName, email, nationality, number], (_) {
+      userDetail.value = {
+        'firstName': firstName.value,
+        'lastName': lastName.value,
+        'email': email.value,
+        'nationality': nationality.value,
+        'number': number.value,
+      };
+    });
+  }
+
   void setUserData({
     required String firstName,
     required String lastName,

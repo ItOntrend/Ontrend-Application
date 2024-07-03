@@ -43,6 +43,8 @@ class AuthController extends GetxController {
       lastName: lastNameController.text.trim(),
       nationality: nationalityController.text.trim(),
       number: numberController.text.trim(),
+      role: 'User',
+      timeStamp: DateTime.now(),
     );
     Utils.instance.hideLoader();
     if (status == AuthStatus.successful) {

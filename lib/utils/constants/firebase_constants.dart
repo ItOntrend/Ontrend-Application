@@ -5,7 +5,10 @@ abstract class FirebaseConstants {
   static final authInstance = FirebaseAuth.instance;
   static final dbInstance = FirebaseFirestore.instance;
   static const String food = "Food";
+  static const String users = "users";
+  static const String products = "products";
   static const String items = "items";
   static const String categories = "categories";
+  static const String bestSeller = "Best Seller";
   static const String details = "details";
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/constant.dart';
 
@@ -15,8 +16,8 @@ class OruServiceBigCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-      height: 224,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      height: 218.h,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
@@ -30,6 +31,8 @@ class OruServiceBigCard extends StatelessWidget {
         children: [
           Image.asset(
             image,
+            height: 123.h,
+            width: 201.w,
           ),
           kWidth10,
           Text(
@@ -42,8 +45,8 @@ class OruServiceBigCard extends StatelessWidget {
           ),
           kHiegth10,
           Container(
-            height: 20,
-            width: 140,
+            height: 20.h,
+            width: 140.w,
             decoration: BoxDecoration(
               color: kBlue,
               borderRadius: BorderRadius.circular(

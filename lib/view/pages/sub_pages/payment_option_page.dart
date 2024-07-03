@@ -192,7 +192,9 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
                         ),
                       ),
                       child: Image.asset(
-                        "assets/image/visa_image.png",
+                        "assets/icons/cash_on_delivery.png",
+                        height: 22.h,
+                        width: 32.w,
                       ),
                     ),
                     title: const Text(

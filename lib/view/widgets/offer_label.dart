@@ -5,9 +5,11 @@ class OfferLabel extends StatelessWidget {
   const OfferLabel({
     super.key,
     required this.offerlabel,
+    required this.brandName,
   });
 
   final String offerlabel;
+  final String brandName;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +33,9 @@ class OfferLabel extends StatelessWidget {
             style: const TextStyle(
                 color: kWhite, fontWeight: FontWeight.bold, fontSize: 22),
           ),
-          const Text(
-            "Upto OMR 50",
-            style: TextStyle(
+           Text(
+            brandName,
+            style: const TextStyle(
               color: kWhite,
               fontSize: 14,
             ),

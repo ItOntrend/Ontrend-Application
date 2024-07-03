@@ -9,9 +9,11 @@ class EStorePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhite,
-      body: Lottie.asset(
-        "assets/lottie_animation/coming_soon_lottie.json",
-        // fit: BoxFit.cover,
+      body: Center(
+        child: Lottie.network(
+          "https://lottie.host/543aeb4f-4ed4-4297-a6c9-5f46d70ac02a/cKVy9TJ0zo.json",
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

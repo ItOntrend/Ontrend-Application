@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/constant.dart';
 
@@ -14,8 +15,8 @@ class OurServiceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-      height: 224,
-      width: 179,
+      height: 224.h,
+      width: 179.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
           10,
@@ -27,6 +28,8 @@ class OurServiceCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Image.asset(
+            height: 99.h,
+            width: 168.w,
             image,
           ),
           kWidth10,
