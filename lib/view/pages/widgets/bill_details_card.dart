@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/order_complete_page.dart';
@@ -11,6 +12,7 @@ class BillDetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CartController cartController = Get.find();
     return Container(
       // margin: const EdgeInsets.symmetric(
       //   horizontal: 24,
@@ -34,24 +36,26 @@ class BillDetailsCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Item Total",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+          Obx(
+            () => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Item Total",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-              ),
-              Text(
-                "OMR 349",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                Text(
+                  "OMR ${cartController.itemTotal.value}",
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           kHiegth10,
           const Row(
@@ -115,7 +119,7 @@ class BillDetailsCard extends StatelessWidget {
                     ),
                   ),
                   child: Image.asset(
-                    "assets/image/visa_image.png",
+                    "assets/icons/cash_on_delivery.png",
                   ),
                 ),
                 const Spacer(),
@@ -148,24 +152,28 @@ class BillDetailsCard extends StatelessWidget {
           kHiegth10,
           GestureDetector(
             onTap: () {
-              Get.to(OrderCompletePage());
+              if (cartController.totalAmount > 0) {
+                Get.to(OrderCompletePage());
+              }
             },
-            child: Container(
-              height: 48.h,
-              width: 308.w,
-              decoration: BoxDecoration(
-                color: kOrange,
-                borderRadius: BorderRadius.circular(
-                  50,
+            child: Obx(
+              () => Container(
+                height: 48.h,
+                width: 308.w,
+                decoration: BoxDecoration(
+                  color: kOrange,
+                  borderRadius: BorderRadius.circular(
+                    50,
+                  ),
                 ),
-              ),
-              child: const Center(
-                child: Text(
-                  "Pay 397",
-                  style: TextStyle(
-                    color: kWhite,
-                    fontSize: 23,
-                    fontWeight: FontWeight.w700,
+                child: Center(
+                  child: Text(
+                    "Pay ${cartController.totalAmount > 0 ? cartController.totalAmount : 0}",
+                    style: const TextStyle(
+                      color: kWhite,
+                      fontSize: 23,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),

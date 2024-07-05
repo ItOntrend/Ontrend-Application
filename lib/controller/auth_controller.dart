@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ontrend_food_and_e_commerce/repository/auth_repository.dart';
+import 'package:ontrend_food_and_e_commerce/repository/auth/auth_repository.dart';
 import 'package:ontrend_food_and_e_commerce/utils/enums/auth_status.dart';
 import 'package:ontrend_food_and_e_commerce/utils/exception/auth_exception.dart';
 import 'package:ontrend_food_and_e_commerce/utils/utils.dart';
@@ -54,7 +54,7 @@ class AuthController extends GetxController {
       switch (status) {
         case AuthStatus.invalidPhoneNumber:
           errorMsg =
-              'Invalid phone number. Please enter a valid 10-digit phone number.';
+              'Invalid phone number. Please enter a valid 8-digit phone number.';
           break;
         case AuthStatus.invalidPassword:
           errorMsg =

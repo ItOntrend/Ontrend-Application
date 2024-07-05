@@ -25,7 +25,7 @@ class _BurgerSearchPageState extends State<BurgerSearchPage> {
   @override
   void initState() {
     super.initState();
-    vendorController.getVendors(widget.userId);
+    // vendorController.getVendors(widget.userId);
   }
 
   @override

@@ -274,12 +274,16 @@ class _FoodPageState extends State<FoodPage> {
                               final vendor =
                                   vendorController.vendorsList[index];
                               log("Vendor Images");
+
                               log(vendor.bannerImage.toString());
                               return ExploreCard(
                                 name: vendor.restaurantName,
                                 image: vendor.bannerImage,
                                 onTap: () {
-                                  Get.to(ProfilePage(userId: widget.userId));
+                                  log(vendor.reference.id);
+                                  Get.to(
+                                    ProfilePage(userId: vendor.reference.id),
+                                  );
                                 },
                               );
                             },

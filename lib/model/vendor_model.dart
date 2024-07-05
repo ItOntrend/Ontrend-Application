@@ -1,14 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Vendor {
   String restaurantName;
   String image;
   String bannerImage;
   String vendorId; // Changed to String to match the data type issue
+  DocumentReference reference;
 
   Vendor({
     required this.restaurantName,
     required this.image,
     required this.bannerImage,
     required this.vendorId,
+    required this.reference,
   });
 
   factory Vendor.fromMap(Map<String, dynamic> data) {
@@ -16,11 +20,11 @@ class Vendor {
       restaurantName: data['restaurantName'] ?? '',
       image: data['image'] ?? '',
       bannerImage: data['bannerImage'] ?? '',
-      vendorId: data['vendorID']?.toString() ?? '', // Ensuring it's a String
+      vendorId: data['vendorID']?.toString() ?? '',
+      reference: data["reference"], // Ensuring it's a String
     );
   }
 }
-
 
 class Item {
   String itemName;

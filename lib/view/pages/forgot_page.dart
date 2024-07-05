@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
-import 'package:ontrend_food_and_e_commerce/repository/auth_repository.dart';
+import 'package:ontrend_food_and_e_commerce/repository/auth/auth_repository.dart';
 import 'package:ontrend_food_and_e_commerce/utils/enums/auth_status.dart';
 import 'package:ontrend_food_and_e_commerce/utils/exception/auth_exception.dart';
 import 'package:ontrend_food_and_e_commerce/utils/utils.dart';

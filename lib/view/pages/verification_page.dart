@@ -5,9 +5,13 @@ import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/navigation_manu.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_botton.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class VerificationPage extends StatelessWidget {
-  const VerificationPage({super.key});
+  final ConfirmationResult confirmationResult;
+  final TextEditingController otpController = TextEditingController();
+
+  VerificationPage({super.key, required this.confirmationResult});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +51,7 @@ class VerificationPage extends StatelessWidget {
                   ),
                   kHiegth40,
                   Text(
-                    "You will received 4 digits OTP\nto your phone number.",
+                    "You will receive a 4 digit OTP\nto your phone number.",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w400,
@@ -61,85 +65,17 @@ class VerificationPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: kWhite,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: kGrey),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(
-                                  1, 4), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: kWhite,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: kGrey),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(
-                                  1, 4), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: kWhite,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: kGrey),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(
-                                  1, 4), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: kWhite,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: kGrey),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(
-                                  1, 4), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                      ),
+                      _otpInputField(),
+                      _otpInputField(),
+                      _otpInputField(),
+                      _otpInputField(),
                     ],
                   ),
                   kHiegth24,
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text("Did't receive code? "),
+                      Text("Didn't receive code? "),
                       Text(
                         "Resend",
                         style: TextStyle(
@@ -152,10 +88,9 @@ class VerificationPage extends StatelessWidget {
                   ),
                   kHiegth24,
                   GestureDetector(
-                      onTap: () => Get.to(
-                            const NavigationManu(),
-                          ),
-                      child: const MainBotton(name: "Verify"))
+                    onTap: () => _verifyOTP(context),
+                    child: const MainBotton(name: "Verify"),
+                  )
                 ],
               ),
             ),
@@ -163,5 +98,48 @@ class VerificationPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _otpInputField() {
+    return Container(
+      height: 80,
+      width: 80,
+      decoration: BoxDecoration(
+        color: kWhite,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: kGrey),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(1, 4),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: otpController,
+        keyboardType: TextInputType.number,
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 24),
+        decoration: const InputDecoration(
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _verifyOTP(BuildContext context) async {
+    final otp = otpController.text.trim();
+    try {
+      final userCredential = await confirmationResult.confirm(otp);
+      if (userCredential.additionalUserInfo!.isNewUser) {
+        Get.to(() => const NavigationManu());
+      } else {
+        Get.snackbar('Error', 'User already exists.');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Invalid OTP.');
+    }
   }
 }

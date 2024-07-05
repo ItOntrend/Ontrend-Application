@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
-import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 
 class ProfileCard extends StatefulWidget {
   const ProfileCard({
@@ -18,26 +20,25 @@ class ProfileCard extends StatefulWidget {
 
 class _ProfileCardState extends State<ProfileCard> {
   final VendorController _vendorController = Get.put(VendorController());
-  Vendor? data;
-  Future <void> getVendorNameDetails() async{
-     data = await _vendorController.getVendorByUId(widget.userId);
-  }
-  
+  // Vendor? data;
+  // Future<void> getVendorNameDetails() async {
+  //   data = await _vendorController.getVendorByUId(userId: widget.userId);
+  // }
+
   @override
   void initState() {
     super.initState();
-    getVendorNameDetails();
-    // _vendorController.getVendorByUId(widget.userId);
-    _vendorController.getItems(widget.userId);
+    log("This is UserID ${widget.userId}");
+    _vendorController.getVendorByUId(userId: widget.userId);
+    // _vendorController.getItems(widget.userId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 25, right: 25, top: 130),
       padding: const EdgeInsets.all(12),
-      height: 140,
-      width: double.infinity,
+      height: 140.h,
+      width: 335.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: kWhite,
@@ -51,6 +52,7 @@ class _ProfileCardState extends State<ProfileCard> {
         ],
       ),
       child: Obx(() {
+        log("It's About Ventor Profile");
         if (_vendorController.isVendorLoading.value ||
             _vendorController.isItemsLoading.value) {
           return const Center(child: CircularProgressIndicator());
@@ -66,15 +68,15 @@ class _ProfileCardState extends State<ProfileCard> {
             Row(
               children: [
                 Container(
-                  height: 65,
-                  width: 84,
+                  height: 65.h,
+                  width: 84.w,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Image.network(
-                    data!.image,
+                    // data!.image,
                     // "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png",
-                    // _vendorController.vendorDetail.value?.image ?? "",
+                    _vendorController.vendorDetail.value?.image ?? "",
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -82,9 +84,10 @@ class _ProfileCardState extends State<ProfileCard> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(data!.restaurantName,
-                      // _vendorController.vendorDetail.value?.restaurantName ??
-                          // "Not found",
+                    Text(
+                      // data!.restaurantName,
+                      _vendorController.vendorDetail.value?.restaurantName ??
+                          "Not found",
                       style: const TextStyle(
                         fontSize: 21,
                         fontWeight: FontWeight.bold,

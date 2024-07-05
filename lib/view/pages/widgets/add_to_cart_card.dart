@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 
 class AddToCartCard extends StatefulWidget {
   const AddToCartCard({
@@ -15,12 +18,15 @@ class AddToCartCard extends StatefulWidget {
   final String itemPrice;
   final String image;
 
+
   @override
   State<AddToCartCard> createState() => _AddToCartCardState();
 }
 
 class _AddToCartCardState extends State<AddToCartCard> {
-  int _itemCount = 0;
+  final CartController cartController = Get.find();
+  int _itemCount = 1;
+  
 
   void _incrementCount() {
     setState(() {
@@ -29,16 +35,57 @@ class _AddToCartCardState extends State<AddToCartCard> {
   }
 
   void _decrementCount() {
-    if (_itemCount > 0) {
+    if (_itemCount == 1) {
+      _showRemoveItemDialog();
+    } else if (_itemCount > 0) {
       setState(() {
         _itemCount--;
       });
     }
   }
 
+  void _showRemoveItemDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Remove Item'),
+          content: const Text('Do you want to remove this item from the cart?'),
+          actions: [
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                setState(() {
+                  _itemCount = 0;
+                });
+
+                cartController.removeItemFromCart(
+                  ItemModel(
+                    name: widget.itemName,
+                    price: int.parse(widget.itemPrice),
+                    imageUrl: widget.image,
+                    description: "",
+                  ),
+                );
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.symmetric(vertical: 7).copyWith(
         left: 13,
         right: 7,
@@ -47,19 +94,18 @@ class _AddToCartCardState extends State<AddToCartCard> {
       width: double.infinity,
       decoration: BoxDecoration(
         color: kWhite,
-        borderRadius: BorderRadius.circular(
-          10,
-        ),
+        borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: const Offset(0, 6), // changes position of shadow
+            offset: const Offset(0, 6),
           ),
         ],
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
@@ -86,11 +132,10 @@ class _AddToCartCardState extends State<AddToCartCard> {
                 width: 108.w,
                 decoration: BoxDecoration(
                   color: kGreen,
-                  borderRadius: BorderRadius.circular(
-                    6,
-                  ),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
                       padding: const EdgeInsets.only(bottom: 1),
@@ -99,9 +144,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
                         Icons.remove,
                         size: 14,
                       ),
-                      color: _itemCount == 0
-                          ? kGrey
-                          : kWhite, // Gray out if count is 0
+                      color: kWhite,
                     ),
                     Text(
                       "$_itemCount",
@@ -125,13 +168,12 @@ class _AddToCartCardState extends State<AddToCartCard> {
               ),
             ],
           ),
-          const Spacer(),
           Align(
             alignment: Alignment.topRight,
             child: Stack(
               children: [
                 Align(
-                  child: Image.asset(widget.image),
+                  child: Image.network(widget.image),
                 ),
               ],
             ),

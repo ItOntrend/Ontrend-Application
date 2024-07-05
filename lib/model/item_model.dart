@@ -3,32 +3,32 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ItemModel {
   String name;
   int price;
-  String tag;
-  String type;
-  int vId;
-  String addedBy;
+  String? tag;
+  String? type;
+  int? vId;
+  String? addedBy;
   String description;
   String imageUrl;
-  int preparationTime;
-  double rating;
-  int itemPrice;
-  DateTime timeStamp;
-  DocumentReference reference;
+  int? preparationTime;
+  double? rating;
+  int? itemPrice;
+  DateTime? timeStamp;
+  DocumentReference? reference;
 
   ItemModel({
     required this.name,
     required this.price,
-    required this.tag,
-    required this.type,
-    required this.vId,
-    required this.addedBy,
+     this.tag,
+     this.type,
+     this.vId,
+     this.addedBy,
     required this.description,
     required this.imageUrl,
-    required this.preparationTime,
-    required this.rating,
-    required this.itemPrice,
-    required this.timeStamp,
-    required this.reference,
+     this.preparationTime,
+     this.rating,
+     this.itemPrice,
+     this.timeStamp,
+     this.reference,
   });
 
   ItemModel copyWith({
@@ -75,14 +75,18 @@ class ItemModel {
         addedBy: json["addedBy"],
         description: json["description"],
         imageUrl: json["imageUrl"],
-        preparationTime: json["preparationTime"],
-        rating: json["rating"],
+        preparationTime:
+            json["preparationTime"] ?? 0, // Provide a default value if null,
+        rating: json["rating"] ?? 0.0,
         itemPrice: (json["itemPrice"] is int)
             ? json["itemPrice"]
             : (json["itemPrice"] is double)
                 ? json["itemPrice"].toInt()
                 : 0,
-        reference: json["reference"],
+        reference: json["reference"] ??
+            FirebaseFirestore.instance
+                .collection('default')
+                .doc(), // Provide a default DocumentReference if null,
         timeStamp: json["timeStamp"].toDate(),
       );
 

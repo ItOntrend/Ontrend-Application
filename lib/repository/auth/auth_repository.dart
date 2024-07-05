@@ -41,7 +41,9 @@ abstract class AuthRepository {
     }
 
     // Validate password
-    if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$').hasMatch(pass)) {
+    // if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$').hasMatch(pass))
+    if (!RegExp(r'^[a-zA-Z\d]{8,}$').hasMatch(pass))
+     {
       print('Invalid password');
       return AuthStatus.invalidPassword;
     }

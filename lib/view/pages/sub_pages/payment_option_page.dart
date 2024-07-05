@@ -55,103 +55,101 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
                 ),
               ),
               kHiegth20,
-              Flexible(
-                child: Container(
-                  height: 146.h,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      10,
-                    ),
-                    color: kGrey.shade100,
-                    border: Border.all(
-                      color: kGrey,
-                    ),
+              Container(
+                height: 146.h,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    10,
                   ),
-                  child: Column(
-                    children: [
-                      kHiegth6,
-                      ListTile(
-                        leading: Container(
-                          margin: const EdgeInsets.only(right: 20),
-                          height: 36.h,
-                          width: 60.w,
-                          decoration: BoxDecoration(
-                            color: kWhite,
-                            borderRadius: BorderRadius.circular(
-                              10,
-                            ),
-                            border: Border.all(
-                              color: kGrey,
-                            ),
+                  color: kGrey.shade100,
+                  border: Border.all(
+                    color: kGrey,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    kHiegth6,
+                    ListTile(
+                      leading: Container(
+                        margin: const EdgeInsets.only(right: 20),
+                        height: 36.h,
+                        width: 60.w,
+                        decoration: BoxDecoration(
+                          color: kWhite,
+                          borderRadius: BorderRadius.circular(
+                            10,
                           ),
-                          child: Image.asset(
-                            "assets/image/visa_image.png",
-                          ),
-                        ),
-                        title: const Text(
-                          "Slicy   ......6083",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
+                          border: Border.all(
+                            color: kGrey,
                           ),
                         ),
-                        trailing: Radio(
-                          activeColor: const Color.fromARGB(255, 3, 34, 59),
-                          value: options[0],
-                          groupValue: currentOption,
-                          onChanged: (value) {
-                            setState(() {
-                              currentOption = value.toString();
-                            });
-                          },
+                        child: Image.asset(
+                          "assets/image/visa_image.png",
                         ),
                       ),
-                      kDiver,
-                      ListTile(
-                        visualDensity: const VisualDensity(
-                          vertical: -4,
+                      title: const Text(
+                        "Slicy   ......6083",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
                         ),
-                        leading: Container(
-                          margin: EdgeInsets.only(left: 14.w, right: 40.w),
-                          height: 27.h,
-                          width: 29.w,
-                          decoration: BoxDecoration(
-                            color: kWhite,
-                            borderRadius: BorderRadius.circular(
-                              5,
-                            ),
-                            border: Border.all(
-                              color: kGrey,
-                            ),
+                      ),
+                      trailing: Radio(
+                        activeColor: const Color.fromARGB(255, 3, 34, 59),
+                        value: options[0],
+                        groupValue: currentOption,
+                        onChanged: (value) {
+                          setState(() {
+                            currentOption = value.toString();
+                          });
+                        },
+                      ),
+                    ),
+                    kDiver,
+                    ListTile(
+                      visualDensity: const VisualDensity(
+                        vertical: -4,
+                      ),
+                      leading: Container(
+                        margin: EdgeInsets.only(left: 14.w, right: 40.w),
+                        height: 27.h,
+                        width: 29.w,
+                        decoration: BoxDecoration(
+                          color: kWhite,
+                          borderRadius: BorderRadius.circular(
+                            5,
                           ),
-                          child: Center(
-                            child: SvgPicture.asset(
-                              "assets/svg/small_add_orange_icon.svg",
-                              height: 12,
-                              width: 12,
-                            ),
+                          border: Border.all(
+                            color: kGrey,
                           ),
                         ),
-                        title: const Text(
-                          "Add New Card",
-                          style: TextStyle(
-                            color: kOrange,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        subtitle: Text(
-                          "Save any pay via cards",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                            color: kBorderLiteBlack,
+                        child: Center(
+                          child: SvgPicture.asset(
+                            "assets/svg/small_add_orange_icon.svg",
+                            height: 12,
+                            width: 12,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                      title: const Text(
+                        "Add New Card",
+                        style: TextStyle(
+                          color: kOrange,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      subtitle: Text(
+                        "Save any pay via cards",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          color: kBorderLiteBlack,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               kHiegth20,

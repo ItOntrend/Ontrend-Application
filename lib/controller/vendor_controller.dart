@@ -43,24 +43,19 @@ class VendorController extends GetxController {
     }
   }
 
-  Future<Vendor?> getVendorByUId(String userId) async {
+  Future<Vendor?> getVendorByUId({required String userId}) async {
     Vendor? data;
-
+    print(userId);
     try {
       data = await VendorRepository.getVendorById(userId: userId);
 
       if (data != null) {
         log("Vendor fetched successfully: ${data.restaurantName}");
-        return data;
+
+        vendorDetail.value = data;
       } else {
         log("Vendor not found for UID: $userId");
-        return Vendor(
-            restaurantName: "Default Null",
-            image:
-                "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0=",
-            bannerImage:
-                "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg",
-            vendorId: "vendorId");
+        vendorDetail.value = null;
       }
     } catch (e) {
       log('Error fetching vendor: $e');

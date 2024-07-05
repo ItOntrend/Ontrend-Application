@@ -6,7 +6,8 @@ class VendorRepository {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   static Future<List<Vendor>> getVendors(String userId) async {
-    var snapshot = await _db.collection('users').where('role', isEqualTo: 'Vendor').get();
+    var snapshot =
+        await _db.collection('users').where('role', isEqualTo: 'Vendor').get();
 
     log("$snapshot,");
     if (snapshot.docs.isEmpty) {
@@ -20,7 +21,7 @@ class VendorRepository {
 
   static Future<Vendor?> getVendorById({required String userId}) async {
     var doc = await _db.collection('users').doc(userId).get();
-    
+
     if (doc.exists) {
       return Vendor.fromMap(doc.data()!);
     }
@@ -32,7 +33,7 @@ class VendorRepository {
     try {
       var doc = await _db.collection('users').doc(uid).get();
       if (doc.exists) {
-        return doc.data();  // Return the entire document data
+        return doc.data(); // Return the entire document data
       }
       return null;
     } catch (e) {

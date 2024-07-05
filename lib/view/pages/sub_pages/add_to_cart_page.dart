@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/offers_and_benefits_card.dart';
@@ -21,6 +21,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
   List<Map<String, dynamic>> cartItems = [];
   @override
   Widget build(BuildContext context) {
+    final CartController cartController = Get.put(CartController());
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
@@ -78,7 +79,6 @@ class _AddToCartPageState extends State<AddToCartPage> {
                   vertical: 20,
                   horizontal: 11,
                 ),
-                height: 341.h,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: kLiteBackground,
@@ -90,25 +90,20 @@ class _AddToCartPageState extends State<AddToCartPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ListView.builder(
-                      shrinkWrap: true, // Wrap content to avoid overflow
-                      itemCount:
-                          cartItems.length, // Use the length of cartItems
-                      itemBuilder: (context, index) {
-                        return AddToCartCard(
-                          // Pass data from cartItems
-                          itemName: cartItems[index]['itemName'],
-                          itemPrice: cartItems[index]['itemPrice'],
-                          image: cartItems[index]['image'],
-                        );
-                      },
-                    ),
-                    kHiegth9,
-                    const AddToCartCard(
-                      itemName: "Tomato Pizza",
-                      itemPrice: "\OMR100",
-                      image: "assets/image/add_to_cart_image_two.png",
-                    ),
+                    Obx(() {
+                      return ListView.builder(
+                        shrinkWrap: true, // Wrap content to avoid overflow
+                        itemCount: cartController.cartItems.length,
+                        itemBuilder: (context, index) {
+                          final item = cartController.cartItems[index];
+                          return AddToCartCard(
+                            itemName: item.name,
+                            itemPrice: item.price.toString(),
+                            image: item.imageUrl,
+                          );
+                        },
+                      );
+                    }),
                     kHiegth9,
                     const AddingMoreItemCard(),
                   ],
