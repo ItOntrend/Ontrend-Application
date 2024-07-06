@@ -21,7 +21,7 @@ class AuthPages extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const Text("Something went wrong");
           } else if (snapshot.hasData) {
-            return NavigationManu();
+            return const NavigationManu();
           } else {
             return LoginPage();
           }

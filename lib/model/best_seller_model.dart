@@ -5,12 +5,14 @@ class BestSellerModel {
   final String image;
   final int price;
   final String addedBy;
+  final String restaurantName;
 
   BestSellerModel({
     required this.name,
     required this.image,
     required this.price,
     required this.addedBy,
+    required this.restaurantName
   });
 
   Map<String, dynamic> toJason() => {
@@ -18,6 +20,7 @@ class BestSellerModel {
         'imageUrl': image,
         'price': price,
         'addedBy': addedBy,
+        'restaurantName': restaurantName
       };
 
   static BestSellerModel fromJson(Map<String, dynamic> json) => BestSellerModel(
@@ -29,6 +32,7 @@ class BestSellerModel {
                 ? int.tryParse(json['price']) ?? 0
                 : (json['price'] as double).toInt()),
         addedBy: json['addedBy'] ?? '',
+        restaurantName: json['restaurantName'] ?? '',
       );
 
   static Future<void> getBestSeller({
@@ -36,6 +40,7 @@ class BestSellerModel {
     required String image,
     required int price,
     required String addedBy,
+    required String restaurantName,
   }) async {
     final docBestSeller = FirebaseFirestore.instance
         .collection('Food')
@@ -49,6 +54,7 @@ class BestSellerModel {
       image: image,
       price: price,
       addedBy: addedBy,
+      restaurantName: restaurantName,
     );
 
     final json = details.toJason();

@@ -93,6 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    kHiegth25,
                     Obx(
                       () {
                         if (vendorController.isItemsLoading.value) {

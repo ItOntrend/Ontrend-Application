@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/order_complete_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/payment_option_page.dart';
 
@@ -13,6 +14,7 @@ class BillDetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CartController cartController = Get.find();
+    
     return Container(
       // margin: const EdgeInsets.symmetric(
       //   horizontal: 24,
@@ -141,7 +143,7 @@ class BillDetailsCard extends StatelessWidget {
                       color: kOrange,
                     ),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_forward_ios,
                     size: 12,
                   ),
@@ -151,7 +153,12 @@ class BillDetailsCard extends StatelessWidget {
           ),
           kHiegth10,
           GestureDetector(
-            onTap: () {
+            onTap: ()async {
+              String userId =
+          await LocalStorage.instance.DataFromPrefs(key: HiveKeys.userData);
+              if (cartController.totalAmount > 0) {
+                cartController.placeOrder(userId, 'Cash on Delivery', 'Some Restaurant');
+              }
               if (cartController.totalAmount > 0) {
                 Get.to(OrderCompletePage());
               }

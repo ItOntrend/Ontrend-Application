@@ -5,6 +5,7 @@ import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 import 'package:ontrend_food_and_e_commerce/repository/item_repository.dart';
 import 'package:ontrend_food_and_e_commerce/repository/vendor_repository.dart';
+import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.dart';
 
 class VendorController extends GetxController {
   RxBool isVendorLoading = RxBool(false);
@@ -47,6 +48,27 @@ class VendorController extends GetxController {
     Vendor? data;
     print(userId);
     try {
+      data = await VendorRepository.getVendorById(userId: userId);
+
+      if (data != null) {
+        log("Vendor fetched successfully: ${data.restaurantName}");
+
+        vendorDetail.value = data;
+      } else {
+        log("Vendor not found for UID: $userId");
+        vendorDetail.value = null;
+      }
+    } catch (e) {
+      log('Error fetching vendor: $e');
+    }
+    return null;
+  }
+  Future<Vendor?> getProfile() async {
+    Vendor? data;
+
+    try {
+      final userId =
+          await LocalStorage.instance.DataFromPrefs(key: HiveKeys.userData);
       data = await VendorRepository.getVendorById(userId: userId);
 
       if (data != null) {

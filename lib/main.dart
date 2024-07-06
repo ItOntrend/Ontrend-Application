@@ -32,9 +32,9 @@ class MyApp extends StatelessWidget {
         designSize: const Size(430, 932),
         builder: (context, _) {
           return GetMaterialApp(
-              initialBinding: BindingsBuilder(() {
-                Get.put(UserController());
-              }),
+              // initialBinding: BindingsBuilder(() {
+              //   Get.put(UserController());
+              // }),
               debugShowCheckedModeBanner: false,
               title: 'OnTrend App',
               theme: ThemeData(),

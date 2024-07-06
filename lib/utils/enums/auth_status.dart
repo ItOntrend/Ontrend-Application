@@ -10,4 +10,5 @@ enum AuthStatus {
   undefined,
   invalidPhoneNumber,
   invalidPassword,
+  emailNotVerified
 }

@@ -249,7 +249,7 @@ class _FoodPageState extends State<FoodPage> {
                               name: bestSeller.name,
                               imagePath: bestSeller.image,
                               price: bestSeller.price,
-                              vendor: vendorController.userName.value,
+                              vendor: bestSeller.restaurantName,
                             );
                           },
                         ),

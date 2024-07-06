@@ -12,10 +12,15 @@ class UserProfilePage extends StatelessWidget {
   UserProfilePage({super.key});
 
   final authController = Get.find<AuthController>();
+  final userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
-    final userController = Get.find<UserController>();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        userController.fetchUserData();
+      },
+    );
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
@@ -45,9 +50,10 @@ class UserProfilePage extends StatelessWidget {
                 ),
                 kHiegth20,
                 Obx(() {
-                  final userDetail = userController.userDetail;
+                  // final userDetail = userController.userDetail;
                   return Text(
-                    "${userDetail['firstName']} ${userDetail['lastName']}",
+                    "${userController.firstName.value}  ${userController.lastName.value}",
+                    // "${userDetail['firstName']} ${userDetail['lastName']}",
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
@@ -56,10 +62,11 @@ class UserProfilePage extends StatelessWidget {
                 }),
                 kHiegth15,
                 Obx(() {
-                  final userDetail = userController.userDetail;
+                  // final userDetail = userController.userDetail;
                   return ChangeTextfield(
                     hintText: "*Name...",
-                    initialValue: userDetail['firstName'] ?? '',
+                    initialValue: "${userController.firstName.value}"
+                    // userDetail['firstName'] ?? '',
                   );
                 }),
                 kHiegth20,

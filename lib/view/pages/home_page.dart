@@ -191,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                               name: bestSeller.name,
                               imagePath: bestSeller.image,
                               price: bestSeller.price,
-                              vendor: bestSeller.addedBy,
+                              vendor: bestSeller.restaurantName,
                             );
                           },
                         ),
