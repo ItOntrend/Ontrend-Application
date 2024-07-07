@@ -108,7 +108,7 @@ class _FoodPageState extends State<FoodPage> {
                 kWidth25,
                 GestureDetector(
                   onTap: () {
-                    Get.to(const AddToCartPage());
+                    Get.to(const AddToCartPage(addedBy: "",restaurantName: "",));
                   },
                   child: Image.asset("assets/icons/cart_icon.png"),
                 ),

@@ -71,18 +71,16 @@ class UserProfilePage extends StatelessWidget {
                 }),
                 kHiegth20,
                 Obx(() {
-                  final userDetail = userController.userDetail;
                   return ChangeTextfield(
                     hintText: "*Email...",
-                    initialValue: userDetail['email'] ?? '',
+                    initialValue: "${userController.email.value}"
                   );
                 }),
                 kHiegth20,
                 Obx(() {
-                  final userDetail = userController.userDetail;
                   return ChangeTextfield(
                     hintText: "Nationality",
-                    initialValue: userDetail['nationality'] ?? '',
+                    initialValue: "${userController.nationality.value}",
                   );
                 }),
                 kHiegth25,

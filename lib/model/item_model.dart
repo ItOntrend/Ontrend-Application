@@ -6,7 +6,7 @@ class ItemModel {
   String? tag;
   String? type;
   int? vId;
-  String? addedBy;
+  String addedBy;
   String description;
   String imageUrl;
   int? preparationTime;
@@ -14,6 +14,7 @@ class ItemModel {
   int? itemPrice;
   DateTime? timeStamp;
   DocumentReference? reference;
+  String restaurantName;
 
   ItemModel({
     required this.name,
@@ -21,7 +22,7 @@ class ItemModel {
      this.tag,
      this.type,
      this.vId,
-     this.addedBy,
+    required this.addedBy,
     required this.description,
     required this.imageUrl,
      this.preparationTime,
@@ -29,6 +30,7 @@ class ItemModel {
      this.itemPrice,
      this.timeStamp,
      this.reference,
+     required this.restaurantName,
   });
 
   ItemModel copyWith({
@@ -45,6 +47,8 @@ class ItemModel {
     int? itemPrice,
     DateTime? timeStamp,
     DocumentReference? reference,
+    String? restaurantName,
+    int? quantity 
   }) =>
       ItemModel(
         name: name ?? this.name,
@@ -60,6 +64,7 @@ class ItemModel {
         itemPrice: itemPrice ?? this.itemPrice,
         timeStamp: timeStamp ?? this.timeStamp,
         reference: reference ?? this.reference,
+        restaurantName: restaurantName ?? this.restaurantName,
       );
 
   factory ItemModel.fromJson(Map<String, dynamic> json) => ItemModel(
@@ -88,6 +93,7 @@ class ItemModel {
                 .collection('default')
                 .doc(), // Provide a default DocumentReference if null,
         timeStamp: json["timeStamp"].toDate(),
+        restaurantName: json["restaurantName"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -104,5 +110,6 @@ class ItemModel {
         "itemPrice": itemPrice,
         "timeStamp": timeStamp,
         "reference": reference,
+        "restaurantName": restaurantName,
       };
 }

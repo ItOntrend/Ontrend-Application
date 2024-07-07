@@ -11,15 +11,15 @@ class WelcomeCardHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.only(left: 18, right: 8, top: 16),
       height: 164.h,
       width: double.infinity,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            const Color.fromARGB(255, 14, 96, 248),
+            Color.fromARGB(255, 14, 96, 248),
             Color.fromARGB(255, 93, 244, 255)
           ],
         ),
@@ -48,8 +48,8 @@ class WelcomeCardHome extends StatelessWidget {
             ],
           ),
           Positioned(
-            top: 45,
-            right: 6,
+            top: 35,
+            left: 194,
             child: Image.asset(
               image,
               width: 143.w,

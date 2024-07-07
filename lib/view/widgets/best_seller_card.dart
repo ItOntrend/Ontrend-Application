@@ -33,7 +33,7 @@ class BestSellerCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withOpacity(0.1),
               offset: const Offset(2, 2),
               blurRadius: 6,
               spreadRadius: 1,
@@ -45,6 +45,9 @@ class BestSellerCard extends StatelessWidget {
           child: Stack(
             children: [
               Positioned.fill(
+                left: 0.5,
+                top: 0.5,
+                right: 0.5,
                 child: Image.network(
                   imagePath,
                   fit: BoxFit.cover,
@@ -58,19 +61,22 @@ class BestSellerCard extends StatelessWidget {
                   ).copyWith(bottom: 10),
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      border: Border.all(color: kGrey)),
+                    color: Colors.grey.shade100,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                    border: Border.all(
+                      color: Colors.black.withOpacity(0.1),
+                    ),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       kHiegth6,
                       Text(
-                        '$price.00',
+                        '$price.000',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

@@ -33,11 +33,11 @@ class ExploreCard extends StatelessWidget {
           color: kWhite,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: kGrey,
+            color: Colors.black.withOpacity(0.1),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withOpacity(0.2),
               spreadRadius: 2,
               blurRadius: 5,
               offset: const Offset(1, 4), // changes position of shadow
@@ -47,11 +47,16 @@ class ExploreCard extends StatelessWidget {
         child: Column(
           children: [
             image != null && image!.isNotEmpty
-                ? Image.network(
-                    image!,
-                    height: 163.h,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                ? ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10)),
+                    child: Image.network(
+                      image!,
+                      height: 163.h,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   )
                 : Container(
                     height: 163.h,
@@ -84,6 +89,9 @@ class ExploreCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      Spacer(),
+                      Text("Salala"),
+                      Image.asset("assets/image/small_location_image.png")
                       // Container(
                       //   padding: const EdgeInsets.symmetric(horizontal: 4),
                       //   height: 29.h,
@@ -112,8 +120,8 @@ class ExploreCard extends StatelessWidget {
                       // ),
                     ],
                   ),
-                  kHiegth6,
-                  Row(
+                  kHiegth20,
+                  const Row(
                     children: [
                       // const Text(
                       //   "Pizza, Pastas, Desserts",
@@ -121,10 +129,10 @@ class ExploreCard extends StatelessWidget {
                       //     fontSize: 14,
                       //   ),
                       // ),
-                      const Spacer(),
-                      const Text("Salah"),
-                      kWidth6,
-                      Image.asset("assets/image/small_location_image.png")
+                      // const Spacer(),
+                      // const Text("Salala"),
+                      // kWidth6,
+                      // Image.asset("assets/image/small_location_image.png")
                     ],
                   ),
                   kHiegth6,

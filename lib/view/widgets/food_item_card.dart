@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
-import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/item_view_page.dart';
@@ -15,12 +14,15 @@ class FoodItemCard extends StatefulWidget {
     required this.image,
     required this.price,
     required this.description,
+    required this.addedBy, required this.restaurantName,
   }) : super(key: key);
 
   final String name;
   final String image;
   final int price;
   final String description;
+  final String addedBy;
+  final String restaurantName;
 
   @override
   _FoodItemCardState createState() => _FoodItemCardState();
@@ -50,18 +52,22 @@ class _FoodItemCardState extends State<FoodItemCard> {
       imageUrl: widget.image,
       price: widget.price,
       description: widget.description,
+      addedBy: widget.addedBy,
+      restaurantName: widget.restaurantName,
     );
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.only(left: 16, right: 10, bottom: 8, top: 12),
       margin: const EdgeInsets.symmetric(horizontal: 18).copyWith(bottom: 20),
       height: 168.h,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: kGrey),
+        border: Border.all(
+          color: kBorderLiteBlack,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withOpacity(0.2),
             spreadRadius: 2,
             blurRadius: 5,
             offset: const Offset(0, 3),
@@ -77,11 +83,14 @@ class _FoodItemCardState extends State<FoodItemCard> {
               onTap: () => Get.to(
                 const ItemViewPage(),
               ),
-              child: Image.network(
-                widget.image,
-                fit: BoxFit.cover,
-                height: 100.h,
-                width: 150.w,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  widget.image,
+                  fit: BoxFit.cover,
+                  height: 100.h,
+                  width: 150.w,
+                ),
               ),
             ),
           ),
@@ -106,7 +115,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
               //   style: TextStyle(decoration: TextDecoration.lineThrough),
               // ),
               Text(
-                '${widget.price}',
+                '${widget.price}.000',
                 style: const TextStyle(
                   fontSize: 14,
                   color: kOrange,
@@ -116,7 +125,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 widget.description,
                 style: const TextStyle(fontSize: 12),
               ),
-              kHiegth15,
+              Spacer(),
               Row(
                 children: [
                   const Text(
@@ -136,7 +145,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                         action: SnackBarAction(
                           label: 'View Cart',
                           onPressed: () {
-                            Get.to(const AddToCartPage());
+                            Get.to(const AddToCartPage(addedBy: '',restaurantName: '',));
                           },
                         ),
                       );

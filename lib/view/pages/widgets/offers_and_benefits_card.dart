@@ -16,7 +16,7 @@ class OffersAndBenefitsCard extends StatelessWidget {
       height: 107.h,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: kLiteBackground,
+        color: Colors.blueGrey.withOpacity(0.1),
         borderRadius: BorderRadius.circular(
           10,
         ),

@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                 kWidth25,
                 GestureDetector(
                   onTap: () {
-                    Get.to(const AddToCartPage());
+                    Get.to( const AddToCartPage(addedBy: '',restaurantName: '',),);
                   },
                   child: Image.asset("assets/icons/cart_icon.png"),
                 )
@@ -137,6 +137,7 @@ class _HomePageState extends State<HomePage> {
               ),
               kHiegth20,
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
                     onTap: () {
@@ -184,9 +185,11 @@ class _HomePageState extends State<HomePage> {
                                 bestSellerController.bestSellerList[index];
                             return BestSellerCard(
                               onTap: () {
-                                Get.to(() =>ProfilePage(
-                                  userId: bestSeller.addedBy,
-                                ),);
+                                Get.to(
+                                  () => ProfilePage(
+                                    userId: bestSeller.addedBy,
+                                  ),
+                                );
                               },
                               name: bestSeller.name,
                               imagePath: bestSeller.image,

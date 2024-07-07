@@ -12,7 +12,10 @@ class PaymentOptionPage extends StatefulWidget {
   State<PaymentOptionPage> createState() => _PaymentOptionPageState();
 }
 
-List<String> options = ['Option 1', 'Option 2'];
+List<String> options = [
+  'Option 1',
+//  'Option 2'
+];
 
 class _PaymentOptionPageState extends State<PaymentOptionPage> {
   String currentOption = options[0];
@@ -46,17 +49,9 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Credit & Debit cards",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: kBorderLiteBlack,
-                ),
-              ),
               kHiegth20,
               Container(
-                height: 146.h,
+                height: 200.h,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(
@@ -85,14 +80,23 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
                           ),
                         ),
                         child: Image.asset(
-                          "assets/image/visa_image.png",
+                          "assets/icons/cash_on_delivery.png",
+                          fit: BoxFit.fitHeight,
                         ),
                       ),
                       title: const Text(
-                        "Slicy   ......6083",
+                        "Pay on Delivery",
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      subtitle: Text(
+                        "Save any pay via cards",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          color: Colors.black.withOpacity(0.6),
                         ),
                       ),
                       trailing: Radio(
@@ -145,84 +149,83 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 12,
-                          color: kBorderLiteBlack,
+                          color: Colors.black.withOpacity(0.6),
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              kHiegth20,
-              Text(
-                "More Payment Option",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: kBorderLiteBlack,
-                ),
-              ),
-              kHiegth20,
-              Container(
-                height: 69,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: kGrey.shade100,
-                  border: Border.all(
-                    color: kBorderLiteBlack,
-                  ),
-                  borderRadius: BorderRadius.circular(
-                    10,
-                  ),
-                ),
-                child: Center(
-                  child: ListTile(
-                    leading: Container(
-                      margin: const EdgeInsets.only(right: 20),
-                      height: 36.h,
-                      width: 60.w,
-                      decoration: BoxDecoration(
-                        color: kWhite,
-                        borderRadius: BorderRadius.circular(
-                          10,
-                        ),
-                        border: Border.all(
-                          color: kGrey,
-                        ),
-                      ),
-                      child: Image.asset(
-                        "assets/icons/cash_on_delivery.png",
-                        height: 22.h,
-                        width: 32.w,
-                      ),
-                    ),
-                    title: const Text(
-                      "Pay on Delivery",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    subtitle: Text(
-                      "Pay in cash or pay in  online",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12,
-                        color: kBorderLiteBlack,
-                      ),
-                    ),
-                    trailing: Radio(
-                      activeColor: const Color.fromARGB(255, 3, 34, 59),
-                      value: options[1],
-                      groupValue: currentOption,
-                      onChanged: (value) {
-                        setState(() {
-                          currentOption = value.toString();
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              )
+              // Text(
+              //   "More Payment Option",
+              //   style: TextStyle(
+              //     fontSize: 15,
+              //     fontWeight: FontWeight.w500,
+              //     color: kBorderLiteBlack,
+              //   ),
+              // ),
+              // kHiegth20,
+              // Container(
+              //   height: 69,
+              //   width: double.infinity,
+              //   decoration: BoxDecoration(
+              //     color: kGrey.shade100,
+              //     border: Border.all(
+              //       color: kBorderLiteBlack,
+              //     ),
+              //     borderRadius: BorderRadius.circular(
+              //       10,
+              //     ),
+              //   ),
+              //   child: Center(
+              //     child: ListTile(
+              //       leading: Container(
+              //         margin: const EdgeInsets.only(right: 20),
+              //         height: 36.h,
+              //         width: 60.w,
+              //         decoration: BoxDecoration(
+              //           color: kWhite,
+              //           borderRadius: BorderRadius.circular(
+              //             10,
+              //           ),
+              //           border: Border.all(
+              //             color: kGrey,
+              //           ),
+              //         ),
+              //         child: Image.asset(
+              //           "assets/icons/cash_on_delivery.png",
+              //           height: 22.h,
+              //           width: 32.w,
+              //         ),
+              //       ),
+              //       title: const Text(
+              //         "Pay on Delivery",
+              //         style: TextStyle(
+              //           fontSize: 15,
+              //           fontWeight: FontWeight.w500,
+              //         ),
+              //       ),
+              //       subtitle: Text(
+              //         "Pay in cash or pay in  online",
+              //         style: TextStyle(
+              //           fontWeight: FontWeight.w400,
+              //           fontSize: 12,
+              //           color: kBorderLiteBlack,
+              //         ),
+              //       ),
+              //       trailing: Radio(
+              //         activeColor: const Color.fromARGB(255, 3, 34, 59),
+              //         value: options[1],
+              //         groupValue: currentOption,
+              //         onChanged: (value) {
+              //           setState(() {
+              //             currentOption = value.toString();
+              //           });
+              //         },
+              //       ),
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),

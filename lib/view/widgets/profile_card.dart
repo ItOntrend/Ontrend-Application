@@ -37,8 +37,8 @@ class _ProfileCardState extends State<ProfileCard> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
-      height: 140.h,
-      width: 335.w,
+      height: 152.h,
+      width: 340.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: kWhite,
@@ -73,11 +73,12 @@ class _ProfileCardState extends State<ProfileCard> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Image.network(
-                    // data!.image,
-                    // "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png",
-                    _vendorController.vendorDetail.value?.image ?? "",
-                    fit: BoxFit.cover,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      _vendorController.vendorDetail.value?.image ?? "",
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 kWidth20,

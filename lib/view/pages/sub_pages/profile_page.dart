@@ -46,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               SizedBox(
                 height: 200.h,
-                width: 430.w,
+                width: double.infinity,
                 child: Image.asset("assets/image/account_banner.png"),
               ),
               Positioned(
@@ -63,8 +63,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: kWhite,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
-                      Icons.arrow_back_ios_outlined,
+                    child: const Center(
+                      child: Icon(
+                        Icons.arrow_back_ios_outlined,
+                        size: 18,
+                      ),
                     ),
                   ),
                 ),
@@ -76,6 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Positioned(
                 top: 100,
                 left: 30,
+                right: 30,
                 child: Center(
                   child: ProfileCard(userId: widget.userId),
                 ),
@@ -106,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           }
                         }
                         return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           itemCount: vendorController.itemsList.length,
@@ -117,6 +121,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               image: item.imageUrl,
                               description: item.description,
                               price: item.price,
+                              addedBy: item.addedBy,
+                              restaurantName: item.restaurantName,
                             );
                           },
                         );

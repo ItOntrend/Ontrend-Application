@@ -3,6 +3,7 @@ class OrderModel {
   double adminEarnings;
   bool deliveryAccepted;
   DeliveryLocation deliveryLocation;
+  DeliveryAcceptedBy deliveryAcceptedBy;
   double discountApplied;
   List<Item> items;
   dynamic promoCode;
@@ -13,6 +14,9 @@ class OrderModel {
   String restaurantName;
   DateTime orderTimestamp;
   String orderID;
+  String userName;
+  String userPhone;
+
 
   OrderModel({
     required this.addedBy,
@@ -29,6 +33,9 @@ class OrderModel {
     required this.restaurantName,
     required this.deliveryLocation,
     required this.deliveryAccepted,
+    required this.userPhone,
+    required this.userName,
+    required this.deliveryAcceptedBy,
   });
 
   OrderModel copyWith({
@@ -39,63 +46,76 @@ class OrderModel {
     List<Item>? items,
     dynamic promoCode,
     DeliveryLocation? deliveryLocation,
+    DeliveryAcceptedBy? deliveryAcceptedBy,
     String? status,
     double? totalPrice,
     String? userId,
     String? orderID,
     String? restaurantName,
     String? paymentType,
+    String? userName,
+    String? userPhone,
     DateTime? orderTimestamp,
   }) =>
       OrderModel(
-          addedBy: addedBy ?? this.addedBy,
-          adminEarnings: adminEarnings ?? this.adminEarnings,
-          discountApplied: discountApplied ?? this.discountApplied,
-          items: items ?? this.items,
-          promoCode: promoCode ?? this.promoCode,
-          status: status ?? this.status,
-          totalPrice: totalPrice ?? this.totalPrice,
-          userId: userId ?? this.userId,
-          orderTimestamp: orderTimestamp ?? this.orderTimestamp,
-          orderID: orderID ?? this.orderID,
-          restaurantName: restaurantName ?? this.restaurantName,
-          paymentType: paymentType ?? this.paymentType,
-          deliveryLocation: deliveryLocation ?? this.deliveryLocation,
-          deliveryAccepted: deliveryAccepted ?? this.deliveryAccepted);
-
-  factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
-        addedBy: json["addedBy"] ?? "",
-        adminEarnings: json["adminEarnings"].toDouble() ?? 0,
-        discountApplied: json["discountApplied"].toDouble() ?? 0,
-        items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
-        promoCode: json["promoCode"] ?? "",
-        deliveryLocation: DeliveryLocation.fromJson(json['deliveryLocation']),
-        status: json["status"] ?? "",
-        totalPrice: json["totalPrice"].toDouble() ?? 0,
-        userId: json["userID"] ?? "",
-        orderID: json["orderID"] ?? "",
-        paymentType: json['paymentType'] ?? "",
-        deliveryAccepted: json['deliveryAccepted'],
-        restaurantName: json['restaurantName'] ?? "",
-        orderTimestamp: json["orderTimeStamp"].toDate(),
+        addedBy: addedBy ?? this.addedBy,
+        adminEarnings: adminEarnings ?? this.adminEarnings,
+        discountApplied: discountApplied ?? this.discountApplied,
+        items: items ?? this.items,
+        promoCode: promoCode ?? this.promoCode,
+        status: status ?? this.status,
+        totalPrice: totalPrice ?? this.totalPrice,
+        userId: userId ?? this.userId,
+        orderTimestamp: orderTimestamp ?? this.orderTimestamp,
+        orderID: orderID ?? this.orderID,
+        restaurantName:restaurantName ?? this.restaurantName,
+          paymentType:  paymentType?? this.paymentType,
+        deliveryLocation: deliveryLocation ?? this.deliveryLocation,
+          deliveryAccepted:deliveryAccepted ??  this.deliveryAccepted,
+        userPhone:userPhone ??  this.userPhone,
+        userName:userName ??  this.userName,
+        deliveryAcceptedBy:deliveryAcceptedBy ??  this.deliveryAcceptedBy,
       );
 
+  factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
+    addedBy: json["addedBy"] ?? "",
+    adminEarnings: json["adminEarnings"].toDouble() ?? 0,
+    discountApplied: json["discountApplied"].toDouble() ?? 0,
+    items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
+    promoCode: json["promoCode"] ?? "",
+    deliveryLocation: DeliveryLocation.fromJson(json['deliveryLocation']),
+    deliveryAcceptedBy: DeliveryAcceptedBy.fromJson(json['deliveryAcceptedBy']),
+    status: json["status"] ?? "",
+    totalPrice: json["totalPrice"].toDouble() ?? 0,
+    userId: json["userID"] ?? "",
+    orderID: json["orderID"] ?? "",
+    paymentType: json['paymentType'] ?? "",
+    deliveryAccepted:json['deliveryAccepted'],
+    userName:json['userName'],
+    userPhone:json['userPhone'],
+    restaurantName: json['restaurantName'] ?? "",
+    orderTimestamp: json["orderTimeStamp"].toDate(),
+  );
+
   Map<String, dynamic> toJson() => {
-        "addedBy": addedBy,
-        "adminEarnings": adminEarnings,
-        "discountApplied": discountApplied,
-        "items": List<dynamic>.from(items.map((x) => x.toJson())),
-        "promoCode": promoCode,
-        "status": status,
-        "totalPrice": totalPrice,
-        "userID": userId,
-        "orderTimeStamp": orderTimestamp,
-        "orderID": orderID,
-        "restaurantName": restaurantName,
-        "paymentType": paymentType,
-        "deliveryLocation": deliveryLocation.toJson(),
-        "deliveryAccepted": deliveryAccepted,
-      };
+    "addedBy": addedBy,
+    "adminEarnings": adminEarnings,
+    "discountApplied": discountApplied,
+    "items": List<dynamic>.from(items.map((x) => x.toJson())),
+    "promoCode": promoCode,
+    "status": status,
+    "totalPrice": totalPrice,
+    "userID": userId,
+    "orderTimeStamp": DateTime.now(),
+    "orderID": orderID,
+    "restaurantName":restaurantName,
+    "paymentType":paymentType,
+    "deliveryLocation":deliveryLocation.toJson(),
+    "deliveryAcceptedBy":deliveryAcceptedBy.toJson(),
+    "deliveryAccepted":deliveryAccepted,
+    "userPhone":userPhone,
+    "userName":userName,
+  };
 }
 
 class Item {
@@ -129,20 +149,20 @@ class Item {
       );
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
-        addedBy: json["addedBy"],
-        itemName: json["itemName"],
-        itemPrice: json["itemPrice"].toDouble() ?? 0,
-        itemQuantity: json["itemQuantity"],
-        total: json["total"].toDouble() ?? 0,
-      );
+    addedBy: json["addedBy"],
+    itemName: json["itemName"],
+    itemPrice: json["itemPrice"].toDouble() ?? 0,
+    itemQuantity: json["itemQuantity"],
+    total: json["total"].toDouble() ?? 0,
+  );
 
   Map<String, dynamic> toJson() => {
-        "addedBy": addedBy,
-        "itemName": itemName,
-        "itemPrice": itemPrice,
-        "itemQuantity": itemQuantity,
-        "total": total,
-      };
+    "addedBy": addedBy,
+    "itemName": itemName,
+    "itemPrice": itemPrice,
+    "itemQuantity": itemQuantity,
+    "total": total,
+  };
 }
 
 class DeliveryLocation {
@@ -183,24 +203,59 @@ class DeliveryLocation {
         street: street ?? this.street,
       );
 
-  factory DeliveryLocation.fromJson(Map<String, dynamic> json) =>
-      DeliveryLocation(
-        address: json["address"],
-        apartmentNumber: json["apartmentNumber"],
-        city: json["city"],
-        houseNumber: json["houseNumber"],
-        lat: json["lat"]?.toDouble(),
-        lng: json["lng"]?.toDouble(),
-        street: json["street"],
-      );
+  factory DeliveryLocation.fromJson(Map<String, dynamic> json) => DeliveryLocation(
+    address: json["address"],
+    apartmentNumber: json["apartmentNumber"],
+    city: json["city"],
+    houseNumber: json["houseNumber"],
+    lat: json["lat"]?.toDouble(),
+    lng: json["lng"]?.toDouble(),
+    street: json["street"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "address": address,
-        "apartmentNumber": apartmentNumber,
-        "city": city,
-        "houseNumber": houseNumber,
-        "lat": lat,
-        "lng": lng,
-        "street": street,
-      };
+    "address": address,
+    "apartmentNumber": apartmentNumber,
+    "city": city,
+    "houseNumber": houseNumber,
+    "lat": lat,
+    "lng": lng,
+    "street": street,
+  };
+}
+
+
+class DeliveryAcceptedBy {
+  String name;
+  String phoneNumber;
+  String id;
+
+  DeliveryAcceptedBy({
+    required this.name,
+    required this.phoneNumber,
+    required this.id,
+  });
+
+  DeliveryAcceptedBy copyWith({
+    String? name,
+    String? phoneNUmber,
+    String? id,
+  }) =>
+      DeliveryAcceptedBy(
+        name: name ?? this.name,
+        phoneNumber: phoneNUmber ?? this.phoneNumber,
+        id: id ?? this.id,
+      );
+
+  factory DeliveryAcceptedBy.fromJson(Map<String, dynamic> json) => DeliveryAcceptedBy(
+    name: json["name"],
+    phoneNumber: json["phoneNumber"],
+    id: json["id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "phoneNumber": phoneNumber,
+    "id": id,
+  };
 }

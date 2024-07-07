@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
@@ -33,7 +34,7 @@ class AddButton extends StatelessWidget {
         textColor: kWhite,
         onPressed: () {
           Get.to(
-            const AddToCartPage(),
+            const AddToCartPage(addedBy: "",restaurantName: '',),
           );
         },
       ),
@@ -53,8 +54,8 @@ class AddButton extends StatelessWidget {
         _showSnackBar(context, 'Button Pressed!');
       },
       child: Container(
-        height: 32,
-        width: 150,
+        height: 32.h,
+        width: 150.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: kOrange,
