@@ -4,7 +4,6 @@ import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 // import 'package:ontrend_food_and_e_commerce/controller/best_seller_controller.dart';
-import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/firebase_options.dart';
 import 'package:ontrend_food_and_e_commerce/utils/init_services.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/splash_page.dart';
@@ -17,6 +16,9 @@ Future<void> main() async {
   await initServices();
   var cart = FlutterCart();
   await cart.initializeCart(isPersistenceSupportEnabled: true);
+  // if(Platform.isAndroid) {
+  //   AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
+  // }
   // Initialize controllers
   // Get.put(BestSellerController());
   runApp(const MyApp());

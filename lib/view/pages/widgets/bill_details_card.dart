@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -129,20 +131,20 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
             const Spacer(),
             MainBotton(
               onTap: () async {
+                log("Place Order");
                 String userId = await LocalStorage.instance
                     .DataFromPrefs(key: HiveKeys.userData);
 
-                final selectedPaymentType =
-                    await Get.to(() => const PaymentOptionPage());
-
-                if (selectedPaymentType != null) {
-                  await cartController.placeOrder(
+                if (cartController.totalAmount > 0) {
+                  cartController.placeOrder(
                     userId,
-                    selectedPaymentType,
+                    'Cash on Delivery',
                     userController.firstName.value,
                     userController.number.value,
                   );
-                  Get.offAll(const OrderCompletePage());
+                }
+                if (cartController.totalAmount > 0) {
+                  Get.to(const OrderCompletePage());
                 }
               },
               name: "Place Order",

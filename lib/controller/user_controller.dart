@@ -56,7 +56,7 @@ class UserController extends GetxController {
       // Update controller's observable values
       if (userData.exists) {
         var data = userData.data();
-        if (data != null) {
+        if (data != null && data is Map<String, dynamic>) {
           setUserData(
             firstName: data['firstName'],
             lastName: data['lastName'],
@@ -64,11 +64,13 @@ class UserController extends GetxController {
             nationality: data['nationality'],
             number: data['number'],
           );
-          log(data as String);
+        } else {
+          print('Error: User data is not in expected format');
         }
+      } else {
+        print('Error: User document does not exist');
       }
     } catch (e) {
-      // Handle error
       print('Error fetching user data: $e');
     }
   }

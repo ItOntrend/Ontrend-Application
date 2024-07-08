@@ -41,7 +41,7 @@ class CartController extends GetxController {
   void updateItemTotal() {
     double total = 0.0;
     cartItems.forEach((key, value) {
-      total += value['item'].price * value['quantity'];
+      total += (value['item'].price * value['quantity']).toDouble();
     });
     itemTotal.value = total;
   }
@@ -79,7 +79,8 @@ class CartController extends GetxController {
                   itemName: value['item'].name,
                   itemPrice: double.tryParse(value['item'].price.toString()) ?? 0,
                   itemQuantity: value['quantity'],
-                  total: value['item'].price * value['quantity'],
+                  total: (value['item'].price * value['quantity']).toDouble(),
+
                 ))
             .toList(),
         promoCode: null,
@@ -99,6 +100,7 @@ class CartController extends GetxController {
             lng: 97867678567,
             street: "street"),
         deliveryAccepted: false,
+        restaurantLocation: RestaurantLocation(lat: 0.0, lng: 0.0)
       );
 
       await FirebaseFirestore.instance

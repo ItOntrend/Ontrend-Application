@@ -5,15 +5,18 @@ class TextfieldWithMic extends StatelessWidget {
   const TextfieldWithMic({
     super.key,
     required this.hintText,
+    this.onChanged,
   });
   final String hintText;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      onChanged: onChanged,
       enabled: true,
       decoration: InputDecoration(
-        fillColor: kWhite,  
+        fillColor: kWhite,
         prefixIcon: Image.asset("assets/icons/search_icon.png"),
         suffixIcon: Row(
           mainAxisSize: MainAxisSize.min,

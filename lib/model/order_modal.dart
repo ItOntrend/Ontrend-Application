@@ -16,6 +16,7 @@ class OrderModel {
   String orderID;
   String userName;
   String userPhone;
+  RestaurantLocation restaurantLocation;
 
 
   OrderModel({
@@ -36,6 +37,7 @@ class OrderModel {
     required this.userPhone,
     required this.userName,
     required this.deliveryAcceptedBy,
+    required this.restaurantLocation,
   });
 
   OrderModel copyWith({
@@ -55,6 +57,8 @@ class OrderModel {
     String? paymentType,
     String? userName,
     String? userPhone,
+    RestaurantLocation? restaurantLocation,
+
     DateTime? orderTimestamp,
   }) =>
       OrderModel(
@@ -75,6 +79,7 @@ class OrderModel {
         userPhone:userPhone ??  this.userPhone,
         userName:userName ??  this.userName,
         deliveryAcceptedBy:deliveryAcceptedBy ??  this.deliveryAcceptedBy,
+        restaurantLocation:restaurantLocation ??  this.restaurantLocation,
       );
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
@@ -94,7 +99,7 @@ class OrderModel {
     userName:json['userName'],
     userPhone:json['userPhone'],
     restaurantName: json['restaurantName'] ?? "",
-    orderTimestamp: json["orderTimeStamp"].toDate(),
+    orderTimestamp: json["orderTimeStamp"].toDate(), restaurantLocation: RestaurantLocation.fromJson(json["restaurantLocation"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -106,13 +111,14 @@ class OrderModel {
     "status": status,
     "totalPrice": totalPrice,
     "userID": userId,
-    "orderTimeStamp": DateTime.now(),
+    "orderTimeStamp": orderTimestamp,
     "orderID": orderID,
     "restaurantName":restaurantName,
     "paymentType":paymentType,
-    "deliveryLocation":deliveryLocation.toJson(),
-    "deliveryAcceptedBy":deliveryAcceptedBy.toJson(),
+    "deliveryLocation":deliveryLocation.toJson,
+    "deliveryAcceptedBy":deliveryAcceptedBy.toJson,
     "deliveryAccepted":deliveryAccepted,
+    "restaurantLocation":restaurantLocation.toJson(),
     "userPhone":userPhone,
     "userName":userName,
   };
@@ -257,5 +263,34 @@ class DeliveryAcceptedBy {
     "name": name,
     "phoneNumber": phoneNumber,
     "id": id,
+  };
+}
+
+class RestaurantLocation {
+  double lat;
+  double lng;
+
+  RestaurantLocation({
+    required this.lat,
+    required this.lng,
+  });
+
+  RestaurantLocation copyWith({
+    double? lat,
+    double? lng,
+  }) =>
+      RestaurantLocation(
+        lat: lat ?? this.lat,
+        lng: lng ?? this.lng,
+      );
+
+  factory RestaurantLocation.fromJson(Map<String, dynamic> json) => RestaurantLocation(
+    lat: json["lat"]?.toDouble(),
+    lng: json["lng"]?.toDouble(),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "lat": lat,
+    "lng": lng,
   };
 }

@@ -34,6 +34,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final BestSellerController bestSellerController =
       Get.put(BestSellerController());
+  final LocationController locationController = Get.put(LocationController());
 
   @override
   void initState() {
@@ -57,34 +58,37 @@ class _HomePageState extends State<HomePage> {
             child: Image.asset("assets/icons/location_icon.png"),
           ),
         ),
-        title: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Janub Ad Dahariz",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
+        title: Obx(() {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                locationController.streetName.value,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "Salala, Oman",
-                  style: TextStyle(
-                    color: kBlue,
-                    fontSize: 10,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "${locationController.cityName.value}, ${locationController.countryName.value}",
+                    style: const TextStyle(
+                      color: kBlue,
+                      fontSize: 10,
+                    ),
                   ),
-                ),
-                Icon(
-                  Icons.keyboard_arrow_down,
-                  size: 16,
-                ),
-              ],
-            ),
-          ],
-        ),
+                  const Icon(
+                    Icons.keyboard_arrow_down,
+                    size: 16,
+                  ),
+                ],
+              ),
+            ],
+          );
+        }),
+
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -99,7 +103,12 @@ class _HomePageState extends State<HomePage> {
                 kWidth25,
                 GestureDetector(
                   onTap: () {
-                    Get.to( const AddToCartPage(addedBy: '',restaurantName: '',),);
+                    Get.to(
+                      const AddToCartPage(
+                        addedBy: '',
+                        restaurantName: '',
+                      ),
+                    );
                   },
                   child: Image.asset("assets/icons/cart_icon.png"),
                 )
