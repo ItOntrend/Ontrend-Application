@@ -16,20 +16,17 @@ class UserProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        userController.fetchUserData();
-      },
-    );
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      userController.fetchUserData();
+    });
+
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
         backgroundColor: kWhite,
         leading: const SizedBox(),
         centerTitle: true,
-        title: const Text(
-          "My Profile",
-        ),
+        title: const Text("My Profile"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -50,10 +47,8 @@ class UserProfilePage extends StatelessWidget {
                 ),
                 kHiegth20,
                 Obx(() {
-                  // final userDetail = userController.userDetail;
                   return Text(
                     "${userController.firstName.value}  ${userController.lastName.value}",
-                    // "${userDetail['firstName']} ${userDetail['lastName']}",
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
@@ -62,25 +57,23 @@ class UserProfilePage extends StatelessWidget {
                 }),
                 kHiegth15,
                 Obx(() {
-                  // final userDetail = userController.userDetail;
                   return ChangeTextfield(
                     hintText: "*Name...",
-                    initialValue: "${userController.firstName.value}"
-                    // userDetail['firstName'] ?? '',
+                    initialValue: userController.firstName.value,
                   );
                 }),
                 kHiegth20,
                 Obx(() {
                   return ChangeTextfield(
                     hintText: "*Email...",
-                    initialValue: "${userController.email.value}"
+                    initialValue: userController.email.value,
                   );
                 }),
                 kHiegth20,
                 Obx(() {
                   return ChangeTextfield(
                     hintText: "Nationality",
-                    initialValue: "${userController.nationality.value}",
+                    initialValue: userController.nationality.value,
                   );
                 }),
                 kHiegth25,

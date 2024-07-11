@@ -1,28 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/constant.dart';
 
-class ExploreCard extends StatelessWidget {
+class ExploreCard extends StatefulWidget {
   const ExploreCard({
-    super.key,
-    required this.image,
+    Key? key,
+    required this.name,
+    this.locationCity,
+    this.image,
     this.tabIndex,
     required this.onTap,
-    required this.name,
-    this.locatioCity,
-  });
+  }) : super(key: key);
 
   final String name;
-  final String? locatioCity;
+  final String? locationCity;
   final String? image;
   final int? tabIndex;
   final VoidCallback? onTap;
 
   @override
+  _ExploreCardState createState() => _ExploreCardState();
+}
+
+class _ExploreCardState extends State<ExploreCard> {
+  bool _isOnline = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkConnectivity();
+  }
+
+  Future<void> _checkConnectivity() async {
+    final ConnectivityResult connectivityResult = (await Connectivity().checkConnectivity()) as ConnectivityResult;
+    setState(() {
+      _isOnline = connectivityResult != ConnectivityResult.none;
+    });
+
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      setState(() {
+        _isOnline = result != ConnectivityResult.none;
+      });
+    } as void Function(List<ConnectivityResult> event)?);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
         margin: const EdgeInsets.only(
           bottom: 20,
@@ -40,35 +67,62 @@ class ExploreCard extends StatelessWidget {
               color: Colors.grey.withOpacity(0.2),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: const Offset(1, 4), // changes position of shadow
+              offset: const Offset(1, 4),
             ),
           ],
         ),
         child: Column(
           children: [
-            image != null && image!.isNotEmpty
-                ? ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10)),
-                    child: Image.network(
-                      image!,
-                      height: 163.h,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  )
+            _isOnline
+                ? (widget.image != null && widget.image!.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius:const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        child: Image.network(
+                          widget.image!,
+                          height: 163.h,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Container(
+                        height: 163.h,
+                        width: double.infinity,
+                        color: Colors.grey[300],
+                        child: Center(
+                          child: Text(
+                            'No image has uploaded',
+                            style: TextStyle(
+                              color: Colors.grey[700],
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                        ),
+                      ))
                 : Container(
                     height: 163.h,
                     width: double.infinity,
                     color: Colors.grey[300],
                     child: Center(
-                      child: Text(
-                        'No image has uploaded',
-                        style: TextStyle(
-                          color: Colors.grey[700],
-                          fontSize: 16.sp,
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.wifi_off,
+                            size: 50,
+                            color: kGrey,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'No Internet Connection',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: kGrey,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -83,41 +137,15 @@ class ExploreCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        name,
+                        widget.name,
                         style: const TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Spacer(),
-                      Text("Salala"),
-                      Image.asset("assets/image/small_location_image.png")
-                      // Container(
-                      //   padding: const EdgeInsets.symmetric(horizontal: 4),
-                      //   height: 29.h,
-                      //   width: 63.w,
-                      //   decoration: BoxDecoration(
-                      //     color: kGreen,
-                      //     borderRadius: BorderRadius.circular(8),
-                      //   ),
-                      //   child: const Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: [
-                      //       Text(
-                      //         "4.2",
-                      //         style: TextStyle(
-                      //           fontWeight: FontWeight.bold,
-                      //           color: kWhite,
-                      //         ),
-                      //       ),
-                      //       Icon(
-                      //         Icons.star,
-                      //         size: 20,
-                      //         color: kWhite,
-                      //       )
-                      //     ],
-                      //   ),
-                      // ),
+                      Text(widget.locationCity ?? ""),
+                      Image.asset("assets/image/small_location_image.png"),
                     ],
                   ),
                   kHiegth20,

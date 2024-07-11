@@ -10,10 +10,13 @@ const kGreen = Colors.green;
 const kGrey = Colors.grey;
 const kOrange = Colors.orange;
 final kLiteBackground = Colors.blueGrey.withOpacity(0.1);
-const kDarkOrange = Color.fromARGB(255, 251, 82, 10);
+const kDarkOrange = Color(0xffFC7026);
 final kBlackOpacity6 = Colors.black.withOpacity(0.6);
 final kBorderLiteBlack = Colors.black.withOpacity(0.2);
+const kTimetilestyleLineColor = Color(0xffBAE8B5);
+const kTextStyleGrey = Color(0xff5C5C5C);
+const kBorderLiteGrey = Color(0xffBCBCBC80);
 
 // Shade Colors
 
-final kColorTextFieldBorder = Color(0xFFFFFF);
+const kColorTextFieldBorder = Color(0xFFFFFF);

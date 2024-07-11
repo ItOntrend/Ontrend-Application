@@ -2,231 +2,198 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 
-class ItemViewPage extends StatefulWidget {
-  const ItemViewPage({super.key});
+class ItemViewPage extends StatelessWidget {
+  const ItemViewPage({
+    super.key,
+    required this.item,
+  });
 
-  @override
-  State<ItemViewPage> createState() => _ItemViewPageState();
-}
-
-class _ItemViewPageState extends State<ItemViewPage> {
-  int _itemCount = 0;
-
-  void _incrementCount() {
-    setState(() {
-      _itemCount++;
-    });
-  }
-
-  void _decrementCount() {
-    if (_itemCount > 0) {
-      setState(() {
-        _itemCount--;
-      });
-    }
-  }
+  final ItemModel item;
 
   @override
   Widget build(BuildContext context) {
+    final CartController cartController = Get.find<CartController>();
+
     return Scaffold(
-        body: SafeArea(
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: 321.h,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage(
-                      "assets/image/mango_shake_image_big.png",
-                    ),
-                  ),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(
-                      10,
-                    ),
-                    bottomRight: Radius.circular(
-                      10,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 8,
-                top: 12,
-                child: GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    height: 38,
-                    width: 38,
-                    decoration: const BoxDecoration(
-                      color: kWhite,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.arrow_back_ios_outlined),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 16,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Stack(
               children: [
-                const Text(
-                  "Mango shake",
-                  style: TextStyle(
-                    fontSize: 19,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const Row(
-                  children: [
-                    Text(
-                      "OMR 200",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: kOrange,
-                      ),
-                    ),
-                    kWidth20,
-                    Text(
-                      "OMR 250",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                        color: kGrey,
-                        decoration: TextDecoration.lineThrough,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    RatingBar.builder(
-                      itemSize: 15,
-                      allowHalfRating: true,
-                      onRatingUpdate: (rating) {
-                        print(rating);
-                      },
-                      itemBuilder: (context, _) => const Icon(
-                        Icons.star,
-                        color: kGreen,
-                      ),
-                      initialRating: 4.5,
-                    ),
-                    kWidth20,
-                    const Text(
-                      "4.5",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
                 Container(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 39,
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                  ),
-                  height: 99.h,
-                  width: double.infinity.w,
+                  height: 321.h,
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: kGrey,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(item.imageUrl),
                     ),
-                    borderRadius: BorderRadius.circular(
-                      21,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
                     ),
                   ),
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                ),
+                Positioned(
+                  left: 8,
+                  top: 12,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Container(
+                      height: 38,
+                      width: 38,
+                      decoration: const BoxDecoration(
+                        color: kWhite,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.arrow_back_ios_outlined),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 16,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name,
+                    style: const TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Icecream",
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w400,
+                        "OMR ${item.price}.000",
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: kOrange,
                         ),
                       ),
+                      kWidth20,
                       Text(
-                        "SlicedMango",
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 17,
+                        "OMR ${item.price + 50}", // Example original price
+                        style: const TextStyle(
+                          fontSize: 20,
                           fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Text(
-                        "Mango Smoothy",
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w400,
+                          color: kGrey,
+                          decoration: TextDecoration.lineThrough,
                         ),
                       ),
                     ],
                   ),
-                ),
-                Center(
-                  child: Container(
-                    height: 40.h,
-                    width: 190.w,
-                    decoration: BoxDecoration(
-                      color: kGreen,
-                      borderRadius: BorderRadius.circular(
-                        10,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RatingBar.builder(
+                        itemSize: 15,
+                        allowHalfRating: true,
+                        onRatingUpdate: (rating) {
+                          print(rating);
+                        },
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: kGreen,
+                        ),
+                        initialRating: 4.5, // Example rating
                       ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IconButton(
-                          onPressed: _decrementCount,
-                          icon: const Icon(Icons.remove),
-                          color: _itemCount == 0
-                              ? kGrey
-                              : kWhite, // Gray out if count is 0
+                      kWidth20,
+                      const Text(
+                        "(123 Review)",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: kGrey,
                         ),
-                        Text(
-                          "$_itemCount",
-                          style: const TextStyle(
-                            color: kWhite,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: _incrementCount,
-                          icon: const Icon(Icons.add),
-                          color: kWhite,
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                )
-              ],
+                  kHiegth40,
+                  Obx(() {
+                    final quantity = cartController.getItemQuantity(item);
+                    return quantity > 0
+                        ? Center(
+                            child: Container(
+                              width: 140.w,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: kGreen),
+                              child: Row(
+                                // crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      cartController.removeItemFromCart(item);
+                                    },
+                                    icon: const Icon(Icons.remove),
+                                    color: kWhite,
+                                  ),
+                                  Text(
+                                    quantity.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: kWhite,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      cartController.addItemToCart(item);
+                                    },
+                                    icon: const Icon(Icons.add),
+                                    color: kWhite,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : GestureDetector(
+                            onTap: () {
+                              cartController.addItemToCart(item);
+                            },
+                            child: Center(
+                              child: Container(
+                                height: 50.h,
+                                width: 180.w,
+                                decoration: BoxDecoration(
+                                  color: kOrange,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    'Add to Cart',
+                                    style: TextStyle(
+                                        color: kWhite,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                  }),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

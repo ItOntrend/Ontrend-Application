@@ -81,6 +81,9 @@ const kWidth10 = SizedBox(
 final kWidth15 = SizedBox(
   width: 15.w,
 );
+final kWidth16 = SizedBox(
+  width: 16.w,
+);
 final kWidth18 = SizedBox(
   width: 18.w,
 );
@@ -107,4 +110,12 @@ const kDiver = Divider(
 const kDiver10 = Divider(
   endIndent: 10,
   indent: 10,
+);
+
+// ---------------------------------Text Styles----------------------------- //
+
+const kTextStyle14Grey = TextStyle(
+  color: Color(0xff5C5C5C),
+  fontSize: 14,
+  fontWeight: FontWeight.w400,
 );

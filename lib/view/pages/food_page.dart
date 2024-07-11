@@ -8,10 +8,11 @@ import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/burger_search_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 // import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/pizza_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
@@ -39,6 +40,7 @@ class _FoodPageState extends State<FoodPage> {
   final BestSellerController bestSellerController =
       Get.put(BestSellerController());
   final VendorController vendorController = Get.put(VendorController());
+  final LocationController locationController = Get.put(LocationController());
 
   @override
   void initState() {
@@ -68,30 +70,38 @@ class _FoodPageState extends State<FoodPage> {
             ),
           ),
         ),
-        title: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Janub Ad Dahariz",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
+        title: GestureDetector(
+          onTap: () {
+            Get.to(() => const SelectLocationPage());
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                locationController.streetName.value,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "Salala, Oman",
-                  style: TextStyle(color: kBlue, fontSize: 10),
-                ),
-                Icon(
-                  Icons.keyboard_arrow_down,
-                  size: 16,
-                ),
-              ],
-            ),
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "${locationController.cityName.value}, ${locationController.countryName.value}",
+                    style: const TextStyle(
+                      color: kBlue,
+                      fontSize: 10,
+                    ),
+                  ),
+                  const Icon(
+                    Icons.keyboard_arrow_down,
+                    size: 16,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         actions: [
           Padding(
@@ -102,13 +112,16 @@ class _FoodPageState extends State<FoodPage> {
               children: [
                 GestureDetector(
                     onTap: () {
-                      Get.to(const NotificationPage());
+                      Get.to(() => const NotificationPage());
                     },
                     child: Image.asset("assets/icons/notification_icon.png")),
                 kWidth25,
                 GestureDetector(
                   onTap: () {
-                    Get.to(const AddToCartPage(addedBy: "",restaurantName: "",));
+                    Get.to(() => const AddToCartPage(
+                          addedBy: "",
+                          restaurantName: "",
+                        ));
                   },
                   child: Image.asset("assets/icons/cart_icon.png"),
                 ),
@@ -125,8 +138,11 @@ class _FoodPageState extends State<FoodPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Search bar
-              const TextfieldWithMic(
+              TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...",
+                onTap: () {
+                  Get.to(const SearchPage());
+                },
               ),
               kHiegth15,
               // Welcome card
@@ -211,9 +227,10 @@ class _FoodPageState extends State<FoodPage> {
                             log(category.image.toString());
                             return CategoryCard(
                               onTap: () {
-                                Get.to(BurgerSearchPage(
-                                  userId: widget.userId,
-                                ));
+                                Get.to(() => CategorysSearchPage(
+                                      userId: widget.userId,
+                                      categoryName: category.name,
+                                    ));
                               },
                               categoryName: category.name,
                               categoryImage: category.image,
@@ -242,9 +259,9 @@ class _FoodPageState extends State<FoodPage> {
                             log("Best Seller Image is calling");
                             return BestSellerCard(
                               onTap: () {
-                                Get.to(ProfilePage(
-                                  userId: bestSeller.addedBy,
-                                ));
+                                Get.to(() => ProfilePage(
+                                      userId: bestSeller.addedBy,
+                                    ));
                               },
                               name: bestSeller.name,
                               imagePath: bestSeller.image,
@@ -282,7 +299,8 @@ class _FoodPageState extends State<FoodPage> {
                                 onTap: () {
                                   log(vendor.reference.id);
                                   Get.to(
-                                    ProfilePage(userId: vendor.reference.id),
+                                    () => ProfilePage(
+                                        userId: vendor.reference.id),
                                   );
                                 },
                               );
@@ -297,92 +315,3 @@ class _FoodPageState extends State<FoodPage> {
     );
   }
 }
-
-// : ListView(
-                    //     scrollDirection: Axis.horizontal,
-                    //     children: <Widget>[
-                    //       GestureDetector(
-                    //         onTap: () {
-                    //           Get.to(
-                    //             const BurgerSearchPage(),
-                    //           );
-                    //         },
-                    //         child: const SizedBox(
-                    //           height: 180,
-                    //           width: 120,
-                    //           child: CategoryCard(
-                    //             categoryImage:
-                    //                 "assets/image/burger_image.png",
-                    //             categoryName: "Burger",
-                    //             categoryName1: "Puttu",
-                    //             categoryImage1:
-                    //                 "assets/image/puttu_image.png",
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       kWidth35,
-                    //       SizedBox(
-                    //         height: 180,
-                    //         width: 120,
-                    //         child: GestureDetector(
-                    //           onTap: () {
-                    //             Get.to(
-                    //               const PizzaSearchPage(),
-                    //             );
-                    //           },
-                    //           child: const CategoryCard(
-                    //             categoryImage: "assets/image/pizza_image.png",
-                    //             categoryName: "Pizza",
-                    //             categoryName1: "Idli",
-                    //             categoryImage1: "assets/image/idli_image.png",
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       kWidth35,
-                    //       const SizedBox(
-                    //         height: 180,
-                    //         width: 120,
-                    //         child: CategoryCard(
-                    //           categoryImage: "assets/image/cake_image.png",
-                    //           categoryName: "Cake",
-                    //           categoryName1: "Chinese",
-                    //           categoryImage1:
-                    //               "assets/image/chinese_image.png",
-                    //         ),
-                    //       ),
-                    //       kWidth35,
-                    //       const SizedBox(
-                    //         height: 180,
-                    //         width: 120,
-                    //         child: CategoryCard(
-                    //           categoryImage: "assets/image/burger_image.png",
-                    //           categoryName: "Burger",
-                    //           categoryName1: "Puttu",
-                    //           categoryImage1: "assets/image/puttu_image.png",
-                    //         ),
-                    //       ),
-                    //       kWidth35,
-                    //       const SizedBox(
-                    //         height: 180,
-                    //         width: 120,
-                    //         child: CategoryCard(
-                    //           categoryImage: "assets/image/cake_image.png",
-                    //           categoryName: "Cake",
-                    //           categoryName1: "Chinese",
-                    //           categoryImage1:
-                    //               "assets/image/chinese_image.png",
-                    //         ),
-                    //       ),
-                    //       kWidth35,
-                    //       const SizedBox(
-                    //         height: 180,
-                    //         width: 120,
-                    //         child: CategoryCard(
-                    //           categoryImage: "assets/image/pizza_image.png",
-                    //           categoryName: "Pizza",
-                    //           categoryName1: "Idli",
-                    //           categoryImage1: "assets/image/idli_image.png",
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),

@@ -28,6 +28,7 @@ class CategoryCard extends StatelessWidget {
                 height: 70,
                 width: 70,
                 imageUrl: categoryImage,
+                fit: BoxFit.cover,
               ),
             ),
             Text(

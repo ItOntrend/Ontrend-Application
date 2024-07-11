@@ -1,7 +1,6 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer';
 import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.dart';
 
 class UserController extends GetxController {
@@ -25,6 +24,7 @@ class UserController extends GetxController {
         'number': number.value,
       };
     });
+    fetchUserDataFromPrefs();
   }
 
   void setUserData({
@@ -39,21 +39,36 @@ class UserController extends GetxController {
     this.email.value = email;
     this.nationality.value = nationality;
     this.number.value = number;
+
+    saveUserDataToPrefs();
+  }
+
+  Future<void> saveUserDataToPrefs() async {
+    await LocalStorage.instance.writeDataToPrefs(key: 'firstName', value: firstName.value);
+    await LocalStorage.instance.writeDataToPrefs(key: 'lastName', value: lastName.value);
+    await LocalStorage.instance.writeDataToPrefs(key: 'email', value: email.value);
+    await LocalStorage.instance.writeDataToPrefs(key: 'nationality', value: nationality.value);
+    await LocalStorage.instance.writeDataToPrefs(key: 'number', value: number.value);
+  }
+
+  Future<void> fetchUserDataFromPrefs() async {
+    firstName.value = await LocalStorage.instance.DataFromPrefs(key: 'firstName') ?? '';
+    lastName.value = await LocalStorage.instance.DataFromPrefs(key: 'lastName') ?? '';
+    email.value = await LocalStorage.instance.DataFromPrefs(key: 'email') ?? '';
+    nationality.value = await LocalStorage.instance.DataFromPrefs(key: 'nationality') ?? '';
+    number.value = await LocalStorage.instance.DataFromPrefs(key: 'number') ?? '';
   }
 
   // Fetch user data from Firebase
   Future<void> fetchUserData() async {
     try {
-      String userId =
-          await LocalStorage.instance.DataFromPrefs(key: HiveKeys.userData);
+      String userId = await LocalStorage.instance.DataFromPrefs(key: HiveKeys.userData);
       log(userId);
-      // Replace with your Firebase Firestore instance
       var userData = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .get();
 
-      // Update controller's observable values
       if (userData.exists) {
         var data = userData.data();
         if (data != null && data is Map<String, dynamic>) {

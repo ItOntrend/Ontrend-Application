@@ -131,102 +131,100 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 22),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: searchController,
-                enabled: true,
-                onChanged: (value) {
-                  setState(() {});
-                },
-                decoration: InputDecoration(
-                  prefixIcon: Image.asset("assets/icons/search_icon.png"),
-                  hintText: "Search for area, street name...",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                      10,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              controller: searchController,
+              enabled: true,
+              onChanged: (value) {
+                setState(() {});
+              },
+              decoration: InputDecoration(
+                prefixIcon: Image.asset("assets/icons/search_icon.png"),
+                hintText: "Search for area, street name...",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(
+                    10,
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: searchController.text.isNotEmpty &&
+                  listOfLocation.isNotEmpty,
+              child: Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  itemCount: listOfLocation.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: const Icon(Icons.location_on),
+                      title: Text(listOfLocation[index]["description"]),
+                      onTap: () {
+                        _saveSearchedAddress(
+                            listOfLocation[index]["description"]);
+                      },
+                    );
+                  },
+                ),
+              ),
+            ),
+            kHiegth20,
+            Row(
+              children: [
+                SvgPicture.asset(
+                  "assets/svg/small_location_orange_icon.svg",
+                ),
+                kWidth15,
+                TextButton(
+                  onPressed: locationController.getCurrentLocation,
+                  child: const Text(
+                    "Use my current location",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
                     ),
                   ),
+                )
+              ],
+            ),
+            kHiegth10,
+            kDiver10,
+            kHiegth20,
+            const Text(
+              "SAVED ADDRESSES",
+              style: TextStyle(
+                color: kGrey,
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            kHiegth20,
+            Expanded(
+              child: Obx(
+                () => Column(
+                  children: locationController.savedAddresses
+                      .map((address) => ListTile(
+                            leading: SvgPicture.asset(
+                              "assets/svg/small_location_grey_icon.svg",
+                            ),
+                            title: Text(address.title),
+                            subtitle: Text(address.address),
+                            onTap: () => _editAddressTitle(context, address),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () {
+                                locationController.deleteAddress(address);
+                              },
+                            ),
+                          ))
+                      .toList(),
                 ),
               ),
-              Visibility(
-                visible: searchController.text.isNotEmpty &&
-                    listOfLocation.isNotEmpty,
-                child: Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemCount: listOfLocation.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: const Icon(Icons.location_on),
-                        title: Text(listOfLocation[index]["description"]),
-                        onTap: () {
-                          _saveSearchedAddress(
-                              listOfLocation[index]["description"]);
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
-              kHiegth20,
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    "assets/svg/small_location_orange_icon.svg",
-                  ),
-                  kWidth15,
-                  TextButton(
-                    onPressed: locationController.getCurrentLocation,
-                    child: const Text(
-                      "Use my current location",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              kHiegth10,
-              kDiver10,
-              kHiegth20,
-              const Text(
-                "SAVED ADDRESSES",
-                style: TextStyle(
-                  color: kGrey,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              kHiegth20,
-              Expanded(
-                child: Obx(
-                  () => Column(
-                    children: locationController.savedAddresses
-                        .map((address) => ListTile(
-                              leading: SvgPicture.asset(
-                                "assets/svg/small_location_grey_icon.svg",
-                              ),
-                              title: Text(address.title),
-                              subtitle: Text(address.address),
-                              onTap: () => _editAddressTitle(context, address),
-                              trailing: IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  locationController.deleteAddress(address);
-                                },
-                              ),
-                            ))
-                        .toList(),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -285,8 +283,8 @@ class LocationController extends GetxController {
       Placemark place = placemarks[0];
       currentAddress.value =
           "${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}";
-      streetName.value = place.street!;
-      cityName.value = place.locality!;
+      streetName.value = place.locality!;
+      cityName.value = place.street!;
       countryName.value = place.country!;
       savedAddresses.add(SavedAddress(
         title: "Custom Location",

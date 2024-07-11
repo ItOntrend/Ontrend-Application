@@ -12,14 +12,10 @@ part 'hive_box.dart';
 part 'hive_keys.dart';
 
 class LocalStorage {
-  // LocalStorage() {
-  //   HiveBox();
-  // }
   LocalStorage._();
   static final _instance = LocalStorage._();
   static LocalStorage get instance => _instance;
 
-  // Initialize Hive
   Future<void> initHive() async {
     String? directoryPath;
 
@@ -31,18 +27,15 @@ class LocalStorage {
     await Hive.initFlutter(directoryPath);
   }
 
-  // Open a box
   Future<Box<T>> openBox<T>(String boxName) async {
     return await Hive.openBox<T>(boxName);
   }
 
-  /// Close the box
   Future<void> closeBox<T>(String boxName) async {
     final box = await _getBoxByName(boxName);
     await box!.close();
   }
 
-  // Write data to a box
   Future<void> writeData<T>({
     required String boxName,
     required String key,
@@ -62,7 +55,6 @@ class LocalStorage {
     await box.setString(key, encodedValue);
   }
 
-  // Read data from a box
   Future<T?> readData<T>({
     required String boxName,
     required String key,
@@ -90,7 +82,6 @@ class LocalStorage {
     }
   }
 
-  // Delete data from a box
   Future<void> deleteData<T>({
     required String boxName,
     String? key,
@@ -108,19 +99,14 @@ class LocalStorage {
     await box.clear();
   }
 
-  // box declarations
-  Box? user; // dynamic values
-  Box? commonBox; // dynamic values
+  Box? user;
+  Box? commonBox;
 
-  /// get box by name
   Future<Box?> _getBoxByName<T>(String boxName) async {
     switch (boxName) {
       case HiveBox.user:
         user ??= await openBox(boxName);
         return user;
-      // case HiveBox.commonBox:
-      //   commonBox ??= await openBox(HiveBox.commonBox);
-      //   return commonBox;
       default:
         commonBox ??= await openBox(HiveBox.commonBox);
         return commonBox;

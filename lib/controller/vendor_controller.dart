@@ -10,8 +10,8 @@ import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.da
 class VendorController extends GetxController {
   RxBool isVendorLoading = RxBool(false);
   RxBool isItemsLoading = RxBool(false);
-  Rx<Vendor?> vendorDetail = Rx<Vendor?>(null);
-  RxList<Vendor> vendorsList = RxList<Vendor>();
+  Rx<VendorModel?> vendorDetail = Rx<VendorModel?>(null);
+  RxList<VendorModel> vendorsList = RxList<VendorModel>();
   RxList<ItemModel> itemsList = RxList<ItemModel>();
   RxString userName = ''.obs;
 
@@ -44,8 +44,8 @@ class VendorController extends GetxController {
     }
   }
 
-  Future<Vendor?> getVendorByUId({required String userId}) async {
-    Vendor? data;
+  Future<VendorModel?> getVendorByUId({required String userId}) async {
+    VendorModel? data;
     print(userId);
     try {
       data = await VendorRepository.getVendorById(userId: userId);
@@ -63,8 +63,8 @@ class VendorController extends GetxController {
     }
     return null;
   }
-  Future<Vendor?> getProfile() async {
-    Vendor? data;
+  Future<VendorModel?> getProfile() async {
+    VendorModel? data;
 
     try {
       final userId =

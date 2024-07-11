@@ -5,15 +5,15 @@ class TextfieldWithMic extends StatelessWidget {
   const TextfieldWithMic({
     super.key,
     required this.hintText,
-    this.onChanged,
+    this.onTap,
   });
   final String hintText;
-  final Function(String)? onChanged;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onChanged: onChanged,
+      onTap: onTap,
       enabled: true,
       decoration: InputDecoration(
         fillColor: kWhite,
