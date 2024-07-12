@@ -88,7 +88,6 @@ class _HomePageState extends State<HomePage> {
             ],
           );
         }),
-
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),

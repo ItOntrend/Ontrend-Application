@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 // import 'package:ontrend_food_and_e_commerce/controller/best_seller_controller.dart';
 import 'package:ontrend_food_and_e_commerce/firebase_options.dart';
+import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/utils/init_services.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/splash_page.dart';
 

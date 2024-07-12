@@ -51,12 +51,20 @@ class ExploreCard extends StatelessWidget {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10)),
-                    child: Image.network(
-                      image!,
-                      height: 163.h,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
+                    child: image!.startsWith('http://') ||
+                            image!.startsWith('https://')
+                        ? Image.network(
+                            image!,
+                            height: 163.h,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            image!,
+                            height: 163.h,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
                   )
                 : Container(
                     height: 163.h,
@@ -89,50 +97,50 @@ class ExploreCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Spacer(),
-                      Text("Salala"),
-                      Image.asset("assets/image/small_location_image.png")
-                      // Container(
-                      //   padding: const EdgeInsets.symmetric(horizontal: 4),
-                      //   height: 29.h,
-                      //   width: 63.w,
-                      //   decoration: BoxDecoration(
-                      //     color: kGreen,
-                      //     borderRadius: BorderRadius.circular(8),
-                      //   ),
-                      //   child: const Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: [
-                      //       Text(
-                      //         "4.2",
-                      //         style: TextStyle(
-                      //           fontWeight: FontWeight.bold,
-                      //           color: kWhite,
-                      //         ),
-                      //       ),
-                      //       Icon(
-                      //         Icons.star,
-                      //         size: 20,
-                      //         color: kWhite,
-                      //       )
-                      //     ],
-                      //   ),
-                      // ),
+                      //Spacer(),
+                      //Text("Salala"),
+                      //Image.asset("assets/image/small_location_image.png"),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        height: 29.h,
+                        width: 63.w,
+                        decoration: BoxDecoration(
+                          color: kGreen,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "4.2",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: kWhite,
+                              ),
+                            ),
+                            Icon(
+                              Icons.star,
+                              size: 20,
+                              color: kWhite,
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                   kHiegth20,
-                  const Row(
+                  Row(
                     children: [
-                      // const Text(
-                      //   "Pizza, Pastas, Desserts",
-                      //   style: TextStyle(
-                      //     fontSize: 14,
-                      //   ),
-                      // ),
-                      // const Spacer(),
-                      // const Text("Salala"),
-                      // kWidth6,
-                      // Image.asset("assets/image/small_location_image.png")
+                      Text(
+                        "Pizza, Pastas, Desserts",
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      const Spacer(),
+                      const Text("Salala"),
+                      kWidth6,
+                      Image.asset("assets/image/small_location_image.png")
                     ],
                   ),
                   kHiegth6,

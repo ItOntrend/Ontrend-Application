@@ -111,4 +111,4 @@ class _NavigationManuState extends State<NavigationManu> {
     //     ),
     //   ),
     //   body: Obx(() => controller.screens[controller.selectedIndex.value]),
-    // );
+    // )

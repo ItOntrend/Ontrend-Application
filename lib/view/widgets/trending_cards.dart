@@ -39,11 +39,17 @@ class TrendingCards extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Image.network(
-                  imagePath,
-                  fit: BoxFit.cover,
-                ),
-                Positioned(top: 111, child: itemPrice),
+                imagePath.startsWith('http://') ||
+                        imagePath.startsWith('https://')
+                    ? Image.network(
+                        imagePath,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        imagePath,
+                        fit: BoxFit.cover,
+                      ),
+                Positioned(bottom: 0, child: itemPrice),
               ],
             ),
             Padding(
