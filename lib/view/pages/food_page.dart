@@ -109,10 +109,7 @@ class _FoodPageState extends State<FoodPage> {
                 kWidth25,
                 GestureDetector(
                   onTap: () {
-                    Get.to(() => const AddToCartPage(
-                          addedBy: "",
-                          restaurantName: "",
-                        ));
+                    Get.to(const AddToCartPage(addedBy: "",restaurantName: "",));
                   },
                   child: Image.asset("assets/icons/cart_icon.png"),
                 ),
@@ -129,8 +126,8 @@ class _FoodPageState extends State<FoodPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Search bar
-              const TextfieldWithMic(
-                hintText: "Biryani, Burger, Ice Cream...",
+              TextfieldWithMic(
+                hintText: "Biryani, Burger, Ice Cream...".tr,
               ),
               kHiegth15,
               // Welcome card
@@ -141,7 +138,7 @@ class _FoodPageState extends State<FoodPage> {
               kHiegth25,
 
               // Categories card
-              const TwoTextHeading(heading: "Categories"),
+              TwoTextHeading(heading: "Categories".tr),
               kHiegth20,
               Obx(
                 () => foodController.isCategoryLoading.value
@@ -169,8 +166,8 @@ class _FoodPageState extends State<FoodPage> {
                       ),
               ),
               kHiegth20,
-              const OneTextHeading(
-                heading: "Best Sellers",
+              OneTextHeading(
+                heading: "Best Sellers".tr,
               ),
               kHiegth20,
               Obx(
@@ -202,8 +199,8 @@ class _FoodPageState extends State<FoodPage> {
                       ),
               ),
               kHiegth20,
-              const OneTextHeading(
-                heading: "Restaurants to explore",
+              OneTextHeading(
+                heading: "Restaurants to explore".tr,
               ),
               kHiegth20,
               Obx(

@@ -7,13 +7,46 @@ import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/change_textfield.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_tile.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class UserProfilePage extends StatelessWidget {
   UserProfilePage({super.key});
 
   final authController = Get.find<AuthController>();
   final userController = Get.find<UserController>();
+  final List locale = [
+    {'name': "ENGLISH", 'locale': Locale('en', 'US')},
+    {'name': "عربي", 'locale': Locale('ar', 'OM')}
+  ];
+  updateLanguage(Locale locale) {
+    Get.back();
+    Get.updateLocale(locale);
+  }
+
+  buildDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text('Choose a language'.tr),
+            content: Container(
+              width: double.maxFinite,
+              child: ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                        onTap: () => updateLanguage(locale[index]['locale']),
+                        child: Text(locale[index]['name']));
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      color: Colors.blue,
+                    );
+                  },
+                  itemCount: locale.length),
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +60,9 @@ class UserProfilePage extends StatelessWidget {
         backgroundColor: kWhite,
         leading: const SizedBox(),
         centerTitle: true,
-        title: const Text("My Profile"),
+        title: const Text(
+          "My Profile",
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -60,48 +95,38 @@ class UserProfilePage extends StatelessWidget {
                 Obx(() {
                   return ChangeTextfield(
                     hintText: "*Name...",
-                    initialValue: userController.firstName.value,
+                    initialValue: "${userController.firstName.value}"
+                    // userDetail['firstName'] ?? '',
                   );
                 }),
                 kHiegth20,
                 Obx(() {
                   return ChangeTextfield(
                     hintText: "*Email...",
-                    initialValue: userController.email.value,
+                    initialValue: "${userController.email.value}"
                   );
                 }),
                 kHiegth20,
                 Obx(() {
                   return ChangeTextfield(
                     hintText: "Nationality",
-                    initialValue: userController.nationality.value,
+                    initialValue: "${userController.nationality.value}",
                   );
                 }),
                 kHiegth25,
-                const MainTile(
-                  name: "My Orders",
+                MainTile(
+                  name: "My Orders".tr,
                   icon: "assets/icons/my_orders_icon.png",
                 ),
                 kHiegth25,
-                const MainTile(
-                  name: "Help",
+                MainTile(
+                  name: "Help".tr,
                   icon: "assets/icons/help_icon.png",
                 ),
                 kHiegth25,
-                GestureDetector(
-                  onTap: () async{
-                    const whatsappUrl = "https://wa.me/+968-98710707";   // Replace with your WhatsApp number
-                    if (await canLaunchUrl(Uri.parse(whatsappUrl))) {
-                      await launchUrl(Uri.parse(whatsappUrl));
-                    } else {
-                      // Handle the case where the URL could not be launched
-                      print('Could not launch $whatsappUrl');
-                    }
-                  },
-                  child: const MainTile(
-                    name: "Contact Us",
-                    icon: "assets/icons/call_icon.png",
-                  ),
+                const MainTile(
+                  name: "Contact Us",
+                  icon: "assets/icons/call_icon.png",
                 ),
                 kHiegth25,
                 GestureDetector(
@@ -109,8 +134,8 @@ class UserProfilePage extends StatelessWidget {
                     await authController.onLogOut();
                     Get.back();
                   },
-                  child: const MainTile(
-                    name: "Log Out",
+                  child: MainTile(
+                    name: "Log Out".tr,
                     icon: "assets/icons/power_icon.png",
                   ),
                 ),

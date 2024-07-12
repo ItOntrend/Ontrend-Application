@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/tabs/n_all_bar.dart';
@@ -18,7 +19,7 @@ class NotificationPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: kWhite,
           centerTitle: true,
-          title: const Text("Notification"),
+          title: Text("Notification".tr),
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.arrow_back_ios),
@@ -56,10 +57,10 @@ class NotificationPage extends StatelessWidget {
                       // Check if selected
                     ),
                     _buildTabItem(
-                      text: "Food",
+                      text: "Food".tr,
                     ),
                     _buildTabItem(
-                      text: "Groceries",
+                      text: "Groceries".tr,
                     ),
                     _buildTabItem(
                       text: "E - Cart",

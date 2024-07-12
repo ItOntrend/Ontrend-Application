@@ -9,7 +9,7 @@ class ExploreCard extends StatefulWidget {
     Key? key,
     required this.name,
     this.locationCity,
-    this.image,
+    required this.image,
     this.tabIndex,
     required this.onTap,
   }) : super(key: key);
@@ -74,56 +74,29 @@ class _ExploreCardState extends State<ExploreCard> {
         ),
         child: Column(
           children: [
-            _isOnline
-                ? (widget.image != null && widget.image!.isNotEmpty
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
-                        child: Image.network(
-                          widget.image!,
-                          height: 163.h,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : Container(
-                        height: 163.h,
-                        width: double.infinity,
-                        color: Colors.grey[300],
-                        child: Center(
-                          child: Text(
-                            'No image has been uploaded',
-                            style: TextStyle(
-                              color: Colors.grey[700],
-                              fontSize: 16.sp,
-                            ),
-                          ),
-                        ),
-                      ))
+            widget.image != null && widget.image!.isNotEmpty
+                ? ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10)),
+                    child: Image.network(
+                      widget.image!,
+                      height: 163.h,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  )
                 : Container(
                     height: 163.h,
                     width: double.infinity,
                     color: Colors.grey[300],
                     child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.wifi_off,
-                            size: 50,
-                            color: kGrey,
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'No Internet Connection',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: kGrey,
-                            ),
-                          ),
-                        ],
+                      child: Text(
+                        'No image has uploaded',
+                        style: TextStyle(
+                          color: Colors.grey[700],
+                          fontSize: 16.sp,
+                        ),
                       ),
                     ),
                   ),
@@ -145,18 +118,43 @@ class _ExploreCardState extends State<ExploreCard> {
                         ),
                       ),
                       Spacer(),
-                      Text(widget.locationCity ?? ""),
-                      Image.asset("assets/image/small_location_image.png"),
+                      Text("Salala"),
+                      Image.asset("assets/image/small_location_image.png")
+                      // Container(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 4),
+                      //   height: 29.h,
+                      //   width: 63.w,
+                      //   decoration: BoxDecoration(
+                      //     color: kGreen,
+                      //     borderRadius: BorderRadius.circular(8),
+                      //   ),
+                      //   child: const Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       Text(
+                      //         "4.2",
+                      //         style: TextStyle(
+                      //           fontWeight: FontWeight.bold,
+                      //           color: kWhite,
+                      //         ),
+                      //       ),
+                      //       Icon(
+                      //         Icons.star,
+                      //         size: 20,
+                      //         color: kWhite,
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
-                  kHiegth20, // Note: Ensure these constants are correctly defined
+                  kHiegth20,
                   const Row(
                     children: [
-                      // Uncomment and customize as needed
                       // const Text(
                       //   "Pizza, Pastas, Desserts",
                       //   style: TextStyle(
-                      //     fontSize: 14.sp,
+                      //     fontSize: 14,
                       //   ),
                       // ),
                       // const Spacer(),
