@@ -87,8 +87,8 @@ class GroceriesPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Search bar
-              const TextfieldWithMic(
-                hintText: "Vegetables, fruits...",
+              TextfieldWithMic(
+                hintText: "Vegetables, fruits...".tr,
               ),
 
               kHiegth20,
@@ -104,8 +104,8 @@ class GroceriesPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const TwoTextHeading(heading: "Trending on Ontrend"),
-                  GestureDetector(onTap: () {}, child: Text('View All'))
+                  TwoTextHeading(heading: "Trending on Ontrend".tr),
+                  //GestureDetector(onTap: () {}, child: Text('View All'))
                 ],
               ),
               kHiegth25,
@@ -145,7 +145,7 @@ class GroceriesPage extends StatelessWidget {
               }),
 
               // Categories card
-              const TwoTextHeading(heading: "Categories"),
+              TwoTextHeading(heading: "Categories".tr),
               kHiegth20,
               Padding(
                 padding: const EdgeInsets.all(0),
@@ -175,8 +175,8 @@ class GroceriesPage extends StatelessWidget {
                 ),
               ),
               kHiegth20,
-              const OneTextHeading(
-                heading: "Store to explore",
+              OneTextHeading(
+                heading: "Store to explore".tr,
               ),
               kHiegth20,
               SizedBox(

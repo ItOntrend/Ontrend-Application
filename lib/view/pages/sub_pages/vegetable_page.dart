@@ -19,8 +19,8 @@ class Vegetable extends StatelessWidget {
             child: Column(
               children: [
                 // Search bar
-                const TextfieldWithMic(
-                  hintText: "Vegetables, fruits...",
+                TextfieldWithMic(
+                  hintText: "Vegetables, fruits...".tr,
                 ),
                 kHiegth15,
                 Row(
@@ -29,7 +29,7 @@ class Vegetable extends StatelessWidget {
                         onTap: () => Get.off(() => GroceriesPage()),
                         child: Icon(Icons.arrow_back)),
                     kWidth30,
-                    const TwoTextHeading(heading: "Fresh Vegetables"),
+                    TwoTextHeading(heading: "Fresh Vegetables".tr),
                   ],
                 ),
                 kHiegth20,

@@ -122,25 +122,25 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const TextfieldWithMic(
-                hintText: "Biryani, Burger, Ice Cream...",
+              TextfieldWithMic(
+                hintText: "Biryani, Burger, Ice Cream...".tr,
               ),
               kHiegth15,
               const WelcomeCardHome(
                 image: "assets/image/home_trending_image.png",
               ),
               kHiegth25,
-              const OneTextHeading(
-                heading: "Our Services",
+              OneTextHeading(
+                heading: "Our Services".tr,
               ),
               kHiegth20,
               GestureDetector(
                 onTap: () {
                   Get.find<NavigationController>().changeTabIndex(2);
                 },
-                child: const OruServiceBigCard(
+                child: OruServiceBigCard(
                   image: "assets/image/home_appliance_image.png",
-                  name: "E-Store",
+                  name: "E-Store".tr,
                 ),
               ),
               kHiegth20,
@@ -157,8 +157,8 @@ class _HomePageState extends State<HomePage> {
                             PageTransitionAnimation.cupertino,
                       );
                     },
-                    child: const OurServiceCard(
-                      name: 'Groceries',
+                    child: OurServiceCard(
+                      name: 'Groceries'.tr,
                       image: "assets/image/grocerry_image.png",
                     ),
                   ),
@@ -167,16 +167,16 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Get.find<NavigationController>().changeTabIndex(1);
                     },
-                    child: const OurServiceCard(
-                      name: 'Food',
+                    child: OurServiceCard(
+                      name: 'Food'.tr,
                       image: "assets/image/service_food_image.png",
                     ),
                   ),
                 ],
               ),
               kHiegth20,
-              const OneTextHeading(
-                heading: "Best Sellers",
+              OneTextHeading(
+                heading: "Best Sellers".tr,
               ),
               kHiegth20,
               Obx(
@@ -188,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                           scrollDirection: Axis.horizontal,
                           itemCount: bestSellerController.bestSellerList.length,
                           itemBuilder: (context, index) {
-                            log("Best Sellers");
+                            log("Best Sellers".tr);
                             final bestSeller =
                                 bestSellerController.bestSellerList[index];
                             return BestSellerCard(

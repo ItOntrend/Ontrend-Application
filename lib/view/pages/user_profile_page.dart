@@ -13,6 +13,40 @@ class UserProfilePage extends StatelessWidget {
 
   final authController = Get.find<AuthController>();
   final userController = Get.find<UserController>();
+  final List locale = [
+    {'name': "ENGLISH", 'locale': Locale('en', 'US')},
+    {'name': "عربي", 'locale': Locale('ar', 'OM')}
+  ];
+  updateLanguage(Locale locale) {
+    Get.back();
+    Get.updateLocale(locale);
+  }
+
+  buildDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text('Choose a language'.tr),
+            content: Container(
+              width: double.maxFinite,
+              child: ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                        onTap: () => updateLanguage(locale[index]['locale']),
+                        child: Text(locale[index]['name']));
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      color: Colors.blue,
+                    );
+                  },
+                  itemCount: locale.length),
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +61,18 @@ class UserProfilePage extends StatelessWidget {
         backgroundColor: kWhite,
         leading: const SizedBox(),
         centerTitle: true,
-        title: const Text(
-          "My Profile",
+        title: Text(
+          "My Profile".tr,
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.language),
+            onPressed: () {
+              buildDialog(context);
+            },
+          ),
+          const SizedBox(width: 16),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -64,38 +107,37 @@ class UserProfilePage extends StatelessWidget {
                 Obx(() {
                   // final userDetail = userController.userDetail;
                   return ChangeTextfield(
-                    hintText: "*Name...",
-                    initialValue: "${userController.firstName.value}"
-                    // userDetail['firstName'] ?? '',
-                  );
+                      hintText: "*Name...",
+                      initialValue: "${userController.firstName.value}"
+                      // userDetail['firstName'] ?? '',
+                      );
                 }),
                 kHiegth20,
                 Obx(() {
                   return ChangeTextfield(
-                    hintText: "*Email...",
-                    initialValue: "${userController.email.value}"
-                  );
+                      hintText: "*Email...",
+                      initialValue: "${userController.email.value}");
                 }),
                 kHiegth20,
                 Obx(() {
                   return ChangeTextfield(
-                    hintText: "Nationality",
+                    hintText: "Nationality".tr,
                     initialValue: "${userController.nationality.value}",
                   );
                 }),
                 kHiegth25,
-                const MainTile(
-                  name: "My Orders",
+                MainTile(
+                  name: "My Orders".tr,
                   icon: "assets/icons/my_orders_icon.png",
                 ),
                 kHiegth25,
-                const MainTile(
-                  name: "Help",
+                MainTile(
+                  name: "Help".tr,
                   icon: "assets/icons/help_icon.png",
                 ),
                 kHiegth25,
-                const MainTile(
-                  name: "Contact Us",
+                MainTile(
+                  name: "Contact Us".tr,
                   icon: "assets/icons/call_icon.png",
                 ),
                 kHiegth25,
@@ -104,8 +146,8 @@ class UserProfilePage extends StatelessWidget {
                     await authController.onLogOut();
                     Get.back();
                   },
-                  child: const MainTile(
-                    name: "Log Out",
+                  child: MainTile(
+                    name: "Log Out".tr,
                     icon: "assets/icons/power_icon.png",
                   ),
                 ),

@@ -89,8 +89,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 padding: const EdgeInsets.only(top: 250),
                 child: Column(
                   children: [
-                    const Text(
-                      "Bestseller",
+                    Text(
+                      "Best Sellers".tr,
                       style: TextStyle(
                         color: kOrange,
                         fontSize: 18,

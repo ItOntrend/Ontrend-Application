@@ -31,8 +31,8 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
             Icons.arrow_back_ios,
           ),
         ),
-        title: const Text(
-          "Payment Options",
+        title: Text(
+          "Payment Options".tr,
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
@@ -84,15 +84,15 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
                           fit: BoxFit.fitHeight,
                         ),
                       ),
-                      title: const Text(
-                        "Pay on Delivery",
+                      title: Text(
+                        "Pay on Delivery".tr,
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       subtitle: Text(
-                        "Save any pay via cards",
+                        "Save any pay via cards".tr,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 12,
@@ -136,8 +136,8 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
                           ),
                         ),
                       ),
-                      title: const Text(
-                        "Add New Card",
+                      title: Text(
+                        "Add New Card".tr,
                         style: TextStyle(
                           color: kOrange,
                           fontSize: 15,
@@ -145,7 +145,7 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
                         ),
                       ),
                       subtitle: Text(
-                        "Save any pay via cards",
+                        "Save any pay via cards".tr,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 12,
