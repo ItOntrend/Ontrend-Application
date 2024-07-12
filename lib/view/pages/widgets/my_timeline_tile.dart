@@ -9,26 +9,36 @@ class MyTimelineTile extends StatelessWidget {
     required this.isFirst,
     required this.isLast,
     required this.child,
-    // required this.isPast,
+    this.indicator,
+    required this.isPast,
   });
   final bool isFirst;
   final bool isLast;
   // ignore: prefer_typing_uninitialized_variables
   final child;
-  // final bool isPast;
+  // ignore: prefer_typing_uninitialized_variables
+  final indicator;
+  final bool isPast;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 500.h,
+      height: 80.h,
+      width: 95.w,
       child: TimelineTile(
+        axis: TimelineAxis.horizontal,
         isFirst: isFirst,
         isLast: isLast,
-        beforeLineStyle: const LineStyle(
-          color: kTimetilestyleLineColor,
+        beforeLineStyle: LineStyle(
+          color: isPast ? kTimetilestyleLineColor : Colors.green.shade100,
         ),
-        indicatorStyle: const IndicatorStyle(
-          color: kDarkOrange,
+        indicatorStyle: IndicatorStyle(
+          indicator: indicator,
+          iconStyle: IconStyle(
+              iconData: Icons.done,
+              fontSize: 14,
+              color: isPast ? kWhite : Colors.orange.shade100),
+          color: isPast ? kDarkOrange : Colors.orange.shade100,
           width: 14,
         ),
         endChild: child,

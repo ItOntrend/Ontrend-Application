@@ -12,39 +12,39 @@ class BestSellerCard extends StatefulWidget {
   final VoidCallback onTap;
 
   const BestSellerCard({
-    super.key,
+    Key? key,
     required this.imagePath,
     required this.name,
     required this.onTap,
     required this.price,
     required this.vendor,
-  });
+  }) : super(key: key);
 
   @override
   _BestSellerCardState createState() => _BestSellerCardState();
 }
 
 class _BestSellerCardState extends State<BestSellerCard> {
-  bool _isOnline = true;
+  late bool _isOnline; // Initialize as late and not directly to true
 
   @override
   void initState() {
     super.initState();
+    _isOnline = true; // Initialize _isOnline here
     _checkConnectivity();
   }
 
   Future<void> _checkConnectivity() async {
-    final ConnectivityResult connectivityResult =
-        (await Connectivity().checkConnectivity()) as ConnectivityResult;
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      setState(() {
+        _isOnline = result != ConnectivityResult.none;
+      });
+    } as void Function(List<ConnectivityResult> event)?);
+
+    final connectivityResult = await Connectivity().checkConnectivity();
     setState(() {
       _isOnline = connectivityResult != ConnectivityResult.none;
     });
-
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-          setState(() {
-            _isOnline = result != ConnectivityResult.none;
-          });
-        } as void Function(List<ConnectivityResult> event)?);
   }
 
   @override
@@ -79,11 +79,11 @@ class _BestSellerCardState extends State<BestSellerCard> {
                         widget.imagePath,
                         fit: BoxFit.cover,
                       )
-                    : const Center(
+                    :  Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.wifi_off,
                               size: 50,
                               color: kGrey,
@@ -92,7 +92,7 @@ class _BestSellerCardState extends State<BestSellerCard> {
                             Text(
                               'No Internet Connection',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 14.sp,
                                 color: kGrey,
                               ),
                             ),
@@ -120,28 +120,28 @@ class _BestSellerCardState extends State<BestSellerCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      kHiegth6,
+                      kHiegth6, // Note: Ensure these constants are correctly defined
                       Text(
                         '${widget.price}.000',
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style:  TextStyle(
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                           color: kOrange,
                         ),
                       ),
-                      kHiegth6,
+                      kHiegth6, // Note: Ensure these constants are correctly defined
                       Text(
                         widget.name,
-                        style: const TextStyle(
-                          fontSize: 14,
+                        style:  TextStyle(
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           color: kBlack,
                         ),
                       ),
                       Text(
                         widget.vendor,
-                        style: const TextStyle(
-                          fontSize: 14,
+                        style:  TextStyle(
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           color: kGrey,
                         ),

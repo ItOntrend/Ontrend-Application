@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
         ),
         title: Obx(() {
           return GestureDetector(
-            onTap: (){
+            onTap: () {
               Get.to(() => const SelectLocationPage());
             },
             child: Column(
@@ -96,7 +96,6 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         }),
-
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -111,8 +110,8 @@ class _HomePageState extends State<HomePage> {
                 kWidth25,
                 GestureDetector(
                   onTap: () {
-                    Get.to(() =>
-                      const AddToCartPage(
+                    Get.to(
+                      () => const AddToCartPage(
                         addedBy: '',
                         restaurantName: '',
                       ),
@@ -131,11 +130,11 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               TextfieldWithMic(
+              TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...",
-                onTap: (){
+                onTap: () {
                   Get.to(const SearchPage());
-                } ,
+                },
               ),
               kHiegth15,
               const WelcomeCardHome(

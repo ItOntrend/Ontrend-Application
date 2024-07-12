@@ -25,6 +25,8 @@ class BillDetailsCard extends StatefulWidget {
 class _BillDetailsCardState extends State<BillDetailsCard> {
   final CartController cartController = Get.find();
   final UserController userController = Get.find();
+
+  @override
   void initState() {
     userController.fetchUserData();
     super.initState();
@@ -136,15 +138,14 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
                     .DataFromPrefs(key: HiveKeys.userData);
 
                 if (cartController.totalAmount > 0) {
-                  cartController.placeOrder(
+                  String orderId = await cartController.placeOrder(
                     userId,
                     'Cash on Delivery',
                     userController.firstName.value,
                     userController.number.value,
                   );
-                }
-                if (cartController.totalAmount > 0) {
-                  Get.to(const OrderCompleteSplashPage());
+
+                  Get.to(() => OrderCompleteSplashPage(orderId: orderId));
                 }
               },
               name: "Place Order",
@@ -191,6 +192,8 @@ class BillDetailsRow extends StatelessWidget {
     );
   }
 }
+
+
 
 
 

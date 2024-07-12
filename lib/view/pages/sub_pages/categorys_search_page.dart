@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 
@@ -41,8 +42,11 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
             ),
             child: Column(
               children: [
-                const TextfieldWithMic(
+                 TextfieldWithMic(
                   hintText: "Search...",
+                  onTap: (){
+                    Get.to(const SearchPage());
+                  },
                 ),
                 kHiegth20,
                 Row(

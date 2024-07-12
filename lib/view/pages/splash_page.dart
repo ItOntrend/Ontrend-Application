@@ -23,36 +23,34 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: FlutterSplashScreen(
-        duration: const Duration(milliseconds: 3000),
-        backgroundColor: kWhite,
-        splashScreenBody: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 351.h,
+    return FlutterSplashScreen(
+      duration: const Duration(milliseconds: 3000),
+      backgroundColor: kWhite,
+      splashScreenBody: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 351.h,
+          ),
+          Center(
+            child: Image.asset(
+              "assets/image/splash_screen_image.png",
             ),
-            Center(
-              child: Image.asset(
-                "assets/image/splash_screen_image.png",
-              ),
+          ),
+          const Spacer(),
+          const Text(
+            "100% SAFE & SECURE",
+            style: TextStyle(
+              color: kWhite,
+              fontSize: 21,
+              fontWeight: FontWeight.w700,
             ),
-            const Spacer(),
-            const Text(
-              "100% SAFE & SECURE",
-              style: TextStyle(
-                color: kWhite,
-                fontSize: 21,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            kHiegth50,
-          ],
-        ),
-        nextScreen: AuthPages(),
+          ),
+          kHiegth50,
+        ],
       ),
+      nextScreen: AuthPages(),
     );
   }
 }

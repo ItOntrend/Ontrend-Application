@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/after_order_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/delivery_tracking_page.dart';
 
 class OrderCompleteSplashPage extends StatelessWidget {
-  const OrderCompleteSplashPage({super.key});
+  final String orderId;
+
+  const OrderCompleteSplashPage({super.key, required this.orderId});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class OrderCompleteSplashPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Your  Order Has Been Placed Successfully",
+                    "Your Order Has Been Placed Successfully",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 30,
@@ -53,10 +55,8 @@ class OrderCompleteSplashPage extends StatelessWidget {
           ],
         ),
       ),
-      duration: const Duration(
-        seconds: 3,
-      ),
-      nextScreen: const AfterOrderPage(),
+      duration: const Duration(seconds: 3),
+      nextScreen: DeliveryTrackingPage(orderId: orderId),
     );
   }
 }

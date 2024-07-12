@@ -25,25 +25,26 @@ class ExploreCard extends StatefulWidget {
 }
 
 class _ExploreCardState extends State<ExploreCard> {
-  bool _isOnline = true;
+  late bool _isOnline; // Initialize as late and not directly to true
 
   @override
   void initState() {
     super.initState();
+    _isOnline = true; // Initialize _isOnline here
     _checkConnectivity();
   }
 
   Future<void> _checkConnectivity() async {
-    final ConnectivityResult connectivityResult = (await Connectivity().checkConnectivity()) as ConnectivityResult;
-    setState(() {
-      _isOnline = connectivityResult != ConnectivityResult.none;
-    });
-
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       setState(() {
         _isOnline = result != ConnectivityResult.none;
       });
     } as void Function(List<ConnectivityResult> event)?);
+
+    final connectivityResult = await Connectivity().checkConnectivity();
+    setState(() {
+      _isOnline = connectivityResult != ConnectivityResult.none;
+    });
   }
 
   @override
@@ -76,7 +77,7 @@ class _ExploreCardState extends State<ExploreCard> {
             _isOnline
                 ? (widget.image != null && widget.image!.isNotEmpty
                     ? ClipRRect(
-                        borderRadius:const BorderRadius.only(
+                        borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10),
                         ),
@@ -93,7 +94,7 @@ class _ExploreCardState extends State<ExploreCard> {
                         color: Colors.grey[300],
                         child: Center(
                           child: Text(
-                            'No image has uploaded',
+                            'No image has been uploaded',
                             style: TextStyle(
                               color: Colors.grey[700],
                               fontSize: 16.sp,
@@ -118,7 +119,7 @@ class _ExploreCardState extends State<ExploreCard> {
                           Text(
                             'No Internet Connection',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               color: kGrey,
                             ),
                           ),
@@ -138,8 +139,8 @@ class _ExploreCardState extends State<ExploreCard> {
                     children: [
                       Text(
                         widget.name,
-                        style: const TextStyle(
-                          fontSize: 19,
+                        style:  TextStyle(
+                          fontSize: 19.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -148,13 +149,14 @@ class _ExploreCardState extends State<ExploreCard> {
                       Image.asset("assets/image/small_location_image.png"),
                     ],
                   ),
-                  kHiegth20,
+                  kHiegth20, // Note: Ensure these constants are correctly defined
                   const Row(
                     children: [
+                      // Uncomment and customize as needed
                       // const Text(
                       //   "Pizza, Pastas, Desserts",
                       //   style: TextStyle(
-                      //     fontSize: 14,
+                      //     fontSize: 14.sp,
                       //   ),
                       // ),
                       // const Spacer(),
@@ -163,11 +165,11 @@ class _ExploreCardState extends State<ExploreCard> {
                       // Image.asset("assets/image/small_location_image.png")
                     ],
                   ),
-                  kHiegth6,
-                  const Text(
+                  kHiegth6, // Note: Ensure these constants are correctly defined
+                   Text(
                     "6.8 km",
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                     ),
                   ),
                 ],

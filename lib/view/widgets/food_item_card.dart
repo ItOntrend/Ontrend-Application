@@ -158,7 +158,8 @@ class _FoodItemCardState extends State<FoodItemCard> {
                             },
                             child: AddButton(
                               item: item,
-                            ));
+                            ),
+                          );
                   }),
                 ],
               ),

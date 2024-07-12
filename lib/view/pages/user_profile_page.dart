@@ -7,6 +7,7 @@ import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/change_textfield.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_tile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserProfilePage extends StatelessWidget {
   UserProfilePage({super.key});
@@ -87,9 +88,20 @@ class UserProfilePage extends StatelessWidget {
                   icon: "assets/icons/help_icon.png",
                 ),
                 kHiegth25,
-                const MainTile(
-                  name: "Contact Us",
-                  icon: "assets/icons/call_icon.png",
+                GestureDetector(
+                  onTap: () async{
+                    const whatsappUrl = "https://wa.me/+968-98710707";   // Replace with your WhatsApp number
+                    if (await canLaunchUrl(Uri.parse(whatsappUrl))) {
+                      await launchUrl(Uri.parse(whatsappUrl));
+                    } else {
+                      // Handle the case where the URL could not be launched
+                      print('Could not launch $whatsappUrl');
+                    }
+                  },
+                  child: const MainTile(
+                    name: "Contact Us",
+                    icon: "assets/icons/call_icon.png",
+                  ),
                 ),
                 kHiegth25,
                 GestureDetector(
