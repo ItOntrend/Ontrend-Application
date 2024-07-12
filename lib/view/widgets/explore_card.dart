@@ -1,28 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/constant.dart';
 
-class ExploreCard extends StatelessWidget {
+class ExploreCard extends StatefulWidget {
   const ExploreCard({
-    super.key,
-    required this.image,
+    Key? key,
+    required this.name,
+    this.locationCity,
+    this.image,
     this.tabIndex,
     required this.onTap,
-    required this.name,
-    this.locatioCity,
-  });
+  }) : super(key: key);
 
   final String name;
-  final String? locatioCity;
+  final String? locationCity;
   final String? image;
   final int? tabIndex;
   final VoidCallback? onTap;
 
   @override
+  _ExploreCardState createState() => _ExploreCardState();
+}
+
+class _ExploreCardState extends State<ExploreCard> {
+  late bool _isOnline; // Initialize as late and not directly to true
+
+  @override
+  void initState() {
+    super.initState();
+    _isOnline = true; // Initialize _isOnline here
+    _checkConnectivity();
+  }
+
+  Future<void> _checkConnectivity() async {
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      setState(() {
+        _isOnline = result != ConnectivityResult.none;
+      });
+    } as void Function(List<ConnectivityResult> event)?);
+
+    final connectivityResult = await Connectivity().checkConnectivity();
+    setState(() {
+      _isOnline = connectivityResult != ConnectivityResult.none;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
         margin: const EdgeInsets.only(
           bottom: 20,
@@ -40,7 +68,7 @@ class ExploreCard extends StatelessWidget {
               color: Colors.grey.withOpacity(0.2),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: const Offset(1, 4), // changes position of shadow
+              offset: const Offset(1, 4),
             ),
           ],
         ),
@@ -51,20 +79,12 @@ class ExploreCard extends StatelessWidget {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10)),
-                    child: image!.startsWith('http://') ||
-                            image!.startsWith('https://')
-                        ? Image.network(
-                            image!,
-                            height: 163.h,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset(
-                            image!,
-                            height: 163.h,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
+                    child: Image.network(
+                      image!,
+                      height: 163.h,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   )
                 : Container(
                     height: 163.h,
@@ -91,63 +111,63 @@ class ExploreCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        name,
-                        style: const TextStyle(
-                          fontSize: 19,
+                        widget.name,
+                        style:  TextStyle(
+                          fontSize: 19.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      //Spacer(),
-                      //Text("Salala"),
-                      //Image.asset("assets/image/small_location_image.png"),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        height: 29.h,
-                        width: 63.w,
-                        decoration: BoxDecoration(
-                          color: kGreen,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "4.2",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: kWhite,
-                              ),
-                            ),
-                            Icon(
-                              Icons.star,
-                              size: 20,
-                              color: kWhite,
-                            )
-                          ],
-                        ),
-                      ),
+                      Spacer(),
+                      Text("Salala"),
+                      Image.asset("assets/image/small_location_image.png")
+                      // Container(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 4),
+                      //   height: 29.h,
+                      //   width: 63.w,
+                      //   decoration: BoxDecoration(
+                      //     color: kGreen,
+                      //     borderRadius: BorderRadius.circular(8),
+                      //   ),
+                      //   child: const Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       Text(
+                      //         "4.2",
+                      //         style: TextStyle(
+                      //           fontWeight: FontWeight.bold,
+                      //           color: kWhite,
+                      //         ),
+                      //       ),
+                      //       Icon(
+                      //         Icons.star,
+                      //         size: 20,
+                      //         color: kWhite,
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                   kHiegth20,
-                  Row(
+                  const Row(
                     children: [
-                      Text(
-                        "Pizza, Pastas, Desserts",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                      const Spacer(),
-                      const Text("Salala"),
-                      kWidth6,
-                      Image.asset("assets/image/small_location_image.png")
+                      // const Text(
+                      //   "Pizza, Pastas, Desserts",
+                      //   style: TextStyle(
+                      //     fontSize: 14,
+                      //   ),
+                      // ),
+                      // const Spacer(),
+                      // const Text("Salala"),
+                      // kWidth6,
+                      // Image.asset("assets/image/small_location_image.png")
                     ],
                   ),
-                  kHiegth6,
-                  const Text(
+                  kHiegth6, // Note: Ensure these constants are correctly defined
+                   Text(
                     "6.8 km",
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                     ),
                   ),
                 ],

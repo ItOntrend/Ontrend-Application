@@ -42,6 +42,7 @@ class _SplashPageState extends State<SplashPage> {
           const Text(
             "100% SAFE & SECURE",
             style: TextStyle(
+              color: kWhite,
               fontSize: 21,
               fontWeight: FontWeight.w700,
             ),

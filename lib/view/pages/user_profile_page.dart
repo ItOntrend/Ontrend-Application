@@ -7,6 +7,7 @@ import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/change_textfield.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_tile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserProfilePage extends StatelessWidget {
   UserProfilePage({super.key});
@@ -50,29 +51,19 @@ class UserProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        userController.fetchUserData();
-      },
-    );
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      userController.fetchUserData();
+    });
+
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
         backgroundColor: kWhite,
         leading: const SizedBox(),
         centerTitle: true,
-        title: Text(
-          "My Profile".tr,
+        title: const Text(
+          "My Profile",
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.language),
-            onPressed: () {
-              buildDialog(context);
-            },
-          ),
-          const SizedBox(width: 16),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -93,10 +84,8 @@ class UserProfilePage extends StatelessWidget {
                 ),
                 kHiegth20,
                 Obx(() {
-                  // final userDetail = userController.userDetail;
                   return Text(
                     "${userController.firstName.value}  ${userController.lastName.value}",
-                    // "${userDetail['firstName']} ${userDetail['lastName']}",
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
@@ -105,23 +94,23 @@ class UserProfilePage extends StatelessWidget {
                 }),
                 kHiegth15,
                 Obx(() {
-                  // final userDetail = userController.userDetail;
                   return ChangeTextfield(
-                      hintText: "*Name...",
-                      initialValue: "${userController.firstName.value}"
-                      // userDetail['firstName'] ?? '',
-                      );
+                    hintText: "*Name...",
+                    initialValue: "${userController.firstName.value}"
+                    // userDetail['firstName'] ?? '',
+                  );
                 }),
                 kHiegth20,
                 Obx(() {
                   return ChangeTextfield(
-                      hintText: "*Email...",
-                      initialValue: "${userController.email.value}");
+                    hintText: "*Email...",
+                    initialValue: "${userController.email.value}"
+                  );
                 }),
                 kHiegth20,
                 Obx(() {
                   return ChangeTextfield(
-                    hintText: "Nationality".tr,
+                    hintText: "Nationality",
                     initialValue: "${userController.nationality.value}",
                   );
                 }),
@@ -136,8 +125,8 @@ class UserProfilePage extends StatelessWidget {
                   icon: "assets/icons/help_icon.png",
                 ),
                 kHiegth25,
-                MainTile(
-                  name: "Contact Us".tr,
+                const MainTile(
+                  name: "Contact Us",
                   icon: "assets/icons/call_icon.png",
                 ),
                 kHiegth25,

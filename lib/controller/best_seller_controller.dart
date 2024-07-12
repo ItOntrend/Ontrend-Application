@@ -16,7 +16,8 @@ class BestSellerController extends GetxController {
   Future<void> getBestSeller() async {
     print("testing for now");
     try {
-      isBestSellerLoading.value = true;
+      isBestSellerLoading(true);
+      await Future.delayed(const Duration(seconds: 2)); // Simulating network delay
       bestSellerList.clear();
       final bestSellers = await BestSellerRepository.getBestSeller();
       bestSellerList.addAll(bestSellers);

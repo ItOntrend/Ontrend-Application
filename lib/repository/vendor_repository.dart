@@ -5,7 +5,7 @@ import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 class VendorRepository {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  static Future<List<Vendor>> getVendors(String userId) async {
+  static Future<List<VendorModel>> getVendors(String userId) async {
     var snapshot =
         await _db.collection('users').where('role', isEqualTo: 'Vendor').get();
 
@@ -16,14 +16,14 @@ class VendorRepository {
     }
 
     log('Vendors found: ${snapshot.docs.length}');
-    return snapshot.docs.map((doc) => Vendor.fromMap(doc.data())).toList();
+    return snapshot.docs.map((doc) => VendorModel.fromJson(doc.data())).toList();
   }
 
-  static Future<Vendor?> getVendorById({required String userId}) async {
+  static Future<VendorModel?> getVendorById({required String userId}) async {
     var doc = await _db.collection('users').doc(userId).get();
 
     if (doc.exists) {
-      return Vendor.fromMap(doc.data()!);
+      return VendorModel.fromJson(doc.data()!);
     }
 
     return null;

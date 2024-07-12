@@ -8,7 +8,7 @@ import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/order_complete_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/order_complete_splash_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/payment_option_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_botton.dart';
 
@@ -25,6 +25,8 @@ class BillDetailsCard extends StatefulWidget {
 class _BillDetailsCardState extends State<BillDetailsCard> {
   final CartController cartController = Get.find();
   final UserController userController = Get.find();
+
+  @override
   void initState() {
     userController.fetchUserData();
     super.initState();
@@ -136,15 +138,14 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
                     .DataFromPrefs(key: HiveKeys.userData);
 
                 if (cartController.totalAmount > 0) {
-                  cartController.placeOrder(
+                  String orderId = await cartController.placeOrder(
                     userId,
                     'Cash on Delivery',
                     userController.firstName.value,
                     userController.number.value,
                   );
-                }
-                if (cartController.totalAmount > 0) {
-                  Get.to(const OrderCompletePage());
+
+                  Get.to(() => OrderCompleteSplashPage(orderId: orderId));
                 }
               },
               name: "Place Order",
@@ -181,7 +182,7 @@ class BillDetailsRow extends StatelessWidget {
           ),
         ),
         Text(
-          'OMR $amount',
+          'OMR ${amount.toStringAsFixed(3)}',
           style: TextStyle(
             fontSize: 15,
             fontWeight: isBold ? FontWeight.w700 : FontWeight.w400,
@@ -191,6 +192,8 @@ class BillDetailsRow extends StatelessWidget {
     );
   }
 }
+
+
 
 
 

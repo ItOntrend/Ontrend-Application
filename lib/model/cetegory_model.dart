@@ -24,9 +24,9 @@ class CategoryModel {
     required String image,
   }) async {
     final docCategory = FirebaseFirestore.instance
-        .collection('Gestapo')
-        .doc('Admin')
-        .collection('Category')
+        .collection('Food')
+        .doc('items')
+        .collection('categories')
         .doc(category);
 
     final categories = CategoryModel(

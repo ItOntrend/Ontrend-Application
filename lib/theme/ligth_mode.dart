@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 ThemeData lightMode = ThemeData(
-  colorScheme: ColorScheme.light(
+  colorScheme: const ColorScheme.light(
     surface: Colors.white,
     primary: Colors.white,
     secondary: Colors.white,

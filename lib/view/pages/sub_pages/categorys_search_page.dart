@@ -5,21 +5,24 @@ import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 
-class BurgerSearchPage extends StatefulWidget {
-  const BurgerSearchPage({
+class CategorysSearchPage extends StatefulWidget {
+  const CategorysSearchPage({
     super.key,
     required this.userId,
+    required this.categoryName,
   });
   final String userId;
+  final String categoryName;
 
   @override
-  State<BurgerSearchPage> createState() => _BurgerSearchPageState();
+  State<CategorysSearchPage> createState() => _CategorysSearchPageState();
 }
 
-class _BurgerSearchPageState extends State<BurgerSearchPage> {
+class _CategorysSearchPageState extends State<CategorysSearchPage> {
   final VendorController vendorController = Get.put(VendorController());
 
   @override
@@ -39,8 +42,11 @@ class _BurgerSearchPageState extends State<BurgerSearchPage> {
             ),
             child: Column(
               children: [
-                const TextfieldWithMic(
-                  hintText: "Burger...",
+                 TextfieldWithMic(
+                  hintText: "Search...",
+                  onTap: (){
+                    Get.to(const SearchPage());
+                  },
                 ),
                 kHiegth20,
                 Row(
@@ -51,9 +57,9 @@ class _BurgerSearchPageState extends State<BurgerSearchPage> {
                       },
                       icon: const Icon(Icons.arrow_back_ios),
                     ),
-                    const Text(
-                      "Burger",
-                      style: TextStyle(
+                    Text(
+                      widget.categoryName,
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
                       ),
@@ -80,7 +86,8 @@ class _BurgerSearchPageState extends State<BurgerSearchPage> {
                                   name: vendor.restaurantName,
                                   image: vendor.bannerImage,
                                   onTap: () {
-                                    Get.to(ProfilePage(userId: widget.userId));
+                                    Get.to(() =>
+                                        ProfilePage(userId: widget.userId));
                                   },
                                 );
                               },
