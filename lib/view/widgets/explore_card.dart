@@ -9,7 +9,7 @@ class ExploreCard extends StatefulWidget {
     Key? key,
     required this.name,
     this.locationCity,
-    this.image,
+    required this.image,
     this.tabIndex,
     required this.onTap,
   }) : super(key: key);
@@ -74,13 +74,13 @@ class _ExploreCardState extends State<ExploreCard> {
         ),
         child: Column(
           children: [
-            image != null && image!.isNotEmpty
+            widget.image != null && widget.image!.isNotEmpty
                 ? ClipRRect(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10)),
                     child: Image.network(
-                      image!,
+                      widget.image!,
                       height: 163.h,
                       width: double.infinity,
                       fit: BoxFit.cover,
