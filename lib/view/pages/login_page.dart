@@ -37,8 +37,8 @@ class LoginPage extends StatelessWidget {
                 // )
               ),
               kHiegth70,
-              const Text(
-                "Welcome back!",
+              Text(
+                "Welcome back!".tr,
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w500,
@@ -52,26 +52,26 @@ class LoginPage extends StatelessWidget {
                   child: Column(
                     children: [
                       MainTextField(
-                        hintText: "Email ID",
+                        hintText: "Email ID".tr,
                         controller: authController.emailController,
                         validator: (email) {
                           if (email == null || email.isEmpty) {
-                            return "Email is required";
+                            return "Email is required".tr;
                           } else if (email.length < 6) {
-                            return "Email must be 6 Letter";
+                            return "Email must be 6 Letter".tr;
                           }
                           return null;
                         },
                       ),
                       kHiegth20,
                       MainTextFieldPassword(
-                        hintText: "Password",
+                        hintText: "Password".tr,
                         controller: authController.passwordController,
                         validator: (password) {
                           if (password == null || password.isEmpty) {
-                            return "Password is required";
+                            return "Password is required".tr;
                           } else if (password.length < 8) {
-                            return "Password must be 8 Letter";
+                            return "Password must be 8 Letter".tr;
                           }
                           return null;
                         },
@@ -84,8 +84,8 @@ class LoginPage extends StatelessWidget {
                             onPressed: () {
                               Get.to(ForgotPassword());
                             },
-                            child: const Text(
-                              "Forgot Password?",
+                            child: Text(
+                              "Forgot Password?".tr,
                               style: TextStyle(
                                 color: kBlue,
                                 fontSize: 16,
@@ -110,14 +110,14 @@ class LoginPage extends StatelessWidget {
                         authController.onLogin(context);
                       }
                     },
-                    child: const MainBotton(name: "Login")),
+                    child: MainBotton(name: "Login".tr)),
               ),
               kHiegth35,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Don’t have an account? ",
+                  Text(
+                    "Don’t have an account?".tr,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -127,8 +127,8 @@ class LoginPage extends StatelessWidget {
                     onTap: () => Get.to(() =>
                       SingUpPage(),
                     ),
-                    child: const Text(
-                      "Sign Up",
+                    child: Text(
+                      "Sign Up".tr,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,

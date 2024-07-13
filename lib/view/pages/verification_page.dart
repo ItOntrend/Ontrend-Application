@@ -40,10 +40,10 @@ class VerificationPage extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  const Center(
+                  Center(
                     child: Text(
-                      "Verify Your Number",
-                      style: TextStyle(
+                      "Verify Your Number".tr,
+                      style: const TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w700,
                       ),
@@ -51,7 +51,7 @@ class VerificationPage extends StatelessWidget {
                   ),
                   kHiegth40,
                   Text(
-                    "You will receive a 4 digit OTP\nto your phone number.",
+                    "You will receive a 4 digit OTP\nto your phone number.".tr,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w400,
@@ -72,12 +72,12 @@ class VerificationPage extends StatelessWidget {
                     ],
                   ),
                   kHiegth24,
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text("Didn't receive code? "),
+                      Text("Didn't receive code? ".tr),
                       Text(
-                        "Resend",
+                        "Resend".tr,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -89,7 +89,7 @@ class VerificationPage extends StatelessWidget {
                   kHiegth24,
                   GestureDetector(
                     onTap: () => _verifyOTP(context),
-                    child: const MainBotton(name: "Verify"),
+                    child: MainBotton(name: "Verify".tr),
                   )
                 ],
               ),
@@ -136,10 +136,10 @@ class VerificationPage extends StatelessWidget {
       if (userCredential.additionalUserInfo!.isNewUser) {
         Get.to(() => const NavigationManu());
       } else {
-        Get.snackbar('Error', 'User already exists.');
+        Get.snackbar('Error'.tr, 'User already exists.'.tr);
       }
     } catch (e) {
-      Get.snackbar('Error', 'Invalid OTP.');
+      Get.snackbar('Error'.tr, 'Invalid OTP.');
     }
   }
 }
