@@ -15,7 +15,9 @@ class NotificationPage extends StatelessWidget {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
+        backgroundColor: kWhite,
         appBar: AppBar(
+          backgroundColor: kWhite,
           centerTitle: true,
           title: Text("Notification".tr),
           leading: IconButton(

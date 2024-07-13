@@ -3,13 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-// import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
-// import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/food_item_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/profile_card.dart';
+import 'item_view_page.dart'; // Import the ItemViewPage
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
@@ -30,9 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    // getVendorNameDetails();
     log(widget.userId);
-    // vendorController.getVendorByUId(userId: widget.userId);
     vendorController.getItems(widget.userId);
   }
 
@@ -72,10 +69,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              // Positioned(
-              //   left: 50,
-              //   child: Image.asset("assets/image/big_pizza.png"),
-              // ),
               Positioned(
                 top: 100,
                 left: 30,
@@ -116,18 +109,26 @@ class _ProfilePageState extends State<ProfilePage> {
                           itemCount: vendorController.itemsList.length,
                           itemBuilder: (context, index) {
                             final item = vendorController.itemsList[index];
-                            return FoodItemCard(
-                              name: item.name,
-                              image: item.imageUrl,
-                              description: item.description,
-                              price: item.price,
-                              addedBy: item.addedBy,
-                              restaurantName: item.restaurantName,
+                            return GestureDetector(
+                              onTap: () {
+                                Get.to(() => ItemViewPage(
+                                    item:
+                                        item)); // Navigate to ItemViewPage with item data
+                              },
+                              child: FoodItemCard(
+                                name: item.name,
+                                image: item.imageUrl,
+                                description: item.description,
+                                price: item.price,
+                                addedBy: item.addedBy,
+                                restaurantName: item.restaurantName,
+                              ),
                             );
                           },
                         );
                       },
                     ),
+                    kHiegth25,
                   ],
                 ),
               ),
@@ -138,41 +139,3 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-// Obx(
-                    //   () {
-                    //     if (vendorController.isItemsLoading.value) {
-                    //       log("Loading items...");
-                    //       return const Center(child: CircularProgressIndicator());
-                    //     } else {
-                    //       if (vendorController.itemsList.isEmpty) {
-                    //         return const Center(child: Text("No items found"));
-                    //       }
-                    //       return SizedBox(
-                    //         height: 400,
-                    //         child: ListView.builder(
-                    //           shrinkWrap: true,
-                    //           scrollDirection: Axis.horizontal,
-                    //           itemCount: vendorController.itemsList.length,
-                    //           itemBuilder: (context, index) {
-                    //             final item = vendorController.itemsList[index];
-                    //             return FoodItemCard(
-                    //               name: item.name,
-                    //               image: item.imageUrl,
-                    //               description: item.description,
-                    //               price: item.price,
-                    //             );
-                    //           },
-                    //         ),
-                    //       );
-                    //     }
-                    //   },
-                    // ),

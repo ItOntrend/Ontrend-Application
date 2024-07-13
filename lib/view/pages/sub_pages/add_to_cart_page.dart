@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/offers_and_benefits_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/add_to_cart_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/adding_more_item_card.dart';
@@ -24,9 +25,11 @@ class AddToCartPage extends StatefulWidget {
 }
 
 class _AddToCartPageState extends State<AddToCartPage> {
+  final LocationController locationController = Get.put(LocationController());
+  final CartController cartController = Get.put(CartController());
+
   @override
   Widget build(BuildContext context) {
-    final CartController cartController = Get.put(CartController());
     String addedBy = widget.addedBy;
     String restaurantName = widget.restaurantName;
 
@@ -47,12 +50,12 @@ class _AddToCartPageState extends State<AddToCartPage> {
           children: [
             Image.asset("assets/icons/location_icon.png"),
             kWidth10,
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Janub Ad Dahariz",
-                  style: TextStyle(
+                  locationController.streetName.value,
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
@@ -61,10 +64,10 @@ class _AddToCartPageState extends State<AddToCartPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "Salala, Oman",
-                      style: TextStyle(color: kBlue, fontSize: 10),
+                      "${locationController.cityName.value}, ${locationController.countryName.value}",
+                      style: const TextStyle(color: kBlue, fontSize: 10),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.keyboard_arrow_down,
                       size: 16,
                     ),
@@ -140,6 +143,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
     );
   }
 }
+
 
 
 

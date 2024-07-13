@@ -124,7 +124,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => Get.to(
+                    onTap: () => Get.to(() =>
                       SingUpPage(),
                     ),
                     child: Text(

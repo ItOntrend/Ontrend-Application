@@ -5,8 +5,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/e_store_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/food_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/home_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/user_profile_page.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-
+import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 class NavigationController extends GetxController {
   // final Rx<int>selectedIndex = 0.obs;
   Rx<PersistentTabController> tabController =

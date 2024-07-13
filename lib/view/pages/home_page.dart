@@ -10,6 +10,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/groceries_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
@@ -17,7 +18,7 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/oru_service_big_card.da
 import 'package:ontrend_food_and_e_commerce/view/widgets/oru_service_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_home.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 
 class HomePage extends StatefulWidget {
   final NavigationController? controller;
@@ -39,7 +40,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    bestSellerController.getBestSeller();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      bestSellerController.getBestSeller();
+    });
   }
 
   @override
@@ -51,7 +54,7 @@ class _HomePageState extends State<HomePage> {
         centerTitle: false,
         leading: GestureDetector(
           onTap: () {
-            Get.to(const SelectLocationPage());
+            Get.to(() => const SelectLocationPage());
           },
           child: Padding(
             padding: const EdgeInsets.only(left: 20),
@@ -59,33 +62,38 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         title: Obx(() {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                locationController.streetName.value,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
+          return GestureDetector(
+            onTap: () {
+              Get.to(() => const SelectLocationPage());
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  locationController.streetName.value,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "${locationController.cityName.value}, ${locationController.countryName.value}",
-                    style: const TextStyle(
-                      color: kBlue,
-                      fontSize: 10,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${locationController.cityName.value}, ${locationController.countryName.value}",
+                      style: const TextStyle(
+                        color: kBlue,
+                        fontSize: 10,
+                      ),
                     ),
-                  ),
-                  const Icon(
-                    Icons.keyboard_arrow_down,
-                    size: 16,
-                  ),
-                ],
-              ),
-            ],
+                    const Icon(
+                      Icons.keyboard_arrow_down,
+                      size: 16,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           );
         }),
         actions: [
@@ -95,7 +103,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.to(const NotificationPage());
+                    Get.to(() => const NotificationPage());
                   },
                   child: Image.asset("assets/icons/notification_icon.png"),
                 ),
@@ -103,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                 GestureDetector(
                   onTap: () {
                     Get.to(
-                      const AddToCartPage(
+                      () => const AddToCartPage(
                         addedBy: '',
                         restaurantName: '',
                       ),
@@ -122,8 +130,8 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextfieldWithMic(
-                hintText: "Biryani, Burger, Ice Cream...".tr,
+              const TextfieldWithMic(
+                hintText: "Biryani, Burger, Ice Cream...",
               ),
               kHiegth15,
               const WelcomeCardHome(

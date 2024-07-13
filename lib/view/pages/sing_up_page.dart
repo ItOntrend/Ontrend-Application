@@ -146,7 +146,7 @@ class SingUpPage extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () => Get.to(
-                        LoginPage(),
+                        () =>LoginPage(),
                       ),
                       child: Text(
                         "Login".tr,

@@ -9,35 +9,35 @@ class AddingMoreItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        vertical: 10,
-      ).copyWith(
-        left: 9,
-        right: 17,
-      ),
-      height: 91.h,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: kWhite,
-        borderRadius: BorderRadius.circular(
-          10,
+    return GestureDetector(
+      onTap: (){
+        Get.back();
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          vertical: 10,
+        ).copyWith(
+          left: 9,
+          right: 17,
         ),
-        border: Border.all(
-          color: kGrey.shade400,
+        height: 91.h,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: kWhite,
+          borderRadius: BorderRadius.circular(
+            10,
+          ),
+          border: Border.all(
+            color: kGrey.shade400,
+          ),
         ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: const Text(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
                   "Add more items",
                   style: TextStyle(
                     color: Colors.black54,
@@ -45,56 +45,56 @@ class AddingMoreItemCard extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-              ),
-              Container(
-                height: 19.h,
-                width: 19.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: kWhite,
-                  border: Border.all(
-                    color: kGreen,
+                Container(
+                  height: 19.h,
+                  width: 19.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: kWhite,
+                    border: Border.all(
+                      color: kGreen,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.add,
+                    size: 12,
+                    color: kBlack,
                   ),
                 ),
-                child: const Icon(
-                  Icons.add,
-                  size: 12,
-                  color: kBlack,
-                ),
-              ),
-            ],
-          ),
-          kHiegth9,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Add cooking requests",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              Container(
-                height: 19.h,
-                width: 19.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: kWhite,
-                  border: Border.all(
-                    color: kGreen,
+              ],
+            ),
+            kHiegth9,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Add cooking requests",
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                child: const Icon(
-                  Icons.add,
-                  size: 12,
-                  color: kBlack,
+                Container(
+                  height: 19.h,
+                  width: 19.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: kWhite,
+                    border: Border.all(
+                      color: kGreen,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.add,
+                    size: 12,
+                    color: kBlack,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
