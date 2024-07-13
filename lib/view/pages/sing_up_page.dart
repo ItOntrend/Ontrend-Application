@@ -27,18 +27,18 @@ class SingUpPage extends StatelessWidget {
             key: _formKey,
             child: Column(
               children: [
-                const Center(
+                Center(
                   child: Text(
-                    "Register",
-                    style: TextStyle(
+                    "Register".tr,
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
                 kHiegth20,
-                const Text(
-                  "Just a few things to get started",
+                Text(
+                  "Just a few things to get started".tr,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
@@ -46,22 +46,22 @@ class SingUpPage extends StatelessWidget {
                 ),
                 kHiegth74,
                 MainTextField(
-                  hintText: "First Name*",
+                  hintText: "First Name*".tr,
                   controller: authController.firstNameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your first name';
+                      return 'Please enter your first name'.tr;
                     }
                     return null;
                   },
                 ),
                 kHiegth24,
                 MainTextField(
-                  hintText: "Last Name*",
+                  hintText: "Last Name*".tr,
                   controller: authController.lastNameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your last name';
+                      return 'Please enter your last name'.tr;
                     }
                     return null;
                   },
@@ -69,13 +69,13 @@ class SingUpPage extends StatelessWidget {
                 kHiegth24,
                 MainTextField(
                   numberOrName: TextInputType.emailAddress,
-                  hintText: "Email*",
+                  hintText: "Email*".tr,
                   controller: authController.emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return 'Please enter your email'.tr;
                     } else if (!GetUtils.isEmail(value)) {
-                      return 'Please enter a valid email';
+                      return 'Please enter a valid email'.tr;
                     }
                     return null;
                   },
@@ -85,7 +85,7 @@ class SingUpPage extends StatelessWidget {
                   controller: authController.nationalityController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please select your Nationality';
+                      return 'Please select your Nationality'.tr;
                     }
                     return null;
                   },
@@ -97,22 +97,22 @@ class SingUpPage extends StatelessWidget {
                 kHiegth24,
                 MainTextField(
                   numberOrName: TextInputType.number,
-                  hintText: "Mobile Number*",
+                  hintText: "Mobile Number*".tr,
                   controller: authController.numberController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your number';
+                      return 'Please enter your number'.tr;
                     }
                     return null;
                   },
                 ),
                 kHiegth24,
                 MainTextFieldPassword(
-                  hintText: "Password*",
+                  hintText: "Password*".tr,
                   controller: authController.passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
+                      return 'Please enter your password'.tr;
                     }
                     return null;
                   },
@@ -131,14 +131,14 @@ class SingUpPage extends StatelessWidget {
                       authController.onSignUp(context);
                     }
                   },
-                  child: const MainBotton(name: "Create Account"),
+                  child: MainBotton(name: "Create Account".tr),
                 ),
                 kHiegth24,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Do you have an account? ",
+                    Text(
+                      "Do you have an account?".tr,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
@@ -148,8 +148,8 @@ class SingUpPage extends StatelessWidget {
                       onTap: () => Get.to(
                         LoginPage(),
                       ),
-                      child: const Text(
-                        "Login",
+                      child: Text(
+                        "Login".tr,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,

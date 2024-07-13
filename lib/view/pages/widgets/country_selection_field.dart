@@ -1,5 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 
 class CountrySelectionField extends StatefulWidget {
@@ -23,21 +24,21 @@ class _CountrySelectionFieldState extends State<CountrySelectionField> {
   void _showCountryPicker() {
     showCountryPicker(
       context: context,
-      countryListTheme: const CountryListThemeData(
+      countryListTheme: CountryListThemeData(
         flagSize: 25,
         backgroundColor: Colors.white,
-        textStyle: TextStyle(fontSize: 16, color: kBlack),
+        textStyle: const TextStyle(fontSize: 16, color: kBlack),
         bottomSheetHeight: 500, // Optional. Country list modal height
         // Optional. Sets the border radius for the bottomsheet.
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10.0),
           topRight: Radius.circular(10.0),
         ),
         // Optional. Styles the search field.
         inputDecoration: InputDecoration(
-          hintText: 'Start typing to search',
-          prefixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(
+          hintText: 'Start typing to search'.tr,
+          prefixIcon: const Icon(Icons.search),
+          border: const OutlineInputBorder(
             borderSide: BorderSide(
               color: kBlack,
             ),
@@ -77,7 +78,7 @@ class _CountrySelectionFieldState extends State<CountrySelectionField> {
           child: TextFormField(
             controller: countryController,
             decoration: InputDecoration(
-              hintText: "Select Nationality",
+              hintText: "Select Nationality".tr,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,

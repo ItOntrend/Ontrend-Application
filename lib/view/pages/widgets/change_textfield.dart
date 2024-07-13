@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 
@@ -31,8 +32,8 @@ class ChangeTextfield extends StatelessWidget {
               onPressed: () {
                 // Add your change logic here
               },
-              child: const Text(
-                'Change',
+              child: Text(
+                'Change'.tr,
                 style: TextStyle(color: kOrange),
               ),
             ),

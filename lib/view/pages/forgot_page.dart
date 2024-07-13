@@ -42,8 +42,8 @@ class ForgotPassword extends StatelessWidget {
                   child: Column(
                     children: [
                       kHiegth30,
-                      const Text(
-                        "Forgot Password",
+                      Text(
+                        "Forgot Password".tr,
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.w500,
@@ -51,7 +51,8 @@ class ForgotPassword extends StatelessWidget {
                       ),
                       kHiegth25,
                       Text(
-                        "You will receive your password on your\nregistered email or phone",
+                        "You will receive your password on your\nregistered email or phone"
+                            .tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 19,
@@ -62,13 +63,13 @@ class ForgotPassword extends StatelessWidget {
                       kHiegth76,
                       MainTextField(
                         controller: emailController,
-                        hintText: "Email ID or Phone No",
+                        hintText: "Email ID or Phone No".tr,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
+                            return 'Please enter your email'.tr;
                           }
                           if (!GetUtils.isEmail(value)) {
-                            return 'Please enter a valid email';
+                            return 'Please enter a valid email'.tr;
                           }
                           return null;
                         },
@@ -76,8 +77,8 @@ class ForgotPassword extends StatelessWidget {
                       kHiegth60,
                       GestureDetector(
                         onTap: () => onSubmit(context),
-                        child: const MainBotton(
-                          name: "Send",
+                        child: MainBotton(
+                          name: "Send".tr,
                         ),
                       ),
                       // kHiegth35,
@@ -119,7 +120,7 @@ class ForgotPassword extends StatelessWidget {
       if (status == AuthStatus.successful) {
         Utils.instance.showSnackbar(
           context: context,
-          message: 'Password reset email sent successfully',
+          message: 'Password reset email sent successfully'.tr,
         );
         Get.back(); // Go back to the previous screen
       } else {
