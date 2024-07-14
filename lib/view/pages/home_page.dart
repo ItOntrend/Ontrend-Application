@@ -19,7 +19,6 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/oru_service_big_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/oru_service_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_home.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 
 class HomePage extends StatefulWidget {
@@ -137,8 +136,8 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const TextfieldWithMic(
-                hintText: "Biryani, Burger, Ice Cream...",
+              TextfieldWithMic(
+                hintText: "Biryani, Burger, Ice Cream...".tr,
               ),
               kHiegth15,
               SPromoSliderWidget(),
@@ -164,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       PersistentNavBarNavigator.pushNewScreen(
                         context,
-                        screen: const GroceriesPage(),
+                        screen: GroceriesPage(),
                         withNavBar: true,
                         pageTransitionAnimation:
                             PageTransitionAnimation.cupertino,

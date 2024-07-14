@@ -20,7 +20,6 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_food.dart';
 
 class FoodPage extends StatefulWidget {
   const FoodPage({
@@ -129,8 +128,8 @@ class _FoodPageState extends State<FoodPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Search bar
-              const TextfieldWithMic(
-                hintText: "Biryani, Burger, Ice Cream...",
+              TextfieldWithMic(
+                hintText: "Biryani, Burger, Ice Cream...".tr,
               ),
               kHiegth15,
               // Welcome card
@@ -157,7 +156,7 @@ class _FoodPageState extends State<FoodPage> {
                             return CategoryCard(
                               onTap: () {
                                 Get.to(() => CategorysSearchPage(
-                                      //userId: widget.userId,
+                                      type: 'Food/Restaurant',
                                       categoryName: category.name,
                                     ));
                               },
@@ -223,13 +222,13 @@ class _FoodPageState extends State<FoodPage> {
 
                               log(vendor.bannerImage.toString());
                               return ExploreCard(
+                                longitude: vendor.location.lng,
+                                latitude: vendor.location.lat,
                                 locationCityCountry: '',
                                 distance: vendorController
                                     .calculateDistance(vendor.location),
                                 name: vendor.restaurantName,
                                 image: vendor.bannerImage,
-                                latitude: vendor.location.lat,
-                                longitude: vendor.location.lng,
                                 onTap: () {
                                   Get.to(() =>
                                       ProfilePage(userId: vendor.reference.id));
