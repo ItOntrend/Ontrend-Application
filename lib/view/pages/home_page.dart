@@ -7,7 +7,6 @@ import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart'
 import 'package:ontrend_food_and_e_commerce/controller/navigation_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
-import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/groceries_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
@@ -26,9 +25,9 @@ class HomePage extends StatefulWidget {
   final NavigationController? controller;
 
   HomePage({
-    super.key,
+    Key? key,
     this.controller,
-  });
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -43,7 +42,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       bestSellerController.getBestSeller();
     });
   }
@@ -114,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: Image.asset("assets/icons/notification_icon.png"),
                 ),
-                kWidth25,
+                SizedBox(width: 25),
                 GestureDetector(
                   onTap: () {
                     Get.to(
@@ -125,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                   child: Image.asset("assets/icons/cart_icon.png"),
-                )
+                ),
               ],
             ),
           ),
@@ -137,34 +136,29 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-<<<<<<< HEAD
-               TextfieldWithMic(
+              TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...",
                 onTap: () {
-                  Get.to(SearchPage());
+                  Get.to(() => SearchPage());
                 },
-=======
-              TextfieldWithMic(
-                hintText: "Biryani, Burger, Ice Cream...".tr,
->>>>>>> a51b8a47487c07281ea509f1eaedefb099a2236e
               ),
-              kHiegth15,
+              SizedBox(height: 15),
               SPromoSliderWidget(),
-              kHiegth25,
+              SizedBox(height: 25),
               OneTextHeading(
-                heading: "Our Services".tr,
+                heading: "Our Services",
               ),
-              kHiegth20,
+              SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
                   Get.find<NavigationController>().changeTabIndex(2);
                 },
                 child: OruServiceBigCard(
                   image: "assets/image/home_appliance_image.png",
-                  name: "E-Store".tr,
+                  name: "E-Store",
                 ),
               ),
-              kHiegth20,
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -179,37 +173,37 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                     child: OurServiceCard(
-                      name: 'Groceries'.tr,
+                      name: 'Groceries',
                       image: "assets/image/grocerry_image.png",
                     ),
                   ),
-                  kWidth20,
+                  SizedBox(width: 20),
                   GestureDetector(
                     onTap: () {
                       Get.find<NavigationController>().changeTabIndex(1);
                     },
                     child: OurServiceCard(
-                      name: 'Food'.tr,
+                      name: 'Food',
                       image: "assets/image/service_food_image.png",
                     ),
                   ),
                 ],
               ),
-              kHiegth20,
+              SizedBox(height: 20),
               OneTextHeading(
-                heading: "Best Sellers".tr,
+                heading: "Best Sellers",
               ),
-              kHiegth20,
+              SizedBox(height: 20),
               Obx(
                 () => bestSellerController.isBestSellerLoading.value
-                    ? const CircularProgressIndicator()
+                    ? CircularProgressIndicator()
                     : SizedBox(
                         height: 300,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: bestSellerController.bestSellerList.length,
                           itemBuilder: (context, index) {
-                            log("Best Sellers".tr);
+                            log("Best Sellers");
                             final bestSeller =
                                 bestSellerController.bestSellerList[index];
                             return BestSellerCard(
