@@ -16,7 +16,9 @@ class VendorRepository {
     }
 
     log('Vendors found: ${snapshot.docs.length}');
-    return snapshot.docs.map((doc) => VendorModel.fromJson(doc.data())).toList();
+    return snapshot.docs
+        .map((doc) => VendorModel.fromJson(doc.data()))
+        .toList();
   }
 
   static Future<VendorModel?> getVendorById({required String userId}) async {

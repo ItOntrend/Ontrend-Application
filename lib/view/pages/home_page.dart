@@ -137,11 +137,16 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+<<<<<<< HEAD
                TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...",
                 onTap: () {
                   Get.to(SearchPage());
                 },
+=======
+              TextfieldWithMic(
+                hintText: "Biryani, Burger, Ice Cream...".tr,
+>>>>>>> a51b8a47487c07281ea509f1eaedefb099a2236e
               ),
               kHiegth15,
               SPromoSliderWidget(),
@@ -167,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       PersistentNavBarNavigator.pushNewScreen(
                         context,
-                        screen: const GroceriesPage(),
+                        screen: GroceriesPage(),
                         withNavBar: true,
                         pageTransitionAnimation:
                             PageTransitionAnimation.cupertino,

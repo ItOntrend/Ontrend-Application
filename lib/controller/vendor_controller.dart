@@ -118,22 +118,23 @@ class VendorController extends GetxController {
 
   Future<VendorModel?> getVendorByUId({required String userId}) async {
     VendorModel? data;
-    print(userId);
     try {
       data = await VendorRepository.getVendorById(userId: userId);
-
       if (data != null) {
         log("Vendor fetched successfully: ${data.restaurantName}");
-
-        vendorDetail.value = data;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          vendorDetail.value = data;
+        });
       } else {
         log("Vendor not found for UID: $userId");
-        vendorDetail.value = null;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          vendorDetail.value = null;
+        });
       }
     } catch (e) {
       log('Error fetching vendor: $e');
     }
-    return null;
+    return data;
   }
 
   Future<VendorModel?> getProfile() async {

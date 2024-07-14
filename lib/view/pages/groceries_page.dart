@@ -10,11 +10,20 @@ import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
+<<<<<<< HEAD
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/vegetable_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
+=======
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/vegetable_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/vertical_image_text.dart';
+>>>>>>> a51b8a47487c07281ea509f1eaedefb099a2236e
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/offer_label.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
@@ -23,16 +32,25 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/trending_cards.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
 
 class GroceriesPage extends StatefulWidget {
-  const GroceriesPage({super.key});
+  GroceriesPage({Key? key}) : super(key: key);
 
   @override
   State<GroceriesPage> createState() => _GroceriesPageState();
 }
 
 class _GroceriesPageState extends State<GroceriesPage> {
+  final VendorController vendorController = Get.put(VendorController());
+
+  @override
+  void initState() {
+    super.initState();
+    vendorController.fetchVendors('Food/Restaurant');
+  }
+
   @override
   Widget build(BuildContext context) {
     final GroceryController controller = Get.put(GroceryController());
+<<<<<<< HEAD
     final VendorController vendorController = Get.put(VendorController());
     final LocationController locationController = Get.put(LocationController());
 
@@ -41,12 +59,16 @@ class _GroceriesPageState extends State<GroceriesPage> {
       super.initState();
       vendorController.fetchVendors('Grocery');
     }
+=======
+    final LocationController locationController = Get.put(LocationController());
+>>>>>>> a51b8a47487c07281ea509f1eaedefb099a2236e
 
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
         backgroundColor: kWhite,
         centerTitle: false,
+<<<<<<< HEAD
         leading: Padding(
           padding: const EdgeInsets.only(left: 20),
           child: GestureDetector(
@@ -91,19 +113,56 @@ class _GroceriesPageState extends State<GroceriesPage> {
                   )),
             ],
           ),
+=======
+        leading: GestureDetector(
+          onTap: () {
+            Get.to(const SelectLocationPage());
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Image.asset("assets/icons/location_icon.png"),
+          ),
+        ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              locationController.streetName.value,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  "${locationController.cityName.value}, ${locationController.countryName.value}",
+                  style: const TextStyle(
+                    color: kBlue,
+                    fontSize: 10,
+                  ),
+                ),
+                const Icon(
+                  Icons.keyboard_arrow_down,
+                  size: 16,
+                ),
+              ],
+            ),
+          ],
+>>>>>>> a51b8a47487c07281ea509f1eaedefb099a2236e
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
                 GestureDetector(
-                    onTap: () {
-                      Get.to(() => const NotificationPage());
-                    },
-                    child: Image.asset("assets/icons/notification_icon.png")),
+                  onTap: () {
+                    Get.to(() => const NotificationPage());
+                  },
+                  child: Image.asset("assets/icons/notification_icon.png"),
+                ),
                 kWidth25,
                 GestureDetector(
                   onTap: () {
@@ -127,17 +186,21 @@ class _GroceriesPageState extends State<GroceriesPage> {
             children: [
               // Search bar
               TextfieldWithMic(
+<<<<<<< HEAD
                 hintText: "Vegetables, fruits...".tr,
                 onTap: () {
                   Get.to(SearchPage());
                 },
               ),
 
+=======
+                  hintText: "Vegetables, fruits...".tr,
+                  onTap: () => () => Get.to(() => SearchPage())),
+>>>>>>> a51b8a47487c07281ea509f1eaedefb099a2236e
               kHiegth20,
               // Welcome card
               SPromoSliderWidget(),
               kHiegth20,
-
               // Trending card
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,6 +210,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                 ],
               ),
               kHiegth25,
+<<<<<<< HEAD
               SizedBox(
                 height: 240.h,
                 child: Obx(() {
@@ -157,6 +221,18 @@ class _GroceriesPageState extends State<GroceriesPage> {
                         child: Text('No trending products available.'));
                   } else {
                     return ListView.builder(
+=======
+              Obx(() {
+                if (controller.isProductLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (controller.productList.isEmpty) {
+                  return const Center(
+                      child: Text('No trending products available.'));
+                } else {
+                  return SizedBox(
+                    height: 200,
+                    child: ListView.builder(
+>>>>>>> a51b8a47487c07281ea509f1eaedefb099a2236e
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.productList.length,
                       itemBuilder: (context, index) {
@@ -178,11 +254,18 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           ),
                         );
                       },
+<<<<<<< HEAD
                     );
                   }
                 }),
               ),
 
+=======
+                    ),
+                  );
+                }
+              }),
+>>>>>>> a51b8a47487c07281ea509f1eaedefb099a2236e
               // Categories card
               TwoTextHeading(heading: "Categories".tr),
               kHiegth20,
@@ -204,14 +287,11 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           .length, //homeController.categories.length,
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
-                        return CategoryCard(
-                          categoryName: category.name,
-                          categoryImage: category.image,
-                          onTap: () => Get.to(
-                            () => const Vegetable(
-                              userId: "",
-                            ),
-                          ),
+
+                        return SVerticalImageTextWidget(
+                          image: category.image, //category.imageUrl,
+                          categoryType: category.name,
+                          onTap: () => Get.to(() => Vegetable(userId: "",)),
                         );
                       },
                     ),
@@ -224,6 +304,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
               ),
               kHiegth20,
               SizedBox(
+<<<<<<< HEAD
                 height: 300,
                 child: Obx(() {
                   if (controller.storeList.isEmpty) {
@@ -254,6 +335,43 @@ class _GroceriesPageState extends State<GroceriesPage> {
                     );
                   }
                 }),
+=======
+                height: 500,
+                child: Obx(
+                  () => vendorController.isVendorLoading.value
+                      ? const CircularProgressIndicator()
+                      : vendorController.vendorsListCat.isEmpty
+                          ? const Center(child: Text("No Vendor Available"))
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: vendorController.vendorsListCat.length,
+                              itemBuilder: (context, index) {
+                                final vendor =
+                                    vendorController.vendorsListCat[index];
+                                //log("Vendor Images");
+
+                                //log(vendor.bannerImage.toString());
+                                return ExploreCard(
+                                  latitude: vendor.location.lat,
+                                  longitude: vendor.location.lng,
+                                  locationCityCountry: "",
+                                  distance: vendorController
+                                      .calculateDistance(vendor.location),
+                                  name: vendor.restaurantName,
+                                  image: vendor.bannerImage,
+                                  onTap: () {
+                                    //log(vendor.reference.id);
+                                    Get.to(
+                                      () => ProfilePage(
+                                          userId: vendor.reference.id),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                ),
+>>>>>>> a51b8a47487c07281ea509f1eaedefb099a2236e
               ),
             ],
           ),
