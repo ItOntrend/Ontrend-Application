@@ -12,7 +12,6 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_pag
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
@@ -21,7 +20,6 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_food.dart';
 
 class FoodPage extends StatefulWidget {
   const FoodPage({

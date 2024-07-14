@@ -82,7 +82,7 @@ class VendorController extends GetxController {
   }
 
   // Fetch list of vendors from Firebase
-  Future<void> fetchVendors() async {
+  Future<void> fetchVendors(String type) async {
     try {
       var vendorsQuerySnapshot = await FirebaseFirestore.instance
           .collection('users')
