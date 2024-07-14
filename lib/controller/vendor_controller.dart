@@ -82,7 +82,7 @@ class VendorController extends GetxController {
   }
 
   // Fetch list of vendors from Firebase
-  Future<void> fetchVendors(String type) async {
+  Future<void> fetchVendors() async {
     try {
       var vendorsQuerySnapshot = await FirebaseFirestore.instance
           .collection('users')
@@ -118,22 +118,23 @@ class VendorController extends GetxController {
 
   Future<VendorModel?> getVendorByUId({required String userId}) async {
     VendorModel? data;
-    print(userId);
     try {
       data = await VendorRepository.getVendorById(userId: userId);
-
       if (data != null) {
         log("Vendor fetched successfully: ${data.restaurantName}");
-
-        vendorDetail.value = data;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          vendorDetail.value = data;
+        });
       } else {
         log("Vendor not found for UID: $userId");
-        vendorDetail.value = null;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          vendorDetail.value = null;
+        });
       }
     } catch (e) {
       log('Error fetching vendor: $e');
     }
-    return null;
+    return data;
   }
 
   Future<VendorModel?> getProfile() async {

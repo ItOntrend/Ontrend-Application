@@ -13,8 +13,10 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart
 class CategorysSearchPage extends StatefulWidget {
   const CategorysSearchPage({
     super.key,
+    required this.type,
     required this.categoryName,
   });
+  final String type;
   final String categoryName;
 
   @override
@@ -27,6 +29,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
   @override
   void initState() {
     super.initState();
+    vendorController.fetchVendors(widget.type);
     // vendorController.getVendors(widget.userId);
   }
 
