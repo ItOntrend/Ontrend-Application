@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/auth_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
@@ -120,9 +121,8 @@ class _GroceriesPageState extends State<GroceriesPage> {
             children: [
               // Search bar
               TextfieldWithMic(
-                hintText: "Vegetables, fruits...".tr,
-                onTap: () => () => Get.to(() => SearchPage()),
-              ),
+                  hintText: "Vegetables, fruits...".tr,
+                  onTap: () => () => Get.to(() => SearchPage())),
               kHiegth20,
               // Welcome card
               SPromoSliderWidget(),
@@ -228,9 +228,13 @@ class _GroceriesPageState extends State<GroceriesPage> {
 
                                 //log(vendor.bannerImage.toString());
                                 return ExploreCard(
+                                  latitude: vendor.location.lat,
+                                  longitude: vendor.location.lng,
+                                  locationCityCountry: "",
+                                  distance: vendorController
+                                      .calculateDistance(vendor.location),
                                   name: vendor.restaurantName,
                                   image: vendor.bannerImage,
-                                  locationCity: vendor.location.toString(),
                                   onTap: () {
                                     //log(vendor.reference.id);
                                     Get.to(

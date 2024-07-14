@@ -22,7 +22,9 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kWhite,
       appBar: AppBar(
+        backgroundColor: kWhite,
         leading: IconButton(
           onPressed: () {
             Get.back();

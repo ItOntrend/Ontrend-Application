@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ontrend_food_and_e_commerce/controller/auth_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/my_orders.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/change_textfield.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_tile.dart';
 
@@ -13,6 +16,7 @@ class UserProfilePage extends StatelessWidget {
   UserProfilePage({super.key});
 
   final authController = Get.find<AuthController>();
+  final cartController = Get.find<CartController>();
   final userController = Get.find<UserController>();
   final List locale = [
     {'name': "ENGLISH", 'locale': Locale('en', 'US')},
@@ -22,6 +26,7 @@ class UserProfilePage extends StatelessWidget {
     print("Updating language to ${locale.languageCode}");
     Get.back();
     Get.updateLocale(locale);
+
   }
 
   final LanguageController _langController = Get.put(LanguageController());
@@ -113,15 +118,16 @@ class UserProfilePage extends StatelessWidget {
                 kHiegth15,
                 Obx(() {
                   return ChangeTextfield(
-                    hintText: "*Name...".tr,
-                    initialValue: "${userController.firstName.value}",
+                    hintText: "*Name...",
+                    initialValue: "${userController.firstName.value}"
+                    // userDetail['firstName'] ?? '',
                   );
                 }),
                 kHiegth20,
                 Obx(() {
                   return ChangeTextfield(
-                    hintText: "*Email...".tr,
-                    initialValue: "${userController.email.value}",
+                    hintText: "*Email...",
+                    initialValue: "${userController.email.value}"
                   );
                 }),
                 kHiegth20,
@@ -135,6 +141,13 @@ class UserProfilePage extends StatelessWidget {
                 MainTile(
                   name: "My Orders".tr,
                   icon: "assets/icons/my_orders_icon.png",
+                  onTap: () async{
+                    String userId = await LocalStorage.instance
+                    .DataFromPrefs(key: HiveKeys.userData);
+                    Get.to(MyOrders(
+                      userId: userId,
+                    ));
+                  },
                 ),
                 kHiegth25,
                 MainTile(
@@ -142,21 +155,20 @@ class UserProfilePage extends StatelessWidget {
                   icon: "assets/icons/help_icon.png",
                 ),
                 kHiegth25,
-                MainTile(
-                  name: "Contact Us".tr,
+                 MainTile(
+                  name: "Contact Us",
                   icon: "assets/icons/call_icon.png",
+                  onTap: () {},
                 ),
                 kHiegth25,
-                GestureDetector(
+                MainTile(
+                  name: "Log Out".tr,
+                  icon: "assets/icons/power_icon.png",
                   onTap: () async {
                     print("Logging out...");
                     await authController.onLogOut();
                     Get.back();
                   },
-                  child: MainTile(
-                    name: "Log Out".tr,
-                    icon: "assets/icons/power_icon.png",
-                  ),
                 ),
                 kHiegth140,
               ],

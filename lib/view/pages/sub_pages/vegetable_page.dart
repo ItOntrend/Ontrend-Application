@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/groceries_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
 
 class Vegetable extends StatelessWidget {
-  const Vegetable({super.key});
+  final String userId;
+  const Vegetable({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -33,19 +33,20 @@ class Vegetable extends StatelessWidget {
                   ],
                 ),
                 kHiegth20,
-                GestureDetector(
-                  onTap: () {
+                // GestureDetector(
+                  // onTap: () {
                     //Get.to(
                     // const ProfilePage(),
                     //);
-                  },
-                  child: ExploreCard(
-                    image: "assets/image/pk_store_image.png",
-                    tabIndex: 3,
-                    onTap: () {},
-                    name: 'PK Store',
-                  ),
-                ),
+                  // },
+                  // child: 
+                  // ExploreCard(
+                  //   image: "assets/image/pk_store_image.png",
+                  //   tabIndex: 3,
+                  //   onTap: () {},
+                  //   name: 'PK Store',
+                  // ),
+                // ),
               ],
             ),
           ),

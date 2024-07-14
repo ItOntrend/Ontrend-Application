@@ -1,40 +1,46 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+
+CategoryModel categoryModelFromJson(String str) => CategoryModel.fromJson(json.decode(str));
+
+String categoryModelToJson(CategoryModel data) => json.encode(data.toJson());
 
 class CategoryModel {
-  final String name;
-  final String image;
+  String addedBy;
+  String name;
+  bool isApproved;
+  String imageUrl;
 
   CategoryModel({
-    required this.image,
+    required this.addedBy,
     required this.name,
+    required this.isApproved,
+    required this.imageUrl,
   });
 
-  Map<String, dynamic> toJason() => {
-        'name': name,
-        'imageUrl': image,
-      };
-
-  static CategoryModel fromJson(Map<String, dynamic> json) => CategoryModel(
-        image: json['imageUrl'],
-        name: json['name'],
+  CategoryModel copyWith({
+    String? addedBy,
+    String? name,
+    String? imageUrl,
+    bool? isApproved,
+  }) =>
+      CategoryModel(
+        addedBy: addedBy ?? this.addedBy,
+        name: name ?? this.name,
+        isApproved: isApproved ?? this.isApproved,
+        imageUrl: imageUrl ?? this.imageUrl,
       );
 
-  static Future<void> addCategory({
-    required String category,
-    required String image,
-  }) async {
-    final docCategory = FirebaseFirestore.instance
-        .collection('Food')
-        .doc('items')
-        .collection('categories')
-        .doc(category);
+  factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
+    addedBy: json["addedBy"],
+    name: json["name"],
+    isApproved: json["isApproved"],
+    imageUrl: json["imageUrl"],
+  );
 
-    final categories = CategoryModel(
-      name: category,
-      image: image,
-    );
-
-    final json = categories.toJason();
-    await docCategory.set(json);
-  }
+  Map<String, dynamic> toJson() => {
+    "addedBy": addedBy,
+    "name": name,
+    "isApproved": isApproved,
+    "imageUrl": imageUrl,
+  };
 }

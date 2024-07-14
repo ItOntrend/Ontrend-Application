@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
+import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
@@ -35,12 +36,11 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kWhite,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
                 TextfieldWithMic(
@@ -80,14 +80,17 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                               itemCount: vendorController.vendorsListCat.length,
                               itemBuilder: (context, index) {
                                 final vendor =
-                                    vendorController.vendorsListCat[index];
+                                    vendorController.vendorsList[index];
                                 log("Vendor Images");
                                 log(vendor.bannerImage.toString());
-                                print(
-                                    "vendor.............................${vendor.vendorId}");
                                 return ExploreCard(
+                                  locationCityCountry: '',
+                                  distance: vendorController
+                                      .calculateDistance(vendor.location),
                                   name: vendor.restaurantName,
                                   image: vendor.bannerImage,
+                                  latitude: vendor.location.lat,
+                                  longitude: vendor.location.lng,
                                   onTap: () {
                                     Get.to(() => ProfilePage(
                                         userId: vendor.reference.id));

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/offers_and_benefits_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/add_to_cart_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/adding_more_item_card.dart';
@@ -64,7 +64,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "${locationController.cityName.value}, ${locationController.countryName.value}",
+                      "${locationController.countryName.value}",
                       style: const TextStyle(color: kBlue, fontSize: 10),
                     ),
                     const Icon(

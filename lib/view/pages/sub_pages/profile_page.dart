@@ -76,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 left: 30,
                 right: 30,
                 child: Center(
-                  child: ProfileCard(userId: widget.userId),
+                  child: ProfileCard(userId: widget.userId,),
                 ),
               ),
               kHiegth20,

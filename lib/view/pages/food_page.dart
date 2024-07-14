@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/best_seller_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/food_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
@@ -24,9 +25,7 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_food.dart'
 class FoodPage extends StatefulWidget {
   const FoodPage({
     super.key,
-    //required this.userId,
   });
-  //final String userId;
 
   @override
   State<FoodPage> createState() => _FoodPageState();
@@ -70,29 +69,29 @@ class _FoodPageState extends State<FoodPage> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              locationController.streetName.value,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "${locationController.cityName.value}, ${locationController.countryName.value}",
+            Obx(() => Text(
+                  locationController.streetName.value,
                   style: const TextStyle(
-                    color: kBlue,
-                    fontSize: 10,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
                   ),
-                ),
-                const Icon(
-                  Icons.keyboard_arrow_down,
-                  size: 16,
-                ),
-              ],
-            ),
+                )),
+            Obx(() => Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      locationController.countryName.value,
+                      style: const TextStyle(
+                        color: kBlue,
+                        fontSize: 10,
+                      ),
+                    ),
+                    const Icon(
+                      Icons.keyboard_arrow_down,
+                      size: 16,
+                    ),
+                  ],
+                )),
           ],
         ),
         actions: [
@@ -132,7 +131,6 @@ class _FoodPageState extends State<FoodPage> {
               // Search bar
               TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...".tr,
-                onTap: () => Get.to(() => SearchPage()),
               ),
               kHiegth15,
               // Welcome card
@@ -143,7 +141,7 @@ class _FoodPageState extends State<FoodPage> {
               kHiegth25,
 
               // Categories card
-              TwoTextHeading(heading: "Categories".tr),
+              const TwoTextHeading(heading: "Categories"),
               kHiegth20,
               Obx(
                 () => foodController.isCategoryLoading.value
@@ -155,7 +153,7 @@ class _FoodPageState extends State<FoodPage> {
                           itemCount: foodController.categoryList.length,
                           itemBuilder: (context, index) {
                             final category = foodController.categoryList[index];
-                            log(category.image.toString());
+                            log(category.imageUrl.toString());
                             return CategoryCard(
                               onTap: () {
                                 Get.to(() => CategorysSearchPage(
@@ -164,15 +162,15 @@ class _FoodPageState extends State<FoodPage> {
                                     ));
                               },
                               categoryName: category.name,
-                              categoryImage: category.image,
+                              categoryImage: category.imageUrl,
                             );
                           },
                         ),
                       ),
               ),
               kHiegth20,
-              OneTextHeading(
-                heading: "Best Sellers".tr,
+              const OneTextHeading(
+                heading: "Best Sellers",
               ),
               kHiegth20,
               Obx(
@@ -204,8 +202,8 @@ class _FoodPageState extends State<FoodPage> {
                       ),
               ),
               kHiegth20,
-              OneTextHeading(
-                heading: "Restaurants to explore".tr,
+              const OneTextHeading(
+                heading: "Restaurants to explore",
               ),
               kHiegth20,
               Obx(
@@ -225,15 +223,16 @@ class _FoodPageState extends State<FoodPage> {
 
                               log(vendor.bannerImage.toString());
                               return ExploreCard(
+                                longitude: vendor.location.lng,
+                                latitude: vendor.location.lat,
+                                locationCityCountry: '',
+                                distance: vendorController
+                                    .calculateDistance(vendor.location),
                                 name: vendor.restaurantName,
                                 image: vendor.bannerImage,
-                                locationCity: vendor.location.toString(),
                                 onTap: () {
-                                  log(vendor.reference.id);
-                                  Get.to(
-                                    () => ProfilePage(
-                                        userId: vendor.reference.id),
-                                  );
+                                  Get.to(() =>
+                                      ProfilePage(userId: vendor.reference.id));
                                 },
                               );
                             },

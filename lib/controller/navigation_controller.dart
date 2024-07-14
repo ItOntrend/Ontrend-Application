@@ -14,7 +14,7 @@ class NavigationController extends GetxController {
 
   List<Widget> buildScreens(String userId) {
     return [
-      HomePage(),
+       HomePage(),
       FoodPage(
           //userId: userId,
           ),
