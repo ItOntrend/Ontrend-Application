@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/vegetable_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/vertical_image_text.dart';
@@ -14,14 +16,27 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/trending_cards.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_groceries.dart';
 
-class GroceriesPage extends StatelessWidget {
-  const GroceriesPage({super.key});
+class GroceriesPage extends StatefulWidget {
+  const GroceriesPage({super.key, required this.userId});
+  final String userId;
 
+  @override
+  State<GroceriesPage> createState() => _GroceriesPageState();
+}
+
+class _GroceriesPageState extends State<GroceriesPage> {
   @override
   Widget build(BuildContext context) {
     final GroceryController controller = Get.put(GroceryController());
+      final VendorController vendorController = Get.put(VendorController());
+
+      @override
+  void initState() {
+    super.initState();
+    vendorController.getVendors(widget.userId);
+  }
+
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
@@ -167,7 +182,7 @@ class GroceriesPage extends StatelessWidget {
                         return SVerticalImageTextWidget(
                           image: category.image, //category.imageUrl,
                           categoryType: category.name,
-                          onTap: () => Get.to(() => Vegetable()),
+                          onTap: () => Get.to(() => Vegetable(userId: widget.userId,)),
                         );
                       },
                     ),
@@ -189,16 +204,27 @@ class GroceriesPage extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.storeList.length,
                       itemBuilder: (context, index) {
+                        final vendor =
+                                    vendorController.vendorsList[index];
                         final store = controller.storeList[index];
                         return GestureDetector(
                           onTap: () {
+                            
                             // Handle tap on the store card ProfilePage()
                           },
-                          child: ExploreCard(
-                            image: store.image, // Placeholder image path
-                            name: store.name,
-                            onTap: () {},
-                          ),
+                          child:  ExploreCard(
+                                locationCityCountry: '',
+                                distance: vendorController
+                                    .calculateDistance(vendor.location),
+                                name: vendor.restaurantName,
+                                image: vendor.bannerImage,
+                                latitude: vendor.location.lat,
+                                longitude: vendor.location.lng,
+                                onTap: () {
+                                  Get.to(() =>
+                                      ProfilePage(userId: vendor.reference.id));
+                                },
+                              ),
                         );
                       },
                     );

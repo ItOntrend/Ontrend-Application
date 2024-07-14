@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/best_seller_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/navigation_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
@@ -22,10 +23,12 @@ import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.da
 
 class HomePage extends StatefulWidget {
   final NavigationController? controller;
+  final String userId;
 
   const HomePage({
     super.key,
     this.controller,
+    required this.userId,
   });
 
   @override
@@ -62,39 +65,43 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         title: Obx(() {
-          return GestureDetector(
-            onTap: () {
-              Get.to(() => const SelectLocationPage());
-            },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  locationController.streetName.value,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+          if (locationController.isLoading.value) {
+            return const CircularProgressIndicator();
+          } else {
+            return GestureDetector(
+              onTap: () {
+                Get.to(() => const SelectLocationPage());
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    locationController.streetName.value,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${locationController.cityName.value}, ${locationController.countryName.value}",
-                      style: const TextStyle(
-                        color: kBlue,
-                        fontSize: 10,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${locationController.countryName.value}",
+                        style: const TextStyle(
+                          color: kBlue,
+                          fontSize: 10,
+                        ),
                       ),
-                    ),
-                    const Icon(
-                      Icons.keyboard_arrow_down,
-                      size: 16,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
+                      const Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 16,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }
         }),
         actions: [
           Padding(
@@ -130,8 +137,11 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const TextfieldWithMic(
+              TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...",
+                onTap: () {
+                  Get.to(const SearchPage());
+                },
               ),
               kHiegth15,
               const WelcomeCardHome(
@@ -159,7 +169,9 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       PersistentNavBarNavigator.pushNewScreen(
                         context,
-                        screen: const GroceriesPage(),
+                        screen: GroceriesPage(
+                          userId: widget.userId,
+                        ),
                         withNavBar: true,
                         pageTransitionAnimation:
                             PageTransitionAnimation.cupertino,

@@ -6,6 +6,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/food_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/home_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/user_profile_page.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
+
 class NavigationController extends GetxController {
   // final Rx<int>selectedIndex = 0.obs;
   Rx<PersistentTabController> tabController =
@@ -13,7 +14,9 @@ class NavigationController extends GetxController {
 
   List<Widget> buildScreens(String userId) {
     return [
-      const HomePage(),
+      HomePage(
+        userId: userId,
+      ),
       FoodPage(
         userId: userId,
       ),

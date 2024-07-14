@@ -13,22 +13,22 @@
 //     kHiegth25,
 //     const FoodItemCard(
 //       name: "Italian Piza",
-//       image: "assets/image/pizza_1_image.png",
+//       image: "",
 //     ),
 //     kHiegth20,
 //     const FoodItemCard(
 //       name: "Italian Piza",
-//       image: "assets/image/pizza_2_image.png",
+//       image: "",
 //     ),
 //     kHiegth20,
 //     const FoodItemCard(
 //       name: "Italian Piza",
-//       image: "assets/image/pizza_3_image.png",
+//       image: "",
 //     ),
 //     kHiegth20,
 //     const FoodItemCard(
 //       name: "Italian Piza",
-//       image: "assets/image/pizza_4_image.png",
+//       image: "",
 //     ),
 //     kHiegth20,
 //           ],

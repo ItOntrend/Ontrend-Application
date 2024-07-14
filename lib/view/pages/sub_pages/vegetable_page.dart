@@ -7,7 +7,8 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
 
 class Vegetable extends StatelessWidget {
-  const Vegetable({super.key});
+  final String userId;
+  const Vegetable({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -26,26 +27,27 @@ class Vegetable extends StatelessWidget {
                 Row(
                   children: [
                     GestureDetector(
-                        onTap: () => Get.off(() => GroceriesPage()),
+                        onTap: () => Get.off(() => GroceriesPage(userId: userId,)),
                         child: Icon(Icons.arrow_back)),
                     kWidth30,
                     TwoTextHeading(heading: "Fresh Vegetables".tr),
                   ],
                 ),
                 kHiegth20,
-                GestureDetector(
-                  onTap: () {
+                // GestureDetector(
+                  // onTap: () {
                     //Get.to(
                     // const ProfilePage(),
                     //);
-                  },
-                  child: ExploreCard(
-                    image: "assets/image/pk_store_image.png",
-                    tabIndex: 3,
-                    onTap: () {},
-                    name: 'PK Store',
-                  ),
-                ),
+                  // },
+                  // child: 
+                  // ExploreCard(
+                  //   image: "assets/image/pk_store_image.png",
+                  //   tabIndex: 3,
+                  //   onTap: () {},
+                  //   name: 'PK Store',
+                  // ),
+                // ),
               ],
             ),
           ),

@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
+import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
@@ -11,10 +10,11 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart
 
 class CategorysSearchPage extends StatefulWidget {
   const CategorysSearchPage({
-    super.key,
+    Key? key,
     required this.userId,
     required this.categoryName,
-  });
+  }) : super(key: key);
+
   final String userId;
   final String categoryName;
 
@@ -28,23 +28,22 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
   @override
   void initState() {
     super.initState();
-    // vendorController.getVendors(widget.userId);
+    vendorController.getVendors(widget.userId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kWhite,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                 TextfieldWithMic(
+                TextfieldWithMic(
                   hintText: "Search...",
-                  onTap: (){
+                  onTap: () {
                     Get.to(const SearchPage());
                   },
                 ),
@@ -80,14 +79,17 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                               itemBuilder: (context, index) {
                                 final vendor =
                                     vendorController.vendorsList[index];
-                                log("Vendor Images");
-                                log(vendor.bannerImage.toString());
                                 return ExploreCard(
+                                  locationCityCountry: '',
+                                  distance: vendorController
+                                      .calculateDistance(vendor.location),
                                   name: vendor.restaurantName,
                                   image: vendor.bannerImage,
+                                  latitude: vendor.location.lat,
+                                  longitude: vendor.location.lng,
                                   onTap: () {
-                                    Get.to(() =>
-                                        ProfilePage(userId: widget.userId));
+                                    Get.to(() => ProfilePage(
+                                        userId: vendor.reference.id));
                                   },
                                 );
                               },

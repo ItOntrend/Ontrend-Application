@@ -1,11 +1,13 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 import 'package:ontrend_food_and_e_commerce/repository/item_repository.dart';
 import 'package:ontrend_food_and_e_commerce/repository/vendor_repository.dart';
 import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
 
 class VendorController extends GetxController {
   RxBool isVendorLoading = RxBool(false);
@@ -14,12 +16,59 @@ class VendorController extends GetxController {
   RxList<VendorModel> vendorsList = RxList<VendorModel>();
   RxList<ItemModel> itemsList = RxList<ItemModel>();
   RxString userName = ''.obs;
+  Position? userPosition;
+  RxString userCity = RxString('Salala');
+  // RxString userCountry = RxString('Unknown');
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchUserLocation();
+  }
+
+  Future<void> fetchUserLocation() async {
+    try {
+      userPosition = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      await getAddressFromLatLng(
+          userPosition!.latitude, userPosition!.longitude);
+    } catch (e) {
+      log('Error fetching user location: $e');
+    }
+  }
+
+  Future<String> getAddressFromLatLng(double latitude, double longitude) async {
+  try {
+    List<geocoding.Placemark> placemarks =
+        await geocoding.placemarkFromCoordinates(latitude, longitude);
+    if (placemarks.isNotEmpty) {
+      final placemark = placemarks.first;
+      return "${placemark.locality}, ${placemark.country}";
+    }
+  } catch (e) {
+    log('Error fetching address: $e');
+  }
+  return 'Unknown location';
+}
+
+  double calculateDistance(Location vendorLocation) {
+    if (userPosition != null) {
+      return Geolocator.distanceBetween(
+            userPosition!.latitude,
+            userPosition!.longitude,
+            vendorLocation.lat,
+            vendorLocation.lng,
+          ) /
+          1000; // Convert to km
+    }
+    return 0.0;
+  }
 
   Future<void> getVendors(String userId) async {
     try {
       isVendorLoading.value = true;
       var vendors = await VendorRepository.getVendors(userId);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         vendorsList.assignAll(vendors);
       });
       log("Vendor data fetched successfully");
@@ -63,6 +112,7 @@ class VendorController extends GetxController {
     }
     return null;
   }
+
   Future<VendorModel?> getProfile() async {
     VendorModel? data;
 

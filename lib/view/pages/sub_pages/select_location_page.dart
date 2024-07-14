@@ -1,13 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_place_picker_mb/google_maps_place_picker.dart';
+import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
@@ -110,6 +107,10 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
     listOfLocation.clear();
   }
 
+  void _openPlacePicker() async {
+    await Get.to(() => PlacePickerScreen(controller: locationController));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,8 +152,8 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
               ),
             ),
             Visibility(
-              visible: searchController.text.isNotEmpty &&
-                  listOfLocation.isNotEmpty,
+              visible:
+                  searchController.text.isNotEmpty && listOfLocation.isNotEmpty,
               child: Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
@@ -187,7 +188,25 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
                       fontSize: 16,
                     ),
                   ),
-                )
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                SvgPicture.asset(
+                  "assets/svg/small_add_orange_icon.svg",
+                ),
+                kWidth15,
+                TextButton(
+                  onPressed: _openPlacePicker,
+                  child: const Text(
+                    "Add location from map",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
               ],
             ),
             kHiegth10,
@@ -204,7 +223,7 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
             kHiegth20,
             Expanded(
               child: Obx(
-                () => Column(
+                () => ListView(
                   children: locationController.savedAddresses
                       .map((address) => ListTile(
                             leading: SvgPicture.asset(
@@ -227,144 +246,6 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class LocationController extends GetxController {
-  var currentPosition = const LatLng(21.4735, 55.9754).obs;
-  var currentAddress = 'Fetching location...'.obs;
-  var streetName = 'Fetching...'.obs;
-  var cityName = 'Fetching...'.obs;
-  var countryName = 'Fetching...'.obs;
-  var savedAddresses = <SavedAddress>[].obs;
-  late GoogleMapController mapController;
-
-  @override
-  void onInit() {
-    super.onInit();
-    _requestPermissions();
-  }
-
-  Future<void> _requestPermissions() async {
-    var status = await Permission.location.request();
-    if (status.isGranted) {
-      getCurrentLocation();
-    } else {
-      currentAddress.value = "Location permissions are denied.";
-    }
-  }
-
-  void getCurrentLocation() async {
-    if (savedAddresses.isEmpty) {
-      // Only navigate to PlacePickerScreen if no saved addresses
-      Get.to(() => _PlacePickerScreen(this));
-    } else {
-      // Get address from the first saved location
-      var firstAddress = savedAddresses.first;
-      currentAddress.value = firstAddress.address;
-      streetName.value = firstAddress.streetName;
-      cityName.value = firstAddress.cityName;
-      countryName.value = firstAddress.countryName;
-    }
-  }
-
-  void updateCurrentLocation(LatLng newPosition) {
-    currentPosition.value = newPosition;
-    _getAddressFromLatLng(newPosition);
-  }
-
-  void _getAddressFromLatLng(LatLng position) async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-        position.latitude,
-        position.longitude,
-      );
-      Placemark place = placemarks[0];
-      currentAddress.value =
-          "${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}";
-      streetName.value = place.locality!;
-      cityName.value = place.street!;
-      countryName.value = place.country!;
-      savedAddresses.add(SavedAddress(
-        title: "Custom Location",
-        address: currentAddress.value,
-        streetName: streetName.value,
-        cityName: cityName.value,
-        
-        countryName: countryName.value,
-      ));
-    } catch (e) {
-      currentAddress.value = "Could not get address";
-      streetName.value = "Unknown";
-      cityName.value = "Unknown";
-      countryName.value = "Unknown";
-    }
-  }
-
-  void updateAddressTitle(SavedAddress address, String newTitle) {
-    final index = savedAddresses.indexOf(address);
-    if (index != -1) {
-      savedAddresses[index] = SavedAddress(
-
-        title: newTitle,
-        address: address.address,
-        streetName: address.streetName,
-        cityName: address.cityName,
-        countryName: address.countryName,
-        
-      );
-      savedAddresses.refresh();
-    }
-  }
-
-  void deleteAddress(SavedAddress address) {
-    savedAddresses.remove(address);
-  }
-
-  void onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
-
-  void onCameraMove(CameraPosition position) {
-    currentPosition.value = position.target;
-  }
-}
-
-class SavedAddress {
-  final String title;
-  final String address;
-  final String streetName;
-  final String cityName;
-  final String countryName;
-
-  SavedAddress({
-    required this.title,
-    required this.address,
-    required this.streetName,
-    required this.cityName,
-    required this.countryName,
-  });
-}
-
-class _PlacePickerScreen extends StatelessWidget {
-  final LocationController controller;
-
-  _PlacePickerScreen(this.controller);
-
-  @override
-  Widget build(BuildContext context) {
-    return PlacePicker(
-      apiKey: "AIzaSyAcEE-vXwPyOkwcPROiC3h17CdtJL8onKs",
-      initialPosition: controller.currentPosition.value,
-      useCurrentLocation: true,
-      selectInitialPosition: true,
-      onPlacePicked: (result) {
-        controller.updateCurrentLocation(
-          LatLng(result.geometry!.location.lat, result.geometry!.location.lng),
-        );
-        Get.back();
-      },
     );
   }
 }
