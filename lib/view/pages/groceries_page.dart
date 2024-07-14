@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ontrend_food_and_e_commerce/controller/auth_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
-import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
@@ -13,16 +11,15 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_pa
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/vegetable_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/vertical_image_text.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/offer_label.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/trending_cards.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_groceries.dart';
 
 class GroceriesPage extends StatefulWidget {
   GroceriesPage({Key? key}) : super(key: key);
@@ -37,7 +34,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
   @override
   void initState() {
     super.initState();
-    vendorController.fetchVendors('Grocery');
+    vendorController.fetchVendors('Food/Restaurant');
   }
 
   @override
@@ -192,9 +189,9 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           .length, //homeController.categories.length,
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
-                        return CategoryCard(
-                          categoryImage: category.image, //category.imageUrl,
-                          categoryName: category.name,
+                        return SVerticalImageTextWidget(
+                          image: category.image, //category.imageUrl,
+                          categoryType: category.name,
                           onTap: () => Get.to(() => CategorysSearchPage(
                                 categoryName: category.name,
                                 type: 'Grocery',

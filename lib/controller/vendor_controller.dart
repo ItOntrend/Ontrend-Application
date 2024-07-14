@@ -70,7 +70,7 @@ class VendorController extends GetxController {
     try {
       isVendorLoading.value = true;
       var vendors = await VendorRepository.getVendors(userId);
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         vendorsList.assignAll(vendors);
       });
       log("Vendor data fetched successfully");
@@ -81,6 +81,7 @@ class VendorController extends GetxController {
     }
   }
 
+  // Fetch list of vendors from Firebase
   Future<void> fetchVendors(String type) async {
     try {
       var vendorsQuerySnapshot = await FirebaseFirestore.instance

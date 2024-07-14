@@ -72,10 +72,19 @@ class _ProfileCardState extends State<ProfileCard> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      _vendorController.vendorDetail.value?.image ?? "",
-                      fit: BoxFit.cover,
-                    ),
+                    child:
+                        _vendorController.vendorDetail.value?.image != null &&
+                                _vendorController.vendorDetail.value!.image
+                                    .startsWith('http')
+                            ? Image.network(
+                                _vendorController.vendorDetail.value!
+                                    .image, // Use ! for non-null access
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                'https://service.sarawak.gov.my/web/web/web/web/res/no_image.png', // Replace with your asset path
+                                fit: BoxFit.cover,
+                              ),
                   ),
                 ),
                 kWidth20,

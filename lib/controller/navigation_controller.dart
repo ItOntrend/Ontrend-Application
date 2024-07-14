@@ -12,12 +12,10 @@ class NavigationController extends GetxController {
   Rx<PersistentTabController> tabController =
       PersistentTabController(initialIndex: 0).obs;
 
-  List<Widget> buildScreens(String userId) {
+  List<Widget> buildScreens() {
     return [
-       HomePage(),
-      FoodPage(
-          //userId: userId,
-          ),
+      HomePage(),
+      const FoodPage(),
       const EStorePage(),
       UserProfilePage(),
     ];
@@ -26,22 +24,24 @@ class NavigationController extends GetxController {
   List<PersistentBottomNavBarItem> navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-          icon: Image.asset("assets/icons/home_icon.png"),
-          title: ("Home"),
-          activeColorPrimary: kOrange),
+        icon: Image.asset("assets/icons/home_icon.png"),
+        title: ("Home"),
+        activeColorPrimary: kDarkOrange,
+      ),
       PersistentBottomNavBarItem(
-          icon: Image.asset("assets/icons/food_icon.png"),
-          title: ("Food"),
-          activeColorPrimary: kOrange),
+        icon: Image.asset("assets/icons/food_icon.png"),
+        title: ("Food"),
+        activeColorPrimary: kDarkOrange,
+      ),
       PersistentBottomNavBarItem(
         icon: Image.asset("assets/icons/store_icon.png"),
         title: ("E-Store"),
-        activeColorPrimary: kOrange,
+        activeColorPrimary: kDarkOrange,
       ),
       PersistentBottomNavBarItem(
         icon: Image.asset("assets/icons/user_icon.png"),
         title: ("Profile"),
-        activeColorPrimary: kOrange,
+        activeColorPrimary: kDarkOrange,
       ),
     ];
   }

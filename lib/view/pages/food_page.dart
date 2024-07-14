@@ -12,15 +12,14 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_pag
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_food.dart';
 
 class FoodPage extends StatefulWidget {
   const FoodPage({
@@ -134,10 +133,7 @@ class _FoodPageState extends State<FoodPage> {
               ),
               kHiegth15,
               // Welcome card
-              const WelcomeCardFood(
-                image: "assets/image/offer_image.png",
-                // Colors.orange.shade100,
-              ),
+              SPromoSliderWidget(),
               kHiegth25,
 
               // Categories card
@@ -147,8 +143,11 @@ class _FoodPageState extends State<FoodPage> {
                 () => foodController.isCategoryLoading.value
                     ? const CircularProgressIndicator()
                     : SizedBox(
-                        height: 100, // Adjust the height as needed
-                        child: ListView.builder(
+                        height: 240, // Adjust the height as needed
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2),
                           scrollDirection: Axis.horizontal,
                           itemCount: foodController.categoryList.length,
                           itemBuilder: (context, index) {
