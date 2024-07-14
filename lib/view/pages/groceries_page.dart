@@ -6,6 +6,7 @@ import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
@@ -48,7 +49,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
         centerTitle: false,
         leading: GestureDetector(
           onTap: () {
-            Get.to(const SelectLocationPage());
+            Get.to(() => SelectLocationPage());
           },
           child: Padding(
             padding: const EdgeInsets.only(left: 20),
@@ -188,11 +189,13 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           .length, //homeController.categories.length,
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
-
                         return SVerticalImageTextWidget(
                           image: category.image, //category.imageUrl,
                           categoryType: category.name,
-                          onTap: () => Get.to(() => Vegetable(userId: "",)),
+                          onTap: () => Get.to(() => CategorysSearchPage(
+                                categoryName: category.name,
+                                type: 'Grocery',
+                              )),
                         );
                       },
                     ),
