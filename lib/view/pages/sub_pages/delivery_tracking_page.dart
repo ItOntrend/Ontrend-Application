@@ -8,7 +8,6 @@ import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/model/order_modal.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/navigation_manu.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/my_timeline_tile.dart';
 
 class DeliveryTrackingPage extends StatefulWidget {
   final String orderId;

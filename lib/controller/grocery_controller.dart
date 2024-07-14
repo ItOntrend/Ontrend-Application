@@ -2,11 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
-import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/grocery_category_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/grocery_product_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/store_model.dart';
-import 'package:ontrend_food_and_e_commerce/repository/category_repository.dart';
 import 'package:ontrend_food_and_e_commerce/repository/grocery_repositry.dart';
 import 'package:ontrend_food_and_e_commerce/trans_req.dart';
 
