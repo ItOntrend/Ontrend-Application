@@ -1,6 +1,7 @@
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/delivery_tracking_page.dart';
@@ -25,8 +26,8 @@ class OrderCompleteSplashPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Your Order Has Been Placed Successfully",
+                  Text(
+                    "Your Order Has Been Placed Successfully".tr,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 30,

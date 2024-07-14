@@ -29,7 +29,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    log(widget.userId);
+    //log(widget.userId);
+    //vendorController.getItems(widget.userId);
     vendorController.getItems(widget.userId);
   }
 

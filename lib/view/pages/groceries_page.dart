@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
-import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/auth_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
+import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/vegetable_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/vertical_image_text.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
@@ -17,11 +20,14 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_groceries.dart';
 
 class GroceriesPage extends StatelessWidget {
-  const GroceriesPage({super.key});
+  GroceriesPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     final GroceryController controller = Get.put(GroceryController());
+
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
@@ -65,13 +71,13 @@ class GroceriesPage extends StatelessWidget {
               children: [
                 GestureDetector(
                     onTap: () {
-                      Get.to(const NotificationPage());
+                      Get.to(() => const NotificationPage());
                     },
                     child: Image.asset("assets/icons/notification_icon.png")),
                 kWidth25,
                 GestureDetector(
                   onTap: () {
-                    //Get.to(AddToCartPage(addedBy: ,));
+                    // Get.to(AddToCartPage(addedBy: ,));
                   },
                   child: Image.asset("assets/icons/cart_icon.png"),
                 ),
@@ -93,10 +99,6 @@ class GroceriesPage extends StatelessWidget {
 
               kHiegth20,
               // Welcome card
-              /* const WelcomeCardGroceries(
-                image: "assets/image/groceries_card_image.png",
-                // Colors.orange.shade100,
-              ),*/
               SPromoSliderWidget(),
               kHiegth20,
 
@@ -105,7 +107,7 @@ class GroceriesPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TwoTextHeading(heading: "Trending on Ontrend".tr),
-                  //GestureDetector(onTap: () {}, child: Text('View All'))
+                  // GestureDetector(onTap: () {}, child: Text('View All'))
                 ],
               ),
               kHiegth25,
@@ -164,10 +166,13 @@ class GroceriesPage extends StatelessWidget {
                           .length, //homeController.categories.length,
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
+
                         return SVerticalImageTextWidget(
                           image: category.image, //category.imageUrl,
                           categoryType: category.name,
-                          onTap: () => Get.to(() => Vegetable()),
+                          onTap: () => Get.to(() => CategorysSearchPage(
+                                categoryName: category.name,
+                              )),
                         );
                       },
                     ),
@@ -191,9 +196,8 @@ class GroceriesPage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final store = controller.storeList[index];
                         return GestureDetector(
-                          onTap: () {
-                            // Handle tap on the store card ProfilePage()
-                          },
+                          onTap: () =>
+                              Get.to(() => ProfilePage(userId: store.id)),
                           child: ExploreCard(
                             image: store.image, // Placeholder image path
                             name: store.name,

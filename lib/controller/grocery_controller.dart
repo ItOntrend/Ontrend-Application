@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/grocery_category_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/grocery_product_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/store_model.dart';
 import 'package:ontrend_food_and_e_commerce/repository/category_repository.dart';
 import 'package:ontrend_food_and_e_commerce/repository/grocery_repositry.dart';
+import 'package:ontrend_food_and_e_commerce/trans_req.dart';
 
 class GroceryController extends GetxController {
   var imageUrls = <String>[].obs;
@@ -17,6 +19,7 @@ class GroceryController extends GetxController {
   RxList<ProductModel> productList = RxList();
   var storeList = <Store>[].obs;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final TranslationService _translationService = TranslationService();
 
   @override
   void onInit() {
@@ -46,6 +49,16 @@ class GroceryController extends GetxController {
     isCategoryLoading.value = false;
   }
 
+  void translateCategories() async {
+    var currentLanguage = Get.find<LanguageController>().currentLanguage.value;
+    for (var category in categoryList) {
+      category.name =
+          await _translationService.translate(category.name, currentLanguage);
+    }
+    print('translating............${categoryList.value}');
+    categoryList.refresh(); // Refresh the list to update the UI
+  }
+
   Future<void> getProducts() async {
     isProductLoading.value = true;
     productList.clear();
@@ -69,5 +82,5 @@ class GroceryController extends GetxController {
     } catch (e) {
       print("Error fetching stores: $e");
     }
-  }
+  } // Fetch list of vendors from Firebase
 }

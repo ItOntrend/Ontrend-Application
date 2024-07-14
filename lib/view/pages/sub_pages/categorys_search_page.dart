@@ -12,10 +12,10 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart
 class CategorysSearchPage extends StatefulWidget {
   const CategorysSearchPage({
     super.key,
-    required this.userId,
+    //required this.userId,
     required this.categoryName,
   });
-  final String userId;
+  //final String userId;
   final String categoryName;
 
   @override
@@ -28,6 +28,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
   @override
   void initState() {
     super.initState();
+    vendorController.fetchVendors();
     // vendorController.getVendors(widget.userId);
   }
 
@@ -42,9 +43,9 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
             ),
             child: Column(
               children: [
-                 TextfieldWithMic(
+                TextfieldWithMic(
                   hintText: "Search...",
-                  onTap: (){
+                  onTap: () {
                     Get.to(const SearchPage());
                   },
                 ),
@@ -70,24 +71,26 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                 Obx(
                   () => vendorController.isVendorLoading.value
                       ? const CircularProgressIndicator()
-                      : vendorController.vendorsList.isEmpty
+                      : vendorController.vendorsListCat.isEmpty
                           ? const Center(child: Text("No Vendor Available"))
                           : ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               scrollDirection: Axis.vertical,
-                              itemCount: vendorController.vendorsList.length,
+                              itemCount: vendorController.vendorsListCat.length,
                               itemBuilder: (context, index) {
                                 final vendor =
-                                    vendorController.vendorsList[index];
+                                    vendorController.vendorsListCat[index];
                                 log("Vendor Images");
                                 log(vendor.bannerImage.toString());
+                                print(
+                                    "vendor.............................${vendor.vendorId}");
                                 return ExploreCard(
                                   name: vendor.restaurantName,
                                   image: vendor.bannerImage,
                                   onTap: () {
-                                    Get.to(() =>
-                                        ProfilePage(userId: widget.userId));
+                                    Get.to(() => ProfilePage(
+                                        userId: vendor.reference.id));
                                   },
                                 );
                               },
