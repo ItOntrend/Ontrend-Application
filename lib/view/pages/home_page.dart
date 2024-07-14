@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/best_seller_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/navigation_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/groceries_page.dart';
@@ -23,12 +25,10 @@ import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.da
 
 class HomePage extends StatefulWidget {
   final NavigationController? controller;
-  final String userId;
 
-  const HomePage({
+  HomePage({
     super.key,
     this.controller,
-    required this.userId,
   });
 
   @override
@@ -38,6 +38,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final BestSellerController bestSellerController =
       Get.put(BestSellerController());
+  final userController = Get.find<UserController>();
   final LocationController locationController = Get.put(LocationController());
 
   @override
@@ -137,11 +138,8 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextfieldWithMic(
+              const TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...",
-                onTap: () {
-                  Get.to(const SearchPage());
-                },
               ),
               kHiegth15,
               const WelcomeCardHome(
@@ -169,9 +167,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       PersistentNavBarNavigator.pushNewScreen(
                         context,
-                        screen: GroceriesPage(
-                          userId: widget.userId,
-                        ),
+                        screen: const GroceriesPage(),
                         withNavBar: true,
                         pageTransitionAnimation:
                             PageTransitionAnimation.cupertino,

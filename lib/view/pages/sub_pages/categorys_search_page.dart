@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
@@ -10,12 +12,9 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart
 
 class CategorysSearchPage extends StatefulWidget {
   const CategorysSearchPage({
-    Key? key,
-    required this.userId,
+    super.key,
     required this.categoryName,
-  }) : super(key: key);
-
-  final String userId;
+  });
   final String categoryName;
 
   @override
@@ -28,7 +27,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
   @override
   void initState() {
     super.initState();
-    vendorController.getVendors(widget.userId);
+    // vendorController.getVendors(widget.userId);
   }
 
   @override
@@ -69,16 +68,18 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                 Obx(
                   () => vendorController.isVendorLoading.value
                       ? const CircularProgressIndicator()
-                      : vendorController.vendorsList.isEmpty
+                      : vendorController.vendorsListCat.isEmpty
                           ? const Center(child: Text("No Vendor Available"))
                           : ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               scrollDirection: Axis.vertical,
-                              itemCount: vendorController.vendorsList.length,
+                              itemCount: vendorController.vendorsListCat.length,
                               itemBuilder: (context, index) {
                                 final vendor =
                                     vendorController.vendorsList[index];
+                                log("Vendor Images");
+                                log(vendor.bannerImage.toString());
                                 return ExploreCard(
                                   locationCityCountry: '',
                                   distance: vendorController

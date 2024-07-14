@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
-import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/vegetable_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/vertical_image_text.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/offer_label.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
@@ -18,8 +16,7 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/trending_cards.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
 
 class GroceriesPage extends StatefulWidget {
-  const GroceriesPage({super.key, required this.userId});
-  final String userId;
+  const GroceriesPage({super.key});
 
   @override
   State<GroceriesPage> createState() => _GroceriesPageState();
@@ -29,13 +26,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
   @override
   Widget build(BuildContext context) {
     final GroceryController controller = Get.put(GroceryController());
-      final VendorController vendorController = Get.put(VendorController());
-
-      @override
-  void initState() {
-    super.initState();
-    vendorController.getVendors(widget.userId);
-  }
+    final VendorController vendorController = Get.put(VendorController());
 
     return Scaffold(
       backgroundColor: kWhite,
@@ -80,13 +71,13 @@ class _GroceriesPageState extends State<GroceriesPage> {
               children: [
                 GestureDetector(
                     onTap: () {
-                      Get.to(const NotificationPage());
+                      Get.to(() => const NotificationPage());
                     },
                     child: Image.asset("assets/icons/notification_icon.png")),
                 kWidth25,
                 GestureDetector(
                   onTap: () {
-                    //Get.to(AddToCartPage(addedBy: ,));
+                    // Get.to(AddToCartPage(addedBy: ,));
                   },
                   child: Image.asset("assets/icons/cart_icon.png"),
                 ),
@@ -108,10 +99,6 @@ class _GroceriesPageState extends State<GroceriesPage> {
 
               kHiegth20,
               // Welcome card
-              /* const WelcomeCardGroceries(
-                image: "assets/image/groceries_card_image.png",
-                // Colors.orange.shade100,
-              ),*/
               SPromoSliderWidget(),
               kHiegth20,
 
@@ -120,7 +107,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TwoTextHeading(heading: "Trending on Ontrend".tr),
-                  //GestureDetector(onTap: () {}, child: Text('View All'))
+                  // GestureDetector(onTap: () {}, child: Text('View All'))
                 ],
               ),
               kHiegth25,
@@ -179,10 +166,11 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           .length, //homeController.categories.length,
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
+
                         return SVerticalImageTextWidget(
                           image: category.image, //category.imageUrl,
                           categoryType: category.name,
-                          onTap: () => Get.to(() => Vegetable(userId: widget.userId,)),
+                          onTap: () => Get.to(() => Vegetable(userId: "",)),
                         );
                       },
                     ),
@@ -204,27 +192,22 @@ class _GroceriesPageState extends State<GroceriesPage> {
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.storeList.length,
                       itemBuilder: (context, index) {
-                        final vendor =
-                                    vendorController.vendorsList[index];
+                        final vendor = vendorController.vendorsList[index];
                         final store = controller.storeList[index];
                         return GestureDetector(
                           onTap: () {
-                            
                             // Handle tap on the store card ProfilePage()
                           },
-                          child:  ExploreCard(
-                                locationCityCountry: '',
-                                distance: vendorController
-                                    .calculateDistance(vendor.location),
-                                name: vendor.restaurantName,
-                                image: vendor.bannerImage,
-                                latitude: vendor.location.lat,
-                                longitude: vendor.location.lng,
-                                onTap: () {
-                                  Get.to(() =>
-                                      ProfilePage(userId: vendor.reference.id));
-                                },
-                              ),
+                          child: ExploreCard(
+                            image: store.image, // Placeholder image path
+                            name: store.name,
+                            onTap: () {},
+                            locationCityCountry: '',
+                            distance: vendorController
+                                .calculateDistance(vendor.location),
+                            latitude: vendor.location.lat,
+                            longitude: vendor.location.lng,
+                          ),
                         );
                       },
                     );

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ class VendorController extends GetxController {
   RxBool isItemsLoading = RxBool(false);
   Rx<VendorModel?> vendorDetail = Rx<VendorModel?>(null);
   RxList<VendorModel> vendorsList = RxList<VendorModel>();
+  RxList<VendorModel> vendorsListCat = RxList<VendorModel>();
   RxList<ItemModel> itemsList = RxList<ItemModel>();
   RxString userName = ''.obs;
   Position? userPosition;
@@ -76,6 +78,24 @@ class VendorController extends GetxController {
       log('Error fetching Vendor data: $e');
     } finally {
       isVendorLoading.value = false;
+    }
+  }
+
+  // Fetch list of vendors from Firebase
+  Future<void> fetchVendors() async {
+    try {
+      var vendorsQuerySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('role', isEqualTo: 'Vendor')
+          .get();
+
+      var vendors = vendorsQuerySnapshot.docs.map((doc) {
+        return VendorModel.fromMap(doc.data(), doc.id);
+      }).toList();
+
+      vendorsListCat.assignAll(vendors);
+    } catch (e) {
+      print('Error fetching vendors: $e');
     }
   }
 

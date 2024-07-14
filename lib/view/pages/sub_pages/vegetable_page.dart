@@ -27,7 +27,7 @@ class Vegetable extends StatelessWidget {
                 Row(
                   children: [
                     GestureDetector(
-                        onTap: () => Get.off(() => GroceriesPage(userId: userId,)),
+                        onTap: () => Get.off(() => GroceriesPage()),
                         child: Icon(Icons.arrow_back)),
                     kWidth30,
                     TwoTextHeading(heading: "Fresh Vegetables".tr),

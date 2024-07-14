@@ -14,12 +14,10 @@ class NavigationController extends GetxController {
 
   List<Widget> buildScreens(String userId) {
     return [
-      HomePage(
-        userId: userId,
-      ),
+       HomePage(),
       FoodPage(
-        userId: userId,
-      ),
+          //userId: userId,
+          ),
       const EStorePage(),
       UserProfilePage(),
     ];

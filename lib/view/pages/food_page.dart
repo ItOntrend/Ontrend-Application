@@ -23,11 +23,8 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_food.dart'
 
 class FoodPage extends StatefulWidget {
   const FoodPage({
-    Key? key,
-    required this.userId
-  }) : super(key: key);
-
-  final String userId;
+    super.key,
+  });
 
   @override
   State<FoodPage> createState() => _FoodPageState();
@@ -45,7 +42,7 @@ class _FoodPageState extends State<FoodPage> {
     super.initState();
     foodController.getCategories();
     bestSellerController.getBestSeller();
-    vendorController.getVendors(widget.userId);
+    //vendorController.getVendors(widget.userId);
   }
 
   @override
@@ -159,7 +156,7 @@ class _FoodPageState extends State<FoodPage> {
                             return CategoryCard(
                               onTap: () {
                                 Get.to(() => CategorysSearchPage(
-                                      userId: widget.userId,
+                                      //userId: widget.userId,
                                       categoryName: category.name,
                                     ));
                               },
