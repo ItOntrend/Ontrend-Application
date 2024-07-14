@@ -13,6 +13,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_pag
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/oru_service_big_card.dart';
@@ -140,9 +141,7 @@ class _HomePageState extends State<HomePage> {
                 hintText: "Biryani, Burger, Ice Cream...",
               ),
               kHiegth15,
-              const WelcomeCardHome(
-                image: "assets/image/home_trending_image.png",
-              ),
+              SPromoSliderWidget(),
               kHiegth25,
               OneTextHeading(
                 heading: "Our Services".tr,

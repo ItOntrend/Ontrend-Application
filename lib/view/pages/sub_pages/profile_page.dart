@@ -30,7 +30,6 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     //log(widget.userId);
-    //vendorController.getItems(widget.userId);
     vendorController.getItems(widget.userId);
   }
 
@@ -42,10 +41,22 @@ class _ProfilePageState extends State<ProfilePage> {
         body: SingleChildScrollView(
           child: Stack(
             children: [
-              SizedBox(
-                height: 200.h,
-                width: double.infinity,
-                child: Image.asset("assets/image/account_banner.png"),
+              Obx(
+                () => SizedBox(
+                  height: 200.h,
+                  width: double.infinity,
+                  child: Image.network(
+                    vendorController.vendorDetail.value?.bannerImage ?? "",
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      // Display a placeholder or error message on error
+                      return Image.network(
+                        'https://service.sarawak.gov.my/web/web/web/web/res/no_image.png', // Replace with your asset path
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
+                ),
               ),
               Positioned(
                 left: 12,
@@ -75,7 +86,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 left: 30,
                 right: 30,
                 child: Center(
-                  child: ProfileCard(userId: widget.userId,),
+                  child: ProfileCard(
+                    userId: widget.userId,
+                  ),
                 ),
               ),
               kHiegth20,

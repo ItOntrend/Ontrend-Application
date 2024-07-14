@@ -70,7 +70,7 @@ class VendorController extends GetxController {
     try {
       isVendorLoading.value = true;
       var vendors = await VendorRepository.getVendors(userId);
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         vendorsList.assignAll(vendors);
       });
       log("Vendor data fetched successfully");
@@ -82,11 +82,13 @@ class VendorController extends GetxController {
   }
 
   // Fetch list of vendors from Firebase
-  Future<void> fetchVendors() async {
+  Future<void> fetchVendors(String type) async {
     try {
       var vendorsQuerySnapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('role', isEqualTo: 'Vendor')
+          .where('vendorType',
+              isEqualTo: type) // Add this condition to filter by vendorType
           .get();
 
       var vendors = vendorsQuerySnapshot.docs.map((doc) {
@@ -94,8 +96,9 @@ class VendorController extends GetxController {
       }).toList();
 
       vendorsListCat.assignAll(vendors);
+      log("Vendors data fetched successfully");
     } catch (e) {
-      print('Error fetching vendors: $e');
+      log('Error fetching vendors: $e');
     }
   }
 

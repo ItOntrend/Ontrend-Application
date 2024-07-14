@@ -47,7 +47,7 @@ class _NavigationManuState extends State<NavigationManu> {
       return PersistentTabView(
         context,
         controller: controller.tabController.value,
-        screens: controller.buildScreens(""),
+        screens: controller.buildScreens(),
         items: controller.navBarsItems(),
         confineInSafeArea: true,
         backgroundColor: Colors.white,
@@ -69,7 +69,7 @@ class _NavigationManuState extends State<NavigationManu> {
           curve: Curves.ease,
           duration: Duration(milliseconds: 200),
         ),
-        navBarStyle: NavBarStyle.style13,
+        navBarStyle: NavBarStyle.style9,
       );
     });
   }

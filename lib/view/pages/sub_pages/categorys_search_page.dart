@@ -77,7 +77,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                               itemCount: vendorController.vendorsListCat.length,
                               itemBuilder: (context, index) {
                                 final vendor =
-                                    vendorController.vendorsList[index];
+                                    vendorController.vendorsListCat[index];
                                 log("Vendor Images");
                                 log(vendor.bannerImage.toString());
                                 return ExploreCard(

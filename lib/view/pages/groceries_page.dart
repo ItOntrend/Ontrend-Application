@@ -8,6 +8,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_pa
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/vegetable_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/vertical_image_text.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/offer_label.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
@@ -156,7 +157,8 @@ class _GroceriesPageState extends State<GroceriesPage> {
                   child: Obx(
                     () => GridView.builder(
                       scrollDirection: Axis.horizontal,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, // Number of rows
                         crossAxisSpacing: 10,
                         childAspectRatio:
@@ -166,11 +168,14 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           .length, //homeController.categories.length,
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
-
-                        return SVerticalImageTextWidget(
-                          image: category.image, //category.imageUrl,
-                          categoryType: category.name,
-                          onTap: () => Get.to(() => Vegetable(userId: "",)),
+                        return CategoryCard(
+                          categoryName: category.name,
+                          categoryImage: category.image,
+                          onTap: () => Get.to(
+                            () => const Vegetable(
+                              userId: "",
+                            ),
+                          ),
                         );
                       },
                     ),

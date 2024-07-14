@@ -13,6 +13,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_searc
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
@@ -42,7 +43,7 @@ class _FoodPageState extends State<FoodPage> {
     super.initState();
     foodController.getCategories();
     bestSellerController.getBestSeller();
-    //vendorController.getVendors(widget.userId);
+    vendorController.fetchVendors('Food/Restaurant');
   }
 
   @override
@@ -133,10 +134,7 @@ class _FoodPageState extends State<FoodPage> {
               ),
               kHiegth15,
               // Welcome card
-              const WelcomeCardFood(
-                image: "assets/image/offer_image.png",
-                // Colors.orange.shade100,
-              ),
+              SPromoSliderWidget(),
               kHiegth25,
 
               // Categories card
@@ -146,8 +144,11 @@ class _FoodPageState extends State<FoodPage> {
                 () => foodController.isCategoryLoading.value
                     ? const CircularProgressIndicator()
                     : SizedBox(
-                        height: 100, // Adjust the height as needed
-                        child: ListView.builder(
+                        height: 240, // Adjust the height as needed
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2),
                           scrollDirection: Axis.horizontal,
                           itemCount: foodController.categoryList.length,
                           itemBuilder: (context, index) {
@@ -208,16 +209,16 @@ class _FoodPageState extends State<FoodPage> {
               Obx(
                 () => vendorController.isVendorLoading.value
                     ? const CircularProgressIndicator()
-                    : vendorController.vendorsList.isEmpty
+                    : vendorController.vendorsListCat.isEmpty
                         ? const Center(child: Text("No Vendor Available"))
                         : ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
-                            itemCount: vendorController.vendorsList.length,
+                            itemCount: vendorController.vendorsListCat.length,
                             itemBuilder: (context, index) {
                               final vendor =
-                                  vendorController.vendorsList[index];
+                                  vendorController.vendorsListCat[index];
                               log("Vendor Images");
 
                               log(vendor.bannerImage.toString());
