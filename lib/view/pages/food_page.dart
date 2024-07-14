@@ -137,11 +137,8 @@ class _FoodPageState extends State<FoodPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Search bar
-              TextfieldWithMic(
+              const TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...",
-                onTap: () {
-                  Get.to(SearchPage());
-                },
               ),
               kHiegth15,
               // Welcome card
@@ -168,7 +165,7 @@ class _FoodPageState extends State<FoodPage> {
                             return CategoryCard(
                               onTap: () {
                                 Get.to(() => CategorysSearchPage(
-                                      //userId: widget.userId,
+                                      type: 'Food/Restaurant',
                                       categoryName: category.name,
                                     ));
                               },
@@ -234,13 +231,13 @@ class _FoodPageState extends State<FoodPage> {
 
                               log(vendor.bannerImage.toString());
                               return ExploreCard(
+                                longitude: vendor.location.lng,
+                                latitude: vendor.location.lat,
                                 locationCityCountry: '',
                                 distance: vendorController
                                     .calculateDistance(vendor.location),
                                 name: vendor.restaurantName,
                                 image: vendor.bannerImage,
-                                latitude: vendor.location.lat,
-                                longitude: vendor.location.lng,
                                 onTap: () {
                                   Get.to(() =>
                                       ProfilePage(userId: vendor.reference.id));
