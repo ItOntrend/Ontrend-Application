@@ -11,6 +11,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_pag
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
@@ -43,7 +44,7 @@ class _FoodPageState extends State<FoodPage> {
     super.initState();
     foodController.getCategories();
     bestSellerController.getBestSeller();
-    //vendorController.getVendors(widget.userId);
+    vendorController.fetchVendors();
   }
 
   @override
@@ -129,8 +130,11 @@ class _FoodPageState extends State<FoodPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Search bar
-              TextfieldWithMic(
-                hintText: "Biryani, Burger, Ice Cream...".tr,
+              GestureDetector(
+                onTap: () => Get.to(() => SearchPage()),
+                child: TextfieldWithMic(
+                  hintText: "Biryani, Burger, Ice Cream...".tr,
+                ),
               ),
               kHiegth15,
               // Welcome card
@@ -209,16 +213,16 @@ class _FoodPageState extends State<FoodPage> {
               Obx(
                 () => vendorController.isVendorLoading.value
                     ? const CircularProgressIndicator()
-                    : vendorController.vendorsList.isEmpty
+                    : vendorController.vendorsListCat.isEmpty
                         ? const Center(child: Text("No Vendor Available"))
                         : ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
-                            itemCount: vendorController.vendorsList.length,
+                            itemCount: vendorController.vendorsListCat.length,
                             itemBuilder: (context, index) {
                               final vendor =
-                                  vendorController.vendorsList[index];
+                                  vendorController.vendorsListCat[index];
                               log("Vendor Images");
 
                               log(vendor.bannerImage.toString());

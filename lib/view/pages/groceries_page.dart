@@ -3,11 +3,15 @@ import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/auth_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/vertical_image_text.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
@@ -27,22 +31,32 @@ class GroceriesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GroceryController controller = Get.put(GroceryController());
-
+    final VendorController vendorController = Get.put(VendorController());
+    final LocationController locationController = Get.put(LocationController());
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
         backgroundColor: kWhite,
         centerTitle: false,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: Image.asset("assets/icons/location_icon.png"),
+        leading: GestureDetector(
+          onTap: () {
+            Get.to(
+              const SelectLocationPage(),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Image.asset(
+              "assets/icons/location_icon.png",
+            ),
+          ),
         ),
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Janub Ad Dahariz",
-              style: TextStyle(
+              locationController.streetName.value,
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
@@ -51,10 +65,13 @@ class GroceriesPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  "Salala, Oman",
-                  style: TextStyle(color: kBlue, fontSize: 10),
+                  "${locationController.cityName.value}, ${locationController.countryName.value}",
+                  style: const TextStyle(
+                    color: kBlue,
+                    fontSize: 10,
+                  ),
                 ),
-                Icon(
+                const Icon(
                   Icons.keyboard_arrow_down,
                   size: 16,
                 ),
@@ -77,7 +94,10 @@ class GroceriesPage extends StatelessWidget {
                 kWidth25,
                 GestureDetector(
                   onTap: () {
-                    // Get.to(AddToCartPage(addedBy: ,));
+                    Get.to(const AddToCartPage(
+                      addedBy: "",
+                      restaurantName: "",
+                    ));
                   },
                   child: Image.asset("assets/icons/cart_icon.png"),
                 ),
@@ -93,8 +113,11 @@ class GroceriesPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Search bar
-              TextfieldWithMic(
-                hintText: "Vegetables, fruits...".tr,
+              GestureDetector(
+                onTap: () => Get.to(() => SearchPage()),
+                child: TextfieldWithMic(
+                  hintText: "Vegetables, fruits...".tr,
+                ),
               ),
 
               kHiegth20,
@@ -192,15 +215,15 @@ class GroceriesPage extends StatelessWidget {
                   } else {
                     return ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: controller.storeList.length,
+                      itemCount: vendorController.vendorsListCat.length,
                       itemBuilder: (context, index) {
-                        final store = controller.storeList[index];
+                        final store = vendorController.vendorsListCat[index];
                         return GestureDetector(
-                          onTap: () =>
-                              Get.to(() => ProfilePage(userId: store.id)),
+                          onTap: () => Get.to(
+                              () => ProfilePage(userId: store.reference.id)),
                           child: ExploreCard(
                             image: store.image, // Placeholder image path
-                            name: store.name,
+                            name: store.restaurantName,
                             onTap: () {},
                           ),
                         );
