@@ -26,7 +26,6 @@ class UserProfilePage extends StatelessWidget {
     print("Updating language to ${locale.languageCode}");
     Get.back();
     Get.updateLocale(locale);
-
   }
 
   final LanguageController _langController = Get.put(LanguageController());
@@ -118,17 +117,16 @@ class UserProfilePage extends StatelessWidget {
                 kHiegth15,
                 Obx(() {
                   return ChangeTextfield(
-                    hintText: "*Name...",
-                    initialValue: "${userController.firstName.value}"
-                    // userDetail['firstName'] ?? '',
-                  );
+                      hintText: "*Name...",
+                      initialValue: "${userController.firstName.value}"
+                      // userDetail['firstName'] ?? '',
+                      );
                 }),
                 kHiegth20,
                 Obx(() {
                   return ChangeTextfield(
-                    hintText: "*Email...",
-                    initialValue: "${userController.email.value}"
-                  );
+                      hintText: "*Email...",
+                      initialValue: "${userController.email.value}");
                 }),
                 kHiegth20,
                 Obx(() {
@@ -141,9 +139,9 @@ class UserProfilePage extends StatelessWidget {
                 MainTile(
                   name: "My Orders".tr,
                   icon: "assets/icons/my_orders_icon.png",
-                  onTap: () async{
+                  onTap: () async {
                     String userId = await LocalStorage.instance
-                    .DataFromPrefs(key: HiveKeys.userData);
+                        .DataFromPrefs(key: HiveKeys.userData);
                     Get.to(MyOrders(
                       userId: userId,
                     ));
@@ -155,7 +153,7 @@ class UserProfilePage extends StatelessWidget {
                   icon: "assets/icons/help_icon.png",
                 ),
                 kHiegth25,
-                 MainTile(
+                MainTile(
                   name: "Contact Us",
                   icon: "assets/icons/call_icon.png",
                   onTap: () {},

@@ -36,6 +36,12 @@ class _GroceriesPageState extends State<GroceriesPage> {
     final VendorController vendorController = Get.put(VendorController());
     final LocationController locationController = Get.put(LocationController());
 
+    @override
+    void initState() {
+      super.initState();
+      vendorController.fetchVendors('Grocery');
+    }
+
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
@@ -229,14 +235,13 @@ class _GroceriesPageState extends State<GroceriesPage> {
                       itemCount: controller.storeList.length,
                       itemBuilder: (context, index) {
                         final vendor = vendorController.vendorsListCat[index];
-                        final store = controller.storeList[index];
                         return GestureDetector(
                           onTap: () {
                             // Handle tap on the store card ProfilePage()
                           },
                           child: ExploreCard(
-                            image: store.image, // Placeholder image path
-                            name: store.name,
+                            image: vendor.image, // Placeholder image path
+                            name: vendor.image,
                             onTap: () {},
                             locationCityCountry: '',
                             distance: vendorController

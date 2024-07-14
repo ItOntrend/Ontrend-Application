@@ -114,7 +114,9 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kWhite,
       appBar: AppBar(
+        backgroundColor: kWhite,
         centerTitle: false,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),

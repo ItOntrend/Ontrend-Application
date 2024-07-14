@@ -52,7 +52,8 @@ class CartController extends GetxController {
 
   void addItemToCart(ItemModel item) {
     if (cartItems.containsKey(item.name)) {
-      cartItems[item.name]['quantity'] = (cartItems[item.name]['quantity'] + 1).toInt();
+      cartItems[item.name]['quantity'] =
+          (cartItems[item.name]['quantity'] + 1).toInt();
     } else {
       cartItems[item.name] = {'item': item, 'quantity': 1};
     }
@@ -67,8 +68,10 @@ class CartController extends GetxController {
   }
 
   void removeItemFromCart(ItemModel item) {
-    if (cartItems.containsKey(item.name) && cartItems[item.name]['quantity'] > 1) {
-      cartItems[item.name]['quantity'] = (cartItems[item.name]['quantity'] - 1).toInt();
+    if (cartItems.containsKey(item.name) &&
+        cartItems[item.name]['quantity'] > 1) {
+      cartItems[item.name]['quantity'] =
+          (cartItems[item.name]['quantity'] - 1).toInt();
     } else {
       cartItems.remove(item.name);
     }
@@ -83,10 +86,12 @@ class CartController extends GetxController {
   }
 
   int getItemQuantity(ItemModel item) {
-    return cartItems.containsKey(item.name) ? cartItems[item.name]['quantity'] : 0;
+    return cartItems.containsKey(item.name)
+        ? cartItems[item.name]['quantity']
+        : 0;
   }
 
-  void removeItemEntirely(ItemModel item) { 
+  void removeItemEntirely(ItemModel item) {
     cartItems.remove(item.name);
     updateItemTotal();
     cartItems.refresh();
@@ -131,62 +136,63 @@ class CartController extends GetxController {
   }
 
   Future<String> placeOrder(String userId, String paymentType, String userName,
-    String userPhone) async {
-  String orderId = generateOrderId();
-  try {
-    final currentLat = locationController.currentPosition.value.latitude;
-    final currentLng = locationController.currentPosition.value.longitude;
+      String userPhone) async {
+    String orderId = generateOrderId();
+    try {
+      final currentLat = locationController.currentPosition.value.latitude;
+      final currentLng = locationController.currentPosition.value.longitude;
 
-    OrderModel order = OrderModel(
-      userName: userName,
-      deliveryAcceptedBy:
-          DeliveryAcceptedBy(name: "", phoneNumber: "", id: ""),
-      userPhone: userPhone,
-      addedBy: cartItems.values.first['item'].addedBy,
-      adminEarnings: platformFee,
-      discountApplied: 0.0,
-      items: cartItems.values
-          .map((value) => Item(
-                addedBy: value['item'].addedBy.toString(),
-                itemName: value['item'].name,
-                itemPrice: double.tryParse(value['item'].price.toString()) ?? 0,
-                itemQuantity: (value['quantity'] as num).toInt(),
-                total: (value['item'].price * value['quantity']).toDouble(),
-              ))
-          .toList(),
-      promoCode: null,
-      status: 'Pending',
-      totalPrice: totalAmount,
-      userId: userId,
-      orderTimestamp: DateTime.now(),
-      orderID: orderId,
-      paymentType: paymentType,
-      restaurantName: cartItems.values.first['item'].restaurantName,
-      deliveryLocation: DeliveryLocation(
-          address: locationController.currentAddress.value,
-          apartmentNumber: "apartmentNumber",
-          city: locationController.cityName.value,
-          houseNumber: "houseNumber",
-          lat: currentLat,
-          lng: currentLng,
-          street: locationController.streetName.value),
-      deliveryAccepted: false,
-      restaurantLocation: RestaurantLocation(lat: 0.0, lng: 0.0),
-      assignedDeliveryPartnerId: "",
-    );
+      OrderModel order = OrderModel(
+        userName: userName,
+        deliveryAcceptedBy:
+            DeliveryAcceptedBy(name: "", phoneNumber: "", id: ""),
+        userPhone: userPhone,
+        addedBy: cartItems.values.first['item'].addedBy,
+        adminEarnings: platformFee,
+        discountApplied: 0.0,
+        items: cartItems.values
+            .map((value) => Item(
+                  addedBy: value['item'].addedBy.toString(),
+                  itemName: value['item'].name,
+                  itemPrice:
+                      double.tryParse(value['item'].price.toString()) ?? 0,
+                  itemQuantity: (value['quantity'] as num).toInt(),
+                  total: (value['item'].price * value['quantity']).toDouble(),
+                ))
+            .toList(),
+        promoCode: null,
+        status: 'Pending',
+        totalPrice: totalAmount,
+        userId: userId,
+        orderTimestamp: DateTime.now(),
+        orderID: orderId,
+        paymentType: paymentType,
+        restaurantName: cartItems.values.first['item'].restaurantName,
+        deliveryLocation: DeliveryLocation(
+            address: locationController.currentAddress.value,
+            apartmentNumber: "apartmentNumber",
+            city: locationController.cityName.value,
+            houseNumber: "houseNumber",
+            lat: currentLat,
+            lng: currentLng,
+            street: locationController.streetName.value),
+        deliveryAccepted: false,
+        restaurantLocation: RestaurantLocation(lat: 0.0, lng: 0.0),
+        assignedDeliveryPartnerId: "",
+      );
 
-    await FirebaseFirestore.instance
-        .collection('orders')
-        .doc(orderId)
-        .set(order.toJson());
-    cartItems.clear(); // Clear cart after placing order
-    saveCartItems(); // Save the cart items
-  } catch (e) {
-    print('Error placing order: $e');
+      await FirebaseFirestore.instance
+          .collection('orders')
+          .doc(orderId)
+          .set(order.toJson());
+      cartItems.clear();
+      itemTotal.value = 0.0; // Clear cart after placing order
+      saveCartItems(); // Save the cart items
+    } catch (e) {
+      print('Error placing order: $e');
+    }
+    return orderId;
   }
-  return orderId;
-}
-
 
   void setReturningFromCart() {
     isReturningFromCart = true;
@@ -195,6 +201,7 @@ class CartController extends GetxController {
   void showSnackBar(String message) {
     Get.snackbar('Cart', message, snackPosition: SnackPosition.BOTTOM);
   }
+
   Stream<OrderModel> getOrderStream(String orderId) {
     return FirebaseFirestore.instance
         .collection('orders')
