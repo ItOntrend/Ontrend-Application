@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/best_seller_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/food_controller.dart';
@@ -12,15 +13,15 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_pag
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_food.dart';
 
 class FoodPage extends StatefulWidget {
   const FoodPage({
@@ -66,33 +67,40 @@ class _FoodPageState extends State<FoodPage> {
             ),
           ),
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Obx(() => Text(
-                  locationController.streetName.value,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )),
-            Obx(() => Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      locationController.countryName.value,
-                      style: const TextStyle(
-                        color: kBlue,
-                        fontSize: 10,
+        title: GestureDetector(
+          onTap: () {
+            Get.to(
+              const SelectLocationPage(),
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Obx(() => Text(
+                    locationController.streetName.value,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),
+              Obx(() => Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        locationController.countryName.value,
+                        style: const TextStyle(
+                          color: kBlue,
+                          fontSize: 10,
+                        ),
                       ),
-                    ),
-                    const Icon(
-                      Icons.keyboard_arrow_down,
-                      size: 16,
-                    ),
-                  ],
-                )),
-          ],
+                      const Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 16,
+                      ),
+                    ],
+                  )),
+            ],
+          ),
         ),
         actions: [
           Padding(
@@ -129,8 +137,11 @@ class _FoodPageState extends State<FoodPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Search bar
-              const TextfieldWithMic(
+              TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...",
+                onTap: () {
+                  Get.to(SearchPage());
+                },
               ),
               kHiegth15,
               // Welcome card
@@ -144,7 +155,7 @@ class _FoodPageState extends State<FoodPage> {
                 () => foodController.isCategoryLoading.value
                     ? const CircularProgressIndicator()
                     : SizedBox(
-                        height: 240, // Adjust the height as needed
+                        height: 286.h, // Adjust the height as needed
                         child: GridView.builder(
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
@@ -177,7 +188,7 @@ class _FoodPageState extends State<FoodPage> {
                 () => bestSellerController.isBestSellerLoading.value
                     ? const CircularProgressIndicator()
                     : SizedBox(
-                        height: 300,
+                        height: 300.h,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: bestSellerController.bestSellerList.length,

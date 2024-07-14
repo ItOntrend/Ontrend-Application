@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/notification_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/notification_card.dart';
 
 class NFoodBar extends StatelessWidget {
   const NFoodBar({super.key});

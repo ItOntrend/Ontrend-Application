@@ -44,28 +44,9 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
             pinned: true,
             expandedHeight: 300,
             flexibleSpace: FlexibleSpaceBar(
-              background: GoogleMap(
-                onMapCreated: _onMapCreated,
-                initialCameraPosition: CameraPosition(
-                  target: _center,
-                  zoom: 11.0,
-                ),
-                markers: {
-                  Marker(
-                    markerId: const MarkerId('destination'),
-                    position: _center,
-                  ),
-                },
-                polylines: {
-                  Polyline(
-                    polylineId: const PolylineId('route'),
-                    points: [_center, const LatLng(45.531563, -122.677433)],
-                    color: Colors.green,
-                    width: 5,
-                  ),
-                },
-              ),
-            ),
+                background: SizedBox(
+              child: Image.asset("assets/lottie_animation/pending.gif"),
+            )),
           ),
           SliverToBoxAdapter(
             child: Column(
@@ -93,14 +74,14 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Mohammed",
+                            "Waiting for acceptance",
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                           Text(
-                            "is your delivery hero for\ntoday.",
+                            "Your delivery hero details will\nappear here once accepted.",
                             style: TextStyle(
                               fontSize: 10,
                               color: kTextStyleGrey,
@@ -112,15 +93,9 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                       Container(
                         height: 36.h,
                         width: 36.w,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: kWhite,
-                        ),
-                        child: IconButton(
-                          icon: Icon(Icons.phone, color: Colors.white),
-                          onPressed: () {
-                            // Add functionality to call the delivery person
-                          },
                         ),
                       ),
                     ],
@@ -133,10 +108,10 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                     if (snapshot.hasError) {
-                      return Center(child: Text('Error fetching order status'));
+                      return const Center(child: Text('Error fetching order status'));
                     }
                     OrderModel order = OrderModel.fromJson(
                         snapshot.data!.data() as Map<String, dynamic>);
@@ -169,55 +144,6 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           ),
           SizedBox(height: 10),
           // Placeholder for delivery person
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-              border: Border.all(color: kBorderLiteBlack),
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(40), topRight: Radius.circular(40)),
-              color: kWhite,
-            ),
-            height: 128.h,
-            child: Row(
-              children: [
-                Image.asset(
-                  "assets/image/delivery_boy_image.png",
-                  height: 74.h,
-                  width: 92.w,
-                ),
-                kWidth15,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Waiting for acceptance",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Text(
-                      "Your delivery hero details will\nappear here once accepted.",
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: kTextStyleGrey,
-                      ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Container(
-                  height: 36.h,
-                  width: 36.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: kWhite,
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );

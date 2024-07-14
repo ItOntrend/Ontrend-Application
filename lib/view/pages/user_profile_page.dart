@@ -9,7 +9,7 @@ import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/my_orders.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/change_textfield.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/change_textfield.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_tile.dart';
 
 class UserProfilePage extends StatelessWidget {
