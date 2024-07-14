@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
@@ -11,10 +13,8 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart
 class CategorysSearchPage extends StatefulWidget {
   const CategorysSearchPage({
     super.key,
-    required this.userId,
     required this.categoryName,
   });
-  final String userId;
   final String categoryName;
 
   @override

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ontrend_food_and_e_commerce/controller/auth_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
@@ -153,7 +155,7 @@ class UserProfilePage extends StatelessWidget {
                   icon: "assets/icons/help_icon.png",
                 ),
                 kHiegth25,
-                const MainTile(
+                 MainTile(
                   name: "Contact Us",
                   icon: "assets/icons/call_icon.png",
                   onTap: () {},

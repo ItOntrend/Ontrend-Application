@@ -25,12 +25,10 @@ import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.da
 
 class HomePage extends StatefulWidget {
   final NavigationController? controller;
-  final String userId;
 
   HomePage({
     super.key,
     this.controller,
-    required this.userId,
   });
 
   @override

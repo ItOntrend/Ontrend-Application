@@ -24,9 +24,7 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_food.dart'
 class FoodPage extends StatefulWidget {
   const FoodPage({
     super.key,
-    required this.userId,
   });
-  final String userId;
 
   @override
   State<FoodPage> createState() => _FoodPageState();
