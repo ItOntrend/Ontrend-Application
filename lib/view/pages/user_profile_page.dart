@@ -11,6 +11,7 @@ import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.da
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/my_orders.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/change_textfield.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_tile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserProfilePage extends StatelessWidget {
   UserProfilePage({super.key});
@@ -26,7 +27,6 @@ class UserProfilePage extends StatelessWidget {
     print("Updating language to ${locale.languageCode}");
     Get.back();
     Get.updateLocale(locale);
-
   }
 
   final LanguageController _langController = Get.put(LanguageController());
@@ -118,17 +118,16 @@ class UserProfilePage extends StatelessWidget {
                 kHiegth15,
                 Obx(() {
                   return ChangeTextfield(
-                    hintText: "*Name...",
-                    initialValue: "${userController.firstName.value}"
-                    // userDetail['firstName'] ?? '',
-                  );
+                      hintText: "*Name...",
+                      initialValue: "${userController.firstName.value}"
+                      // userDetail['firstName'] ?? '',
+                      );
                 }),
                 kHiegth20,
                 Obx(() {
                   return ChangeTextfield(
-                    hintText: "*Email...",
-                    initialValue: "${userController.email.value}"
-                  );
+                      hintText: "*Email...",
+                      initialValue: "${userController.email.value}");
                 }),
                 kHiegth20,
                 Obx(() {
@@ -141,9 +140,9 @@ class UserProfilePage extends StatelessWidget {
                 MainTile(
                   name: "My Orders".tr,
                   icon: "assets/icons/my_orders_icon.png",
-                  onTap: () async{
+                  onTap: () async {
                     String userId = await LocalStorage.instance
-                    .DataFromPrefs(key: HiveKeys.userData);
+                        .DataFromPrefs(key: HiveKeys.userData);
                     Get.to(MyOrders(
                       userId: userId,
                     ));
@@ -155,10 +154,19 @@ class UserProfilePage extends StatelessWidget {
                   icon: "assets/icons/help_icon.png",
                 ),
                 kHiegth25,
-                 MainTile(
+                MainTile(
                   name: "Contact Us",
                   icon: "assets/icons/call_icon.png",
-                  onTap: () {},
+                  onTap: () {
+                    launchWhatsApp(
+                      phone:
+                          '96898710707', // Ensure correct format without dashes
+                      message: 'Hello! This is a message from my app.',
+                    ).catchError((e) {
+                      print('Error launching WhatsApp: $e');
+                      // Optionally, show an error message to the user
+                    });
+                  },
                 ),
                 kHiegth25,
                 MainTile(
@@ -177,5 +185,17 @@ class UserProfilePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> launchWhatsApp(
+      {required String message, required String phone}) async {
+    final Uri whatsappUrl = Uri.parse(
+        "whatsapp://send?phone=$phone&text=${Uri.encodeFull(message)}");
+
+    if (await canLaunchUrl(whatsappUrl)) {
+      await launchUrl(whatsappUrl);
+    } else {
+      print('Could not launch $whatsappUrl');
+    }
   }
 }

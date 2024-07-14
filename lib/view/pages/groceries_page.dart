@@ -52,7 +52,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
         centerTitle: false,
         leading: GestureDetector(
           onTap: () {
-            Get.to(const SelectLocationPage());
+            Get.to(() => SelectLocationPage());
           },
           child: Padding(
             padding: const EdgeInsets.only(left: 20),
@@ -192,9 +192,9 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           .length, //homeController.categories.length,
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
-                        return SVerticalImageTextWidget(
-                          image: category.image, //category.imageUrl,
-                          categoryType: category.name,
+                        return CategoryCard(
+                          categoryImage: category.image, //category.imageUrl,
+                          categoryName: category.name,
                           onTap: () => Get.to(() => CategorysSearchPage(
                                 categoryName: category.name,
                                 type: 'Grocery',
