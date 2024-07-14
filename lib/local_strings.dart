@@ -9,8 +9,8 @@ class LocalStrings extends Translations {
           'hello': 'HELLO WORLD',
           'message': "WELCOME TO APP",
           'My Profile': 'My Profile',
-          'Name': 'Name',
-          'Email': 'Email',
+          '*Name...': 'Name',
+          '*Email...': 'Email',
           'Nationality': 'Nationality',
           'My Orders': 'My Orders',
           'Help': 'Help',
@@ -82,6 +82,14 @@ class LocalStrings extends Translations {
           'Do you have an account?': 'Do you have an account?',
           'Select Nationality': 'Select Nationality',
           'Start typing to search': 'Start typing to search',
+          "Something went wrong": "Something went wrong",
+          "Item not in cart": "Item not in cart",
+          "Add more items": "Add more items",
+          "Add cooking requests": "Add cooking requests",
+          "Place Order": "Place Order",
+          "Add": "Add",
+          "Your Order Has Been Placed Successfully":
+              "Your Order Has Been Placed Successfully",
         },
         //'hi_IN': {'hello': "नमस्ते दुनिया", 'message': "ऐप में आपका स्वागत है"},
         'ar_OM': {
@@ -89,8 +97,8 @@ class LocalStrings extends Translations {
           'hello': "مرحبا بالعالم",
           'message': "مرحبا بكم في التطبيق",
           'My Profile': 'ملفي الشخصي',
-          'Name': 'الاسم',
-          'Email': 'البريد الإلكتروني',
+          '*Name...': 'الاسم',
+          '*Email...': 'البريد الإلكتروني',
           'Nationality': 'الجنسية',
           'My Orders': 'طلباتي',
           'Help': 'مساعدة',
@@ -160,7 +168,14 @@ class LocalStrings extends Translations {
               "تم إرسال البريد الإلكتروني لإعادة تعيين كلمة المرور بنجاح",
           'Do you have an account?': 'هل لديك حساب؟',
           'Select Nationality': "اختر الجنسية",
-          'Start typing to search': "ابدأ الكتابة للبحث"
+          'Start typing to search': "ابدأ الكتابة للبحث",
+          "Something went wrong": "هناك خطأ ما",
+          "Item not in cart": "العنصر ليس في سلة التسوق",
+          "Add more items": "إضافة المزيد من العناصر",
+          "Add cooking requests": "إضافة طلبات الطبخ",
+          "Place Order": "مكان الامر",
+          "Add": "يضيف",
+          "Your Order Has Been Placed Successfully": "تم تقديم طلبك بنجاح",
         }
       };
 }

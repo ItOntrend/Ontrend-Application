@@ -53,7 +53,36 @@ class VendorModel {
     required this.isOnline,
     required this.dayWiseOpenAndClosingTime,
   });
-
+ factory VendorModel.fromMap(Map<String, dynamic> data, String documentId) {
+    return VendorModel(
+      ownerName: data['ownerName'] ?? '',
+      restaurantName: data['restaurantName'] ?? '',
+      email: data['email'] ?? '',
+      phone: data['phone'] ?? '',
+      category: data['category'] ?? '',
+      bankingCode: data['bankCode'] ?? '',
+      delete: data['delete'] ?? false,
+      accountNumber: data['accountNumber'] ?? '',
+      vendorId: data['vendorID'] ?? '',
+      vatNumber: data['vatNumber'] ?? '',
+      workingDays: data['workingDays'] ?? {},
+      dayWiseOpenAndClosingTime: data['dayWiseOpenAndClosingTime'] ?? {},
+      createdTime: data['timeStamp']?.toDate() ?? DateTime.now(),
+      reference: FirebaseFirestore.instance.collection('users').doc(documentId),
+      businessAddress: data['businessAddress'] ?? '',
+      isApproved: data['isApproved'] ?? false,
+      emailverified: data['emailVerified'] ?? false,
+      image: data['image'] ?? '',
+      role: data['role'] ?? '',
+      location: data['location'] != null
+          ? Location.fromJson(data['location'])
+          : Location(lat: 0.0, lng: 0.0),
+      bannerImage: data['bannerImage'] ?? '',
+      openingTime: data['openingTime'] ?? '',
+      closingTime: data['closingTime'] ?? '',
+      isOnline: data['isOnline'] ?? false,
+    );
+  }
   VendorModel copyWith({
     String? ownerName,
     String? restaurantName,

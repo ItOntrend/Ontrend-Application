@@ -103,8 +103,8 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
                     ),
                   ),
                   const Spacer(),
-                  const Text(
-                    "Change",
+                  Text(
+                    "Change".tr,
                     style: TextStyle(
                       color: kGreen,
                       fontSize: 14,
@@ -133,7 +133,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
             const Spacer(),
             MainBotton(
               onTap: () async {
-                log("Place Order");
+                log("Place Order".tr);
                 String userId = await LocalStorage.instance
                     .DataFromPrefs(key: HiveKeys.userData);
 

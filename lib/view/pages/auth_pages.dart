@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/utils/constants/firebase_constants.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/login_page.dart';
@@ -19,7 +20,7 @@ class AuthPages extends StatelessWidget {
               color: kOrange,
             );
           } else if (snapshot.hasError) {
-            return const Text("Something went wrong");
+            return Text("Something went wrong".tr);
           } else if (snapshot.hasData) {
             return const NavigationManu();
           } else {

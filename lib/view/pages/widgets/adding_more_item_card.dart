@@ -10,7 +10,7 @@ class AddingMoreItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Get.back();
       },
       child: Container(
@@ -37,8 +37,8 @@ class AddingMoreItemCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Add more items",
+                Text(
+                  "Add more items".tr,
                   style: TextStyle(
                     color: Colors.black54,
                     fontSize: 14,
@@ -67,8 +67,8 @@ class AddingMoreItemCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Add cooking requests",
+                Text(
+                  "Add cooking requests".tr,
                   style: TextStyle(
                     color: Colors.black54,
                     fontSize: 14,

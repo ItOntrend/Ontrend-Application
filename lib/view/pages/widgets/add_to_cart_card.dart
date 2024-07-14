@@ -86,8 +86,8 @@ class _AddToCartCardState extends State<AddToCartCard> {
               Obx(() {
                 final cartItem = cartController.cartItems[item.name];
                 if (cartItem == null) {
-                  return const Text(
-                    "Item not in cart",
+                  return Text(
+                    "Item not in cart".tr,
                     style: TextStyle(
                       color: kRed,
                       fontSize: 12,

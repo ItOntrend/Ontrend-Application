@@ -29,9 +29,9 @@ class AddButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           color: kOrange,
         ),
-        child: const Center(
+        child: Center(
           child: Text(
-            "Add",
+            "Add".tr,
             style: TextStyle(
               fontSize: 19,
               fontWeight: FontWeight.w500,
@@ -48,9 +48,9 @@ class AddButton extends StatelessWidget {
       duration: const Duration(days: 1), // Snackbar duration is now 1 day
       backgroundColor: kGreen,
       content: Obx(() => Text(
-        'Item added (${cartController.getItemCount()} items in cart)',
-        style: const TextStyle(color: kWhite),
-      )),
+            'Item added (${cartController.getItemCount()} items in cart)',
+            style: const TextStyle(color: kWhite),
+          )),
       action: SnackBarAction(
         label: 'View Cart',
         textColor: kWhite,
