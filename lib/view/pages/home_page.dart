@@ -133,8 +133,11 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextfieldWithMic(
-                hintText: "Biryani, Burger, Ice Cream...".tr,
+              GestureDetector(
+                onTap: () => Get.to(() => SearchPage()),
+                child: TextfieldWithMic(
+                  hintText: "Biryani, Burger, Ice Cream...".tr,
+                ),
               ),
               kHiegth15,
               const WelcomeCardHome(

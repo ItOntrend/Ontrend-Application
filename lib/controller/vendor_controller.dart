@@ -32,12 +32,13 @@ class VendorController extends GetxController {
     }
   }
 
-  // Fetch list of vendors from Firebase
-  Future<void> fetchVendors() async {
+  Future<void> fetchVendors(String type) async {
     try {
       var vendorsQuerySnapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('role', isEqualTo: 'Vendor')
+          .where('vendorType',
+              isEqualTo: type) // Add this condition to filter by vendorType
           .get();
 
       var vendors = vendorsQuerySnapshot.docs.map((doc) {
@@ -45,8 +46,9 @@ class VendorController extends GetxController {
       }).toList();
 
       vendorsListCat.assignAll(vendors);
+      log("Vendors data fetched successfully");
     } catch (e) {
-      print('Error fetching vendors: $e');
+      log('Error fetching vendors: $e');
     }
   }
 
@@ -66,22 +68,23 @@ class VendorController extends GetxController {
 
   Future<VendorModel?> getVendorByUId({required String userId}) async {
     VendorModel? data;
-    print(userId);
     try {
       data = await VendorRepository.getVendorById(userId: userId);
-
       if (data != null) {
         log("Vendor fetched successfully: ${data.restaurantName}");
-
-        vendorDetail.value = data;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          vendorDetail.value = data;
+        });
       } else {
         log("Vendor not found for UID: $userId");
-        vendorDetail.value = null;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          vendorDetail.value = null;
+        });
       }
     } catch (e) {
       log('Error fetching vendor: $e');
     }
-    return null;
+    return data;
   }
 
   Future<VendorModel?> getProfile() async {

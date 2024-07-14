@@ -20,17 +20,14 @@ class ProfileCard extends StatefulWidget {
 
 class _ProfileCardState extends State<ProfileCard> {
   final VendorController _vendorController = Get.put(VendorController());
-  // Vendor? data;
-  // Future<void> getVendorNameDetails() async {
-  //   data = await _vendorController.getVendorByUId(userId: widget.userId);
-  // }
 
   @override
   void initState() {
     super.initState();
     log("This is UserID ${widget.userId}");
-    _vendorController.getVendorByUId(userId: widget.userId);
-    // _vendorController.getItems(widget.userId);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _vendorController.getVendorByUId(userId: widget.userId);
+    });
   }
 
   @override
@@ -52,7 +49,7 @@ class _ProfileCardState extends State<ProfileCard> {
         ],
       ),
       child: Obx(() {
-        log("It's About Ventor Profile");
+        log("It's About Vendor Profile");
         if (_vendorController.isVendorLoading.value ||
             _vendorController.isItemsLoading.value) {
           return const Center(child: CircularProgressIndicator());
@@ -86,7 +83,6 @@ class _ProfileCardState extends State<ProfileCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      // data!.restaurantName,
                       _vendorController.vendorDetail.value?.restaurantName ??
                           "Not found",
                       style: const TextStyle(

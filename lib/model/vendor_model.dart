@@ -26,7 +26,6 @@ class VendorModel {
   String openingTime;
   bool isOnline;
 
-
   VendorModel({
     required this.ownerName,
     required this.restaurantName,
@@ -53,7 +52,8 @@ class VendorModel {
     required this.isOnline,
     required this.dayWiseOpenAndClosingTime,
   });
- factory VendorModel.fromMap(Map<String, dynamic> data, String documentId) {
+
+  factory VendorModel.fromMap(Map<String, dynamic> data, String documentId) {
     return VendorModel(
       ownerName: data['ownerName'] ?? '',
       restaurantName: data['restaurantName'] ?? '',
@@ -83,6 +83,66 @@ class VendorModel {
       isOnline: data['isOnline'] ?? false,
     );
   }
+
+  factory VendorModel.fromJson(Map<String, dynamic> json) => VendorModel(
+        ownerName: json["ownerName"] ?? '',
+        restaurantName: json["restaurantName"] ?? '',
+        email: json["email"] ?? '',
+        phone: json["phone"] ?? '',
+        category: json["category"] ?? '',
+        bankingCode: json["bankCode"] ?? '',
+        delete: json["delete"] ?? false,
+        accountNumber: json["accountNumber"] ?? '',
+        vendorId: json["vendorID"] ?? '',
+        vatNumber: json["vatNumber"] ?? '',
+        workingDays: json["workingDays"] ?? {},
+        dayWiseOpenAndClosingTime: json["dayWiseOpenAndClosingTime"] ?? {},
+        createdTime: json['timeStamp']?.toDate() ?? DateTime.now(),
+        reference: json['reference'] ??
+            FirebaseFirestore.instance
+                .collection('users')
+                .doc(json['vendorID'] ?? ''),
+        businessAddress: json['businessAddress'] ?? '',
+        isApproved: json['isApproved'] ?? false,
+        emailverified: json['emailVerified'] ?? false,
+        image: json['image'] ?? '',
+        role: json['role'] ?? '',
+        location: json['location'] != null
+            ? Location.fromJson(json['location'])
+            : Location(lat: 0.0, lng: 0.0),
+        bannerImage: json['bannerImage'] ?? '',
+        openingTime: json['openingTime'] ?? '',
+        closingTime: json['closingTime'] ?? '',
+        isOnline: json['isOnline'] ?? false,
+      );
+
+  Map<String, dynamic> toJson() => {
+        "ownerName": ownerName,
+        "restaurantName": restaurantName,
+        "email": email,
+        "phone": phone,
+        "category": category,
+        "bankCode": bankingCode,
+        "delete": delete,
+        "accountNumber": accountNumber,
+        "vendorID": vendorId,
+        "vatNumber": vatNumber,
+        "workingDays": workingDays,
+        "timeStamp": createdTime,
+        "reference": reference,
+        "businessAddress": businessAddress,
+        "isApproved": isApproved,
+        "emailVerified": emailverified,
+        "image": image,
+        "role": role,
+        "location": location.toJson(),
+        "bannerImage": bannerImage,
+        "openingTime": openingTime,
+        "closingTime": closingTime,
+        "isOnline": isOnline,
+        "dayWiseOpenAndClosingTime": dayWiseOpenAndClosingTime,
+      };
+
   VendorModel copyWith({
     String? ownerName,
     String? restaurantName,
@@ -95,7 +155,6 @@ class VendorModel {
     String? vendorId,
     String? vatNumber,
     String? businessAddress,
-    String? password,
     Map? workingDays,
     Map? dayWiseOpenAndClosingTime,
     DateTime? createdTime,
@@ -109,8 +168,6 @@ class VendorModel {
     String? openingTime,
     String? closingTime,
     bool? isOnline,
-
-
   }) =>
       VendorModel(
         ownerName: ownerName ?? this.ownerName,
@@ -124,10 +181,12 @@ class VendorModel {
         vendorId: vendorId ?? this.vendorId,
         vatNumber: vatNumber ?? this.vatNumber,
         workingDays: workingDays ?? this.workingDays,
+        dayWiseOpenAndClosingTime:
+            dayWiseOpenAndClosingTime ?? this.dayWiseOpenAndClosingTime,
         createdTime: createdTime ?? this.createdTime,
-        reference: reference  ?? this.reference,
+        reference: reference ?? this.reference,
         businessAddress: businessAddress ?? this.businessAddress,
-          emailverified: emailverified ?? this.emailverified,
+        emailverified: emailverified ?? this.emailverified,
         isApproved: isApproved ?? this.isApproved,
         image: image ?? this.image,
         role: role ?? this.role,
@@ -136,64 +195,8 @@ class VendorModel {
         openingTime: openingTime ?? this.openingTime,
         closingTime: closingTime ?? this.closingTime,
         isOnline: isOnline ?? this.isOnline,
-        dayWiseOpenAndClosingTime: dayWiseOpenAndClosingTime ?? this.dayWiseOpenAndClosingTime,
       );
-
-  factory VendorModel.fromJson(Map<String, dynamic> json) => VendorModel(
-    ownerName: json["ownerName"],
-    restaurantName: json["restaurantName"],
-    email: json["email"],
-    phone: json["phone"],
-    category: json["category"],
-    bankingCode: json["bankCode"],
-    delete: json["delete"],
-    accountNumber: json["accountNumber"],
-    vendorId: json["vendorID"],
-    vatNumber: json["vatNumber"],
-    workingDays: json["workingDays"],
-    dayWiseOpenAndClosingTime: json["dayWiseOpenAndClosingTime"],
-    createdTime: json['timeStamp'].toDate(),
-    reference: json['reference'],
-    businessAddress: json['businessAddress'],
-    isApproved: json['isApproved'],
-    emailverified: json['emailVerified'],
-    image: json['image'],
-    role: json['role'],
-    location: Location.fromJson(json['location']),
-    bannerImage: json['bannerImage'],
-    openingTime: json['openingTime'],
-    closingTime: json['closingTime'],
-    isOnline: json['isOnline'],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "ownerName": ownerName,
-    "restaurantName": restaurantName,
-    "email": email,
-    "phone": phone,
-    "category": category,
-    "bankCode": bankingCode,
-    "delete": delete,
-    "accountNumber": accountNumber,
-    "vendorID": vendorId,
-    "vatNumber": vatNumber,
-    "workingDays":workingDays,
-    "timeStamp":createdTime,
-    "reference":reference,
-    "businessAddress":businessAddress,
-    "isApproved":isApproved,
-    "emailVerified":emailverified,
-    "image":image,
-    "role":role,
-    "location":location.toJson(),
-    "bannerImage":bannerImage,
-    "openingTime":openingTime,
-    "closingTime":closingTime,
-    "isOnline":isOnline,
-    "dayWiseOpenAndClosingTime":dayWiseOpenAndClosingTime,
-  };
 }
-
 
 class Location {
   double lat;
@@ -214,12 +217,12 @@ class Location {
       );
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
-    lat: json["lat"]?.toDouble(),
-    lng: json["lng"]?.toDouble(),
-  );
+        lat: json["lat"]?.toDouble() ?? 0.0,
+        lng: json["lng"]?.toDouble() ?? 0.0,
+      );
 
   Map<String, dynamic> toJson() => {
-    "lat": lat,
-    "lng": lng,
-  };
+        "lat": lat,
+        "lng": lng,
+      };
 }

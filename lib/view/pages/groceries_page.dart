@@ -23,16 +23,27 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/trending_cards.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/welcome_card_groceries.dart';
 
-class GroceriesPage extends StatelessWidget {
-  GroceriesPage({
-    super.key,
-  });
+class GroceriesPage extends StatefulWidget {
+  GroceriesPage({Key? key}) : super(key: key);
+
+  @override
+  State<GroceriesPage> createState() => _GroceriesPageState();
+}
+
+class _GroceriesPageState extends State<GroceriesPage> {
+  final VendorController vendorController = Get.put(VendorController());
+
+  @override
+  void initState() {
+    super.initState();
+    vendorController.fetchVendors('Grocery');
+  }
 
   @override
   Widget build(BuildContext context) {
     final GroceryController controller = Get.put(GroceryController());
-    final VendorController vendorController = Get.put(VendorController());
     final LocationController locationController = Get.put(LocationController());
+
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
@@ -40,15 +51,11 @@ class GroceriesPage extends StatelessWidget {
         centerTitle: false,
         leading: GestureDetector(
           onTap: () {
-            Get.to(
-              const SelectLocationPage(),
-            );
+            Get.to(const SelectLocationPage());
           },
           child: Padding(
             padding: const EdgeInsets.only(left: 20),
-            child: Image.asset(
-              "assets/icons/location_icon.png",
-            ),
+            child: Image.asset("assets/icons/location_icon.png"),
           ),
         ),
         title: Column(
@@ -81,16 +88,15 @@ class GroceriesPage extends StatelessWidget {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
                 GestureDetector(
-                    onTap: () {
-                      Get.to(() => const NotificationPage());
-                    },
-                    child: Image.asset("assets/icons/notification_icon.png")),
+                  onTap: () {
+                    Get.to(() => const NotificationPage());
+                  },
+                  child: Image.asset("assets/icons/notification_icon.png"),
+                ),
                 kWidth25,
                 GestureDetector(
                   onTap: () {
@@ -113,18 +119,14 @@ class GroceriesPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Search bar
-              GestureDetector(
-                onTap: () => Get.to(() => SearchPage()),
-                child: TextfieldWithMic(
-                  hintText: "Vegetables, fruits...".tr,
-                ),
+              TextfieldWithMic(
+                hintText: "Vegetables, fruits...".tr,
+                onTap: () => () => Get.to(() => SearchPage()),
               ),
-
               kHiegth20,
               // Welcome card
               SPromoSliderWidget(),
               kHiegth20,
-
               // Trending card
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,9 +138,10 @@ class GroceriesPage extends StatelessWidget {
               kHiegth25,
               Obx(() {
                 if (controller.isProductLoading.value) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (controller.productList.isEmpty) {
-                  return Center(child: Text('No trending products available.'));
+                  return const Center(
+                      child: Text('No trending products available.'));
                 } else {
                   return SizedBox(
                     height: 200,
@@ -168,7 +171,6 @@ class GroceriesPage extends StatelessWidget {
                   );
                 }
               }),
-
               // Categories card
               TwoTextHeading(heading: "Categories".tr),
               kHiegth20,
@@ -179,7 +181,8 @@ class GroceriesPage extends StatelessWidget {
                   child: Obx(
                     () => GridView.builder(
                       scrollDirection: Axis.horizontal,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, // Number of rows
                         crossAxisSpacing: 10,
                         childAspectRatio:
@@ -189,12 +192,12 @@ class GroceriesPage extends StatelessWidget {
                           .length, //homeController.categories.length,
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
-
                         return SVerticalImageTextWidget(
                           image: category.image, //category.imageUrl,
                           categoryType: category.name,
                           onTap: () => Get.to(() => CategorysSearchPage(
                                 categoryName: category.name,
+                                type: 'Grocery',
                               )),
                         );
                       },
@@ -208,29 +211,37 @@ class GroceriesPage extends StatelessWidget {
               ),
               kHiegth20,
               SizedBox(
-                height: 300,
-                child: Obx(() {
-                  if (controller.storeList.isEmpty) {
-                    return Center(child: CircularProgressIndicator());
-                  } else {
-                    return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: vendorController.vendorsListCat.length,
-                      itemBuilder: (context, index) {
-                        final store = vendorController.vendorsListCat[index];
-                        return GestureDetector(
-                          onTap: () => Get.to(
-                              () => ProfilePage(userId: store.reference.id)),
-                          child: ExploreCard(
-                            image: store.image, // Placeholder image path
-                            name: store.restaurantName,
-                            onTap: () {},
-                          ),
-                        );
-                      },
-                    );
-                  }
-                }),
+                height: 500,
+                child: Obx(
+                  () => vendorController.isVendorLoading.value
+                      ? const CircularProgressIndicator()
+                      : vendorController.vendorsListCat.isEmpty
+                          ? const Center(child: Text("No Vendor Available"))
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: vendorController.vendorsListCat.length,
+                              itemBuilder: (context, index) {
+                                final vendor =
+                                    vendorController.vendorsListCat[index];
+                                //log("Vendor Images");
+
+                                //log(vendor.bannerImage.toString());
+                                return ExploreCard(
+                                  name: vendor.restaurantName,
+                                  image: vendor.bannerImage,
+                                  locationCity: vendor.location.toString(),
+                                  onTap: () {
+                                    //log(vendor.reference.id);
+                                    Get.to(
+                                      () => ProfilePage(
+                                          userId: vendor.reference.id),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                ),
               ),
             ],
           ),

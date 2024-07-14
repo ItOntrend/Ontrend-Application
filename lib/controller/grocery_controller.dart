@@ -28,6 +28,7 @@ class GroceryController extends GetxController {
     getCategories();
     getProducts();
     fetchStores();
+
     print("fetching.....................................................");
   }
 

@@ -44,7 +44,7 @@ class _FoodPageState extends State<FoodPage> {
     super.initState();
     foodController.getCategories();
     bestSellerController.getBestSeller();
-    vendorController.fetchVendors();
+    vendorController.fetchVendors('Food/Restaurant');
   }
 
   @override
@@ -130,11 +130,9 @@ class _FoodPageState extends State<FoodPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Search bar
-              GestureDetector(
+              TextfieldWithMic(
+                hintText: "Biryani, Burger, Ice Cream...".tr,
                 onTap: () => Get.to(() => SearchPage()),
-                child: TextfieldWithMic(
-                  hintText: "Biryani, Burger, Ice Cream...".tr,
-                ),
               ),
               kHiegth15,
               // Welcome card
@@ -161,7 +159,7 @@ class _FoodPageState extends State<FoodPage> {
                             return CategoryCard(
                               onTap: () {
                                 Get.to(() => CategorysSearchPage(
-                                      //userId: widget.userId,
+                                      type: 'Food/Restaurant',
                                       categoryName: category.name,
                                     ));
                               },
@@ -229,6 +227,7 @@ class _FoodPageState extends State<FoodPage> {
                               return ExploreCard(
                                 name: vendor.restaurantName,
                                 image: vendor.bannerImage,
+                                locationCity: vendor.location.toString(),
                                 onTap: () {
                                   log(vendor.reference.id);
                                   Get.to(
