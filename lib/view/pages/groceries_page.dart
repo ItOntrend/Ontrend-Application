@@ -15,8 +15,8 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.da
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/vegetable_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/vertical_image_text.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/vertical_image_text.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/offer_label.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
