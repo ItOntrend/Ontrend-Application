@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/best_seller_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/navigation_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
+import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/groceries_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
@@ -38,11 +40,12 @@ class _HomePageState extends State<HomePage> {
       Get.put(BestSellerController());
   final userController = Get.find<UserController>();
   final LocationController locationController = Get.put(LocationController());
+  final CartController cartController = Get.put(CartController());
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       bestSellerController.getBestSeller();
     });
   }
@@ -103,29 +106,34 @@ class _HomePageState extends State<HomePage> {
           }
         }),
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Get.to(() => const NotificationPage());
-                  },
-                  child: Image.asset("assets/icons/notification_icon.png"),
-                ),
-                SizedBox(width: 25),
-                GestureDetector(
-                  onTap: () {
-                    Get.to(
-                      () => const AddToCartPage(
-                        addedBy: '',
-                        restaurantName: '',
-                      ),
-                    );
-                  },
-                  child: Image.asset("assets/icons/cart_icon.png"),
-                ),
-              ],
+          Obx(
+            () => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => const NotificationPage());
+                    },
+                    child: Image.asset("assets/icons/notification_icon.png"),
+                  ),
+                  kWidth25,
+                  Badge.count(
+                    count: cartController.getItemCount(),
+                    backgroundColor: kDarkOrange,
+                    textColor: Colors.white,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(const AddToCartPage(
+                          addedBy: "",
+                          restaurantName: "",
+                        ));
+                      },
+                      child: Image.asset("assets/icons/cart_icon.png"),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

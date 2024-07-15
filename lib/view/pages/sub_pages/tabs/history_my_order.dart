@@ -21,11 +21,13 @@ class HistoryMyOrder extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Obx(() {
         if (orderController.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (orderController.orders.isEmpty) {
-          return Center(child: Text('No orders found'));
+          return const Center(
+            child: Text('No orders found'),
+          );
         }
 
         return ListView.builder(
@@ -36,10 +38,12 @@ class HistoryMyOrder extends StatelessWidget {
               children: [
                 MyOrderCard(
                   restaurantName: order.restaurantName,
-                  location: LatLng(order.restaurantLocation.lat, order.restaurantLocation.lng),
+                  location: LatLng(order.restaurantLocation.lat,
+                      order.restaurantLocation.lng),
                   status: order.status,
                   items: order.items,
                   totalPrice: order.totalPrice,
+                  userId: order.userId,
                 ),
                 const SizedBox(height: 25),
               ],

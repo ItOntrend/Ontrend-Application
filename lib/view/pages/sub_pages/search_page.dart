@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/food_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 
 class SearchPage extends StatefulWidget {
@@ -13,6 +15,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  final foodController = Get.find<FoodController>();
+
   TextEditingController _searchController = TextEditingController();
   List<String> _recentSearches = [];
   bool _hasSearched = false;
@@ -55,10 +59,10 @@ class _SearchPageState extends State<SearchPage> {
       backgroundColor: kWhite,
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 22),
+              padding: const EdgeInsets.symmetric(horizontal: 22),
               child: TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...",
                 controller: _searchController,
@@ -68,23 +72,19 @@ class _SearchPageState extends State<SearchPage> {
                 },
               ),
             ),
-            SizedBox(height: 20.h),
+            kHiegth20,
             if (_hasSearched)
               Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: kLiteBackground,
-                  border: Border.all(color: kBorderLiteBlack),
-                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Recently searched",
                       style: kTextStyle14Grey,
                     ),
-                    SizedBox(height: 20.h),
+                    kHiegth20,
                     Wrap(
                       spacing: 10,
                       runSpacing: 10,
@@ -106,7 +106,7 @@ class _SearchPageState extends State<SearchPage> {
                                   ),
                                   child: Text(
                                     searchTerm,
-                                    style: TextStyle(fontSize: 12),
+                                    style: const TextStyle(fontSize: 12),
                                   ),
                                 ),
                               ))
@@ -115,6 +115,42 @@ class _SearchPageState extends State<SearchPage> {
                   ],
                 ),
               ),
+            kHiegth10,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                "What's on your mind",
+                style: kTextStyle14Grey,
+              ),
+            ),
+            kDiver,
+            kHiegth10,
+            Obx(
+              () => foodController.isCategoryLoading.value
+                  ? const CircularProgressIndicator()
+                  : GridView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3),
+                      scrollDirection: Axis.vertical,
+                      itemCount: foodController.categoryList.length,
+                      itemBuilder: (context, index) {
+                        final category = foodController.categoryList[index];
+                        return CategoryCard(
+                          onTap: () {
+                            Get.to(() => CategorysSearchPage(
+                                  type: 'Food/Restaurant',
+                                  categoryName: category.name,
+                                ));
+                          },
+                          categoryName: category.name,
+                          categoryImage: category.imageUrl,
+                        );
+                      },
+                    ),
+            ),
           ],
         ),
       ),

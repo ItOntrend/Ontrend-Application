@@ -26,4 +26,28 @@ class OrderController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  Future<void> fetchOrder(String documentId) async {
+  if (documentId.isEmpty) {
+    print("Invalid document ID");
+    return;
+  }
+
+  try {
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection('orders')
+        .doc(documentId)
+        .get();
+
+    if (doc.exists) {
+      // Process the document
+      print("Document data: ${doc.data()}");
+    } else {
+      print("Document does not exist");
+    }
+  } catch (e) {
+    print("Error fetching document: $e");
+  }
+}
+
 }

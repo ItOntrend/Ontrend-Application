@@ -46,7 +46,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 10, bottom: 8, top: 12),
       margin: const EdgeInsets.symmetric(horizontal: 18).copyWith(bottom: 20),
-      height: 168.h,
+      height: 188.h,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),

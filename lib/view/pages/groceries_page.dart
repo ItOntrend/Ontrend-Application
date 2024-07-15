@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
@@ -34,7 +35,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
   @override
   void initState() {
     super.initState();
-    vendorController.fetchVendors('Food/Restaurant');
+    vendorController.fetchVendors('Grocery');
   }
 
   @override
@@ -42,6 +43,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
     final GroceryController controller = Get.put(GroceryController());
     final VendorController vendorController = Get.put(VendorController());
     final LocationController locationController = Get.put(LocationController());
+    final CartController cartController = Get.put(CartController());
 
     return Scaffold(
       backgroundColor: kWhite,
@@ -91,27 +93,34 @@ class _GroceriesPageState extends State<GroceriesPage> {
           ),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Get.to(() => const NotificationPage());
-                  },
-                  child: Image.asset("assets/icons/notification_icon.png"),
-                ),
-                kWidth25,
-                GestureDetector(
-                  onTap: () {
-                    Get.to(const AddToCartPage(
-                      addedBy: "",
-                      restaurantName: "",
-                    ));
-                  },
-                  child: Image.asset("assets/icons/cart_icon.png"),
-                ),
-              ],
+          Obx(
+            () => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => const NotificationPage());
+                    },
+                    child: Image.asset("assets/icons/notification_icon.png"),
+                  ),
+                  kWidth25,
+                  Badge.count(
+                    count: cartController.getItemCount(),
+                    backgroundColor: kDarkOrange,
+                    textColor: Colors.white,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(const AddToCartPage(
+                          addedBy: "",
+                          restaurantName: "",
+                        ));
+                      },
+                      child: Image.asset("assets/icons/cart_icon.png"),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -146,9 +155,9 @@ class _GroceriesPageState extends State<GroceriesPage> {
                 height: 240.h,
                 child: Obx(() {
                   if (controller.isProductLoading.value) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (controller.productList.isEmpty) {
-                    return Center(
+                    return const Center(
                         child: Text('No trending products available.'));
                   } else {
                     return ListView.builder(
@@ -222,6 +231,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                       : vendorController.vendorsListCat.isEmpty
                           ? const Center(child: Text("No Vendor Available"))
                           : ListView.builder(
+                              // physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
                               itemCount: vendorController.vendorsListCat.length,

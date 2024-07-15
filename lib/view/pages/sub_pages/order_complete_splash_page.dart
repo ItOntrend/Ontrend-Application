@@ -57,7 +57,11 @@ class OrderCompleteSplashPage extends StatelessWidget {
         ),
       ),
       duration: const Duration(seconds: 3),
-      nextScreen: DeliveryTrackingPage(orderId: orderId),
+      nextScreen: DeliveryTrackingPage(
+        orderId: orderId,
+        latitude: 0.0,
+        longitude: 0.0,
+      ),
     );
   }
 }
