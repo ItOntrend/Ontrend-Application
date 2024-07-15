@@ -54,7 +54,7 @@ class GroceryController extends GetxController {
       category.name =
           await _translationService.translate(category.name, currentLanguage);
     }
-    print('translating............${categoryList.value}');
+    print('translating............${categoryList}');
     categoryList.refresh(); // Refresh the list to update the UI
   }
 
@@ -64,7 +64,7 @@ class GroceryController extends GetxController {
     productList.value = await GroceryRepository.getProducts();
     isProductLoading.value = false;
     print("products........");
-    print("${productList.value}");
+    print("${productList}");
     print("${productList[0].name}");
   }
 
