@@ -11,6 +11,7 @@ import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.da
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/my_orders.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/change_textfield.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_tile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserProfilePage extends StatelessWidget {
   UserProfilePage({super.key});
@@ -18,6 +19,7 @@ class UserProfilePage extends StatelessWidget {
   final authController = Get.find<AuthController>();
   final cartController = Get.find<CartController>();
   final userController = Get.find<UserController>();
+  final languageController = Get.put(LanguageController());
   final List locale = [
     {'name': "ENGLISH", 'locale': Locale('en', 'US')},
     {'name': "عربي", 'locale': Locale('ar', 'OM')}
@@ -27,8 +29,6 @@ class UserProfilePage extends StatelessWidget {
     Get.back();
     Get.updateLocale(locale);
   }
-
-  final LanguageController _langController = Get.put(LanguageController());
 
   buildDialog(BuildContext context) {
     showDialog(
@@ -43,8 +43,10 @@ class UserProfilePage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    updateLanguage(locale[index]['locale']);
-                    _langController.changeLanguage('ar');
+                    Locale selectedLocale = locale[index]['locale'];
+                    updateLanguage(selectedLocale);
+                    languageController.changeLanguage(selectedLocale);
+                    //updateLanguage(locale[index]['locale']);
                   },
                   child: Text(locale[index]['name']),
                 );
@@ -156,7 +158,16 @@ class UserProfilePage extends StatelessWidget {
                 MainTile(
                   name: "Contact Us",
                   icon: "assets/icons/call_icon.png",
-                  onTap: () {},
+                  onTap: () {
+                    launchWhatsApp(
+                      phone:
+                          '96898710707', // Ensure correct format without dashes
+                      message: 'Hello! This is a message from my app.',
+                    ).catchError((e) {
+                      print('Error launching WhatsApp: $e');
+                      // Optionally, show an error message to the user
+                    });
+                  },
                 ),
                 kHiegth25,
                 MainTile(
@@ -175,5 +186,17 @@ class UserProfilePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> launchWhatsApp(
+      {required String message, required String phone}) async {
+    final Uri whatsappUrl = Uri.parse(
+        "whatsapp://send?phone=$phone&text=${Uri.encodeFull(message)}");
+
+    if (await canLaunchUrl(whatsappUrl)) {
+      await launchUrl(whatsappUrl);
+    } else {
+      print('Could not launch $whatsappUrl');
+    }
   }
 }
