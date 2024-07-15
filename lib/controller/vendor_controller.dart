@@ -11,6 +11,7 @@ import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.da
 import 'package:geocoding/geocoding.dart' as geocoding;
 
 class VendorController extends GetxController {
+  static VendorController get instance => Get.find();
   RxBool isVendorLoading = RxBool(false);
   RxBool isItemsLoading = RxBool(false);
   Rx<VendorModel?> vendorDetail = Rx<VendorModel?>(null);
@@ -40,18 +41,18 @@ class VendorController extends GetxController {
   }
 
   Future<String> getAddressFromLatLng(double latitude, double longitude) async {
-  try {
-    List<geocoding.Placemark> placemarks =
-        await geocoding.placemarkFromCoordinates(latitude, longitude);
-    if (placemarks.isNotEmpty) {
-      final placemark = placemarks.first;
-      return "${placemark.locality}, ${placemark.country}";
+    try {
+      List<geocoding.Placemark> placemarks =
+          await geocoding.placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        final placemark = placemarks.first;
+        return "${placemark.locality}, ${placemark.country}";
+      }
+    } catch (e) {
+      log('Error fetching address: $e');
     }
-  } catch (e) {
-    log('Error fetching address: $e');
+    return 'Unknown location';
   }
-  return 'Unknown location';
-}
 
   double calculateDistance(Location vendorLocation) {
     if (userPosition != null) {

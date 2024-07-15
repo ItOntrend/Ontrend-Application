@@ -27,8 +27,8 @@ class TrendingCards extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 176.h,
-        width: 140.w,
+        height: 200.h,
+        width: 160.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(
             10,
@@ -41,13 +41,17 @@ class TrendingCards extends StatelessWidget {
               children: [
                 imagePath.startsWith('http://') ||
                         imagePath.startsWith('https://')
-                    ? Image.network(
-                        imagePath,
-                        fit: BoxFit.cover,
+                    ? Container(
+                        height: 170.h,
+                        width: 150.h,
+                        child: Image.network(
+                          imagePath,
+                          fit: BoxFit.contain,
+                        ),
                       )
                     : Image.asset(
                         imagePath,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       ),
                 Positioned(bottom: 0, child: itemPrice),
               ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -143,7 +144,8 @@ class SavedAddress {
 class PlacePickerScreen extends StatelessWidget {
   final LocationController controller;
 
-  const PlacePickerScreen({Key? key, required this.controller}) : super(key: key);
+  const PlacePickerScreen({Key? key, required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

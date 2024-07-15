@@ -64,7 +64,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
             kHiegth6,
             BillDetailsRow(
               title: 'Delivery fee',
-              amount: cartController.deliveryFee,
+              amount: cartController.deliveryFee.value,
             ),
             kHiegth6,
             BillDetailsRow(
