@@ -14,6 +14,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_pag
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
@@ -145,8 +146,11 @@ class _FoodPageState extends State<FoodPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Search bar
-               TextfieldWithMic(
+              TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...".tr,
+                onTap: () {
+                  Get.to(SearchPage());
+                },
               ),
               kHiegth15,
               // Welcome card
@@ -154,7 +158,7 @@ class _FoodPageState extends State<FoodPage> {
               kHiegth25,
 
               // Categories card
-               TwoTextHeading(heading: "Categories".tr),
+              TwoTextHeading(heading: "Categories".tr),
               kHiegth20,
               Obx(
                 () => foodController.isCategoryLoading.value
@@ -185,7 +189,7 @@ class _FoodPageState extends State<FoodPage> {
                       ),
               ),
               kHiegth20,
-               OneTextHeading(
+              OneTextHeading(
                 heading: "Best Sellers".tr,
               ),
               kHiegth20,
@@ -218,7 +222,7 @@ class _FoodPageState extends State<FoodPage> {
                       ),
               ),
               kHiegth20,
-               OneTextHeading(
+              OneTextHeading(
                 heading: "Restaurants to explore".tr,
               ),
               kHiegth20,
@@ -226,7 +230,7 @@ class _FoodPageState extends State<FoodPage> {
                 () => vendorController.isVendorLoading.value
                     ? const CircularProgressIndicator()
                     : vendorController.vendorsListCat.isEmpty
-                        ?  Center(child: Text("No Vendor Available".tr))
+                        ? Center(child: Text("No Vendor Available".tr))
                         : ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
