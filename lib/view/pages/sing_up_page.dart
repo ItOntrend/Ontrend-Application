@@ -95,13 +95,52 @@ class SingUpPage extends StatelessWidget {
                   },
                 ),
                 kHiegth24,
-                MainTextField(
-                  numberOrName: TextInputType.number,
-                  hintText: "Mobile Number*".tr,
-                  controller: authController.numberController,
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        "+968",
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: MainTextField(
+                        numberOrName: TextInputType.number,
+                        hintText: "Mobile Number*".tr,
+                        controller: authController.numberController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your number'.tr;
+                          } else if (!RegExp(r'^\d{8}$').hasMatch(value)) {
+                            return 'Please enter a valid Omani mobile number'
+                                .tr;
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                kHiegth24,
+                MainTextFieldPassword(
+                  hintText: "Password*".tr,
+                  controller: authController.passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your number'.tr;
+                      return 'Please enter your password'.tr;
                     }
                     return null;
                   },
@@ -146,7 +185,7 @@ class SingUpPage extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () => Get.to(
-                        () =>LoginPage(),
+                        () => LoginPage(),
                       ),
                       child: Text(
                         "Login".tr,

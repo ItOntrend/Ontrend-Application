@@ -19,6 +19,7 @@ class UserProfilePage extends StatelessWidget {
   final authController = Get.find<AuthController>();
   final cartController = Get.find<CartController>();
   final userController = Get.find<UserController>();
+  final languageController = Get.put(LanguageController());
   final List locale = [
     {'name': "ENGLISH", 'locale': Locale('en', 'US')},
     {'name': "عربي", 'locale': Locale('ar', 'OM')}
@@ -28,8 +29,6 @@ class UserProfilePage extends StatelessWidget {
     Get.back();
     Get.updateLocale(locale);
   }
-
-  final LanguageController _langController = Get.put(LanguageController());
 
   buildDialog(BuildContext context) {
     showDialog(
@@ -44,8 +43,10 @@ class UserProfilePage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    updateLanguage(locale[index]['locale']);
-                    _langController.changeLanguage('ar');
+                    Locale selectedLocale = locale[index]['locale'];
+                    updateLanguage(selectedLocale);
+                    languageController.changeLanguage(selectedLocale);
+                    //updateLanguage(locale[index]['locale']);
                   },
                   child: Text(locale[index]['name']),
                 );

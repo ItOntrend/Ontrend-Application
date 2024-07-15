@@ -27,7 +27,7 @@ class LocalStrings extends Translations {
           'Categories': 'Categories',
           'Restaurants to explore': 'Restaurants to explore',
           'Vegetables, fruits...': 'Vegetables, fruits...',
-          "Trending on Ontrend": "Trending on Ontrend",
+          "Trending on OnTrend": "Trending on OnTrend",
           "Store to explore": "Store to explore",
           'Fresh Vegetables': 'Fresh Vegetables',
           "Payment Options": "Payment Options",
@@ -90,6 +90,7 @@ class LocalStrings extends Translations {
           "Add": "Add",
           "Your Order Has Been Placed Successfully":
               "Your Order Has Been Placed Successfully",
+          "OMR": "OMR",
         },
         //'hi_IN': {'hello': "नमस्ते दुनिया", 'message': "ऐप में आपका स्वागत है"},
         'ar_OM': {
@@ -115,7 +116,7 @@ class LocalStrings extends Translations {
           'Categories': 'فئات',
           'Restaurants to explore': 'مطاعم للاستكشاف',
           'Vegetables, fruits...': 'الفاكهة خضروات ',
-          "Trending on Ontrend": "الشائع",
+          "Trending on OnTrend": "الشائع",
           "Store to explore": 'متجر للاستكشاف',
           'Fresh Vegetables': 'الخضروات الطازجة',
           "Payment Options": "خيارات الدفع",
@@ -176,6 +177,7 @@ class LocalStrings extends Translations {
           "Place Order": "مكان الامر",
           "Add": "يضيف",
           "Your Order Has Been Placed Successfully": "تم تقديم طلبك بنجاح",
+          "OMR": ""
         }
       };
 }

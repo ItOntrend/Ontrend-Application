@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
@@ -11,7 +12,6 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_pa
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/vegetable_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/vertical_image_text.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
@@ -30,16 +30,16 @@ class GroceriesPage extends StatefulWidget {
 
 class _GroceriesPageState extends State<GroceriesPage> {
   final VendorController vendorController = Get.put(VendorController());
-
+  final GroceryController controller = Get.put(GroceryController());
+  final LanguageController languageController = Get.put(LanguageController());
   @override
   void initState() {
     super.initState();
-    vendorController.fetchVendors('Food/Restaurant');
+    vendorController.fetchVendors('Grocery');
   }
 
   @override
   Widget build(BuildContext context) {
-    final GroceryController controller = Get.put(GroceryController());
     final LocationController locationController = Get.put(LocationController());
 
     return Scaffold(
@@ -128,7 +128,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TwoTextHeading(heading: "Trending on Ontrend".tr),
+                  TwoTextHeading(heading: "Trending on OnTrend".tr),
                   // GestureDetector(onTap: () {}, child: Text('View All'))
                 ],
               ),
@@ -151,15 +151,21 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           onTap: () {
                             // Navigate to product details
                           },
-                          child: TrendingCards(
-                            imagePath: product.imageUrl,
-                            name: product.name,
-                            onTap: () {},
-                            itemPrice: OfferLabel(
-                              offerlabel:
-                                  '${product.vID}% OFF', // Modify as per your needs
-                              brandName:
-                                  'Upto OMR ${product.price}', // Modify as per your needs
+                          child: Obx(
+                            () => TrendingCards(
+                              imagePath: product.imageUrl,
+                              name: languageController
+                                          .currentLanguage.value.languageCode ==
+                                      'ar'
+                                  ? product.localName
+                                  : product.name,
+                              onTap: () {},
+                              itemPrice: OfferLabel(
+                                offerlabel:
+                                    '${product.vId}% OFF', // Modify as per your needs
+                                brandName:
+                                    'Upto OMR ${product.price}', // Modify as per your needs
+                              ),
                             ),
                           ),
                         );
