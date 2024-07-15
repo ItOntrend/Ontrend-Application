@@ -3,11 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
@@ -31,7 +33,8 @@ class GroceriesPage extends StatefulWidget {
 
 class _GroceriesPageState extends State<GroceriesPage> {
   final VendorController vendorController = Get.put(VendorController());
-
+  final GroceryController controller = Get.put(GroceryController());
+  final LanguageController languageController = Get.put(LanguageController());
   @override
   void initState() {
     super.initState();
@@ -41,7 +44,6 @@ class _GroceriesPageState extends State<GroceriesPage> {
   @override
   Widget build(BuildContext context) {
     final GroceryController controller = Get.put(GroceryController());
-    final VendorController vendorController = Get.put(VendorController());
     final LocationController locationController = Get.put(LocationController());
     final CartController cartController = Get.put(CartController());
 
@@ -52,7 +54,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
         centerTitle: false,
         leading: GestureDetector(
           onTap: () {
-            Get.to(const SelectLocationPage());
+            Get.to(() => SelectLocationPage());
           },
           child: Padding(
             padding: const EdgeInsets.only(left: 20),
@@ -146,7 +148,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TwoTextHeading(heading: "Trending on Ontrend".tr),
+                  TwoTextHeading(heading: "Trending on OnTrend".tr),
                   // GestureDetector(onTap: () {}, child: Text('View All'))
                 ],
               ),
@@ -169,15 +171,21 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           onTap: () {
                             // Navigate to product details
                           },
-                          child: TrendingCards(
-                            imagePath: product.imageUrl,
-                            name: product.name,
-                            onTap: () {},
-                            itemPrice: OfferLabel(
-                              offerlabel:
-                                  '${product.vID}% OFF', // Modify as per your needs
-                              brandName:
-                                  'Upto OMR ${product.price}', // Modify as per your needs
+                          child: Obx(
+                            () => TrendingCards(
+                              imagePath: product.imageUrl,
+                              name: languageController
+                                          .currentLanguage.value.languageCode ==
+                                      'ar'
+                                  ? product.localName
+                                  : product.name,
+                              onTap: () {},
+                              itemPrice: OfferLabel(
+                                offerlabel:
+                                    '${product.vId}% OFF', // Modify as per your needs
+                                brandName:
+                                    'Upto OMR ${product.price}', // Modify as per your needs
+                              ),
                             ),
                           ),
                         );
@@ -207,11 +215,10 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           .length, //homeController.categories.length,
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
-
                         return SVerticalImageTextWidget(
                           image: category.image, //category.imageUrl,
                           categoryType: category.name,
-                          onTap: () => Get.to(() => Vegetable(userId: "")),
+                          onTap: () => Get.to(() => Vegetable(userId: "",)),
                         );
                       },
                     ),

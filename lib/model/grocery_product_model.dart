@@ -1,61 +1,108 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
+  String name;
+  String localName;
+  double price;
+  String tag;
+  String localTag;
+  String restaurantName;
+  int vId;
   String addedBy;
   String description;
   String imageUrl;
-  String name;
-  String preparationTime;
-  String price;
-  String stock;
-  String tag;
+  int preparationTime;
+  double itemPrice;
   DateTime timeStamp;
-  String type;
-  String vID;
+  DocumentReference reference;
+  bool isApproved;
 
   ProductModel({
+    required this.name,
+    required this.localName,
+    required this.price,
+    required this.tag,
+    required this.localTag,
+    required this.vId,
     required this.addedBy,
     required this.description,
     required this.imageUrl,
-    required this.name,
     required this.preparationTime,
-    required this.price,
-    required this.stock,
-    required this.tag,
+    required this.itemPrice,
     required this.timeStamp,
-    required this.type,
-    required this.vID,
+    required this.reference,
+    required this.restaurantName,
+    required this.isApproved,
   });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) {
-    return ProductModel(
-      addedBy: json['addedBy'] ?? '',
-      description: json['description'] ?? '',
-      imageUrl: json['imageUrl'] ?? '',
-      name: json['name'] ?? '',
-      preparationTime: json['preparationTime'] ?? '',
-      price: json['price'] ?? '',
-      stock: json['stock'] ?? '',
-      tag: json['tag'] ?? '',
-      timeStamp: (json['timeStamp'] as Timestamp).toDate(),
-      type: json['type'] ?? '',
-      vID: json['vID'] ?? '',
-    );
-  }
+  ProductModel copyWith({
+    String? name,
+    String? localName,
+    double? price,
+    String? tag,
+    String? localTag,
+    String? restaurantName,
+    int? vId,
+    String? addedBy,
+    String? description,
+    String? imageUrl,
+    int? preparationTime,
+    double? itemPrice,
+    DateTime? timeStamp,
+    DocumentReference? reference,
+    bool? isApproved,
+  }) =>
+      ProductModel(
+        name: name ?? this.name,
+        localName: localName ?? this.localName,
+        price: price ?? this.price,
+        tag: tag ?? this.tag,
+        localTag: localTag ?? this.localTag,
+        vId: vId ?? this.vId,
+        addedBy: addedBy ?? this.addedBy,
+        description: description ?? this.description,
+        imageUrl: imageUrl ?? this.imageUrl,
+        preparationTime: preparationTime ?? this.preparationTime,
+        itemPrice: itemPrice ?? this.itemPrice,
+        timeStamp: timeStamp ?? this.timeStamp,
+        reference: reference ?? this.reference,
+        restaurantName: restaurantName ?? this.restaurantName,
+        isApproved: isApproved ?? this.isApproved,
+      );
 
-  Map<String, dynamic> toJson() {
-    return {
-      'addedBy': addedBy,
-      'description': description,
-      'imageUrl': imageUrl,
-      'name': name,
-      'preparationTime': preparationTime,
-      'price': price,
-      'stock': stock,
-      'tag': tag,
-      'timeStamp': timeStamp,
-      'type': type,
-      'vID': vID,
-    };
-  }
+  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
+        name: json["name"],
+        localName: json["localName"],
+        price: json["price"].toDouble() ?? 0,
+        tag: json["tag"],
+        localTag: json["localTag"],
+        vId: json["vID"],
+        addedBy: json["addedBy"],
+        description: json["description"],
+        imageUrl: json["imageUrl"],
+        preparationTime: json["preparationTime"],
+        itemPrice: json["itemPrice"].toDouble() ?? 0,
+        reference: json["reference"],
+        isApproved: json["isApproved"],
+        restaurantName: json["restaurantName"] ?? "",
+        timeStamp: json["timeStamp"].toDate(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "localName": localName,
+        "price": price,
+        "tag": tag,
+        "localTag": localTag,
+        "vID": vId,
+        "addedBy": addedBy,
+        "description": description,
+        "imageUrl": imageUrl,
+        "preparationTime": preparationTime,
+        "itemPrice": itemPrice,
+        "timeStamp": timeStamp,
+        "reference": reference,
+        "restaurantName": restaurantName,
+        "isApproved": isApproved,
+      };
 }
