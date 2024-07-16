@@ -74,8 +74,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
             ),
             kHiegth6,
             BillDetailsRow(
-              title: 'Platform fee'.tr,
-              title: 'Service fee',
+              title: 'Service fee'.tr,
               amount: cartController.platformFee,
             ),
             kHiegth6,

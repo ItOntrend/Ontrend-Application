@@ -7,23 +7,16 @@ import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
-<<<<<<< HEAD
-=======
-
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/vertical_image_text.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
->>>>>>> 87abbcdd20a017da214918dd81a67f866f1200f3
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/offer_label.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/trending_cards.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
 
 class GroceriesPage extends StatefulWidget {
@@ -153,12 +146,6 @@ class _GroceriesPageState extends State<GroceriesPage> {
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
                         return CategoryCard(
-<<<<<<< HEAD
-                          categoryImage: category.image, //category.imageUrl,
-                          categoryName: category.name,
-                          onTap: () => Get.to(() => Vegetable(
-                                userId: "",
-=======
                           categoryImage: category.imageUrl, //category.imageUrl,
                           categoryName: languageController
                                       .currentLanguage.value.languageCode ==
@@ -168,7 +155,6 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           onTap: () => Get.to(() => CategorysSearchPage(
                                 category: category,
                                 type: 'Grocery',
->>>>>>> 87abbcdd20a017da214918dd81a67f866f1200f3
                               )),
                         );
                       },
@@ -185,17 +171,10 @@ class _GroceriesPageState extends State<GroceriesPage> {
                 () => vendorController.isVendorLoading.value
                     ? const CircularProgressIndicator()
                     : vendorController.vendorsListCat.isEmpty
-<<<<<<< HEAD
-                        ? const Center(child: Text("No Vendor Available"))
-                        : ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-=======
                         ? Center(child: Text("No Vendor Available".tr))
                         : ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
->>>>>>> 87abbcdd20a017da214918dd81a67f866f1200f3
                             scrollDirection: Axis.vertical,
                             itemCount: vendorController.vendorsListCat.length,
                             itemBuilder: (context, index) {
@@ -205,43 +184,28 @@ class _GroceriesPageState extends State<GroceriesPage> {
 
                               //log(vendor.bannerImage.toString());
                               return ExploreCard(
-<<<<<<< HEAD
                                 latitude: vendor.location.lat,
                                 longitude: vendor.location.lng,
                                 locationCityCountry: "",
-=======
-                                longitude: vendor.location.lng,
-                                latitude: vendor.location.lat,
-                                locationCityCountry: '',
->>>>>>> 87abbcdd20a017da214918dd81a67f866f1200f3
                                 distance: vendorController
                                     .calculateDistance(vendor.location),
                                 name: vendor.restaurantName,
                                 image: vendor.bannerImage,
                                 onTap: () {
-<<<<<<< HEAD
                                   //log(vendor.reference.id);
                                   Get.to(
                                     () => ProfilePage(
-                                        userId: vendor.reference.id),
+                                      userId: vendor.reference.id,
+                                      type: 'Grocery',
+                                      cat: '',
+                                    ),
                                   );
-=======
-                                  Get.to(() => ProfilePage(
-                                        userId: vendor.reference.id,
-                                        cat: "",
-                                        type: "Grocery",
-                                      ));
->>>>>>> 87abbcdd20a017da214918dd81a67f866f1200f3
                                 },
                               );
                             },
                           ),
               ),
-<<<<<<< HEAD
               kHiegth30,
-=======
-              kWidth140
->>>>>>> 87abbcdd20a017da214918dd81a67f866f1200f3
             ],
           ),
         ),

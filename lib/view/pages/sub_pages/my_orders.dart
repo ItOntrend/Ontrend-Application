@@ -56,7 +56,7 @@ class MyOrders extends StatelessWidget {
                       text: "Ongoing".tr,
                     ),
                     _buildTabItem(
-                      text: "History",
+                      text: "History".tr,
                       // Check if selected
                     ),
 
@@ -72,8 +72,9 @@ class MyOrders extends StatelessWidget {
                 child: TabBarView(
                   // Content for each tab
                   children: [
-                    
-                    OngoingMyOrder(userId: userId,),
+                    OngoingMyOrder(
+                      userId: userId,
+                    ),
                     HistoryMyOrder(
                       userId: userId,
                     ),

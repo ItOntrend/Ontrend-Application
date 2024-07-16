@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextfieldWithMic(
-                hintText: "Biryani, Burger, Ice Cream...",
+                hintText: "Biryani, Burger, Ice Cream...".tr,
                 onTap: () {
                   Get.to(() => SearchPage());
                 },
@@ -154,7 +154,7 @@ class _HomePageState extends State<HomePage> {
               SPromoSliderWidget(),
               SizedBox(height: 25),
               OneTextHeading(
-                heading: "Our Services",
+                heading: "Our Services".tr,
               ),
               SizedBox(height: 20),
               GestureDetector(
@@ -163,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: OruServiceBigCard(
                   image: "assets/image/home_appliance_image.png",
-                  name: "E-Store",
+                  name: "E-Store".tr,
                 ),
               ),
               SizedBox(height: 20),
@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                     child: OurServiceCard(
-                      name: 'Groceries',
+                      name: 'Groceries'.tr,
                       image: "assets/image/grocerry_image.png",
                     ),
                   ),
@@ -191,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                       Get.find<NavigationController>().changeTabIndex(1);
                     },
                     child: OurServiceCard(
-                      name: 'Food',
+                      name: 'Food'.tr,
                       image: "assets/image/service_food_image.png",
                     ),
                   ),
@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 20),
               OneTextHeading(
-                heading: "Best Sellers",
+                heading: "Best Sellers".tr,
               ),
               SizedBox(height: 20),
               Obx(
