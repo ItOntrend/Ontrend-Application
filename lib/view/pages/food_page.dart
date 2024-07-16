@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/best_seller_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/food_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
@@ -37,7 +38,7 @@ class _FoodPageState extends State<FoodPage> {
       Get.put(BestSellerController());
   final VendorController vendorController = Get.put(VendorController());
   final LocationController locationController = Get.put(LocationController());
-
+  final lang = Get.put(LanguageController());
   @override
   void initState() {
     super.initState();
@@ -157,11 +158,15 @@ class _FoodPageState extends State<FoodPage> {
                             return CategoryCard(
                               onTap: () {
                                 Get.to(() => CategorysSearchPage(
-                                      type: 'Food/Restaurant',
+                                      type: 'Food',
                                       category: category,
                                     ));
                               },
-                              categoryName: category.name,
+                              categoryName:
+                                  lang.currentLanguage.value.languageCode ==
+                                          "ar"
+                                      ? category.localName
+                                      : category.name,
                               categoryImage: category.imageUrl,
                             );
                           },
@@ -235,7 +240,7 @@ class _FoodPageState extends State<FoodPage> {
                                 onTap: () {
                                   Get.to(() => ProfilePage(
                                         userId: vendor.reference.id,
-                                        cat: "Best Seller",
+                                        cat: "",
                                         type: "Food",
                                       ));
                                 },
