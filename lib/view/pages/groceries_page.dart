@@ -155,8 +155,8 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           categoryName: languageController
                                       .currentLanguage.value.languageCode ==
                                   "ar"
-                              ? category.name
-                              : category.localName,
+                              ? category.localName
+                              : category.name,
                           onTap: () => Get.to(() => CategorysSearchPage(
                                 category: category,
                                 type: 'Grocery',
