@@ -16,6 +16,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousa
 
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/vertical_image_text.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/offer_label.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
@@ -149,9 +150,13 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           .length, //homeController.categories.length,
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
-                        return SVerticalImageTextWidget(
-                          image: category.imageUrl, //category.imageUrl,
-                          categoryType: category.name,
+                        return CategoryCard(
+                          categoryImage: category.imageUrl, //category.imageUrl,
+                          categoryName: languageController
+                                      .currentLanguage.value.languageCode ==
+                                  "ar"
+                              ? category.name
+                              : category.localName,
                           onTap: () => Get.to(() => CategorysSearchPage(
                                 category: category,
                                 type: 'Grocery',
@@ -167,46 +172,40 @@ class _GroceriesPageState extends State<GroceriesPage> {
                 heading: "Store to explore".tr,
               ),
               kHiegth20,
-              FutureBuilder<void>(
-                future:
-                    vendorController.fetchVendorsCat("Grocery", "Fresh Fruits"),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return const Center(child: Text("Error fetching vendors"));
-                  } else {
-                    return Obx(
-                      () => vendorController.vCat.isEmpty
-                          ? const Center(child: Text("No Vendor Available"))
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.vertical,
-                              itemCount: vendorController.vCat.length,
-                              itemBuilder: (context, index) {
-                                final vendor = vendorController.vCat[index];
-                                return ExploreCard(
-                                  longitude: vendor.location.lng,
-                                  latitude: vendor.location.lat,
-                                  locationCityCountry: '',
-                                  distance: vendorController
-                                      .calculateDistance(vendor.location),
-                                  name: vendor.restaurantName,
-                                  image: vendor.bannerImage,
-                                  onTap: () {
-                                    Get.to(() => ProfilePage(
-                                          userId: vendor.reference.id,
-                                          cat: "Fresh Fruits",
-                                          type: "Grocery",
-                                        ));
-                                  },
-                                );
-                              },
-                            ),
-                    );
-                  }
-                },
+              Obx(
+                () => vendorController.isVendorLoading.value
+                    ? const CircularProgressIndicator()
+                    : vendorController.vendorsListCat.isEmpty
+                        ? Center(child: Text("No Vendor Available".tr))
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: vendorController.vendorsListCat.length,
+                            itemBuilder: (context, index) {
+                              final vendor =
+                                  vendorController.vendorsListCat[index];
+                              //log("Vendor Images");
+
+                              //log(vendor.bannerImage.toString());
+                              return ExploreCard(
+                                longitude: vendor.location.lng,
+                                latitude: vendor.location.lat,
+                                locationCityCountry: '',
+                                distance: vendorController
+                                    .calculateDistance(vendor.location),
+                                name: vendor.restaurantName,
+                                image: vendor.bannerImage,
+                                onTap: () {
+                                  Get.to(() => ProfilePage(
+                                        userId: vendor.reference.id,
+                                        cat: "",
+                                        type: "Grocery",
+                                      ));
+                                },
+                              );
+                            },
+                          ),
               ),
               kWidth140
             ],
