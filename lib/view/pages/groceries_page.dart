@@ -127,55 +127,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
               SPromoSliderWidget(),
               kHiegth20,
               // Trending card
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TwoTextHeading(heading: "Trending on OnTrend".tr),
-                  // GestureDetector(onTap: () {}, child: Text('View All'))
-                ],
-              ),
-              kHiegth25,
-              Obx(() {
-                if (controller.isProductLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (controller.productList.isEmpty) {
-                  return const Center(
-                      child: Text('No trending products available.'));
-                } else {
-                  return SizedBox(
-                    height: 200,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: controller.productList.length,
-                      itemBuilder: (context, index) {
-                        final product = controller.productList[index];
-                        return GestureDetector(
-                          onTap: () {
-                            // Navigate to product details
-                          },
-                          child: Obx(
-                            () => TrendingCards(
-                              imagePath: product.imageUrl,
-                              name: languageController
-                                          .currentLanguage.value.languageCode ==
-                                      'ar'
-                                  ? product.localName
-                                  : product.name,
-                              onTap: () {},
-                              itemPrice: OfferLabel(
-                                offerlabel:
-                                    '${product.vId}% OFF', // Modify as per your needs
-                                brandName:
-                                    'Upto OMR ${product.price}', // Modify as per your needs
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                }
-              }),
+
               // Categories card
               TwoTextHeading(heading: "Categories".tr),
               kHiegth20,
