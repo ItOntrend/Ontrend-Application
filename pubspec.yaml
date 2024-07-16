@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   another_flutter_splash_screen: ^1.2.0
+  badges: ^3.1.2
   cached_network_image: ^3.3.1
   carousel_slider: ^4.2.1
   change_app_package_name: ^1.2.0

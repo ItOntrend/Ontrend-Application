@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 
-class TextfieldWithMic extends StatelessWidget {
-  const TextfieldWithMic({
+class TextfieldWithBack extends StatelessWidget {
+  const TextfieldWithBack({
     super.key,
     required this.hintText,
-    this.onTap, this.controller, this.onSubmitted,this.initialValue,
+    this.controller,
+    this.onSubmitted,
+    this.initialValue,
   });
   final String hintText;
-  final Function()? onTap;
   final TextEditingController? controller;
   final Function(String)? onSubmitted;
   final String? initialValue;
@@ -19,11 +21,18 @@ class TextfieldWithMic extends StatelessWidget {
       initialValue: initialValue,
       controller: controller,
       onFieldSubmitted: onSubmitted,
-      onTap: onTap,
       enabled: true,
       decoration: InputDecoration(
         fillColor: kWhite,
-        prefixIcon: Image.asset("assets/icons/search_icon.png"),
+        prefixIcon: GestureDetector(
+          onTap: () {
+            Get.back();
+          },
+          child: Icon(
+            Icons.arrow_back_ios_new,
+            color: kDarkOrange,
+          ),
+        ),
         suffixIcon: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

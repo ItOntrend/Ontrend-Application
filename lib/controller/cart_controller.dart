@@ -18,6 +18,7 @@ class CartController extends GetxController {
   final deliveryFee = 0.0.obs;
   final platformFee = 15.0;
   bool isReturningFromCart = false;
+  var isFabVisible = false.obs;
 
   @override
   void onInit() {
@@ -106,10 +107,17 @@ class CartController extends GetxController {
     saveCartItems();
     calculateDeliveryFee();
 
+    // Update isFabVisible to true
+    isFabVisible.value = true;
+
     if (isReturningFromCart) {
       showSnackBar('Item added to cart');
-      isReturningFromCart = false; // Reset the flag
+      isReturningFromCart = false;
     }
+  }
+
+  void hideFab() {
+    isFabVisible.value = false;
   }
 
   void removeItemFromCart(ItemModel item) {

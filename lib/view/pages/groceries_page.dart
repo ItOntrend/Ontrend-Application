@@ -15,7 +15,6 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/vertical_image_text.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/offer_label.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
@@ -127,7 +126,55 @@ class _GroceriesPageState extends State<GroceriesPage> {
               SPromoSliderWidget(),
               kHiegth20,
               // Trending card
-
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TwoTextHeading(heading: "Trending on OnTrend".tr),
+                  // GestureDetector(onTap: () {}, child: Text('View All'))
+                ],
+              ),
+              kHiegth25,
+              Obx(() {
+                if (controller.isProductLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (controller.productList.isEmpty) {
+                  return const Center(
+                      child: Text('No trending products available.'));
+                } else {
+                  return SizedBox(
+                    height: 200,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.productList.length,
+                      itemBuilder: (context, index) {
+                        final product = controller.productList[index];
+                        return GestureDetector(
+                          onTap: () {
+                            // Navigate to product details
+                          },
+                          child: Obx(
+                            () => TrendingCards(
+                              imagePath: product.imageUrl,
+                              name: languageController
+                                          .currentLanguage.value.languageCode ==
+                                      'ar'
+                                  ? product.localName
+                                  : product.name,
+                              onTap: () {},
+                              itemPrice: OfferLabel(
+                                offerlabel:
+                                    '${product.vId}% OFF', // Modify as per your needs
+                                brandName:
+                                    'Upto OMR ${product.price}', // Modify as per your needs
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+              }),
               // Categories card
               TwoTextHeading(heading: "Categories".tr),
               kHiegth20,
@@ -149,16 +196,11 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           .length, //homeController.categories.length,
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
-
-                        return CategoryCard(
-                          categoryImage: category.imageUrl, //category.imageUrl,
-                          categoryName: languageController
-                                      .currentLanguage.value.languageCode ==
-                                  'ar'
-                              ? category.localName // Arabic name
-                              : category.name, // English name,
+                        return SVerticalImageTextWidget(
+                          image: category.image, //category.imageUrl,
+                          categoryType: category.name,
                           onTap: () => Get.to(() => CategorysSearchPage(
-                                category: category,
+                                categoryName: category.name,
                                 type: 'Grocery',
                               )),
                         );
@@ -172,40 +214,46 @@ class _GroceriesPageState extends State<GroceriesPage> {
                 heading: "Store to explore".tr,
               ),
               kHiegth20,
-              Obx(
-                () => vendorController.isVendorLoading.value
-                    ? const CircularProgressIndicator()
-                    : vendorController.vendorsListCat.isEmpty
-                        ? const Center(child: Text("No Vendor Available"))
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            itemCount: vendorController.vendorsListCat.length,
-                            itemBuilder: (context, index) {
-                              final vendor =
-                                  vendorController.vendorsListCat[index];
-                              //log("Vendor Images");
-
-                              //log(vendor.bannerImage.toString());
-                              return ExploreCard(
-                                longitude: vendor.location.lng,
-                                latitude: vendor.location.lat,
-                                locationCityCountry: '',
-                                distance: vendorController
-                                    .calculateDistance(vendor.location),
-                                name: vendor.restaurantName,
-                                image: vendor.bannerImage,
-                                onTap: () {
-                                  Get.to(() => ProfilePage(
-                                        userId: vendor.reference.id,
-                                        cat: "",
-                                        type: "Grocery",
-                                      ));
-                                },
-                              );
-                            },
-                          ),
+              FutureBuilder<void>(
+                future:
+                    vendorController.fetchVendorsCat("Grocery", "Fresh Fruits"),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text("Error fetching vendors"));
+                  } else {
+                    return Obx(
+                      () => vendorController.vCat.isEmpty
+                          ? const Center(child: Text("No Vendor Available"))
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              itemCount: vendorController.vCat.length,
+                              itemBuilder: (context, index) {
+                                final vendor = vendorController.vCat[index];
+                                return ExploreCard(
+                                  longitude: vendor.location.lng,
+                                  latitude: vendor.location.lat,
+                                  locationCityCountry: '',
+                                  distance: vendorController
+                                      .calculateDistance(vendor.location),
+                                  name: vendor.restaurantName,
+                                  image: vendor.bannerImage,
+                                  onTap: () {
+                                    Get.to(() => ProfilePage(
+                                          userId: vendor.reference.id,
+                                          cat: "Fresh Fruits",
+                                          type: "Grocery",
+                                        ));
+                                  },
+                                );
+                              },
+                            ),
+                    );
+                  }
+                },
               ),
               kWidth140
             ],

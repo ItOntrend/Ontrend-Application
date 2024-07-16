@@ -4,11 +4,11 @@ import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/offers_and_benefits_card.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/add_to_cart_card.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/adding_more_item_card.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/bill_details_card.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/terms_and_condition.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/offers_and_benefits_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/add_to_cart_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/adding_more_item_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/bill_details_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/terms_and_condition.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 
 class AddToCartPage extends StatefulWidget {

@@ -4,9 +4,9 @@ import 'package:ontrend_food_and_e_commerce/controller/auth_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/login_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/country_selection_field.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/main_textfield.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/main_textfield_password.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/country_selection_field.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/main_textfield.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/main_textfield_password.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_botton.dart';
 
 class SingUpPage extends StatelessWidget {

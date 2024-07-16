@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ontrend_food_and_e_commerce/controller/order_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/order_modal.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/my_order_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/my_order_card.dart';
 import 'package:get/get.dart';
 
 class HistoryMyOrder extends StatelessWidget {
@@ -21,11 +21,13 @@ class HistoryMyOrder extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Obx(() {
         if (orderController.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (orderController.orders.isEmpty) {
-          return Center(child: Text('No orders found'));
+          return const Center(
+            child: Text('No orders found'),
+          );
         }
 
         return ListView.builder(
@@ -36,10 +38,12 @@ class HistoryMyOrder extends StatelessWidget {
               children: [
                 MyOrderCard(
                   restaurantName: order.restaurantName,
-                  location: LatLng(order.restaurantLocation.lat, order.restaurantLocation.lng),
+                  location: LatLng(order.restaurantLocation.lat,
+                      order.restaurantLocation.lng),
                   status: order.status,
                   items: order.items,
                   totalPrice: order.totalPrice,
+                  userId: order.userId,
                 ),
                 const SizedBox(height: 25),
               ],

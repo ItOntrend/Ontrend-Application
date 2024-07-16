@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
@@ -7,6 +6,7 @@ import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart'
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 
 class ItemViewPage extends StatelessWidget {
   const ItemViewPage({
@@ -21,6 +21,7 @@ class ItemViewPage extends StatelessWidget {
     final CartController cartController = Get.find<CartController>();
     final LanguageController lang = Get.find<LanguageController>();
     return Scaffold(
+      backgroundColor: kWhite,
       body: SafeArea(
         child: Column(
           children: [
@@ -89,6 +90,7 @@ class ItemViewPage extends StatelessWidget {
                         ),
                       ),
                       kWidth20,
+<<<<<<< HEAD
                       Text(
                         "${"OMR".tr}${item.price + 50}", // Example original price
                         style: const TextStyle(
@@ -124,8 +126,28 @@ class ItemViewPage extends StatelessWidget {
                           color: kGrey,
                         ),
                       ),
+=======
+>>>>>>> ddd0683df4240cebfa043b828419ce8e024d4fab
                     ],
                   ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     RatingBar.builder(
+                  //       itemSize: 15,
+                  //       allowHalfRating: true,
+                  //       onRatingUpdate: (rating) {
+                  //         print(rating);
+                  //       },
+                  //       itemBuilder: (context, _) => const Icon(
+                  //         Icons.star,
+                  //         color: kGreen,
+                  //       ),
+                  //       initialRating: 4.5, // Example rating
+                  //     ),
+                  //     kWidth20,
+                  //   ],
+                  // ),
                   kHiegth40,
                   Obx(() {
                     final quantity = cartController.getItemQuantity(item);
@@ -197,6 +219,55 @@ class ItemViewPage extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: Obx(() {
+        return BottomAppBar(
+          color: kTransparent,
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 8.0,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: kGreen,
+            ),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Items in Cart: ${cartController.getItemCount()}',
+                  style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: kWhite),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Get.to(() => const AddToCartPage(
+                          addedBy: '',
+                          restaurantName: '',
+                        ));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: kWhite,
+                    backgroundColor: kWhite,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                  ),
+                  child: const Text(
+                    'View Cart',
+                    style: TextStyle(
+                      color: kOrange,
+                      decoration: TextDecoration.underline,
+                      decorationColor: kOrange,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }),
     );
   }
 }
