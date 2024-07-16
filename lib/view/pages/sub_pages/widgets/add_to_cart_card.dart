@@ -75,8 +75,8 @@ class _AddToCartCardState extends State<AddToCartCard> {
             children: [
               Text(
                 langontroller.currentLanguage.value.languageCode == "ar"
-                    ? widget.itemName
-                    : widget.localName,
+                    ? widget.localName
+                    : widget.itemName,
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
