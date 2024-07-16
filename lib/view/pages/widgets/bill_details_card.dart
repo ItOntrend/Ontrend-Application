@@ -68,7 +68,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
             ),
             kHiegth6,
             BillDetailsRow(
-              title: 'Service fee'.tr,
+              title: 'Platform fee'.tr,
               amount: cartController.platformFee,
             ),
             kHiegth6,
@@ -182,7 +182,7 @@ class BillDetailsRow extends StatelessWidget {
           ),
         ),
         Text(
-          '${"OMR".tr} ${amount.toStringAsFixed(3)}',
+          'OMR ${amount.toStringAsFixed(3)}',
           style: TextStyle(
             fontSize: 15,
             fontWeight: isBold ? FontWeight.w700 : FontWeight.w400,

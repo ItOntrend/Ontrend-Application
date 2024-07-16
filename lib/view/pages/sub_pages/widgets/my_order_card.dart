@@ -156,7 +156,8 @@ class _MyOrderCardState extends State<MyOrderCard> {
                         width: 1,
                         height: 36,
                       ),
-                      Text('OMR ${widget.totalPrice.toStringAsFixed(3)}'),
+                      Text(
+                          '${"OMR".tr} ${widget.totalPrice.toStringAsFixed(3)}'),
                     ],
                   ),
                 ],
