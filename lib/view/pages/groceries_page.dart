@@ -9,14 +9,13 @@ import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/vegetable_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/vertical_image_text.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/offer_label.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
@@ -215,10 +214,12 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           .length, //homeController.categories.length,
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
-                        return SVerticalImageTextWidget(
-                          image: category.image, //category.imageUrl,
-                          categoryType: category.name,
-                          onTap: () => Get.to(() => Vegetable(userId: "",)),
+                        return CategoryCard(
+                          categoryImage: category.image, //category.imageUrl,
+                          categoryName: category.name,
+                          onTap: () => Get.to(() => Vegetable(
+                                userId: "",
+                              )),
                         );
                       },
                     ),
@@ -230,44 +231,42 @@ class _GroceriesPageState extends State<GroceriesPage> {
                 heading: "Store to explore".tr,
               ),
               kHiegth20,
-              SizedBox(
-                height: 500,
-                child: Obx(
-                  () => vendorController.isVendorLoading.value
-                      ? const CircularProgressIndicator()
-                      : vendorController.vendorsListCat.isEmpty
-                          ? const Center(child: Text("No Vendor Available"))
-                          : ListView.builder(
-                              // physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: vendorController.vendorsListCat.length,
-                              itemBuilder: (context, index) {
-                                final vendor =
-                                    vendorController.vendorsListCat[index];
-                                //log("Vendor Images");
+              Obx(
+                () => vendorController.isVendorLoading.value
+                    ? const CircularProgressIndicator()
+                    : vendorController.vendorsListCat.isEmpty
+                        ? const Center(child: Text("No Vendor Available"))
+                        : ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: vendorController.vendorsListCat.length,
+                            itemBuilder: (context, index) {
+                              final vendor =
+                                  vendorController.vendorsListCat[index];
+                              //log("Vendor Images");
 
-                                //log(vendor.bannerImage.toString());
-                                return ExploreCard(
-                                  latitude: vendor.location.lat,
-                                  longitude: vendor.location.lng,
-                                  locationCityCountry: "",
-                                  distance: vendorController
-                                      .calculateDistance(vendor.location),
-                                  name: vendor.restaurantName,
-                                  image: vendor.bannerImage,
-                                  onTap: () {
-                                    //log(vendor.reference.id);
-                                    Get.to(
-                                      () => ProfilePage(
-                                          userId: vendor.reference.id),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                ),
+                              //log(vendor.bannerImage.toString());
+                              return ExploreCard(
+                                latitude: vendor.location.lat,
+                                longitude: vendor.location.lng,
+                                locationCityCountry: "",
+                                distance: vendorController
+                                    .calculateDistance(vendor.location),
+                                name: vendor.restaurantName,
+                                image: vendor.bannerImage,
+                                onTap: () {
+                                  //log(vendor.reference.id);
+                                  Get.to(
+                                    () => ProfilePage(
+                                        userId: vendor.reference.id),
+                                  );
+                                },
+                              );
+                            },
+                          ),
               ),
+              kHiegth30,
             ],
           ),
         ),

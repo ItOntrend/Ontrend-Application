@@ -25,12 +25,12 @@ class BestSellerCard extends StatefulWidget {
 }
 
 class _BestSellerCardState extends State<BestSellerCard> {
-  late bool _isOnline; // Initialize as late and not directly to true
+  late bool _isOnline;
 
   @override
   void initState() {
     super.initState();
-    _isOnline = true; // Initialize _isOnline here
+    _isOnline = true;
     _checkConnectivity();
   }
 
@@ -74,31 +74,41 @@ class _BestSellerCardState extends State<BestSellerCard> {
                 left: 0.5,
                 top: 0.5,
                 right: 0.5,
-                child: _isOnline
-                    ? Image.network(
-                        widget.imagePath,
-                        fit: BoxFit.cover,
-                      )
-                    :  Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.wifi_off,
-                              size: 50,
-                              color: kGrey,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'No Internet Connection',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: kGrey,
-                              ),
-                            ),
-                          ],
+                child: widget.imagePath.isEmpty
+                    ? Center(
+                        child: Text(
+                          'No Image Available',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: kGrey,
+                          ),
                         ),
-                      ),
+                      )
+                    : _isOnline
+                        ? Image.network(
+                            widget.imagePath,
+                            fit: BoxFit.cover,
+                          )
+                        : Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.wifi_off,
+                                  size: 50,
+                                  color: kGrey,
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  'No Internet Connection',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: kGrey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
               ),
               Align(
                 alignment: Alignment.bottomCenter,
@@ -120,19 +130,19 @@ class _BestSellerCardState extends State<BestSellerCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      kHiegth6, // Note: Ensure these constants are correctly defined
+                      kHiegth6,
                       Text(
                         '${widget.price}.000',
-                        style:  TextStyle(
+                        style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                           color: kOrange,
                         ),
                       ),
-                      kHiegth6, // Note: Ensure these constants are correctly defined
+                      kHiegth6,
                       Text(
                         widget.name,
-                        style:  TextStyle(
+                        style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           color: kBlack,
@@ -140,7 +150,7 @@ class _BestSellerCardState extends State<BestSellerCard> {
                       ),
                       Text(
                         widget.vendor,
-                        style:  TextStyle(
+                        style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           color: kGrey,

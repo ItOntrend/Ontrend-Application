@@ -13,7 +13,7 @@ class ExploreCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const ExploreCard({
-    Key? key,
+    super.key,
     required this.locationCityCountry,
     required this.distance,
     required this.name,
@@ -21,7 +21,7 @@ class ExploreCard extends StatelessWidget {
     required this.latitude,
     required this.longitude,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

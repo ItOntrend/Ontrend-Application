@@ -17,6 +17,7 @@ const kTimetilestyleLineColor = Color(0xffBAE8B5);
 const kTextStyleGrey = Color(0xff5C5C5C);
 const kBorderLiteGrey = Color(0xffBCBCBC80);
 const kNavigationActiveColor = Color.fromARGB(88, 255, 141, 162);
+const kSplashScreenBackground = Color(0xffff3131);
 
 // Shade Colors
 

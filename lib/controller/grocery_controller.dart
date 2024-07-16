@@ -28,8 +28,7 @@ class GroceryController extends GetxController {
   }
 
   void fetchImages() async {
-    ListResult result =
-        await storage.ref('dbDs1m9ORGMzcbvhWmaPAI6Sl5i2/banners').listAll();
+    ListResult result = await storage.ref('Ontrend/banners').listAll();
     for (var ref in result.items) {
       String url = await ref.getDownloadURL();
       print(url);

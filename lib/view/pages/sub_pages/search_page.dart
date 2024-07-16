@@ -72,6 +72,11 @@ class _SearchPageState extends State<SearchPage> {
                 },
               ),
             ),
+            // Expanded(
+            //   child: ListView.builder(
+            //     itemBuilder: (context, index) {},
+            //   ),
+            // ),
             kHiegth20,
             if (_hasSearched)
               Container(

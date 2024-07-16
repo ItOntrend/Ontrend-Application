@@ -29,6 +29,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
   late GoogleMapController mapController;
   final CartController cartController = Get.find<CartController>();
 
+
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
@@ -59,65 +60,46 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 StreamBuilder<DocumentSnapshot>(
-  stream: FirebaseFirestore.instance
-      .collection('orders')
-      .doc(widget.orderId)
-      .snapshots(),
-  builder: (context, snapshot) {
-    if (!snapshot.hasData) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    if (snapshot.hasError) {
-      return const Center(child: Text('Error fetching order status'));
-    }
+                  stream: FirebaseFirestore.instance
+                      .collection('orders')
+                      .doc(widget.orderId)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasError) {
+                      return const Center(
+                          child: Text('Error fetching order status'));
+                    }
 
-    // Debug logging
-    print("Order Data: ${snapshot.data!.data()}");
+                    // Debug logging
+                    print("Order Data: ${snapshot.data!.data()}");
 
-    // Ensure data is not null and handle missing fields
-    final data = snapshot.data!.data() as Map<String, dynamic>?;
-    if (data == null) {
-      return const Center(child: Text('Order data is null'));
-    }
+                    // Ensure data is not null and handle missing fields
+                    final data = snapshot.data!.data() as Map<String, dynamic>?;
+                    if (data == null) {
+                      return const Center(child: Text('Order data is null'));
+                    }
 
-    try {
-      OrderModel order = OrderModel.fromJson(data);
-      return Column(
-        children: [
-          _buildDeliveryDetails(order),
-          GestureDetector(
-            onTap: () {
-              _showOrderDetailsDialog(context, order);
-            },
-            child: Container(
-              margin: const EdgeInsets.only(left: 20),
-              height: 30.h,
-              width: 120.w,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: kDarkOrange)),
-              child: const Center(
-                child: Text(
-                  "Order Details",
-                  style: TextStyle(
-                    color: kDarkOrange,
-                  ),
+                    try {
+                      OrderModel order = OrderModel.fromJson(data);
+                      return Column(
+                        children: [
+                          _buildDeliveryDetails(order),
+                          kHiegth24,
+                          _buildOrderTimeline(order.status),
+                          _buildOrderDetails(order),
+                        ],
+                      );
+                    } catch (e) {
+                      // Log the error for debugging purposes
+                      print("Error parsing order data: $e");
+                      return const Center(
+                          child: Text('Error parsing order data'));
+                    }
+                  },
                 ),
-              ),
-            ),
-          ),
-          kHiegth24,
-          _buildOrderTimeline(order.status),
-        ],
-      );
-    } catch (e) {
-      // Log the error for debugging purposes
-      print("Error parsing order data: $e");
-      return const Center(child: Text('Error parsing order data'));
-    }
-  },
-),
-
               ],
             ),
           ),
@@ -241,133 +223,122 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         MyTimelineTile(
-            isFirst: true,
-            isLast: false,
-            child: const Text("Pending"),
-            isPast: isPast("Pending")),
+          isFirst: true,
+          isLast: false,
+          isPast: isPast("Pending"),
+          child: const Text("Pending"),
+        ),
         MyTimelineTile(
-            isFirst: false,
-            isLast: false,
-            child: const Text("Processing"),
-            isPast: isPast("Processing")),
+          isFirst: false,
+          isLast: false,
+          isPast: isPast("Processing"),
+          child: const Text("Processing"),
+        ),
         MyTimelineTile(
-            isFirst: false,
-            isLast: false,
-            child: const Text("On Delivery"),
-            isPast: isPast("On Delivery")),
+          isFirst: false,
+          isLast: false,
+          isPast: isPast("On Delivery"),
+          child: const Text("On Delivery"),
+        ),
         MyTimelineTile(
-            isFirst: false,
-            isLast: true,
-            child: const Text("Delivered"),
-            isPast: isPast("Delivered")),
+          isFirst: false,
+          isLast: true,
+          isPast: isPast("Delivered"),
+          child: const Text("Delivered"),
+        ),
       ],
     );
   }
 
-  void _showOrderDetailsDialog(BuildContext context, OrderModel order) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Text("Order Details",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    Text("OrderID:${order.orderID}")
-                  ],
-                ),
-                const Divider(),
-                // _buildOrderDetailRowTwo("Delivery time:", "${order.}"),
-                // _buildOrderDetailRow(),
-                // const Divider(),
-                Text("Order menu",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                ...order.items
-                    .map((item) => ListTile(
-                          title: Text("${item.itemName}"),
-                          subtitle: Text(
-                              "${item.itemQuantity} x OMR ${item.itemPrice}00"),
-                          trailing: Text("OMR ${item.total}00"),
-                        ))
-                    .toList(),
-                Divider(),
-                _buildOrderDetailRowTwo(
-                    "Order total", "OMR ${order.totalPrice}00"),
-                _buildOrderDetailRowTwo("Payment method", "Cash"),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildOrderDetailRow() {
+  Widget _buildOrderDetails(OrderModel order) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Distance:", style: const TextStyle(fontSize: 16.0)),
-          FutureBuilder<String>(
-            future: Get.find<VendorController>()
-                .getAddressFromLatLng(widget.latitude, widget.longitude),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Text(
-                  snapshot.data!,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Text(
-                  'Location information unavailable',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
-                  ),
-                );
-              } else {
-                return Text(
-                  'Fetching location...',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
-                  ),
-                );
-              }
-            },
+          const Text(
+            "Order Details",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
+          const Divider(),
+          _buildOrderDetailRowTwo("Order ID", "#${order.orderID}"),
+          _buildOrderDetailRowTwo("Order Total", "OMR ${order.totalPrice}"),
+          _buildOrderDetailRowTwo("Payment Method", "Cash"),
+          const Divider(),
+          const Text(
+            "Order Menu",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+          ...order.items
+              .map((item) => ListTile(
+                    title: Text(item.itemName),
+                    subtitle:
+                        Text("${item.itemQuantity} x OMR ${item.itemPrice}"),
+                    trailing: Text("OMR ${item.total}"),
+                  ))
+              .toList(),
+          const Divider(),
+          _buildOrderDetailRow(),
         ],
       ),
     );
   }
 
-  Widget _buildOrderDetailRowTwo(String title, String value) {
+  Widget _buildOrderDetailRow() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Distance:", style: TextStyle(fontSize: 16.0)),
+              FutureBuilder<String>(
+                future: Get.find<VendorController>()
+                    .getAddressFromLatLng(widget.latitude, widget.longitude),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(
+                      snapshot.data!,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 14,
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      'Location information unavailable',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 14,
+                      ),
+                    );
+                  } else {
+                    return Text(
+                      'Fetching location...',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 14,
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+          kHiegth30,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOrderDetailRowTwo(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: TextStyle(fontSize: 16.0)),
+          Text(label, style: TextStyle(fontSize: 16.0)),
           Text(value, style: TextStyle(fontSize: 16.0)),
         ],
       ),

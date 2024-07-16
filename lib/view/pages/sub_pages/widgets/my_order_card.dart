@@ -16,7 +16,7 @@ class MyOrderCard extends StatefulWidget {
     required this.status,
     required this.items,
     required this.totalPrice,
-    required this.userId,
+    required this.userId, required this.orderId,
   });
 
   final String restaurantName;
@@ -25,6 +25,7 @@ class MyOrderCard extends StatefulWidget {
   final List<Item> items;
   final double totalPrice;
   final String userId;
+  final String orderId;
 
   @override
   State<MyOrderCard> createState() => _MyOrderCardState();
@@ -58,7 +59,7 @@ class _MyOrderCardState extends State<MyOrderCard> {
     return GestureDetector(
       onTap: () {
         Get.to(DeliveryTrackingPage(
-          orderId: widget.userId,
+          orderId: widget.orderId,
           latitude: 0.0,
           longitude: 0.0,
         ));

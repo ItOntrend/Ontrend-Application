@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/repository/auth_repository.dart';
@@ -76,7 +75,7 @@ class AuthController extends GetxController {
       );
 
       // Check email verification status periodically
-      final timer = Timer.periodic(Duration(seconds: 5), (timer) async {
+      final timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
         final user = FirebaseConstants.authInstance.currentUser;
         await user?.reload();
         if (user?.emailVerified ?? false) {

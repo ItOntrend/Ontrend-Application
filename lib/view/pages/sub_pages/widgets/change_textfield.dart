@@ -3,22 +3,49 @@ import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 
-class ChangeTextfield extends StatelessWidget {
+class ChangeTextfield extends StatefulWidget {
   const ChangeTextfield({
-    super.key,
+    Key? key,
     required this.initialValue,
     required this.hintText,
-  });
+  }) : super(key: key);
+
   final String hintText;
   final String initialValue;
 
   @override
+  _ChangeTextfieldState createState() => _ChangeTextfieldState();
+}
+
+class _ChangeTextfieldState extends State<ChangeTextfield> {
+  bool isEditable = false;
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.initialValue);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void toggleEditable() {
+    setState(() {
+      isEditable = !isEditable;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      initialValue: initialValue,
-      enabled: true,
+      controller: _controller,
+      enabled: isEditable,
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: widget.hintText,
         suffixIcon: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -29,20 +56,16 @@ class ChangeTextfield extends StatelessWidget {
             ),
             kWidth6,
             TextButton(
-              onPressed: () {
-                // Add your change logic here
-              },
+              onPressed: toggleEditable,
               child: Text(
-                'Change'.tr,
-                style: TextStyle(color: kOrange),
+                isEditable ? 'Save'.tr : 'Change'.tr,
+                style:const TextStyle(color: kOrange),
               ),
             ),
           ],
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            10,
-          ),
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
     );
