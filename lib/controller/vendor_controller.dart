@@ -83,7 +83,9 @@ class VendorController extends GetxController {
   }
 
   // Fetch list of vendors from Firebase
-  Future<void> fetchVendors(String type) async {
+  Future<void> fetchVendors(
+    String type,
+  ) async {
     try {
       var vendorsQuerySnapshot = await FirebaseFirestore.instance
           .collection('users')
@@ -103,11 +105,29 @@ class VendorController extends GetxController {
     }
   }
 
-  Future<void> getItems(String userId) async {
+  Future<void> getItems(
+    String userId,
+  ) async {
     try {
       isItemsLoading.value = true;
       itemsList.clear();
-      var items = await ItemRepository.getItems(userId);
+      var items = await ItemRepository.getItems(
+        userId,
+      );
+      itemsList.addAll(items);
+      log("Items data fetched successfully");
+    } catch (e) {
+      log('Error fetching items: $e');
+    } finally {
+      isItemsLoading.value = false;
+    }
+  }
+
+  Future<void> getItemsGr(String userId, String category, String type) async {
+    try {
+      isItemsLoading.value = true;
+      itemsList.clear();
+      var items = await ItemRepository.getItemsGrocery(userId, category, type);
       itemsList.addAll(items);
       log("Items data fetched successfully");
     } catch (e) {
@@ -158,5 +178,62 @@ class VendorController extends GetxController {
       log('Error fetching vendor: $e');
     }
     return null;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+  RxList<VendorModel> vCat = RxList<VendorModel>();
+  Future<List<String>> getVendorIdOfCategory(String cat, String type) async {
+    try {
+      QuerySnapshot categorySnapshot = await FirebaseFirestore.instance
+          .collection(type)
+          .doc("items")
+          .collection('categories')
+          .doc(cat)
+          .collection('details')
+          .get();
+
+      // Clear the list before adding new vendor IDs
+      List<String> vendorIds = [];
+
+      // Extract the vendor IDs and add them to the vCat list
+      for (var doc in categorySnapshot.docs) {
+        String vendorId = doc['addedBy'];
+        vendorIds.add(vendorId);
+        return vendorIds;
+      }
+    } catch (e) {
+      print('Error getting category document: $e');
+    }
+    return [];
+  }
+
+  Future<void> getVendorDetails(List<String> vendorIds) async {
+    try {
+      vCat.clear();
+
+      for (String vendorId in vendorIds) {
+        DocumentSnapshot vendorDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(vendorId)
+            .get();
+
+        if (vendorDoc.exists) {
+          vCat.add(VendorModel.fromMap(
+              vendorDoc.data() as Map<String, dynamic>, vendorDoc.id));
+        }
+      }
+    } catch (e) {
+      print('Error getting vendor details: $e');
+    }
+  }
+
+  RxString cat = "".obs;
+  Future<void> fetchVendorsCat(String type, String cat) async {
+    try {
+      List<String> vendorIds = await getVendorIdOfCategory(cat, type);
+      await getVendorDetails(vendorIds);
+    } catch (e) {
+      print('Error fetching vendors: $e');
+    }
   }
 }

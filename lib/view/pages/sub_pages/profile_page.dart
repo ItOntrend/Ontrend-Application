@@ -15,9 +15,13 @@ class ProfilePage extends StatefulWidget {
     super.key,
     this.initialTabIndex = 0,
     required this.userId,
+    required this.type,
+    required this.cat,
   });
   final int initialTabIndex;
   final String userId;
+  final String type;
+  final String cat;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -31,9 +35,12 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     //log(widget.userId);
     //vendorController.getItems(widget.userId);
-    vendorController.getItems(widget.userId);
+    vendorController.getItemsGr(widget.userId, widget.cat, widget.type);
+    //vendorController.getItems(widget.userId);
     print("profile......................................${widget.userId}");
-    vendorController.getVendors(widget.userId);
+    vendorController.getVendors(
+      widget.userId,
+    );
   }
 
   @override

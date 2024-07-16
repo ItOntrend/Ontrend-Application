@@ -29,7 +29,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
   @override
   void initState() {
     super.initState();
-    vendorController.fetchVendors(widget.type);
+    //vendorController.fetchVendors(widget.type);
     // vendorController.getVendors(widget.userId);
   }
 
@@ -68,36 +68,50 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                   ],
                 ),
                 kHiegth25,
-                Obx(
-                  () => vendorController.isVendorLoading.value
-                      ? const CircularProgressIndicator()
-                      : vendorController.vendorsListCat.isEmpty
-                          ? const Center(child: Text("No Vendor Available"))
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.vertical,
-                              itemCount: vendorController.vendorsListCat.length,
-                              itemBuilder: (context, index) {
-                                final vendor =
-                                    vendorController.vendorsListCat[index];
-                                log("Vendor Images");
-                                log(vendor.bannerImage.toString());
-                                return ExploreCard(
-                                  locationCityCountry: '',
-                                  distance: vendorController
-                                      .calculateDistance(vendor.location),
-                                  name: vendor.restaurantName,
-                                  image: vendor.bannerImage,
-                                  latitude: vendor.location.lat,
-                                  longitude: vendor.location.lng,
-                                  onTap: () {
-                                    Get.to(() => ProfilePage(
-                                        userId: vendor.reference.id));
-                                  },
-                                );
-                              },
-                            ),
+                FutureBuilder<void>(
+                  future: vendorController.fetchVendorsCat(
+                      widget.type, widget.categoryName),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return const Center(
+                          child: Text("Error fetching vendors"));
+                    } else {
+                      return Obx(
+                        () => vendorController.vCat.isEmpty
+                            ? const Center(child: Text("No Vendor Available"))
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                itemCount: vendorController.vCat.length,
+                                itemBuilder: (context, index) {
+                                  final vendor = vendorController.vCat[index];
+                                  return ExploreCard(
+                                    longitude: vendor.location.lng,
+                                    latitude: vendor.location.lat,
+                                    locationCityCountry: '',
+                                    distance: vendorController
+                                        .calculateDistance(vendor.location),
+                                    name: vendor.restaurantName,
+                                    image: vendor.bannerImage,
+                                    onTap: () {
+                                      Get.to(() => ProfilePage(
+                                            userId: vendor.reference.id,
+                                            cat: widget.categoryName,
+                                            type:
+                                                widget.type == "Food/Restaurant"
+                                                    ? "Food"
+                                                    : "Grocery",
+                                          ));
+                                    },
+                                  );
+                                },
+                              ),
+                      );
+                    }
+                  },
                 ),
               ],
             ),

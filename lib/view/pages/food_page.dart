@@ -137,7 +137,7 @@ class _FoodPageState extends State<FoodPage> {
               kHiegth25,
 
               // Categories card
-              const TwoTextHeading(heading: "Categories"),
+              TwoTextHeading(heading: "Categories".tr),
               kHiegth20,
               Obx(
                 () => foodController.isCategoryLoading.value
@@ -168,8 +168,8 @@ class _FoodPageState extends State<FoodPage> {
                       ),
               ),
               kHiegth20,
-              const OneTextHeading(
-                heading: "Best Sellers",
+              OneTextHeading(
+                heading: "Best Sellers".tr,
               ),
               kHiegth20,
               Obx(
@@ -189,6 +189,8 @@ class _FoodPageState extends State<FoodPage> {
                               onTap: () {
                                 Get.to(() => ProfilePage(
                                       userId: bestSeller.addedBy,
+                                      type: "Food",
+                                      cat: "Best Seller",
                                     ));
                               },
                               name: bestSeller.name,
@@ -201,8 +203,8 @@ class _FoodPageState extends State<FoodPage> {
                       ),
               ),
               kHiegth20,
-              const OneTextHeading(
-                heading: "Restaurants to explore",
+              OneTextHeading(
+                heading: "Restaurants to explore".tr,
               ),
               kHiegth20,
               Obx(
@@ -230,8 +232,11 @@ class _FoodPageState extends State<FoodPage> {
                                 name: vendor.restaurantName,
                                 image: vendor.bannerImage,
                                 onTap: () {
-                                  Get.to(() =>
-                                      ProfilePage(userId: vendor.reference.id));
+                                  Get.to(() => ProfilePage(
+                                        userId: vendor.reference.id,
+                                        cat: "Best Seller",
+                                        type: "Food",
+                                      ));
                                 },
                               );
                             },

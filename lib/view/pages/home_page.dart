@@ -208,6 +208,8 @@ class _HomePageState extends State<HomePage> {
                                 Get.to(
                                   () => ProfilePage(
                                     userId: bestSeller.addedBy,
+                                    cat: "Best Seller",
+                                    type: "Food",
                                   ),
                                 );
                               },

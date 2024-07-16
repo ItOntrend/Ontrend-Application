@@ -10,7 +10,7 @@ class GroceryController extends GetxController {
   var imageUrls = <String>[].obs;
   FirebaseStorage storage = FirebaseStorage.instance;
   RxBool isCategoryLoading = RxBool(false);
-  RxList<GroceryCategoryModel> categoryList = RxList();
+  RxList<grCategoryModel> categoryList = RxList();
   RxBool isProductLoading = RxBool(false);
   RxList<ProductModel> productList = RxList();
   var storeList = <Store>[].obs;
