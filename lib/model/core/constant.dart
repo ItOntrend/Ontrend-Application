@@ -119,3 +119,7 @@ const kTextStyle14Grey = TextStyle(
   fontSize: 14,
   fontWeight: FontWeight.w400,
 );
+const TextStyle arabicNumberStyle = TextStyle(
+  fontFamily: 'CustomArabicFont',
+  fontSize: 16, // Adjust size as needed
+);

@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
+import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
@@ -14,10 +16,10 @@ class CategorysSearchPage extends StatefulWidget {
   const CategorysSearchPage({
     super.key,
     required this.type,
-    required this.categoryName,
+    required this.category,
   });
   final String type;
-  final String categoryName;
+  final CategoryModel category;
 
   @override
   State<CategorysSearchPage> createState() => _CategorysSearchPageState();
@@ -25,7 +27,7 @@ class CategorysSearchPage extends StatefulWidget {
 
 class _CategorysSearchPageState extends State<CategorysSearchPage> {
   final VendorController vendorController = Get.put(VendorController());
-
+  final LanguageController languageController = Get.find();
   @override
   void initState() {
     super.initState();
@@ -44,7 +46,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
             child: Column(
               children: [
                 TextfieldWithMic(
-                  hintText: "Search...",
+                  hintText: "Search...".tr,
                   onTap: () {
                     Get.to(const SearchPage());
                   },
@@ -59,7 +61,10 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                       icon: const Icon(Icons.arrow_back_ios),
                     ),
                     Text(
-                      widget.categoryName,
+                      languageController.currentLanguage.value.languageCode ==
+                              'ar'
+                          ? widget.category.localName
+                          : widget.category.name,
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
@@ -70,7 +75,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                 kHiegth25,
                 FutureBuilder<void>(
                   future: vendorController.fetchVendorsCat(
-                      widget.type, widget.categoryName),
+                      widget.type, widget.category.name),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
@@ -80,7 +85,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                     } else {
                       return Obx(
                         () => vendorController.vCat.isEmpty
-                            ? const Center(child: Text("No Vendor Available"))
+                            ? Center(child: Text("No Vendor Available".tr))
                             : ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
@@ -99,7 +104,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                                     onTap: () {
                                       Get.to(() => ProfilePage(
                                             userId: vendor.reference.id,
-                                            cat: widget.categoryName,
+                                            cat: widget.category.name,
                                             type:
                                                 widget.type == "Food/Restaurant"
                                                     ? "Food"

@@ -152,9 +152,13 @@ class _GroceriesPageState extends State<GroceriesPage> {
 
                         return CategoryCard(
                           categoryImage: category.imageUrl, //category.imageUrl,
-                          categoryName: category.name,
+                          categoryName: languageController
+                                      .currentLanguage.value.languageCode ==
+                                  'ar'
+                              ? category.localName // Arabic name
+                              : category.name, // English name,
                           onTap: () => Get.to(() => CategorysSearchPage(
-                                categoryName: category.name,
+                                category: category,
                                 type: 'Grocery',
                               )),
                         );

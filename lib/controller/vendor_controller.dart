@@ -105,13 +105,27 @@ class VendorController extends GetxController {
     }
   }
 
-  Future<void> getItems(
-    String userId,
-  ) async {
+  Future<void> getItems(String userId) async {
     try {
       isItemsLoading.value = true;
       itemsList.clear();
       var items = await ItemRepository.getItems(
+        userId,
+      );
+      itemsList.addAll(items);
+      log("Items data fetched successfully");
+    } catch (e) {
+      log('Error fetching items: $e');
+    } finally {
+      isItemsLoading.value = false;
+    }
+  }
+
+  Future<void> getItemsnew(String userId) async {
+    try {
+      isItemsLoading.value = true;
+      itemsList.clear();
+      var items = await ItemRepository.getItemsnew(
         userId,
       );
       itemsList.addAll(items);

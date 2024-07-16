@@ -58,22 +58,22 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
           children: [
             kHiegth6,
             BillDetailsRow(
-              title: 'Item total',
+              title: 'Item total'.tr,
               amount: cartController.itemTotal.value,
             ),
             kHiegth6,
             BillDetailsRow(
-              title: 'Delivery fee',
+              title: 'Delivery fee'.tr,
               amount: cartController.deliveryFee.value,
             ),
             kHiegth6,
             BillDetailsRow(
-              title: 'Platform fee',
+              title: 'Platform fee'.tr,
               amount: cartController.platformFee,
             ),
             kHiegth6,
             BillDetailsRow(
-              title: 'Total amount',
+              title: 'Total amount'.tr,
               amount: cartController.totalAmount,
               isBold: true,
             ),

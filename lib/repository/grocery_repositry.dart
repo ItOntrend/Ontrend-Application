@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/grocery_category_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/grocery_product_model.dart';
 import 'package:ontrend_food_and_e_commerce/utils/constants/firebase_constants.dart';
 
 abstract class GroceryRepository {
-  static Future<List<grCategoryModel>> getCategories() async {
+  static Future<List<CategoryModel>> getCategories() async {
     return FirebaseConstants.dbInstance
         .collection(FirebaseConstants.grocery)
         .doc(FirebaseConstants.items)
@@ -12,7 +13,7 @@ abstract class GroceryRepository {
         .get()
         .then(
           (snapshot) => snapshot.docs
-              .map((doc) => grCategoryModel.fromJson(doc.data()))
+              .map((doc) => CategoryModel.fromJson(doc.data()))
               .toList(),
         );
   }

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ItemModel {
   String name;
+  String localName;
+  String localTag;
   int price;
   String? tag;
   String? type;
@@ -18,40 +20,45 @@ class ItemModel {
 
   ItemModel({
     required this.name,
+    required this.localName,
+    required this.localTag,
     required this.price,
-     this.tag,
-     this.type,
-     this.vId,
+    this.tag,
+    this.type,
+    this.vId,
     required this.addedBy,
     required this.description,
     required this.imageUrl,
-     this.preparationTime,
-     this.rating,
-     this.itemPrice,
-     this.timeStamp,
-     this.reference,
-     required this.restaurantName,
+    this.preparationTime,
+    this.rating,
+    this.itemPrice,
+    this.timeStamp,
+    this.reference,
+    required this.restaurantName,
   });
 
-  ItemModel copyWith({
-    String? name,
-    int? price,
-    String? tag,
-    String? type,
-    int? vId,
-    String? addedBy,
-    String? description,
-    String? imageUrl,
-    int? preparationTime,
-    double? rating,
-    int? itemPrice,
-    DateTime? timeStamp,
-    DocumentReference? reference,
-    String? restaurantName,
-    int? quantity 
-  }) =>
+  ItemModel copyWith(
+          {String? name,
+          String? localName,
+          String? localTag,
+          int? price,
+          String? tag,
+          String? type,
+          int? vId,
+          String? addedBy,
+          String? description,
+          String? imageUrl,
+          int? preparationTime,
+          double? rating,
+          int? itemPrice,
+          DateTime? timeStamp,
+          DocumentReference? reference,
+          String? restaurantName,
+          int? quantity}) =>
       ItemModel(
         name: name ?? this.name,
+        localTag: localTag ?? this.localTag,
+        localName: localName ?? this.localName,
         price: price ?? this.price,
         tag: tag ?? this.tag,
         type: type ?? this.type,
@@ -68,36 +75,39 @@ class ItemModel {
       );
 
   factory ItemModel.fromJson(Map<String, dynamic> json) => ItemModel(
-        name: json["name"],
-        price: (json["price"] is int)
-            ? json["price"]
-            : (json["price"] is double)
-                ? json["price"].toInt()
-                : 0,
-        tag: json["tag"],
-        type: json["type"],
-        vId: json["vID"],
-        addedBy: json["addedBy"],
-        description: json["description"],
-        imageUrl: json["imageUrl"],
-        preparationTime:
-            json["preparationTime"] ?? 0, // Provide a default value if null,
-        rating: json["rating"] ?? 0.0,
-        itemPrice: (json["itemPrice"] is int)
-            ? json["itemPrice"]
-            : (json["itemPrice"] is double)
-                ? json["itemPrice"].toInt()
-                : 0,
-        reference: json["reference"] ??
-            FirebaseFirestore.instance
-                .collection('default')
-                .doc(), // Provide a default DocumentReference if null,
-        timeStamp: json["timeStamp"].toDate(),
-        restaurantName: json["restaurantName"]
-      );
+      name: json["name"],
+      localName: json["localName"],
+      localTag: json["localTag"],
+      price: (json["price"] is int)
+          ? json["price"]
+          : (json["price"] is double)
+              ? json["price"].toInt()
+              : 0,
+      tag: json["tag"],
+      type: json["type"],
+      vId: json["vID"],
+      addedBy: json["addedBy"],
+      description: json["description"],
+      imageUrl: json["imageUrl"],
+      preparationTime:
+          json["preparationTime"] ?? 0, // Provide a default value if null,
+      rating: json["rating"] ?? 0.0,
+      itemPrice: (json["itemPrice"] is int)
+          ? json["itemPrice"]
+          : (json["itemPrice"] is double)
+              ? json["itemPrice"].toInt()
+              : 0,
+      reference: json["reference"] ??
+          FirebaseFirestore.instance
+              .collection('default')
+              .doc(), // Provide a default DocumentReference if null,
+      timeStamp: json["timeStamp"].toDate(),
+      restaurantName: json["restaurantName"]);
 
   Map<String, dynamic> toJson() => {
         "name": name,
+        "localName": localName,
+        "localTag": localTag,
         "price": price,
         "tag": tag,
         "type": type,

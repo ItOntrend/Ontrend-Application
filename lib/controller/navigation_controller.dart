@@ -25,22 +25,22 @@ class NavigationController extends GetxController {
     return [
       PersistentBottomNavBarItem(
         icon: Image.asset("assets/icons/home_icon.png"),
-        title: ("Home"),
+        title: ("Home".tr),
         activeColorPrimary: kDarkOrange,
       ),
       PersistentBottomNavBarItem(
         icon: Image.asset("assets/icons/food_icon.png"),
-        title: ("Food"),
+        title: ("Food".tr),
         activeColorPrimary: kDarkOrange,
       ),
       PersistentBottomNavBarItem(
         icon: Image.asset("assets/icons/store_icon.png"),
-        title: ("E-Store"),
+        title: ("E-Store".tr),
         activeColorPrimary: kDarkOrange,
       ),
       PersistentBottomNavBarItem(
         icon: Image.asset("assets/icons/user_icon.png"),
-        title: ("Profile"),
+        title: ("Profile".tr),
         activeColorPrimary: kDarkOrange,
       ),
     ];

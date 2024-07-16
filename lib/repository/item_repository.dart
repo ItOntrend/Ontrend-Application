@@ -32,6 +32,32 @@ class ItemRepository {
     }
   }
 
+  static Future<List<ItemModel>> getItemsnew(String userId) async {
+    try {
+      var snapshot = await _db
+          .collection("Grocery")
+          .doc(FirebaseConstants.items)
+          .collection(FirebaseConstants.categories)
+          .doc("Fresh Milk")
+          .collection(FirebaseConstants.details)
+          .where("addedBy", isEqualTo: userId)
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        log('No items found');
+      } else {
+        log('Items retrieved: ${snapshot.docs.length}');
+      }
+
+      return snapshot.docs
+          .map((doc) => ItemModel.fromJson(doc.data()))
+          .toList();
+    } catch (e) {
+      log('Error fetching items: $e');
+      return [];
+    }
+  }
+
   static Future<List<ItemModel>> getItemsGrocery(
       String userId, String category, String type) async {
     try {

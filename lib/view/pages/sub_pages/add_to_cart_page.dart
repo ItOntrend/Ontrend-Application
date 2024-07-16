@@ -110,6 +110,8 @@ class _AddToCartPageState extends State<AddToCartPage> {
                               .toList()[index]['item'];
                           return AddToCartCard(
                             itemName: item.name,
+                            localName: item.localName,
+                            localTag: item.localTag,
                             itemPrice: item.price.toString(),
                             image: item.imageUrl,
                             addedBy: item.addedBy.toString(),
@@ -123,11 +125,11 @@ class _AddToCartPageState extends State<AddToCartPage> {
                   ],
                 ),
               ),
-              const OneTextHeading(heading: "Offers & Benefits"),
+              OneTextHeading(heading: "Offers & Benefits".tr),
               kHiegth15,
               const OffersAndBenefitsCard(),
               kHiegth15,
-              const OneTextHeading(heading: "Bill Details"),
+              OneTextHeading(heading: "Bill Details".tr),
               kHiegth15,
               BillDetailsCard(
                 restaurantName: restaurantName,

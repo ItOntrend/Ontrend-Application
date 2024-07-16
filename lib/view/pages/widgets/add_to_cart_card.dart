@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
@@ -10,6 +11,8 @@ class AddToCartCard extends StatefulWidget {
   const AddToCartCard({
     super.key,
     required this.itemName,
+    required this.localName,
+    required this.localTag,
     required this.itemPrice,
     required this.image,
     required this.addedBy,
@@ -17,6 +20,8 @@ class AddToCartCard extends StatefulWidget {
   });
 
   final String itemName;
+  final String localName;
+  final String localTag;
   final String itemPrice;
   final String image;
   final String addedBy;
@@ -28,11 +33,13 @@ class AddToCartCard extends StatefulWidget {
 
 class _AddToCartCardState extends State<AddToCartCard> {
   final CartController cartController = Get.find();
-
+  final LanguageController langontroller = Get.find();
   @override
   Widget build(BuildContext context) {
     ItemModel item = ItemModel(
       name: widget.itemName,
+      localName: widget.localName,
+      localTag: widget.localTag,
       price: int.parse(widget.itemPrice),
       imageUrl: widget.image,
       description: "",
@@ -67,7 +74,9 @@ class _AddToCartCardState extends State<AddToCartCard> {
           Column(
             children: [
               Text(
-                widget.itemName,
+                langontroller.currentLanguage.value.languageCode == "ar"
+                    ? widget.itemName
+                    : widget.localName,
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
@@ -75,7 +84,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
               ),
               kHiegth6,
               Text(
-                "OMR ${widget.itemPrice}",
+                "OMR".tr + "${widget.itemPrice}",
                 style: const TextStyle(
                   color: kOrange,
                   fontSize: 12,
