@@ -119,7 +119,7 @@ class UserProfilePage extends StatelessWidget {
                 kHiegth15,
                 Obx(() {
                   return ChangeTextfield(
-                      hintText: "*Name...",
+                      hintText: "*Name...".tr,
                       initialValue: "${userController.firstName.value}"
                       // userDetail['firstName'] ?? '',
                       );
@@ -127,7 +127,7 @@ class UserProfilePage extends StatelessWidget {
                 kHiegth20,
                 Obx(() {
                   return ChangeTextfield(
-                      hintText: "*Email...",
+                      hintText: "*Email...".tr,
                       initialValue: "${userController.email.value}");
                 }),
                 kHiegth20,
@@ -156,7 +156,7 @@ class UserProfilePage extends StatelessWidget {
                 ),
                 kHiegth25,
                 MainTile(
-                  name: "Contact Us",
+                  name: "Contact Us".tr,
                   icon: "assets/icons/call_icon.png",
                   onTap: () {
                     launchWhatsApp(

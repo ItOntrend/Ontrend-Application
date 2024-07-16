@@ -53,10 +53,14 @@ class MyOrders extends StatelessWidget {
                   tabs: [
                     // Individual tab containers
                     _buildTabItem(
+<<<<<<< HEAD
                       text: "Ongoing".tr,
                     ),
                     _buildTabItem(
                       text: "History",
+=======
+                      text: "History".tr,
+>>>>>>> 87abbcdd20a017da214918dd81a67f866f1200f3
                       // Check if selected
                     ),
 

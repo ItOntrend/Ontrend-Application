@@ -48,8 +48,8 @@ class _SearchPageState extends State<SearchPage> {
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
-        title: const Text(
-          "Search",
+        title: Text(
+          "Search".tr,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
@@ -64,7 +64,7 @@ class _SearchPageState extends State<SearchPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22),
               child: TextfieldWithMic(
-                hintText: "Biryani, Burger, Ice Cream...",
+                hintText: "Biryani, Burger, Ice Cream...".tr,
                 controller: _searchController,
                 onSubmitted: (value) {
                   _addToRecentSearches(value);
@@ -147,7 +147,7 @@ class _SearchPageState extends State<SearchPage> {
                           onTap: () {
                             Get.to(() => CategorysSearchPage(
                                   type: 'Food/Restaurant',
-                                  categoryName: category.name,
+                                  category: category,
                                 ));
                           },
                           categoryName: category.name,

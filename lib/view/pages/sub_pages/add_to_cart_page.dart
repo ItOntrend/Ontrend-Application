@@ -118,6 +118,8 @@ class _AddToCartPageState extends State<AddToCartPage> {
                               .toList()[index]['item'];
                           return AddToCartCard(
                             itemName: item.name,
+                            localName: item.localName,
+                            localTag: item.localTag,
                             itemPrice: item.price.toString(),
                             image: item.imageUrl,
                             addedBy: item.addedBy.toString(),
@@ -130,6 +132,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                     ],
                   ),
                 ),
+<<<<<<< HEAD
                 if (hasItems) ...[
                   const OneTextHeading(heading: "Offers & Benefits"),
                   kHiegth15,
@@ -148,6 +151,24 @@ class _AddToCartPageState extends State<AddToCartPage> {
               ],
             );
           }),
+=======
+              ),
+              OneTextHeading(heading: "Offers & Benefits".tr),
+              kHiegth15,
+              const OffersAndBenefitsCard(),
+              kHiegth15,
+              OneTextHeading(heading: "Bill Details".tr),
+              kHiegth15,
+              BillDetailsCard(
+                restaurantName: restaurantName,
+                addedBy: addedBy,
+              ),
+              kHiegth15,
+              const TermsAndCondition(),
+              kHiegth20,
+            ],
+          ),
+>>>>>>> 87abbcdd20a017da214918dd81a67f866f1200f3
         ),
       ),
     );

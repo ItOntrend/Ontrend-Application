@@ -41,7 +41,7 @@ class SVerticalImageTextWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     //shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: AssetImage(image),
+                      image: NetworkImage(image),
                       fit: BoxFit.cover,
                     ),
                   ),

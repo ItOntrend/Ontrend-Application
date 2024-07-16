@@ -11,6 +11,8 @@ class FoodItemCard extends StatefulWidget {
   const FoodItemCard({
     super.key,
     required this.name,
+    required this.localName,
+    required this.localTag,
     required this.image,
     required this.price,
     required this.description,
@@ -20,6 +22,8 @@ class FoodItemCard extends StatefulWidget {
 
   final String name;
   final String image;
+  final String localName;
+  final String localTag;
   final int price;
   final String description;
   final String addedBy;
@@ -36,6 +40,8 @@ class _FoodItemCardState extends State<FoodItemCard> {
   Widget build(BuildContext context) {
     final item = ItemModel(
       name: widget.name,
+      localName: widget.localName,
+      localTag: widget.localTag,
       imageUrl: widget.image,
       price: widget.price,
       description: widget.description,
