@@ -133,11 +133,11 @@ class _AddToCartPageState extends State<AddToCartPage> {
                   ),
                 ),
                 if (hasItems) ...[
-                  const OneTextHeading(heading: "Offers & Benefits"),
+                   OneTextHeading(heading: "Offers & Benefits".tr),
                   kHiegth15,
                   const OffersAndBenefitsCard(),
                   kHiegth15,
-                  const OneTextHeading(heading: "Bill Details"),
+                   OneTextHeading(heading: "Bill Details".tr),
                   kHiegth15,
                   BillDetailsCard(
                     restaurantName: restaurantName,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
@@ -31,6 +32,8 @@ class _GroceriesPageState extends State<GroceriesPage> {
   final VendorController vendorController = Get.put(VendorController());
   final GroceryController controller = Get.put(GroceryController());
   final LanguageController languageController = Get.put(LanguageController());
+  final CartController cartController = Get.put(CartController());
+
   @override
   void initState() {
     super.initState();
@@ -55,56 +58,68 @@ class _GroceriesPageState extends State<GroceriesPage> {
             child: Image.asset("assets/icons/location_icon.png"),
           ),
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              locationController.streetName.value,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
+        title: GestureDetector(
+          onTap: () {
+            Get.to(SelectLocationPage());
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                locationController.streetName.value,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "${locationController.cityName.value}, ${locationController.countryName.value}",
-                  style: const TextStyle(
-                    color: kBlue,
-                    fontSize: 10,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    locationController.countryName.value,
+                    style: const TextStyle(
+                      color: kBlue,
+                      fontSize: 10,
+                    ),
                   ),
-                ),
-                const Icon(
-                  Icons.keyboard_arrow_down,
-                  size: 16,
-                ),
-              ],
-            ),
-          ],
+                  const Icon(
+                    Icons.keyboard_arrow_down,
+                    size: 16,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Get.to(() => const NotificationPage());
-                  },
-                  child: Image.asset("assets/icons/notification_icon.png"),
-                ),
-                kWidth25,
-                GestureDetector(
-                  onTap: () {
-                    Get.to(const AddToCartPage(
-                      addedBy: "",
-                      restaurantName: "",
-                    ));
-                  },
-                  child: Image.asset("assets/icons/cart_icon.png"),
-                ),
-              ],
+          Obx(
+            () => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => const NotificationPage());
+                    },
+                    child: Image.asset("assets/icons/notification_icon.png"),
+                  ),
+                  kWidth25,
+                  Badge.count(
+                    count: cartController.getItemCount(),
+                    backgroundColor: kDarkOrange,
+                    textColor: Colors.white,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(const AddToCartPage(
+                          addedBy: "",
+                          restaurantName: "",
+                        ));
+                      },
+                      child: Image.asset("assets/icons/cart_icon.png"),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

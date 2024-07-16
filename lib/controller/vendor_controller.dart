@@ -41,18 +41,21 @@ class VendorController extends GetxController {
   }
 
   Future<String> getAddressFromLatLng(double latitude, double longitude) async {
-    try {
-      List<geocoding.Placemark> placemarks =
-          await geocoding.placemarkFromCoordinates(latitude, longitude);
-      if (placemarks.isNotEmpty) {
-        final placemark = placemarks.first;
-        return "${placemark.locality}, ${placemark.country}";
-      }
-    } catch (e) {
-      log('Error fetching address: $e');
+  try {
+    List<geocoding.Placemark> placemarks =
+        await geocoding.placemarkFromCoordinates(latitude, longitude);
+    if (placemarks.isNotEmpty) {
+      final placemark = placemarks.first;
+      return "${placemark.locality}, ${placemark.country}";
+    } else {
+      log('No placemarks found for the given coordinates.');
     }
-    return 'Unknown location';
+  } catch (e) {
+    log('Error fetching address: $e');
   }
+  return 'Unknown location';
+}
+
 
   double calculateDistance(Location vendorLocation) {
     if (userPosition != null) {
