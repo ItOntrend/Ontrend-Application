@@ -31,7 +31,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
   @override
   void initState() {
     super.initState();
-    //vendorController.fetchVendors(widget.type);
+    //if (widget.category) vendorController.fetchVendors(widget.type);
     // vendorController.getVendors(widget.userId);
   }
 
