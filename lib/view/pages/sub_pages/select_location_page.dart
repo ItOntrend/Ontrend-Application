@@ -67,11 +67,11 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Edit Address Title"),
+          title: Text("Edit Address Title".tr),
           content: TextField(
             controller: titleController,
-            decoration: const InputDecoration(
-              hintText: "Enter new title",
+            decoration: InputDecoration(
+              hintText: "Enter new title".tr,
             ),
           ),
           actions: [
@@ -79,7 +79,7 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
               onPressed: () {
                 Get.back();
               },
-              child: const Text("Cancel"),
+              child: Text("Cancel".tr),
             ),
             TextButton(
               onPressed: () {
@@ -87,7 +87,7 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
                     address, titleController.text);
                 Get.back();
               },
-              child: const Text("Save"),
+              child: Text("Save".tr),
             ),
           ],
         );

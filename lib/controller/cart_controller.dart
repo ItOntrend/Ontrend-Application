@@ -155,7 +155,7 @@ class CartController extends GetxController {
     isFabVisible.value = true;
 
     if (isReturningFromCart) {
-      showSnackBar('Item added to cart');
+      showSnackBar('Item added to cart'.tr);
       isReturningFromCart = false;
     }
   }

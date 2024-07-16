@@ -196,7 +196,7 @@ class BillDetailsRow extends StatelessWidget {
           ),
         ),
         Text(
-          'OMR ${amount.toStringAsFixed(3)}',
+          '${"OMR".tr} ${amount.toStringAsFixed(3)}',
           style: TextStyle(
             fontSize: 15,
             fontWeight: isBold ? FontWeight.w700 : FontWeight.w400,

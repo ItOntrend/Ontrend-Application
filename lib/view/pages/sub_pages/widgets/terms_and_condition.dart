@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
 
 class TermsAndCondition extends StatelessWidget {
@@ -16,9 +17,9 @@ class TermsAndCondition extends StatelessWidget {
           color: kGrey,
         ),
       ),
-      child: const Center(
+      child: Center(
         child: Text(
-          "Terms & Conditions",
+          "Terms & Conditions".tr,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,

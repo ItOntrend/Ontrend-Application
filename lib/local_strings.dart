@@ -104,6 +104,15 @@ class LocalStrings extends Translations {
           "History": "History",
           "Ongoing": "Ongoing",
           "Sheduled": "Sheduled",
+          "Type a coupon code here": "Type a coupon code here",
+          "Apply": "Apply",
+          "Terms & Conditions": "Terms & Conditions",
+          'Item added to cart': 'Item added to cart',
+          "Edit Address Title": "Edit Address Title",
+          "Enter new title": "Enter new title",
+          "Cancel": "Cancel",
+          "Save": "Save",
+          'Service fee': 'Service fee',
         },
         //'hi_IN': {'hello': "नमस्ते दुनिया", 'message': "ऐप में आपका स्वागत है"},
         'ar_OM': {
@@ -199,11 +208,20 @@ class LocalStrings extends Translations {
           "Bill Details": "تفاصيل الفاتورة",
           'Item total': 'مجموع الاشياء',
           'Delivery fee': 'رسوم التوصيل',
+          'Service fee': 'رسوم الخدمة',
           'Total amount': 'المبلغ الإجمالي',
           'Add to Cart': 'أضف إلى السلة',
           "History": "تاريخ",
           "Ongoing": "جاري التنفيذ",
-          "Sheduled": "المقرر"
+          "Sheduled": "المقرر",
+          "Type a coupon code here": "اكتب رمز القسيمة هنا",
+          "Apply": "يتقدم",
+          "Terms & Conditions": "البنود و الظروف",
+          'Item added to cart': "تم إضافة السلعة إلى سلة التسوق",
+          "Edit Address Title": "تحرير عنوان العنوان",
+          "Enter new title": "أدخل عنوانًا جديدًا",
+          "Cancel": "يلغي",
+          "Save": "يحفظ",
         }
       };
 }

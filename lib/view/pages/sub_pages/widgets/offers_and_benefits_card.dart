@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 
@@ -44,29 +45,26 @@ class OffersAndBenefitsCard extends StatelessWidget {
                 border: InputBorder.none,
                 fillColor: kWhite,
                 hoverColor: kWhite,
-                hintText: "Type a coupon code here",
+                hintText: "Type a coupon code here".tr,
                 hintStyle: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w300,
                 ),
-                suffixIcon: GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    "Apply",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: kOrange,
-                    ),
+                suffixIcon: Text(
+                  "Apply".tr,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: kOrange,
                   ),
                 ),
               ),
             ),
           ),
           kHiegth10,
-          const Text(
-            "Available Voulchers",
+          Text(
+            "Available Voulchers".tr,
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
