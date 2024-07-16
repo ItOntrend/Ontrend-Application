@@ -51,7 +51,7 @@ class OffersAndBenefitsCard extends StatelessWidget {
                   fontWeight: FontWeight.w300,
                 ),
                 suffixIcon: Text(
-                  "Apply",
+                  "Apply".tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12,
