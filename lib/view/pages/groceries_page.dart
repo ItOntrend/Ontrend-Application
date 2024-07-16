@@ -134,6 +134,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
               TextfieldWithMic(
                   hintText: "Vegetables, fruits...".tr,
                   onTap: () => () => Get.to(() => SearchPage())),
+
               kHiegth20,
               // Welcome card
               SPromoSliderWidget(),
