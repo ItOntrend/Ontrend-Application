@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,9 +31,17 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
   late GoogleMapController mapController;
   final CartController cartController = Get.find<CartController>();
 
-
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    print("/////////////////////////////////////");
+    log(widget.latitude.toString());
+    log(widget.longitude.toString());
+    print("////////////////////////////////////");
   }
 
   @override
@@ -262,7 +272,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           ),
           const Divider(),
           _buildOrderDetailRowTwo("Order ID", "#${order.orderID}"),
-          _buildOrderDetailRowTwo("Order Total", "OMR ${order.totalPrice}"),
+          _buildOrderDetailRowTwo("Order Total", "OMR ${order.totalPrice}00"),
           _buildOrderDetailRowTwo("Payment Method", "Cash"),
           const Divider(),
           const Text(
@@ -273,8 +283,8 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
               .map((item) => ListTile(
                     title: Text(item.itemName),
                     subtitle:
-                        Text("${item.itemQuantity} x OMR ${item.itemPrice}"),
-                    trailing: Text("OMR ${item.total}"),
+                        Text("${item.itemQuantity} x OMR ${item.itemPrice}00"),
+                    trailing: Text("OMR ${item.total}00"),
                   ))
               .toList(),
           const Divider(),
@@ -285,52 +295,63 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
   }
 
   Widget _buildOrderDetailRow() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text("Distance:", style: TextStyle(fontSize: 16.0)),
-              FutureBuilder<String>(
-                future: Get.find<VendorController>()
-                    .getAddressFromLatLng(widget.latitude, widget.longitude),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Text(
-                      snapshot.data!,
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 14,
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text(
-                      'Location information unavailable',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 14,
-                      ),
-                    );
-                  } else {
-                    return Text(
-                      'Fetching location...',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 14,
-                      ),
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
-          kHiegth30,
-        ],
-      ),
-    );
-  }
+  return Padding(
+    padding: const EdgeInsets.symmetric(),
+    child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              "Distance:",
+            ),
+            FutureBuilder<String>(
+              future: Get.find<VendorController>()
+                  .getAddressFromLatLng(widget.latitude, widget.longitude),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Text(
+                    'Fetching location...',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 14,
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text(
+                    'Location information unavailable',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 14,
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  return Text(
+                    snapshot.data!,
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 14,
+                    ),
+                  );
+                } else {
+                  return Text(
+                    'Unknown location',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 14,
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+        kHiegth30,
+      ],
+    ),
+  );
+}
+
 
   Widget _buildOrderDetailRowTwo(String label, String value) {
     return Padding(
@@ -338,8 +359,14 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(fontSize: 16.0)),
-          Text(value, style: TextStyle(fontSize: 16.0)),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 16.0),
+          ),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 16.0),
+          ),
         ],
       ),
     );

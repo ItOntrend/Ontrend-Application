@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
+import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/order_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -96,6 +98,48 @@ class CartController extends GetxController {
   }
 
   void addItemToCart(ItemModel item) {
+    if (cartItems.isNotEmpty) {
+      // Check if the item is from a different vendor
+      final existingVendorId = cartItems.values.first['item'].addedBy;
+      if (existingVendorId != item.addedBy) {
+        // Show an alert dialog
+        Get.defaultDialog(
+          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          backgroundColor: kWhite,
+          title: 'Start a new order?',
+          content: Text('You can only order from one vendor at a time.'),
+          confirm: ElevatedButton(
+            style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(kWhite)),
+            onPressed: () {
+              // Clear the cart and add the new item
+              cartItems.clear();
+              addItemToCartConfirmed(item);
+              Get.back(); // Close the dialog
+            },
+            child: Text(
+              'Yes',
+              style: TextStyle(color: kDarkOrange),
+            ),
+          ),
+          cancel: ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(kDarkOrange)),
+            onPressed: () {
+              Get.back(); // Close the dialog without adding the item
+            },
+            child: Text(
+              'No',
+              style: TextStyle(color: kWhite),
+            ),
+          ),
+        );
+        return;
+      }
+    }
+    addItemToCartConfirmed(item);
+  }
+
+  void addItemToCartConfirmed(ItemModel item) {
     if (cartItems.containsKey(item.name)) {
       cartItems[item.name]['quantity'] =
           (cartItems[item.name]['quantity'] + 1).toInt();
@@ -114,10 +158,6 @@ class CartController extends GetxController {
       showSnackBar('Item added to cart');
       isReturningFromCart = false;
     }
-  }
-
-  void hideFab() {
-    isFabVisible.value = false;
   }
 
   void removeItemFromCart(ItemModel item) {

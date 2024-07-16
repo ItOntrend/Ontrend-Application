@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "${locationController.countryName.value}",
+                        locationController.countryName.value,
                         style: const TextStyle(
                           color: kBlue,
                           fontSize: 10,
