@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -8,10 +7,10 @@ import 'package:permission_handler/permission_handler.dart';
 
 class LocationController extends GetxController {
   var currentPosition = const LatLng(21.4735, 55.9754).obs;
-  var currentAddress = 'Select Location'.obs;
-  var streetName = 'Fetching...'.obs;
-  var cityName = 'Fetching...'.obs;
-  var countryName = '...'.obs;
+  var currentAddress = ''.obs;
+  var streetName = ''.obs;
+  var cityName = ''.obs;
+  var countryName = ''.obs;
   var savedAddresses = <SavedAddress>[].obs;
   var isLoading = false.obs;
   late GoogleMapController mapController;
@@ -34,17 +33,8 @@ class LocationController extends GetxController {
   void getCurrentLocation() async {
     try {
       isLoading.value = true;
-      if (savedAddresses.isEmpty) {
-        // Only navigate to PlacePickerScreen if no saved addresses
-        Get.to(() => PlacePickerScreen(controller: this));
-      } else {
-        // Get address from the first saved location
-        var firstAddress = savedAddresses.first;
-        currentAddress.value = firstAddress.address;
-        streetName.value = firstAddress.streetName;
-        cityName.value = firstAddress.cityName;
-        countryName.value = firstAddress.countryName;
-      }
+      // Always navigate to PlacePickerScreen
+      Get.to(() => PlacePickerScreen(controller: this));
     } catch (e) {
       currentAddress.value = "Failed to get current location.";
     } finally {

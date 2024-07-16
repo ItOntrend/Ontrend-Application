@@ -24,16 +24,20 @@ class HistoryMyOrder extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        if (orderController.orders.isEmpty) {
+        // Filter orders to only show rejected and completed
+        var filteredOrders = orderController.orders.where((order) => 
+          order.status == 'Rejected' || order.status == 'Completed').toList();
+
+        if (filteredOrders.isEmpty) {
           return const Center(
             child: Text('No orders found'),
           );
         }
 
         return ListView.builder(
-          itemCount: orderController.orders.length,
+          itemCount: filteredOrders.length,
           itemBuilder: (context, index) {
-            OrderModel order = orderController.orders[index];
+            OrderModel order = filteredOrders[index];
             return Column(
               children: [
                 MyOrderCard(
@@ -44,6 +48,7 @@ class HistoryMyOrder extends StatelessWidget {
                   items: order.items,
                   totalPrice: order.totalPrice,
                   userId: order.userId,
+                  orderId: order.orderID,
                 ),
                 const SizedBox(height: 25),
               ],

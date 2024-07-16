@@ -17,6 +17,7 @@ class MyOrderCard extends StatefulWidget {
     required this.items,
     required this.totalPrice,
     required this.userId,
+    required this.orderId,
   });
 
   final String restaurantName;
@@ -25,6 +26,7 @@ class MyOrderCard extends StatefulWidget {
   final List<Item> items;
   final double totalPrice;
   final String userId;
+  final String orderId;
 
   @override
   State<MyOrderCard> createState() => _MyOrderCardState();
@@ -42,7 +44,7 @@ class _MyOrderCardState extends State<MyOrderCard> {
       });
     } catch (e) {
       setState(() {
-        _address = 'Location Not Found';
+        _address = 'Location Not Found'.tr;
       });
     }
   }
@@ -58,7 +60,7 @@ class _MyOrderCardState extends State<MyOrderCard> {
     return GestureDetector(
       onTap: () {
         Get.to(DeliveryTrackingPage(
-          orderId: widget.userId,
+          orderId: widget.orderId,
           latitude: 0.0,
           longitude: 0.0,
         ));
@@ -150,14 +152,13 @@ class _MyOrderCardState extends State<MyOrderCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const Text("Total Price"),
+                      Text("Total Price".tr),
                       Container(
                         color: Colors.grey.shade400,
                         width: 1,
                         height: 36,
                       ),
-                      Text(
-                          '${"OMR".tr} ${widget.totalPrice.toStringAsFixed(3)}'),
+                      Text('OMR ${widget.totalPrice.toStringAsFixed(3)}'),
                     ],
                   ),
                 ],

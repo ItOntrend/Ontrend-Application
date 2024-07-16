@@ -48,7 +48,7 @@ class GroceryController extends GetxController {
     productList.value = await GroceryRepository.getProducts();
     isProductLoading.value = false;
     print("products........");
-    print("${productList.value}");
+    print("${productList}");
     print("${productList[0].name}");
   }
 }

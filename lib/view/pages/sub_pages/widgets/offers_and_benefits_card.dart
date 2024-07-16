@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
@@ -11,13 +12,13 @@ class OffersAndBenefitsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: 24,
+        horizontal: 20,
         vertical: 12,
       ),
       height: 107.h,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.blueGrey.withOpacity(0.1),
+        color: kWhite,
         borderRadius: BorderRadius.circular(
           10,
         ),
@@ -50,7 +51,7 @@ class OffersAndBenefitsCard extends StatelessWidget {
                   fontWeight: FontWeight.w300,
                 ),
                 suffixIcon: Text(
-                  "Apply".tr,
+                  "Apply",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12,

@@ -13,69 +13,56 @@ class AddingMoreItemCard extends StatelessWidget {
       onTap: () {
         Get.back();
       },
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10,
-        ).copyWith(
-          left: 9,
-          right: 17,
-        ),
-        height: 91.h,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: kWhite,
-          borderRadius: BorderRadius.circular(
-            10,
-          ),
-          border: Border.all(
-            color: kGrey.shade400,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Add more items".tr,
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Add more items".tr,
+                style: const TextStyle(
+                  color: Colors.black54,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Container(
+                height: 19.h,
+                width: 19.w,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: kWhite,
+                  border: Border.all(
+                    color: kGreen,
                   ),
                 ),
-                Container(
-                  height: 19.h,
-                  width: 19.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: kWhite,
-                    border: Border.all(
-                      color: kGreen,
-                    ),
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    size: 12,
-                    color: kBlack,
-                  ),
+                child: const Icon(
+                  Icons.add,
+                  size: 12,
+                  color: kBlack,
                 ),
-              ],
-            ),
-            kHiegth9,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
+              ),
+            ],
+          ),
+          kHiegth9,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () => _showAddRequestDialog(context),
+                child: Text(
                   "Add cooking requests".tr,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black54,
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                Container(
+              ),
+              GestureDetector(
+                onTap: () => _showAddRequestDialog(context),
+                child: Container(
                   height: 19.h,
                   width: 19.w,
                   decoration: BoxDecoration(
@@ -91,11 +78,57 @@ class AddingMoreItemCard extends StatelessWidget {
                     color: kBlack,
                   ),
                 ),
-              ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAddRequestDialog(BuildContext context) {
+    TextEditingController requestController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: kWhite,
+          title: Text('Add Cooking Request'.tr),
+          content: TextField(
+            controller: requestController,
+            decoration: InputDecoration(hintText: 'Enter your request here'.tr),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Cancel'.tr,
+                style: TextStyle(
+                  color: kDarkOrange,
+                ),
+              ),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+            TextButton(
+              child: Text(
+                'Add'.tr,
+                style: TextStyle(
+                  color: kDarkOrange,
+                ),
+              ),
+              onPressed: () {
+                // Handle the cooking request here
+                String request = requestController.text;
+                // Add your logic to handle the request
+
+                Get.back();
+              },
             ),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }

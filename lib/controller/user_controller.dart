@@ -71,7 +71,7 @@ class UserController extends GetxController {
 
       if (userData.exists) {
         var data = userData.data();
-        if (data != null && data is Map<String, dynamic>) {
+        if (data != null) {
           setUserData(
             firstName: data['firstName'],
             lastName: data['lastName'],

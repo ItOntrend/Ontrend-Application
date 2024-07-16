@@ -10,7 +10,6 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/tabs/sheduled_m
 class MyOrders extends StatelessWidget {
   const MyOrders({super.key, required this.userId});
   final String userId;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -54,12 +53,13 @@ class MyOrders extends StatelessWidget {
                   tabs: [
                     // Individual tab containers
                     _buildTabItem(
+                      text: "Ongoing".tr,
+                    ),
+                    _buildTabItem(
                       text: "History".tr,
                       // Check if selected
                     ),
-                    _buildTabItem(
-                      text: "Ongoing".tr,
-                    ),
+
                     _buildTabItem(
                       text: "Sheduled".tr,
                     ),
@@ -72,10 +72,12 @@ class MyOrders extends StatelessWidget {
                 child: TabBarView(
                   // Content for each tab
                   children: [
+                    OngoingMyOrder(
+                      userId: userId,
+                    ),
                     HistoryMyOrder(
                       userId: userId,
                     ),
-                    OngoingMyOrder(),
                     SheduledMyOrder(),
                   ],
                 ),

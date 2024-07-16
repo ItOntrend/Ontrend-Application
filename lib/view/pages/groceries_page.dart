@@ -16,10 +16,8 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousa
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/offer_label.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/trending_cards.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
 
 class GroceriesPage extends StatefulWidget {
@@ -187,25 +185,28 @@ class _GroceriesPageState extends State<GroceriesPage> {
 
                               //log(vendor.bannerImage.toString());
                               return ExploreCard(
-                                longitude: vendor.location.lng,
                                 latitude: vendor.location.lat,
-                                locationCityCountry: '',
+                                longitude: vendor.location.lng,
+                                locationCityCountry: "",
                                 distance: vendorController
                                     .calculateDistance(vendor.location),
                                 name: vendor.restaurantName,
                                 image: vendor.bannerImage,
                                 onTap: () {
-                                  Get.to(() => ProfilePage(
-                                        userId: vendor.reference.id,
-                                        cat: "",
-                                        type: "Grocery",
-                                      ));
+                                  //log(vendor.reference.id);
+                                  Get.to(
+                                    () => ProfilePage(
+                                      userId: vendor.reference.id,
+                                      type: 'Grocery',
+                                      cat: '',
+                                    ),
+                                  );
                                 },
                               );
                             },
                           ),
               ),
-              kWidth140
+              kHiegth30,
             ],
           ),
         ),

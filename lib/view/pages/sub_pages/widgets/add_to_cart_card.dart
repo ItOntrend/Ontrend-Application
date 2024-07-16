@@ -60,7 +60,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withOpacity(0.2),
             spreadRadius: 2,
             blurRadius: 5,
             offset: const Offset(0, 6),
@@ -97,7 +97,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
                 if (cartItem == null) {
                   return Text(
                     "Item not in cart".tr,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: kRed,
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
@@ -107,7 +107,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
                 int quantity = cartItem['quantity'] ?? 1;
                 return Container(
                   height: 22.h,
-                  width: 108.w,
+                  // width: 124.w,
                   decoration: BoxDecoration(
                     color: kGreen,
                     borderRadius: BorderRadius.circular(6),
