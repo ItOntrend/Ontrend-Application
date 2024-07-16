@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
@@ -17,9 +18,13 @@ class ProfilePage extends StatefulWidget {
     super.key,
     this.initialTabIndex = 0,
     required this.userId,
+    required this.type,
+    required this.cat,
   });
   final int initialTabIndex;
   final String userId;
+  final String type;
+  final String cat;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -27,14 +32,27 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final VendorController vendorController = Get.put(VendorController());
+  final LanguageController lang = Get.put(LanguageController());
   final CartController cartController = Get.put(CartController());
-
   @override
   void initState() {
     super.initState();
-    vendorController.getItems(widget.userId);
+    //log(widget.userId);
+    //vendorController.getItems(widget.userId);
+    if (widget.cat == "") {
+      if (widget.type == "Food") {
+        vendorController.getItems(widget.userId);
+      } else {
+        vendorController.getItemsnew(widget.userId);
+      }
+    } else {
+      vendorController.getItemsGr(widget.userId, widget.cat, widget.type);
+    }
+    //vendorController.getItems(widget.userId);
     print("profile......................................${widget.userId}");
-    vendorController.getVendors(widget.userId);
+    vendorController.getVendors(
+      widget.userId,
+    );
   }
 
   @override
@@ -101,8 +119,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   children: [
                     Text(
-                      "Best Sellers".tr,
-                      style: const TextStyle(
+                      widget.cat,
+                      style: TextStyle(
                         color: kOrange,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -135,6 +153,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                               child: FoodItemCard(
                                 name: item.name,
+                                localName: item.localName,
+                                localTag: item.localTag,
                                 image: item.imageUrl,
                                 description: item.description,
                                 price: item.price,

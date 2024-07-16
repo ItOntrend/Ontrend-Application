@@ -118,6 +118,8 @@ class _AddToCartPageState extends State<AddToCartPage> {
                               .toList()[index]['item'];
                           return AddToCartCard(
                             itemName: item.name,
+                            localName: item.localName,
+                            localTag: item.localTag,
                             itemPrice: item.price.toString(),
                             image: item.imageUrl,
                             addedBy: item.addedBy.toString(),

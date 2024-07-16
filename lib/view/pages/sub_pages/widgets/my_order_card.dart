@@ -16,7 +16,8 @@ class MyOrderCard extends StatefulWidget {
     required this.status,
     required this.items,
     required this.totalPrice,
-    required this.userId, required this.orderId,
+    required this.userId,
+    required this.orderId,
   });
 
   final String restaurantName;
@@ -43,7 +44,7 @@ class _MyOrderCardState extends State<MyOrderCard> {
       });
     } catch (e) {
       setState(() {
-        _address = 'Location Not Found';
+        _address = 'Location Not Found'.tr;
       });
     }
   }
@@ -151,13 +152,13 @@ class _MyOrderCardState extends State<MyOrderCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const Text("Total Price"),
+                      Text("Total Price".tr),
                       Container(
                         color: Colors.grey.shade400,
                         width: 1,
                         height: 36,
                       ),
-                      Text('OMR ${widget.totalPrice.toStringAsFixed(3)}'),
+                      Text('OMR ${widget.totalPrice.toStringAsFixed(3)}'.tr),
                     ],
                   ),
                 ],

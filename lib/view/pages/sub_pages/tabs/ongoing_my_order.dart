@@ -25,14 +25,17 @@ class OngoingMyOrder extends StatelessWidget {
         }
 
         // Filter orders to only show those with statuses from pending to ready
-        var filteredOrders = orderController.orders.where((order) => 
-          order.status == 'Pending' || 
-          order.status == 'Processing' || 
-          order.status == 'Ready' ||
-          order.status == 'Picked Up').toList();
+        var filteredOrders = orderController.orders
+            .where((order) =>
+                order.status == 'Pending'.tr ||
+                order.status == 'Processing'.tr ||
+                order.status == 'Ready'.tr ||
+                order.status == 'Picked Up'.tr)
+            .toList();
 
         // Sort the filtered orders by timestamp in descending order
-        filteredOrders.sort((a, b) => b.orderTimestamp.compareTo(a.orderTimestamp));
+        filteredOrders
+            .sort((a, b) => b.orderTimestamp.compareTo(a.orderTimestamp));
 
         if (filteredOrders.isEmpty) {
           return const Center(
@@ -47,7 +50,8 @@ class OngoingMyOrder extends StatelessWidget {
               children: [
                 MyOrderCard(
                   restaurantName: order.restaurantName,
-                  location: LatLng(order.restaurantLocation.lat, order.restaurantLocation.lng),
+                  location: LatLng(order.restaurantLocation.lat,
+                      order.restaurantLocation.lng),
                   status: order.status,
                   items: order.items,
                   totalPrice: order.totalPrice,

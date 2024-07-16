@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
@@ -9,18 +7,16 @@ import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/vegetable_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/offer_label.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/trending_cards.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
 
 class GroceriesPage extends StatefulWidget {
@@ -42,9 +38,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final GroceryController controller = Get.put(GroceryController());
     final LocationController locationController = Get.put(LocationController());
-    final CartController cartController = Get.put(CartController());
 
     return Scaffold(
       backgroundColor: kWhite,
@@ -60,68 +54,56 @@ class _GroceriesPageState extends State<GroceriesPage> {
             child: Image.asset("assets/icons/location_icon.png"),
           ),
         ),
-        title: GestureDetector(
-          onTap: () {
-            Get.to(const SelectLocationPage());
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Obx(() => Text(
-                    locationController.streetName.value,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )),
-              Obx(() => Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        locationController.countryName.value,
-                        style: const TextStyle(
-                          color: kBlue,
-                          fontSize: 10,
-                        ),
-                      ),
-                      const Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 16,
-                      ),
-                    ],
-                  )),
-            ],
-          ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              locationController.streetName.value,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  "${locationController.cityName.value}, ${locationController.countryName.value}",
+                  style: const TextStyle(
+                    color: kBlue,
+                    fontSize: 10,
+                  ),
+                ),
+                const Icon(
+                  Icons.keyboard_arrow_down,
+                  size: 16,
+                ),
+              ],
+            ),
+          ],
         ),
         actions: [
-          Obx(
-            () => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(() => const NotificationPage());
-                    },
-                    child: Image.asset("assets/icons/notification_icon.png"),
-                  ),
-                  kWidth25,
-                  Badge.count(
-                    count: cartController.getItemCount(),
-                    backgroundColor: kDarkOrange,
-                    textColor: Colors.white,
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(const AddToCartPage(
-                          addedBy: "",
-                          restaurantName: "",
-                        ));
-                      },
-                      child: Image.asset("assets/icons/cart_icon.png"),
-                    ),
-                  ),
-                ],
-              ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => const NotificationPage());
+                  },
+                  child: Image.asset("assets/icons/notification_icon.png"),
+                ),
+                kWidth25,
+                GestureDetector(
+                  onTap: () {
+                    Get.to(const AddToCartPage(
+                      addedBy: "",
+                      restaurantName: "",
+                    ));
+                  },
+                  child: Image.asset("assets/icons/cart_icon.png"),
+                ),
+              ],
             ),
           ),
         ],
@@ -134,65 +116,14 @@ class _GroceriesPageState extends State<GroceriesPage> {
             children: [
               // Search bar
               TextfieldWithMic(
-                hintText: "Vegetables, fruits...".tr,
-                onTap: () {
-                  Get.to(SearchPage());
-                },
-              ),
+                  hintText: "Vegetables, fruits...".tr,
+                  onTap: () => () => Get.to(() => SearchPage())),
               kHiegth20,
               // Welcome card
               SPromoSliderWidget(),
               kHiegth20,
               // Trending card
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TwoTextHeading(heading: "Trending on OnTrend".tr),
-                  // GestureDetector(onTap: () {}, child: Text('View All'))
-                ],
-              ),
-              kHiegth25,
-              SizedBox(
-                height: 240.h,
-                child: Obx(() {
-                  if (controller.isProductLoading.value) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (controller.productList.isEmpty) {
-                    return const Center(
-                        child: Text('No trending products available.'));
-                  } else {
-                    return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: controller.productList.length,
-                      itemBuilder: (context, index) {
-                        final product = controller.productList[index];
-                        return GestureDetector(
-                          onTap: () {
-                            // Navigate to product details
-                          },
-                          child: Obx(
-                            () => TrendingCards(
-                              imagePath: product.imageUrl,
-                              name: languageController
-                                          .currentLanguage.value.languageCode ==
-                                      'ar'
-                                  ? product.localName
-                                  : product.name,
-                              onTap: () {},
-                              itemPrice: OfferLabel(
-                                offerlabel:
-                                    '${product.vId}% OFF', // Modify as per your needs
-                                brandName:
-                                    'Upto OMR ${product.price}', // Modify as per your needs
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  }
-                }),
-              ),
+
               // Categories card
               TwoTextHeading(heading: "Categories".tr),
               kHiegth20,
@@ -215,10 +146,15 @@ class _GroceriesPageState extends State<GroceriesPage> {
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
                         return CategoryCard(
-                          categoryImage: category.image, //category.imageUrl,
-                          categoryName: category.name,
-                          onTap: () => Get.to(() => Vegetable(
-                                userId: "",
+                          categoryImage: category.imageUrl, //category.imageUrl,
+                          categoryName: languageController
+                                      .currentLanguage.value.languageCode ==
+                                  "ar"
+                              ? category.localName
+                              : category.name,
+                          onTap: () => Get.to(() => CategorysSearchPage(
+                                category: category,
+                                type: 'Grocery',
                               )),
                         );
                       },
@@ -235,10 +171,10 @@ class _GroceriesPageState extends State<GroceriesPage> {
                 () => vendorController.isVendorLoading.value
                     ? const CircularProgressIndicator()
                     : vendorController.vendorsListCat.isEmpty
-                        ? const Center(child: Text("No Vendor Available"))
+                        ? Center(child: Text("No Vendor Available".tr))
                         : ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
                             itemCount: vendorController.vendorsListCat.length,
                             itemBuilder: (context, index) {
@@ -259,7 +195,10 @@ class _GroceriesPageState extends State<GroceriesPage> {
                                   //log(vendor.reference.id);
                                   Get.to(
                                     () => ProfilePage(
-                                        userId: vendor.reference.id),
+                                      userId: vendor.reference.id,
+                                      type: 'Grocery',
+                                      cat: '',
+                                    ),
                                   );
                                 },
                               );

@@ -124,8 +124,8 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
             Get.back();
           },
         ),
-        title: const Text(
-          "Select Location",
+        title: Text(
+          "Select Location".tr,
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
@@ -145,7 +145,7 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
               },
               decoration: InputDecoration(
                 prefixIcon: Image.asset("assets/icons/search_icon.png"),
-                hintText: "Search for area, street name...",
+                hintText: "Search for area, street name...".tr,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(
                     10,
@@ -183,8 +183,8 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
                 kWidth15,
                 TextButton(
                   onPressed: locationController.getCurrentLocation,
-                  child: const Text(
-                    "Use my current location",
+                  child: Text(
+                    "Use my current location".tr,
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
@@ -201,8 +201,8 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
                 kWidth15,
                 TextButton(
                   onPressed: _openPlacePicker,
-                  child: const Text(
-                    "Add location from map",
+                  child: Text(
+                    "Add location from map".tr,
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
@@ -214,8 +214,8 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
             kHiegth10,
             kDiver10,
             kHiegth20,
-            const Text(
-              "SAVED ADDRESSES",
+            Text(
+              "SAVED ADDRESSES".tr,
               style: TextStyle(
                 color: kGrey,
                 fontSize: 15,

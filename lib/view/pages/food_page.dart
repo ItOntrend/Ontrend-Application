@@ -1,11 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/best_seller_controller.dart';
-import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/food_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
@@ -14,9 +13,9 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_pag
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
+
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
@@ -39,8 +38,7 @@ class _FoodPageState extends State<FoodPage> {
       Get.put(BestSellerController());
   final VendorController vendorController = Get.put(VendorController());
   final LocationController locationController = Get.put(LocationController());
-  final CartController cartController = Get.put(CartController());
-
+  final lang = Get.put(LanguageController());
   @override
   void initState() {
     super.initState();
@@ -69,71 +67,57 @@ class _FoodPageState extends State<FoodPage> {
             ),
           ),
         ),
-        title: GestureDetector(
-          onTap: () {
-            Get.to(
-              const SelectLocationPage(),
-            );
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Obx(() => Text(
-                    locationController.streetName.value,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Obx(() => Text(
+                  locationController.streetName.value,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )),
+            Obx(() => Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      locationController.countryName.value,
+                      style: const TextStyle(
+                        color: kBlue,
+                        fontSize: 10,
+                      ),
                     ),
-                  )),
-              Obx(() => Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        locationController.countryName.value,
-                        style: const TextStyle(
-                          color: kBlue,
-                          fontSize: 10,
-                        ),
-                      ),
-                      const Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 16,
-                      ),
-                    ],
-                  )),
-            ],
-          ),
+                    const Icon(
+                      Icons.keyboard_arrow_down,
+                      size: 16,
+                    ),
+                  ],
+                )),
+          ],
         ),
         actions: [
-          Obx(
-            () => Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-              child: Row(
-                children: [
-                  GestureDetector(
-                      onTap: () {
-                        Get.to(() => const NotificationPage());
-                      },
-                      child: Image.asset("assets/icons/notification_icon.png")),
-                  kWidth25,
-                  Badge.count(
-                    count: cartController.getItemCount(),
-                    backgroundColor: kDarkOrange,
-                    textColor: Colors.white,
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(const AddToCartPage(
-                          addedBy: "",
-                          restaurantName: "",
-                        ));
-                      },
-                      child: Image.asset("assets/icons/cart_icon.png"),
-                    ),
-                  ),
-                ],
-              ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
+            child: Row(
+              children: [
+                GestureDetector(
+                    onTap: () {
+                      Get.to(() => const NotificationPage());
+                    },
+                    child: Image.asset("assets/icons/notification_icon.png")),
+                kWidth25,
+                GestureDetector(
+                  onTap: () {
+                    Get.to(const AddToCartPage(
+                      addedBy: "",
+                      restaurantName: "",
+                    ));
+                  },
+                  child: Image.asset("assets/icons/cart_icon.png"),
+                ),
+              ],
             ),
           ),
         ],
@@ -148,9 +132,6 @@ class _FoodPageState extends State<FoodPage> {
               // Search bar
               TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...".tr,
-                onTap: () {
-                  Get.to(SearchPage());
-                },
               ),
               kHiegth15,
               // Welcome card
@@ -164,7 +145,7 @@ class _FoodPageState extends State<FoodPage> {
                 () => foodController.isCategoryLoading.value
                     ? const CircularProgressIndicator()
                     : SizedBox(
-                        height: 286.h, // Adjust the height as needed
+                        height: 240, // Adjust the height as needed
                         child: GridView.builder(
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
@@ -177,11 +158,15 @@ class _FoodPageState extends State<FoodPage> {
                             return CategoryCard(
                               onTap: () {
                                 Get.to(() => CategorysSearchPage(
-                                      type: 'Food/Restaurant',
-                                      categoryName: category.name,
+                                      type: 'Food',
+                                      category: category,
                                     ));
                               },
-                              categoryName: category.name,
+                              categoryName:
+                                  lang.currentLanguage.value.languageCode ==
+                                          "ar"
+                                      ? category.localName
+                                      : category.name,
                               categoryImage: category.imageUrl,
                             );
                           },
@@ -197,7 +182,7 @@ class _FoodPageState extends State<FoodPage> {
                 () => bestSellerController.isBestSellerLoading.value
                     ? const CircularProgressIndicator()
                     : SizedBox(
-                        height: 300.h,
+                        height: 300,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: bestSellerController.bestSellerList.length,
@@ -210,6 +195,8 @@ class _FoodPageState extends State<FoodPage> {
                               onTap: () {
                                 Get.to(() => ProfilePage(
                                       userId: bestSeller.addedBy,
+                                      type: "Food",
+                                      cat: "Best Seller",
                                     ));
                               },
                               name: bestSeller.name,
@@ -230,7 +217,7 @@ class _FoodPageState extends State<FoodPage> {
                 () => vendorController.isVendorLoading.value
                     ? const CircularProgressIndicator()
                     : vendorController.vendorsListCat.isEmpty
-                        ? Center(child: Text("No Vendor Available".tr))
+                        ? const Center(child: Text("No Vendor Available"))
                         : ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
@@ -251,8 +238,11 @@ class _FoodPageState extends State<FoodPage> {
                                 name: vendor.restaurantName,
                                 image: vendor.bannerImage,
                                 onTap: () {
-                                  Get.to(() =>
-                                      ProfilePage(userId: vendor.reference.id));
+                                  Get.to(() => ProfilePage(
+                                        userId: vendor.reference.id,
+                                        cat: "",
+                                        type: "Food",
+                                      ));
                                 },
                               );
                             },

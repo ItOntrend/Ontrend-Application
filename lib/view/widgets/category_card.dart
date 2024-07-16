@@ -15,6 +15,9 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Log the category image URL
+    print('Category Image URL: $categoryImage');
+
     return Padding(
       padding: const EdgeInsets.only(right: 20),
       child: GestureDetector(
@@ -29,6 +32,9 @@ class CategoryCard extends StatelessWidget {
                 width: 70,
                 imageUrl: categoryImage,
                 fit: BoxFit.cover,
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
             Text(
