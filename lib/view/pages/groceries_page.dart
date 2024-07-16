@@ -12,7 +12,8 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_pa
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/carousal_slider.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
+
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/vertical_image_text.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
@@ -197,10 +198,10 @@ class _GroceriesPageState extends State<GroceriesPage> {
                       itemBuilder: (_, index) {
                         final category = controller.categoryList[index];
                         return SVerticalImageTextWidget(
-                          image: category.image, //category.imageUrl,
+                          image: category.imageUrl, //category.imageUrl,
                           categoryType: category.name,
                           onTap: () => Get.to(() => CategorysSearchPage(
-                                categoryName: category.name,
+                                category: category,
                                 type: 'Grocery',
                               )),
                         );

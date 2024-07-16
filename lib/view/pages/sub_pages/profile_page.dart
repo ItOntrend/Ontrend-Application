@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/food_item_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/profile_card.dart';
 import 'item_view_page.dart'; // Import the ItemViewPage
@@ -31,6 +33,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final VendorController vendorController = Get.put(VendorController());
   final LanguageController lang = Get.put(LanguageController());
+  final CartController cartController = Get.put(CartController());
   @override
   void initState() {
     super.initState();
@@ -170,6 +173,53 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
         ),
+        bottomNavigationBar: Obx(() {
+          return BottomAppBar(
+            color: kTransparent,
+            shape: const CircularNotchedRectangle(),
+            notchMargin: 8.0,
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16), color: kGreen),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Items in Cart: ${cartController.getItemCount()}',
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        color: kWhite),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.to(() => const AddToCartPage(
+                            addedBy: '',
+                            restaurantName: '',
+                          ));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: kGreen,
+                      backgroundColor: kWhite,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 10.h),
+                    ),
+                    child: const Text(
+                      'View Cart',
+                      style: TextStyle(
+                        color: kOrange,
+                        decoration: TextDecoration.underline,
+                        decorationColor: kOrange,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }),
       ),
     );
   }

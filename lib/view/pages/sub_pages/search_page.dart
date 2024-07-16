@@ -142,7 +142,7 @@ class _SearchPageState extends State<SearchPage> {
                           onTap: () {
                             Get.to(() => CategorysSearchPage(
                                   type: 'Food/Restaurant',
-                                  categoryName: category.name,
+                                  category: category,
                                 ));
                           },
                           categoryName: category.name,

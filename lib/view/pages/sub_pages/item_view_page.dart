@@ -90,9 +90,8 @@ class ItemViewPage extends StatelessWidget {
                         ),
                       ),
                       kWidth20,
-<<<<<<< HEAD
                       Text(
-                        "${"OMR".tr}${item.price + 50}", // Example original price
+                        "OMR ${item.price + 50}", // Example original price
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w400,
@@ -100,34 +99,6 @@ class ItemViewPage extends StatelessWidget {
                           decoration: TextDecoration.lineThrough,
                         ),
                       ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      RatingBar.builder(
-                        itemSize: 15,
-                        allowHalfRating: true,
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star,
-                          color: kGreen,
-                        ),
-                        initialRating: 4.5, // Example rating
-                      ),
-                      kWidth20,
-                      const Text(
-                        "(123 Review)",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: kGrey,
-                        ),
-                      ),
-=======
->>>>>>> ddd0683df4240cebfa043b828419ce8e024d4fab
                     ],
                   ),
                   // Row(
