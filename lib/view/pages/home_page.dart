@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bestSellerController.getBestSeller();
+      //bestSellerController.getBestSeller();
     });
   }
 
@@ -198,41 +198,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(height: 20),
-              OneTextHeading(
-                heading: "Best Sellers".tr,
-              ),
-              SizedBox(height: 20),
-              Obx(
-                () => bestSellerController.isBestSellerLoading.value
-                    ? CircularProgressIndicator()
-                    : SizedBox(
-                        height: 300,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: bestSellerController.bestSellerList.length,
-                          itemBuilder: (context, index) {
-                            log("Best Sellers");
-                            final bestSeller =
-                                bestSellerController.bestSellerList[index];
-                            return BestSellerCard(
-                              onTap: () {
-                                Get.to(
-                                  () => ProfilePage(
-                                    userId: bestSeller.addedBy,
-                                    cat: "Best Seller",
-                                    type: "Food",
-                                  ),
-                                );
-                              },
-                              name: bestSeller.name,
-                              imagePath: bestSeller.image,
-                              price: bestSeller.price,
-                              vendor: bestSeller.restaurantName,
-                            );
-                          },
-                        ),
-                      ),
-              ),
             ],
           ),
         ),

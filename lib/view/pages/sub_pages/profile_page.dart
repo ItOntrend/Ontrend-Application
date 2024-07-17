@@ -3,15 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
-import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/food_item_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/profile_card.dart';
-import 'item_view_page.dart'; // Import the ItemViewPage
+import 'item_view_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
@@ -30,29 +27,27 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage>
+    with SingleTickerProviderStateMixin {
   final VendorController vendorController = Get.put(VendorController());
-  final LanguageController lang = Get.put(LanguageController());
-  final CartController cartController = Get.put(CartController());
+  TabController? _tabController;
+
   @override
   void initState() {
     super.initState();
-    //log(widget.userId);
-    //vendorController.getItems(widget.userId);
     if (widget.cat == "") {
-      if (widget.type == "Food") {
-        vendorController.getItems(widget.userId);
-      } else {
-        vendorController.getItemsnew(widget.userId);
-      }
+      vendorController.getCatVendorNew(widget.userId, widget.type);
     } else {
       vendorController.getItemsGr(widget.userId, widget.cat, widget.type);
     }
-    //vendorController.getItems(widget.userId);
-    print("profile......................................${widget.userId}");
-    vendorController.getVendors(
-      widget.userId,
-    );
+    vendorController.getVendors(widget.userId);
+    vendorController.getCatVendor(widget.userId, widget.type);
+  }
+
+  @override
+  void dispose() {
+    _tabController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -71,9 +66,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     vendorController.vendorDetail.value?.bannerImage ?? "",
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
-                      // Display a placeholder or error message on error
                       return Image.network(
-                        'https://service.sarawak.gov.my/web/web/web/web/res/no_image.png', // Replace with your asset path
+                        'https://service.sarawak.gov.my/web/web/web/web/res/no_image.png',
                         fit: BoxFit.cover,
                       );
                     },
@@ -118,13 +112,39 @@ class _ProfilePageState extends State<ProfilePage> {
                 padding: const EdgeInsets.only(top: 250),
                 child: Column(
                   children: [
-                    Text(
-                      widget.cat,
-                      style: TextStyle(
-                        color: kOrange,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Obx(
+                      () {
+                        // Create a Set to store unique tags
+                        final Set<String> tagSet = {};
+
+                        // Add tags from CatList to the Set
+                        for (var category in vendorController.CatList) {
+                          if (category.tag != null) {
+                            tagSet.add(category.tag!);
+                          }
+                        }
+
+                        // Convert the Set to a List
+                        List<String> tagList = tagSet.toList();
+
+                        // Initialize the TabController with the length of the tag list
+                        if (tagList.isNotEmpty && _tabController == null) {
+                          _tabController = TabController(
+                            length: tagList.length,
+                            vsync: this,
+                          );
+                        }
+
+                        return _tabController != null
+                            ? TabBar(
+                                controller: _tabController,
+                                isScrollable: true,
+                                tabs: tagList.map((tag) {
+                                  return Tab(text: tag); // Use tag for each tab
+                                }).toList(),
+                              )
+                            : const SizedBox.shrink();
+                      },
                     ),
                     kHiegth25,
                     Obx(
@@ -133,36 +153,34 @@ class _ProfilePageState extends State<ProfilePage> {
                           log("Loading items...");
                           return const Center(
                               child: CircularProgressIndicator());
-                        } else {
-                          if (vendorController.itemsList.isEmpty) {
-                            return const Center(child: Text("No items found"));
+                        } else if (vendorController.itemsList.isEmpty) {
+                          return const Center(child: Text("No items found"));
+                        }
+
+                        // Create a Set to store unique tags
+                        final Set<String> tagSet = {};
+
+                        // Add tags from CatList to the Set
+                        for (var category in vendorController.CatList) {
+                          if (category.tag != null) {
+                            tagSet.add(category.tag!);
                           }
                         }
-                        return ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          itemCount: vendorController.itemsList.length,
-                          itemBuilder: (context, index) {
-                            final item = vendorController.itemsList[index];
-                            return GestureDetector(
-                              onTap: () {
-                                Get.to(() => ItemViewPage(
-                                    item:
-                                        item)); // Navigate to ItemViewPage with item data
-                              },
-                              child: FoodItemCard(
-                                name: item.name,
-                                localName: item.localName,
-                                localTag: item.localTag,
-                                image: item.imageUrl,
-                                description: item.description,
-                                price: item.price,
-                                addedBy: item.addedBy,
-                                restaurantName: item.restaurantName,
-                              ),
-                            );
-                          },
+
+                        // Convert the Set to a List
+                        List<String> tagList = tagSet.toList();
+
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height - 450.h,
+                          child: _tabController != null
+                              ? TabBarView(
+                                  controller: _tabController,
+                                  children: tagList.map((tag) {
+                                    return buildItemListView(
+                                        tag); // Pass the tag to the item list builder
+                                  }).toList(),
+                                )
+                              : const SizedBox.shrink(),
                         );
                       },
                     ),
@@ -173,54 +191,38 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
         ),
-        bottomNavigationBar: Obx(() {
-          return BottomAppBar(
-            color: kTransparent,
-            shape: const CircularNotchedRectangle(),
-            notchMargin: 8.0,
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16), color: kGreen),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Items in Cart: ${cartController.getItemCount()}',
-                    style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                        color: kWhite),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.to(() => const AddToCartPage(
-                            addedBy: '',
-                            restaurantName: '',
-                          ));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: kGreen,
-                      backgroundColor: kWhite,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 10.h),
-                    ),
-                    child: const Text(
-                      'View Cart',
-                      style: TextStyle(
-                        color: kOrange,
-                        decoration: TextDecoration.underline,
-                        decorationColor: kOrange,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }),
       ),
+    );
+  }
+
+  Widget buildItemListView(String tag) {
+    final items = vendorController.itemsList
+        .where((item) => item.tag == tag) // Filter by tag
+        .toList();
+    print("Items for tag '$tag': ${items.length}");
+    log("Items for tag '$tag': ${items.length}"); // Debug log
+    return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final item = items[index];
+        return GestureDetector(
+          onTap: () {
+            Get.to(() => ItemViewPage(item: item));
+          },
+          child: FoodItemCard(
+            name: item.name,
+            localName: item.localName,
+            localTag: item.localTag,
+            image: item.imageUrl,
+            description: item.description,
+            price: item.price,
+            addedBy: item.addedBy,
+            restaurantName: item.restaurantName,
+          ),
+        );
+      },
     );
   }
 }
