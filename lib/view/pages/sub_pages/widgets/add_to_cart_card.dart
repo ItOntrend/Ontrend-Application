@@ -158,7 +158,22 @@ class _AddToCartCardState extends State<AddToCartCard> {
                 Align(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(widget.image),
+                    child: widget.image.isNotEmpty
+                        ? Image.network(widget.image)
+                        : Container(
+                            height: 88.h,
+                            width: 117.w,
+                            decoration: BoxDecoration(
+                              color: kLiteBackground,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                "No Image Available",
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
                   ),
                 ),
               ],
