@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ontrend_food_and_e_commerce/controller/best_seller_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/navigation_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/groceries_page.dart';
@@ -16,7 +16,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.da
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/best_seller_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/oru_service_big_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/oru_service_card.dart';
@@ -36,17 +36,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final BestSellerController bestSellerController =
-      Get.put(BestSellerController());
+  // final BestSellerController bestSellerController =
+  //     Get.put(BestSellerController());
   final userController = Get.find<UserController>();
   final LocationController locationController = Get.put(LocationController());
   final CartController cartController = Get.put(CartController());
+  final VendorController vendorController = Get.put(VendorController());
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bestSellerController.getBestSeller();
+      // bestSellerController.getBestSeller();
+      vendorController.fetchVendors('Food/Restaurant');
     });
   }
 
@@ -150,9 +152,7 @@ class _HomePageState extends State<HomePage> {
                   Get.to(() => SearchPage());
                 },
               ),
-              SizedBox(height: 15),
               SPromoSliderWidget(),
-              SizedBox(height: 25),
               OneTextHeading(
                 heading: "Our Services".tr,
               ),
@@ -199,40 +199,45 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 20),
               OneTextHeading(
-                heading: "Best Sellers".tr,
+                heading: "NearBy restaurent".tr,
               ),
               SizedBox(height: 20),
               Obx(
-                () => bestSellerController.isBestSellerLoading.value
-                    ? CircularProgressIndicator()
-                    : SizedBox(
-                        height: 300,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: bestSellerController.bestSellerList.length,
-                          itemBuilder: (context, index) {
-                            log("Best Sellers");
-                            final bestSeller =
-                                bestSellerController.bestSellerList[index];
-                            return BestSellerCard(
-                              onTap: () {
-                                Get.to(
-                                  () => ProfilePage(
-                                    userId: bestSeller.addedBy,
-                                    cat: "Best Seller",
-                                    type: "Food",
-                                  ),
-                                );
-                              },
-                              name: bestSeller.name,
-                              imagePath: bestSeller.image,
-                              price: bestSeller.price,
-                              vendor: bestSeller.restaurantName,
-                            );
-                          },
-                        ),
-                      ),
+                () => vendorController.isVendorLoading.value
+                    ? const CircularProgressIndicator()
+                    : vendorController.vendorsListCat.isEmpty
+                        ? const Center(child: Text("No Vendor Available"))
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: vendorController.vendorsListCat.length,
+                            itemBuilder: (context, index) {
+                              final vendor =
+                                  vendorController.vendorsListCat[index];
+                              log("Vendor Images");
+
+                              log(vendor.bannerImage.toString());
+                              return ExploreCard(
+                                longitude: vendor.location.lng,
+                                latitude: vendor.location.lat,
+                                locationCityCountry: '',
+                                distance: vendorController
+                                    .calculateDistance(vendor.location),
+                                name: vendor.restaurantName,
+                                image: vendor.bannerImage,
+                                onTap: () {
+                                  Get.to(() => ProfilePage(
+                                        userId: vendor.reference.id,
+                                        cat: "",
+                                        type: "Food",
+                                      ));
+                                },
+                              );
+                            },
+                          ),
               ),
+              kHiegth40,
             ],
           ),
         ),
