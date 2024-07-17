@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/s_rounded_image.dart';
@@ -17,7 +18,7 @@ class SPromoSliderWidget extends StatelessWidget {
         return Container(
           width: MediaQuery.of(context).size.width * 0.9,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30).copyWith(top: 16),
+            padding: const EdgeInsets.symmetric(vertical: 16).copyWith(top: 16),
             child: CarouselSlider(
               options: CarouselOptions(
                 viewportFraction: 1,
@@ -34,6 +35,7 @@ class SPromoSliderWidget extends StatelessWidget {
                   isnetworkImage: true,
                   borderRadius: 20,
                   applyImageRadius: true,
+                  fit: BoxFit.cover,
                 );
               }).toList(),
             ),

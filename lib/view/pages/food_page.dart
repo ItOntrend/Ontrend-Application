@@ -177,41 +177,41 @@ class _FoodPageState extends State<FoodPage> {
                         ),
                       ),
               ),
-              kHiegth20,
-              OneTextHeading(
-                heading: "Best Sellers".tr,
-              ),
-              kHiegth20,
-              Obx(
-                () => bestSellerController.isBestSellerLoading.value
-                    ? const CircularProgressIndicator()
-                    : SizedBox(
-                        height: 300,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: bestSellerController.bestSellerList.length,
-                          itemBuilder: (context, index) {
-                            final bestSeller =
-                                bestSellerController.bestSellerList[index];
-                            log(bestSeller.image.toString());
-                            log("Best Seller Image is calling");
-                            return BestSellerCard(
-                              onTap: () {
-                                Get.to(() => ProfilePage(
-                                      userId: bestSeller.addedBy,
-                                      type: "Food",
-                                      cat: "Best Seller",
-                                    ));
-                              },
-                              name: bestSeller.name,
-                              imagePath: bestSeller.image,
-                              price: bestSeller.price,
-                              vendor: bestSeller.restaurantName,
-                            );
-                          },
-                        ),
-                      ),
-              ),
+              // kHiegth20,
+              // OneTextHeading(
+              //   heading: "Best Sellers".tr,
+              // ),
+              // kHiegth20,
+              // Obx(
+              //   () => bestSellerController.isBestSellerLoading.value
+              //       ? const CircularProgressIndicator()
+              //       : SizedBox(
+              //           height: 300,
+              //           child: ListView.builder(
+              //             scrollDirection: Axis.horizontal,
+              //             itemCount: bestSellerController.bestSellerList.length,
+              //             itemBuilder: (context, index) {
+              //               final bestSeller =
+              //                   bestSellerController.bestSellerList[index];
+              //               log(bestSeller.image.toString());
+              //               log("Best Seller Image is calling");
+              //               return BestSellerCard(
+              //                 onTap: () {
+              //                   Get.to(() => ProfilePage(
+              //                         userId: bestSeller.addedBy,
+              //                         type: "Food",
+              //                         cat: "Best Seller",
+              //                       ));
+              //                 },
+              //                 name: bestSeller.name,
+              //                 imagePath: bestSeller.image,
+              //                 price: bestSeller.price,
+              //                 vendor: bestSeller.restaurantName,
+              //               );
+              //             },
+              //           ),
+              //         ),
+              // ),
               kHiegth20,
               OneTextHeading(
                 heading: "Restaurants to explore".tr,
@@ -252,7 +252,7 @@ class _FoodPageState extends State<FoodPage> {
                             },
                           ),
               ),
-              kHiegth140,
+              kHiegth40,
             ],
           ),
         ),
