@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/item_view_page.dart';
@@ -35,6 +36,7 @@ class FoodItemCard extends StatefulWidget {
 
 class _FoodItemCardState extends State<FoodItemCard> {
   final CartController cartController = Get.find<CartController>();
+  final LanguageController languageController = Get.find<LanguageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -71,21 +73,25 @@ class _FoodItemCardState extends State<FoodItemCard> {
       ),
       child: Stack(
         children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: GestureDetector(
-              onTap: () => Get.to(() => ItemViewPage(item: item)),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  widget.image,
-                  fit: BoxFit.cover,
-                  height: 100.h,
-                  width: 150.w,
+          Obx(() {
+            final isEnglish =
+                languageController.currentLanguage.value.languageCode == 'en';
+            return Align(
+              alignment: isEnglish ? Alignment.topRight : Alignment.topLeft,
+              child: GestureDetector(
+                onTap: () => Get.to(() => ItemViewPage(item: item)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    widget.image,
+                    fit: BoxFit.cover,
+                    height: 100.h,
+                    width: 150.w,
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          }),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -70,7 +70,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "${locationController.countryName.value}",
+                          locationController.countryName.value,
                           style: const TextStyle(color: kBlue, fontSize: 10),
                         ),
                         const Icon(
@@ -94,59 +94,86 @@ class _AddToCartPageState extends State<AddToCartPage> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 20,
-                  ),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: kWhite,
-                    borderRadius: BorderRadius.circular(
-                      10,
-                    ),
-                    border: Border.all(color: kBorderLiteBlack),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true, // Wrap content to avoid overflow
-                        itemCount: cartController.cartItems.length,
-                        itemBuilder: (context, index) {
-                          final item = cartController.cartItems.values
-                              .toList()[index]['item'];
-                          return AddToCartCard(
-                            itemName: item.name,
-                            localName: item.localName,
-                            localTag: item.localTag,
-                            itemPrice: item.price.toString(),
-                            image: item.imageUrl,
-                            addedBy: item.addedBy.toString(),
-                            restaurantName: item.restaurantName,
-                          );
-                        },
-                      ),
-                      kHiegth9,
-                      const AddingMoreItemCard(),
-                    ],
-                  ),
-                ),
                 if (hasItems) ...[
-                   OneTextHeading(heading: "Offers & Benefits".tr),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 20,
+                    ),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: kWhite,
+                      borderRadius: BorderRadius.circular(
+                        10,
+                      ),
+                      border: Border.all(color: kBorderLiteBlack),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ListView.builder(
+                          shrinkWrap: true, // Wrap content to avoid overflow
+                          itemCount: cartController.cartItems.length,
+                          itemBuilder: (context, index) {
+                            final item = cartController.cartItems.values
+                                .toList()[index]['item'];
+                            return AddToCartCard(
+                              itemName: item.name,
+                              localName: item.localName,
+                              localTag: item.localTag,
+                              itemPrice: item.price.toString(),
+                              image: item.imageUrl,
+                              addedBy: item.addedBy.toString(),
+                              restaurantName: item.restaurantName,
+                            );
+                          },
+                        ),
+                        kHiegth9,
+                        const AddingMoreItemCard(),
+                      ],
+                    ),
+                  ),
+                  OneTextHeading(heading: "Offers & Benefits".tr),
                   kHiegth15,
                   const OffersAndBenefitsCard(),
                   kHiegth15,
-                   OneTextHeading(heading: "Bill Details".tr),
+                  OneTextHeading(heading: "Bill Details".tr),
                   kHiegth15,
                   BillDetailsCard(
                     restaurantName: restaurantName,
                     addedBy: addedBy,
                   ),
                   kHiegth15,
+                  const TermsAndCondition(),
+                  kHiegth20,
+                ] else ...[
+                  kHiegth140,
+                  Center(
+                    child: Column(
+                      children: [
+                        const Text(
+                          "No items found in the cart.",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        kHiegth24,
+                        ElevatedButton(
+                          style: const ButtonStyle(
+                              backgroundColor: WidgetStatePropertyAll(kWhite)),
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: const Text(
+                            "Add Items to Cart",
+                            style: TextStyle(color: kDarkOrange),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
-                const TermsAndCondition(),
-                kHiegth20,
               ],
             );
           }),
