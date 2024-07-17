@@ -24,7 +24,7 @@ class MyTimelineTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 80.h,
-      width: 95.w,
+      width: 80.w,
       child: TimelineTile(
         axis: TimelineAxis.horizontal,
         isFirst: isFirst,

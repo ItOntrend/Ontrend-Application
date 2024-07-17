@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
-import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/model/order_modal.dart';
@@ -20,7 +20,7 @@ class DeliveryTrackingPage extends StatefulWidget {
       required this.orderId,
       required this.latitude,
       required this.longitude});
-  final double latitude; // Change to double
+  final double latitude;
   final double longitude;
 
   @override
@@ -37,7 +37,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     print("/////////////////////////////////////");
     log(widget.latitude.toString());
     log(widget.longitude.toString());
@@ -221,8 +221,9 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
       List<String> steps = [
         "Pending",
         "Processing",
-        "On Delivery",
-        "Delivered"
+        "Ready",
+        "Picked up",
+        "Completed"
       ];
       int currentIndex = steps.indexOf(status);
       int stepIndex = steps.indexOf(step);
@@ -236,25 +237,56 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           isFirst: true,
           isLast: false,
           isPast: isPast("Pending"),
-          child: const Text("Pending"),
+          child: const Text(
+            "Pending",
+            style: TextStyle(
+              fontSize: 12,
+            ),
+          ),
         ),
         MyTimelineTile(
           isFirst: false,
           isLast: false,
           isPast: isPast("Processing"),
-          child: const Text("Processing"),
+          child: const Text(
+            "Processing",
+            style: TextStyle(
+              fontSize: 12,
+            ),
+          ),
         ),
         MyTimelineTile(
           isFirst: false,
           isLast: false,
-          isPast: isPast("On Delivery"),
-          child: const Text("On Delivery"),
+          isPast: isPast("Ready"),
+          child: const Text(
+            "Ready",
+            style: TextStyle(
+              fontSize: 12,
+            ),
+          ),
+        ),
+        MyTimelineTile(
+          isFirst: false,
+          isLast: false,
+          isPast: isPast("Picked up"),
+          child: const Text(
+            "Picked up",
+            style: TextStyle(
+              fontSize: 12,
+            ),
+          ),
         ),
         MyTimelineTile(
           isFirst: false,
           isLast: true,
-          isPast: isPast("Delivered"),
-          child: const Text("Delivered"),
+          isPast: isPast("Completed"),
+          child: const Text(
+            "Completed",
+            style: TextStyle(
+              fontSize: 12,
+            ),
+          ),
         ),
       ],
     );
@@ -288,85 +320,65 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                   ))
               .toList(),
           const Divider(),
-          _buildOrderDetailRow(),
+          _buildOrderDetailRow(order),
         ],
       ),
     );
   }
 
-  Widget _buildOrderDetailRow() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(),
-    child: Column(
+  Widget _buildOrderDetailRow(OrderModel order) {
+    final vendorLocation = LatLng(order.restaurantLocation.lat, order.restaurantLocation.lng);
+    final userLocation = LatLng(widget.latitude, widget.longitude);
+    final distance = _calculateDistance(vendorLocation, userLocation);
+    final deliveryTime = _estimateDeliveryTime(distance);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              "Distance:",
-            ),
-            FutureBuilder<String>(
-              future: Get.find<VendorController>()
-                  .getAddressFromLatLng(widget.latitude, widget.longitude),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text(
-                    'Fetching location...',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text(
-                    'Location information unavailable',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
-                    ),
-                  );
-                } else if (snapshot.hasData) {
-                  return Text(
-                    snapshot.data!,
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
-                    ),
-                  );
-                } else {
-                  return Text(
-                    'Unknown location',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
-        ),
-        kHiegth30,
+        Text("Distance: ${distance.toStringAsFixed(2)} km"),
+        Text("Estimated Delivery Time: ${deliveryTime.toStringAsFixed(0)} mins"),
       ],
-    ),
-  );
-}
+    );
+  }
 
+  double _calculateDistance(LatLng start, LatLng end) {
+    const double earthRadius = 6371; // Radius of the Earth in kilometers
 
-  Widget _buildOrderDetailRowTwo(String label, String value) {
+    final double dLat = _degreeToRadian(end.latitude - start.latitude);
+    final double dLon = _degreeToRadian(end.longitude - start.longitude);
+
+    final double a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+        math.cos(_degreeToRadian(start.latitude)) *
+            math.cos(_degreeToRadian(end.latitude)) *
+            math.sin(dLon / 2) *
+            math.sin(dLon / 2);
+
+    final double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+    final double distance = earthRadius * c;
+
+    return distance;
+  }
+
+  double _degreeToRadian(double degree) {
+    return degree * (math.pi / 180);
+  }
+
+  double _estimateDeliveryTime(double distance) {
+    // Assume an average speed of 40 km/h
+    const double averageSpeed = 40;
+    final double time = (distance / averageSpeed) * 60; // time in minutes
+    return time;
+  }
+
+  Widget _buildOrderDetailRowTwo(String title, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: const TextStyle(fontSize: 16.0),
-          ),
-          Text(
-            value,
-            style: const TextStyle(fontSize: 16.0),
-          ),
+          Text(title,
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+          Text(value, style: const TextStyle(fontSize: 15)),
         ],
       ),
     );
