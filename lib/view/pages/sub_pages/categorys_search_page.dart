@@ -103,13 +103,9 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                                     image: vendor.bannerImage,
                                     onTap: () {
                                       Get.to(() => ProfilePage(
-                                            userId: vendor.reference.id,
-                                            cat: widget.category.name,
-                                            type:
-                                                widget.type == "Food/Restaurant"
-                                                    ? "Food"
-                                                    : "Grocery",
-                                          ));
+                                          userId: vendor.reference.id,
+                                          cat: widget.category.name,
+                                          type: widget.type));
                                     },
                                   );
                                 },

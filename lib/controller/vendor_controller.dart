@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 import 'package:ontrend_food_and_e_commerce/repository/item_repository.dart';
@@ -17,6 +18,7 @@ class VendorController extends GetxController {
   Rx<VendorModel?> vendorDetail = Rx<VendorModel?>(null);
   RxList<VendorModel> vendorsList = RxList<VendorModel>();
   RxList<VendorModel> vendorsListCat = RxList<VendorModel>();
+  RxList<VendorModel> vendorsListf = RxList<VendorModel>();
   RxList<ItemModel> itemsList = RxList<ItemModel>();
   RxString userName = ''.obs;
   Position? userPosition;
@@ -41,21 +43,20 @@ class VendorController extends GetxController {
   }
 
   Future<String> getAddressFromLatLng(double latitude, double longitude) async {
-  try {
-    List<geocoding.Placemark> placemarks =
-        await geocoding.placemarkFromCoordinates(latitude, longitude);
-    if (placemarks.isNotEmpty) {
-      final placemark = placemarks.first;
-      return "${placemark.locality}, ${placemark.country}";
-    } else {
-      log('No placemarks found for the given coordinates.');
+    try {
+      List<geocoding.Placemark> placemarks =
+          await geocoding.placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        final placemark = placemarks.first;
+        return "${placemark.locality}, ${placemark.country}";
+      } else {
+        log('No placemarks found for the given coordinates.');
+      }
+    } catch (e) {
+      log('Error fetching address: $e');
     }
-  } catch (e) {
-    log('Error fetching address: $e');
+    return 'Unknown location';
   }
-  return 'Unknown location';
-}
-
 
   double calculateDistance(Location vendorLocation) {
     if (userPosition != null) {
@@ -102,6 +103,28 @@ class VendorController extends GetxController {
       }).toList();
 
       vendorsListCat.assignAll(vendors);
+      log("Vendors data fetched successfully");
+    } catch (e) {
+      log('Error fetching vendors: $e');
+    }
+  }
+ // Fetch list of vendors from Firebase
+  Future<void> fetchVendorsf(
+    String type,
+  ) async {
+    try {
+      var vendorsQuerySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('role', isEqualTo: 'Vendor')
+          .where('vendorType',
+              isEqualTo: type) // Add this condition to filter by vendorType
+          .get();
+
+      var vendors = vendorsQuerySnapshot.docs.map((doc) {
+        return VendorModel.fromMap(doc.data(), doc.id);
+      }).toList();
+
+      vendorsListf.assignAll(vendors);
       log("Vendors data fetched successfully");
     } catch (e) {
       log('Error fetching vendors: $e');
@@ -199,6 +222,7 @@ class VendorController extends GetxController {
 
 ////////////////////////////////////////////////////////////////////////////////
   RxList<VendorModel> vCat = RxList<VendorModel>();
+
   Future<List<String>> getVendorIdOfCategory(String cat, String type) async {
     try {
       QuerySnapshot categorySnapshot = await FirebaseFirestore.instance
@@ -251,6 +275,36 @@ class VendorController extends GetxController {
       await getVendorDetails(vendorIds);
     } catch (e) {
       print('Error fetching vendors: $e');
+    }
+  }
+
+//*...............................................................*//
+  RxList<ItemModel> CatList = RxList<ItemModel>();
+  Future<void> getCatVendor(String userId, String type) async {
+    try {
+      print('fetching.....................cat');
+      CatList.clear();
+      var items = await ItemRepository.getCategoriesVendor(userId, type);
+      CatList.addAll(items);
+      print("type is $type");
+      print("catlist is ${CatList}");
+      log("Items data fetched successfully");
+    } catch (e) {
+      log('Error fetching items: $e');
+    }
+  }
+
+  Future<void> getCatVendorNew(String userId, String type) async {
+    try {
+      print('fetching.....................cat');
+      itemsList.clear();
+      var items = await ItemRepository.getCategoriesVendor(userId, type);
+      itemsList.addAll(items);
+      print("type is $type");
+      print("catlist is ${itemsList}");
+      log("Items data fetched successfully");
+    } catch (e) {
+      log('Error fetching items: $e');
     }
   }
 }

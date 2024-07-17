@@ -45,7 +45,7 @@ class _FoodPageState extends State<FoodPage> {
     super.initState();
     foodController.getCategories();
     bestSellerController.getBestSeller();
-    vendorController.fetchVendors('Food/Restaurant');
+    vendorController.fetchVendorsf('Food/Restaurant');
   }
 
   @override
@@ -133,7 +133,7 @@ class _FoodPageState extends State<FoodPage> {
               // Search bar
               TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...".tr,
-                onTap: (){
+                onTap: () {
                   Get.to(SearchPage());
                 },
               ),
@@ -220,16 +220,16 @@ class _FoodPageState extends State<FoodPage> {
               Obx(
                 () => vendorController.isVendorLoading.value
                     ? const CircularProgressIndicator()
-                    : vendorController.vendorsListCat.isEmpty
+                    : vendorController.vendorsListf.isEmpty
                         ? const Center(child: Text("No Vendor Available"))
                         : ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
-                            itemCount: vendorController.vendorsListCat.length,
+                            itemCount: vendorController.vendorsListf.length,
                             itemBuilder: (context, index) {
                               final vendor =
-                                  vendorController.vendorsListCat[index];
+                                  vendorController.vendorsListf[index];
                               log("Vendor Images");
 
                               log(vendor.bannerImage.toString());

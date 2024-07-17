@@ -48,7 +48,22 @@ class GroceryController extends GetxController {
     productList.value = await GroceryRepository.getProducts();
     isProductLoading.value = false;
     print("products........");
-    print("${productList}");
+    print("${productList.value}");
     print("${productList[0].name}");
   }
+  //////
+  /* Future<List<ItemModel>> searchProducts(String query) async {
+    try {
+      final querySnapshot = await _db
+          .collection('products')
+          .where('name', isGreaterThanOrEqualTo: query)
+          .where('name', isLessThanOrEqualTo: query + '\uf8ff')
+          .get();
+      return querySnapshot.docs
+          .map((doc) => ItemModel.fromSnapshot(doc))
+          .toList();
+    } catch (e) {
+      throw e;
+    }
+  }*/
 }

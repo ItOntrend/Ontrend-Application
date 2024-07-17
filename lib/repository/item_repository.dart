@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/utils/constants/firebase_constants.dart';
 
@@ -12,7 +13,7 @@ class ItemRepository {
           .collection(FirebaseConstants.food)
           .doc(FirebaseConstants.items)
           .collection(FirebaseConstants.categories)
-          .doc(FirebaseConstants.bestSeller)
+          .doc()
           .collection(FirebaseConstants.details)
           .where("addedBy", isEqualTo: userId)
           .get();
@@ -38,7 +39,7 @@ class ItemRepository {
           .collection("Grocery")
           .doc(FirebaseConstants.items)
           .collection(FirebaseConstants.categories)
-          .doc("Fresh Milk")
+          .doc()
           .collection(FirebaseConstants.details)
           .where("addedBy", isEqualTo: userId)
           .get();
@@ -64,7 +65,7 @@ class ItemRepository {
       var snapshot = await _db
           .collection(type)
           .doc(FirebaseConstants.items)
-          .collection(FirebaseConstants.categories)
+          .collection("categories")
           .doc(category)
           .collection(FirebaseConstants.details)
           .where("addedBy", isEqualTo: userId)
@@ -81,6 +82,23 @@ class ItemRepository {
           .toList();
     } catch (e) {
       log('Error fetching items: $e');
+      return [];
+    }
+  }
+
+  static Future<List<ItemModel>> getCategoriesVendor(
+      String userId, String type) async {
+    try {
+      QuerySnapshot snapshot = await FirebaseConstants.dbInstance
+          .collectionGroup("details")
+          .where('addedBy', isEqualTo: userId) // Apply the filter here
+          .get();
+
+      return snapshot.docs
+          .map((doc) => ItemModel.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      log('Error fetching vendor categories: $e');
       return [];
     }
   }

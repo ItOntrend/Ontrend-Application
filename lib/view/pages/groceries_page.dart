@@ -214,7 +214,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                                     () => ProfilePage(
                                       userId: vendor.reference.id,
                                       type: 'Grocery',
-                                      cat: '',
+                                      cat: "",
                                     ),
                                   );
                                 },
