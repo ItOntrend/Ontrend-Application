@@ -120,7 +120,7 @@ class UserProfilePage extends StatelessWidget {
                 Obx(() {
                   return ChangeTextfield(
                       hintText: "*Name...".tr,
-                      initialValue: "${userController.firstName.value}"
+                      initialValue: userController.firstName.value
                       // userDetail['firstName'] ?? '',
                       );
                 }),
@@ -128,13 +128,13 @@ class UserProfilePage extends StatelessWidget {
                 Obx(() {
                   return ChangeTextfield(
                       hintText: "*Email...".tr,
-                      initialValue: "${userController.email.value}");
+                      initialValue: userController.email.value);
                 }),
                 kHiegth20,
                 Obx(() {
                   return ChangeTextfield(
                     hintText: "Nationality".tr,
-                    initialValue: "${userController.nationality.value}",
+                    initialValue: userController.nationality.value,
                   );
                 }),
                 kHiegth25,

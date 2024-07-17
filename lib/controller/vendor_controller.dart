@@ -41,6 +41,10 @@ class VendorController extends GetxController {
       log('Error fetching user location: $e');
     }
   }
+  Future<double> getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) async {
+    double distanceInMeters = Geolocator.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude);
+    return distanceInMeters / 1000; // convert to kilometers
+  }
 
   Future<String> getAddressFromLatLng(double latitude, double longitude) async {
     try {

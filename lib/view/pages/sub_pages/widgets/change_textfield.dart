@@ -36,6 +36,11 @@ class _ChangeTextfieldState extends State<ChangeTextfield> {
   void toggleEditable() {
     setState(() {
       isEditable = !isEditable;
+      if (!isEditable) {
+        // Save the updated value to the controller
+        _controller.text = _controller.text;
+        // Here you can also call a method to save the data to Firebase or other storage
+      }
     });
   }
 
@@ -59,7 +64,7 @@ class _ChangeTextfieldState extends State<ChangeTextfield> {
               onPressed: toggleEditable,
               child: Text(
                 isEditable ? 'Save'.tr : 'Change'.tr,
-                style:const TextStyle(color: kOrange),
+                style: const TextStyle(color: kOrange),
               ),
             ),
           ],
