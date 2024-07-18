@@ -34,7 +34,7 @@ class FoodPage extends StatefulWidget {
 }
 
 class _FoodPageState extends State<FoodPage> {
-  final foodController = Get.find<FoodController>();
+  final FoodController foodController = Get.find<FoodController>();
   final BestSellerController bestSellerController =
       Get.put(BestSellerController());
   final VendorController vendorController = Get.put(VendorController());

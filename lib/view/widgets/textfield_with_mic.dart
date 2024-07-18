@@ -5,12 +5,17 @@ class TextfieldWithMic extends StatelessWidget {
   const TextfieldWithMic({
     super.key,
     required this.hintText,
-    this.onTap, this.controller, this.onSubmitted,this.initialValue,
+    this.onTap,
+    this.controller,
+    this.onSubmitted,
+    this.initialValue,
+    this.onChanged,
   });
   final String hintText;
   final Function()? onTap;
   final TextEditingController? controller;
   final Function(String)? onSubmitted;
+  final Function(String)? onChanged;
   final String? initialValue;
 
   @override
@@ -20,6 +25,7 @@ class TextfieldWithMic extends StatelessWidget {
       controller: controller,
       onFieldSubmitted: onSubmitted,
       onTap: onTap,
+      onChanged: onChanged,
       enabled: true,
       decoration: InputDecoration(
         fillColor: kWhite,

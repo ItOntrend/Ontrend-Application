@@ -41,8 +41,11 @@ class VendorController extends GetxController {
       log('Error fetching user location: $e');
     }
   }
-  Future<double> getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) async {
-    double distanceInMeters = Geolocator.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude);
+
+  Future<double> getDistance(double startLatitude, double startLongitude,
+      double endLatitude, double endLongitude) async {
+    double distanceInMeters = Geolocator.distanceBetween(
+        startLatitude, startLongitude, endLatitude, endLongitude);
     return distanceInMeters / 1000; // convert to kilometers
   }
 
@@ -112,7 +115,8 @@ class VendorController extends GetxController {
       log('Error fetching vendors: $e');
     }
   }
- // Fetch list of vendors from Firebase
+
+  // Fetch list of vendors from Firebase
   Future<void> fetchVendorsf(
     String type,
   ) async {
@@ -311,4 +315,5 @@ class VendorController extends GetxController {
       log('Error fetching items: $e');
     }
   }
+////////////////
 }

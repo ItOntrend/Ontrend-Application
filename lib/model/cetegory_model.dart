@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 CategoryModel categoryModelFromJson(String str) =>
     CategoryModel.fromJson(json.decode(str));
 
@@ -36,11 +38,11 @@ class CategoryModel {
       );
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
-        addedBy: json["addedBy"],
-        name: json["name"],
-        localName: json["localName"],
-        isApproved: json["isApproved"],
-        imageUrl: json["imageUrl"],
+        addedBy: json["addedBy"] ?? '',
+        name: json["name"] ?? '',
+        localName: json["localName"] ?? '',
+        isApproved: json["isApproved"] ?? false,
+        imageUrl: json["imageUrl"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,5 +51,15 @@ class CategoryModel {
         "localName": localName,
         "isApproved": isApproved,
         "imageUrl": imageUrl,
-      };
+      }; // Add the fromSnapshot method
+  factory CategoryModel.fromSnapshot(DocumentSnapshot snapshot) {
+    final data = snapshot.data() as Map<String, dynamic>;
+    return CategoryModel(
+      addedBy: data["addedBy"],
+      name: data["name"],
+      localName: data["localName"],
+      isApproved: data["isApproved"],
+      imageUrl: data["imageUrl"],
+    );
+  }
 }
