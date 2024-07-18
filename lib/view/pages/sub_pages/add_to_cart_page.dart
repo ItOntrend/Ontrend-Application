@@ -70,7 +70,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          locationController.countryName.value,
+                          "${locationController.cityName},${locationController.countryName.value}",
                           style: const TextStyle(color: kBlue, fontSize: 10),
                         ),
                         const Icon(

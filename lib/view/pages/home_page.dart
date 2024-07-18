@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        locationController.countryName.value,
+                        "${locationController.cityName},${locationController.countryName.value}",
                         style: const TextStyle(
                           color: kBlue,
                           fontSize: 10,
@@ -120,24 +120,34 @@ class _HomePageState extends State<HomePage> {
                     child: Image.asset("assets/icons/notification_icon.png"),
                   ),
                   kWidth25,
-                  Badge.count(
-                    count: cartController.getItemCount(),
-                    backgroundColor: kDarkOrange,
-                    textColor: Colors.white,
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(const AddToCartPage(
-                          addedBy: "",
-                          restaurantName: "",
-                        ));
-                      },
-                      child: Image.asset("assets/icons/cart_icon.png"),
-                    ),
-                  ),
+                  cartController.getItemCount() > 0
+                      ? Badge.count(
+                          count: cartController.getItemCount(),
+                          backgroundColor: kDarkOrange,
+                          textColor: Colors.white,
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.to(const AddToCartPage(
+                                addedBy: "",
+                                restaurantName: "",
+                              ));
+                            },
+                            child: Image.asset("assets/icons/cart_icon.png"),
+                          ),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            Get.to(const AddToCartPage(
+                              addedBy: "",
+                              restaurantName: "",
+                            ));
+                          },
+                          child: Image.asset("assets/icons/cart_icon.png"),
+                        ),
                 ],
               ),
             ),
-          ),
+          )
         ],
       ),
       body: SafeArea(
@@ -156,7 +166,7 @@ class _HomePageState extends State<HomePage> {
               OneTextHeading(
                 heading: "Our Services".tr,
               ),
-              SizedBox(height: 20),
+              kHiegth20,
               GestureDetector(
                 onTap: () {
                   Get.find<NavigationController>().changeTabIndex(2);
@@ -166,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                   name: "E-Store".tr,
                 ),
               ),
-              SizedBox(height: 20),
+              kHiegth20,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -199,7 +209,7 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 20),
               OneTextHeading(
-                heading: "NearBy restaurent".tr,
+                heading: "Nearby Restaurant".tr,
               ),
               SizedBox(height: 20),
               Obx(
@@ -230,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                                   Get.to(() => ProfilePage(
                                         userId: vendor.reference.id,
                                         cat: "",
-                                        type: "Food",
+                                        type: "Food/Restaurent",
                                       ));
                                 },
                               );

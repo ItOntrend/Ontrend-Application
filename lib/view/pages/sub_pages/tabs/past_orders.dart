@@ -5,10 +5,10 @@ import 'package:ontrend_food_and_e_commerce/model/order_modal.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/my_order_card.dart';
 import 'package:get/get.dart';
 
-class HistoryMyOrder extends StatelessWidget {
+class PastOrders extends StatelessWidget {
   final OrderController orderController = Get.put(OrderController());
 
-  HistoryMyOrder({super.key, required this.userId});
+  PastOrders({super.key, required this.userId});
 
   final String userId;
 

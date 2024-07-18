@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -67,7 +66,6 @@ class _MyOrderCardState extends State<MyOrderCard> {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        height: 246.h,
         decoration: BoxDecoration(
           color: kWhite,
           border: Border.all(color: kBorderLiteBlack),
@@ -100,7 +98,7 @@ class _MyOrderCardState extends State<MyOrderCard> {
                         kWidth6,
                         Text(
                           _address,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                               color: kGrey),
@@ -112,7 +110,7 @@ class _MyOrderCardState extends State<MyOrderCard> {
                 const Spacer(),
                 Text(
                   widget.status,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: kGreen,
                     fontSize: 11,
                     fontWeight: FontWeight.w400,
@@ -122,7 +120,7 @@ class _MyOrderCardState extends State<MyOrderCard> {
             ),
             kHiegth10,
             Container(
-              height: 146.h,
+              padding: const EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: kBorderLiteGrey),
@@ -136,7 +134,7 @@ class _MyOrderCardState extends State<MyOrderCard> {
                       children: widget.items
                           .map((item) => Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.circle,
                                     size: 6,
                                   ),
@@ -148,7 +146,7 @@ class _MyOrderCardState extends State<MyOrderCard> {
                           .toList(),
                     ),
                   ),
-                  Divider(),
+                  const Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -158,7 +156,8 @@ class _MyOrderCardState extends State<MyOrderCard> {
                         width: 1,
                         height: 36,
                       ),
-                      Text('${"OMR".tr} ${widget.totalPrice.toStringAsFixed(3)}'),
+                      Text(
+                          '${"OMR".tr} ${widget.totalPrice.toStringAsFixed(3)}'),
                     ],
                   ),
                 ],

@@ -76,7 +76,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    locationController.countryName.value,
+                    "${locationController.cityName},${locationController.countryName.value}",
                     style: const TextStyle(
                       color: kBlue,
                       fontSize: 10,
@@ -104,24 +104,34 @@ class _GroceriesPageState extends State<GroceriesPage> {
                     child: Image.asset("assets/icons/notification_icon.png"),
                   ),
                   kWidth25,
-                  Badge.count(
-                    count: cartController.getItemCount(),
-                    backgroundColor: kDarkOrange,
-                    textColor: Colors.white,
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(const AddToCartPage(
-                          addedBy: "",
-                          restaurantName: "",
-                        ));
-                      },
-                      child: Image.asset("assets/icons/cart_icon.png"),
-                    ),
-                  ),
+                  cartController.getItemCount() > 0
+                      ? Badge.count(
+                          count: cartController.getItemCount(),
+                          backgroundColor: kDarkOrange,
+                          textColor: Colors.white,
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.to(const AddToCartPage(
+                                addedBy: "",
+                                restaurantName: "",
+                              ));
+                            },
+                            child: Image.asset("assets/icons/cart_icon.png"),
+                          ),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            Get.to(const AddToCartPage(
+                              addedBy: "",
+                              restaurantName: "",
+                            ));
+                          },
+                          child: Image.asset("assets/icons/cart_icon.png"),
+                        ),
                 ],
               ),
             ),
-          ),
+          )
         ],
       ),
       body: SafeArea(
@@ -181,7 +191,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
               ),
               kHiegth20,
               OneTextHeading(
-                heading: "Store to explore".tr,
+                heading: "Stores to Explore".tr,
               ),
               kHiegth20,
               Obx(

@@ -3,9 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/tabs/history_my_order.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/tabs/past_orders.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/tabs/ongoing_my_order.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/tabs/sheduled_my_order.dart';
 
 class MyOrders extends StatelessWidget {
   const MyOrders({super.key, required this.userId});
@@ -14,7 +13,7 @@ class MyOrders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         backgroundColor: kWhite,
         appBar: AppBar(
@@ -56,12 +55,8 @@ class MyOrders extends StatelessWidget {
                       text: "Ongoing".tr,
                     ),
                     _buildTabItem(
-                      text: "History".tr,
+                      text: "Past Orders".tr,
                       // Check if selected
-                    ),
-
-                    _buildTabItem(
-                      text: "Sheduled".tr,
                     ),
                   ],
                 ),
@@ -75,10 +70,9 @@ class MyOrders extends StatelessWidget {
                     OngoingMyOrder(
                       userId: userId,
                     ),
-                    HistoryMyOrder(
+                    PastOrders(
                       userId: userId,
                     ),
-                    SheduledMyOrder(),
                   ],
                 ),
               ),

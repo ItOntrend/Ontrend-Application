@@ -61,9 +61,37 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
             pinned: true,
             expandedHeight: 300,
             flexibleSpace: FlexibleSpaceBar(
-                background: SizedBox(
-              child: Image.asset("assets/lottie_animation/pending.gif"),
-            )),
+              background: SizedBox(
+                child: Image.asset("assets/lottie_animation/pending.gif"),
+              ),
+              stretchModes: const [
+                StretchMode.blurBackground,
+                StretchMode.zoomBackground
+              ],
+            ),
+            bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(0.0),
+                child: Container(
+                  height: 32.h,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    color: kWhite,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(32),
+                      topRight: Radius.circular(32),
+                    ),
+                  ),
+                  child: Container(
+                    width: 40.w,
+                    height: 5.h,
+                    decoration: BoxDecoration(
+                      color: kLiteBackground,
+                      borderRadius: BorderRadius.circular(
+                        100,
+                      ),
+                    ),
+                  ),
+                )),
           ),
           SliverToBoxAdapter(
             child: Column(
@@ -120,6 +148,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
 
   Widget _buildDeliveryDetails(OrderModel order) {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
         border: Border.all(color: kBorderLiteBlack),
@@ -222,7 +251,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         "Pending",
         "Processing",
         "Ready",
-        "Picked up",
+        "Picked Up",
         "Completed"
       ];
       int currentIndex = steps.indexOf(status);
@@ -269,9 +298,9 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         MyTimelineTile(
           isFirst: false,
           isLast: false,
-          isPast: isPast("Picked up"),
+          isPast: isPast("Picked Up"),
           child: const Text(
-            "Picked up",
+            "Picked Up",
             style: TextStyle(
               fontSize: 12,
             ),
@@ -327,16 +356,27 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
   }
 
   Widget _buildOrderDetailRow(OrderModel order) {
-    final vendorLocation = LatLng(order.restaurantLocation.lat, order.restaurantLocation.lng);
+    final vendorLocation =
+        LatLng(order.restaurantLocation.lat, order.restaurantLocation.lng);
     final userLocation = LatLng(widget.latitude, widget.longitude);
     final distance = _calculateDistance(vendorLocation, userLocation);
     final deliveryTime = _estimateDeliveryTime(distance);
+
+    String formattedDeliveryTime;
+    if (deliveryTime >= 60) {
+      final hours = (deliveryTime / 60).floor();
+      final minutes = (deliveryTime % 60).floor();
+      formattedDeliveryTime =
+          "$hours hour${hours > 1 ? 's' : ''} ${minutes > 0 ? '$minutes minute${minutes > 1 ? 's' : ''}' : ''}";
+    } else {
+      formattedDeliveryTime = "${deliveryTime.toStringAsFixed(0)} mins";
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("Distance: ${distance.toStringAsFixed(2)} km"),
-        Text("Estimated Delivery Time: ${deliveryTime.toStringAsFixed(0)} mins"),
+        Text("Estimated Delivery Time: $formattedDeliveryTime"),
       ],
     );
   }
@@ -377,7 +417,8 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(title,
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+              style:
+                  const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
           Text(value, style: const TextStyle(fontSize: 15)),
         ],
       ),
