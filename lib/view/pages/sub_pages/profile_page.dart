@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
@@ -30,18 +31,51 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   final VendorController vendorController = Get.put(VendorController());
+  final LanguageController lang = Get.put(LanguageController());
   TabController? _tabController;
 
   @override
   void initState() {
     super.initState();
+    fetchInitialData();
+  }
+
+  void fetchInitialData() async {
     if (widget.cat == "") {
-      vendorController.getCatVendorNew(widget.userId, widget.type);
+      await vendorController.getCatVendorNew(widget.userId, widget.type);
     } else {
-      vendorController.getItemsGr(widget.userId, widget.cat, widget.type);
+      await vendorController.getItemsGr(widget.userId, widget.cat, widget.type);
     }
-    vendorController.getVendors(widget.userId);
-    vendorController.getCatVendor(widget.userId, widget.type);
+    await vendorController.getVendors(widget.userId);
+    await vendorController.calculateDeliveryFee(widget.userId);
+    await vendorController.getItemsVendor(widget.userId, widget.type);
+
+    setState(() {
+      initializeTabController();
+    });
+  }
+
+  void initializeTabController() {
+    // Create a Set to store unique tags
+    final Set<String> tagSet = {};
+
+    // Add tags from CatList to the Set
+    for (var category in vendorController.ItemsList) {
+      if (category.tag != null) {
+        tagSet.add(category.tag!);
+      }
+    }
+
+    // Convert the Set to a List
+    List<String> tagList = tagSet.toList();
+
+    // Initialize the TabController with the length of the tag list
+    if (tagList.isNotEmpty) {
+      _tabController = TabController(
+        length: tagList.length,
+        vsync: this,
+      );
+    }
   }
 
   @override
@@ -118,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage>
                         final Set<String> tagSet = {};
 
                         // Add tags from CatList to the Set
-                        for (var category in vendorController.CatList) {
+                        for (var category in vendorController.ItemsList) {
                           if (category.tag != null) {
                             tagSet.add(category.tag!);
                           }
@@ -126,14 +160,6 @@ class _ProfilePageState extends State<ProfilePage>
 
                         // Convert the Set to a List
                         List<String> tagList = tagSet.toList();
-
-                        // Initialize the TabController with the length of the tag list
-                        if (tagList.isNotEmpty && _tabController == null) {
-                          _tabController = TabController(
-                            length: tagList.length,
-                            vsync: this,
-                          );
-                        }
 
                         return _tabController != null
                             ? TabBar(
@@ -161,7 +187,7 @@ class _ProfilePageState extends State<ProfilePage>
                         final Set<String> tagSet = {};
 
                         // Add tags from CatList to the Set
-                        for (var category in vendorController.CatList) {
+                        for (var category in vendorController.ItemsList) {
                           if (category.tag != null) {
                             tagSet.add(category.tag!);
                           }
@@ -196,8 +222,8 @@ class _ProfilePageState extends State<ProfilePage>
   }
 
   Widget buildItemListView(String tag) {
-    final items = vendorController.itemsList
-        .where((item) => item.tag == tag) // Filter by tag
+    final items = vendorController.ItemsList.where(
+            (item) => item.tag == tag) // Filter by tag
         .toList();
     print("Items for tag '$tag': ${items.length}");
     log("Items for tag '$tag': ${items.length}"); // Debug log

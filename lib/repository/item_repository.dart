@@ -86,7 +86,7 @@ class ItemRepository {
     }
   }
 
-  static Future<List<ItemModel>> getCategoriesVendor(
+  static Future<List<ItemModel>> getItemsVendor(
       String userId, String type) async {
     try {
       QuerySnapshot snapshot = await FirebaseConstants.dbInstance

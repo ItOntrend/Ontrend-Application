@@ -159,6 +159,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                       Get.to(() => SearchResult(
                             products: products,
                             title: "Search Result",
+                            type: 'Grocery',
                           ));
                     });
                   }
@@ -177,7 +178,10 @@ class _GroceriesPageState extends State<GroceriesPage> {
                         if (item.name.isNotEmpty) {
                           controller.searchProducts(item.name).then((products) {
                             Get.to(() => SearchResult(
-                                products: products, title: 'Grocery'));
+                                  products: products,
+                                  title: 'Grocery',
+                                  type: 'Grocery',
+                                ));
                           });
                         }
                       },
