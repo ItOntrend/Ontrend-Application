@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
@@ -20,7 +21,7 @@ class ProfileCard extends StatefulWidget {
 
 class _ProfileCardState extends State<ProfileCard> {
   final VendorController _vendorController = Get.put(VendorController());
-
+  final LanguageController lang = Get.find();
   @override
   void initState() {
     super.initState();
@@ -104,7 +105,7 @@ class _ProfileCardState extends State<ProfileCard> {
               ],
             ),
             kHiegth10,
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Column(
@@ -117,7 +118,7 @@ class _ProfileCardState extends State<ProfileCard> {
                       ),
                     ),
                     Text(
-                      "OMR 0.380",
+                      "${_vendorController.deliveryFee}",
                       style: TextStyle(
                         fontSize: 12,
                         color: kBlack,

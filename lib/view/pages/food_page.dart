@@ -9,6 +9,7 @@ import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart'
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
@@ -40,12 +41,29 @@ class _FoodPageState extends State<FoodPage> {
   final CartController cartController = Get.put(CartController());
 
   final lang = Get.put(LanguageController());
+  List<ItemModel> searchSuggestions = [];
   @override
   void initState() {
     super.initState();
+    foodController.getProducts();
     foodController.getCategories();
     // bestSellerController.getBestSeller();
     vendorController.fetchVendorsf('Food/Restaurant');
+  }
+
+  void _updateSearchSuggestions(String query) async {
+    if (query.isNotEmpty) {
+      // Fetch suggestions from the controller
+      final products = await foodController.searchProducts(query);
+
+      setState(() {
+        searchSuggestions = products;
+      });
+    } else {
+      setState(() {
+        searchSuggestions = [];
+      });
+    }
   }
 
   @override
@@ -147,12 +165,47 @@ class _FoodPageState extends State<FoodPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Search bar
+
               TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...".tr,
-                onTap: () {
-                  Get.to(SearchPage());
+                onChanged: _updateSearchSuggestions, // Update suggestions
+                onSubmitted: (query) {
+                  if (query.isNotEmpty) {
+                    foodController.searchProducts(query).then((products) {
+                      Get.to(() => SearchResult(
+                            products: products,
+                            title: "Search Result",
+                            type: 'Food',
+                          ));
+                    });
+                  }
                 },
               ),
+              if (searchSuggestions.isNotEmpty)
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: searchSuggestions.length,
+                  itemBuilder: (context, index) {
+                    final item = searchSuggestions[index];
+                    return ListTile(
+                      title: Text(item.name),
+                      onTap: () {
+                        if (item.name.isNotEmpty) {
+                          foodController
+                              .searchProducts(item.name)
+                              .then((products) {
+                            Get.to(() => SearchResult(
+                                  products: products,
+                                  title: 'Food',
+                                  type: 'Food',
+                                ));
+                          });
+                        }
+                      },
+                    );
+                  },
+                ),
               kHiegth15,
               // Welcome card
               SPromoSliderWidget(),

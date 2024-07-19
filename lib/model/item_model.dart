@@ -124,4 +124,33 @@ class ItemModel {
         "reference": reference,
         "restaurantName": restaurantName,
       };
+  factory ItemModel.fromSnapshot(DocumentSnapshot snapshot) {
+    final data = snapshot.data() as Map<String, dynamic>;
+    return ItemModel(
+      name: data["name"],
+      localName: data["localName"],
+      localTag: data["localTag"],
+      price: (data["price"] is int)
+          ? data["price"]
+          : (data["price"] is double)
+              ? data["price"].toInt()
+              : 0,
+      tag: data["tag"],
+      type: data["type"],
+      vId: data["vID"],
+      addedBy: data["addedBy"],
+      description: data["description"],
+      imageUrl: data["imageUrl"],
+      preparationTime: data["preparationTime"] ?? 0,
+      rating: data["rating"] ?? 0.0,
+      itemPrice: (data["itemPrice"] is int)
+          ? data["itemPrice"]
+          : (data["itemPrice"] is double)
+              ? data["itemPrice"].toInt()
+              : 0,
+      reference: snapshot.reference,
+      timeStamp: data["timeStamp"]?.toDate(),
+      restaurantName: data["restaurantName"],
+    );
+  }
 }

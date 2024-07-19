@@ -8,6 +8,7 @@ import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart'
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
@@ -15,8 +16,8 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.da
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/search_result.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
-
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
@@ -34,11 +35,29 @@ class _GroceriesPageState extends State<GroceriesPage> {
   final GroceryController controller = Get.put(GroceryController());
   final LanguageController languageController = Get.put(LanguageController());
   final CartController cartController = Get.put(CartController());
+  List<ItemModel> searchSuggestions = [];
 
   @override
   void initState() {
     super.initState();
+    controller.getProducts();
     vendorController.fetchVendors('Grocery');
+    vendorController.getItems('Grocery');
+  }
+
+  void _updateSearchSuggestions(String query) async {
+    if (query.isNotEmpty) {
+      // Fetch suggestions from the controller
+      final products = await controller.searchProducts(query);
+
+      setState(() {
+        searchSuggestions = products;
+      });
+    } else {
+      setState(() {
+        searchSuggestions = [];
+      });
+    }
   }
 
   @override
@@ -143,15 +162,48 @@ class _GroceriesPageState extends State<GroceriesPage> {
             children: [
               // Search bar
               TextfieldWithMic(
-                  hintText: "Vegetables, fruits...".tr,
-                  onTap: () => () => Get.to(() => SearchPage())),
-
+                hintText: "Vegetables, fruits...".tr,
+                onChanged: _updateSearchSuggestions, // Update suggestions
+                onSubmitted: (query) {
+                  if (query.isNotEmpty) {
+                    controller.searchProducts(query).then((products) {
+                      Get.to(() => SearchResult(
+                            products: products,
+                            title: "Search Result",
+                            type: 'Grocery',
+                          ));
+                    });
+                  }
+                },
+              ),
+              if (searchSuggestions.isNotEmpty)
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: searchSuggestions.length,
+                  itemBuilder: (context, index) {
+                    final item = searchSuggestions[index];
+                    return ListTile(
+                      title: Text(item.name),
+                      onTap: () {
+                        if (item.name.isNotEmpty) {
+                          controller.searchProducts(item.name).then((products) {
+                            Get.to(() => SearchResult(
+                                  products: products,
+                                  title: 'Grocery',
+                                  type: 'Grocery',
+                                ));
+                          });
+                        }
+                      },
+                    );
+                  },
+                ),
               kHiegth20,
               // Welcome card
               SPromoSliderWidget(),
               kHiegth20,
               // Trending card
-
               // Categories card
               TwoTextHeading(heading: "Categories".tr),
               kHiegth20,

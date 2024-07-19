@@ -91,7 +91,7 @@ class ItemViewPage extends StatelessWidget {
                       ),
                       kWidth20,
                       Text(
-                        "OMR ${item.price + 50}", // Example original price
+                        "${"OMR".tr} ${item.price + 50}", // Example original price
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w400,

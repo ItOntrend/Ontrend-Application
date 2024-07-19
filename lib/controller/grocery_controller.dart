@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/grocery_category_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/grocery_product_model.dart';
+import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/repository/grocery_repositry.dart';
 
 class GroceryController extends GetxController {
@@ -12,7 +13,7 @@ class GroceryController extends GetxController {
   RxBool isCategoryLoading = RxBool(false);
   RxList<CategoryModel> categoryList = RxList();
   RxBool isProductLoading = RxBool(false);
-  RxList<ProductModel> productList = RxList();
+  RxList<ItemModel> productList = RxList();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
@@ -51,19 +52,19 @@ class GroceryController extends GetxController {
     print("${productList.value}");
     print("${productList[0].name}");
   }
-  //////
-  /* Future<List<ItemModel>> searchProducts(String query) async {
-    try {
-      final querySnapshot = await _db
-          .collection('products')
-          .where('name', isGreaterThanOrEqualTo: query)
-          .where('name', isLessThanOrEqualTo: query + '\uf8ff')
-          .get();
-      return querySnapshot.docs
-          .map((doc) => ItemModel.fromSnapshot(doc))
-          .toList();
-    } catch (e) {
-      throw e;
-    }
-  }*/
+
+  Future<List<ItemModel>> searchProducts(String query) async {
+    return productList.where((item) {
+      return item.name.toLowerCase().contains(query.toLowerCase()) ||
+          item.localName.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+  }
+
+  CategoryModel? getCategoryByName(String categoryName) {
+    return categoryList
+        .firstWhereOrNull((category) => category.name == categoryName);
+  }
+
+////
+//search items
 }

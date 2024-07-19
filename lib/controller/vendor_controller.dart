@@ -21,6 +21,7 @@ class VendorController extends GetxController {
   RxList<VendorModel> vendorsListf = RxList<VendorModel>();
   RxList<ItemModel> itemsList = RxList<ItemModel>();
   RxString userName = ''.obs;
+  final deliveryFee = 0.0.obs;
   Position? userPosition;
   RxString userCity = RxString('Salala');
   // RxString userCountry = RxString('Unknown');
@@ -41,8 +42,11 @@ class VendorController extends GetxController {
       log('Error fetching user location: $e');
     }
   }
-  Future<double> getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) async {
-    double distanceInMeters = Geolocator.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude);
+
+  Future<double> getDistance(double startLatitude, double startLongitude,
+      double endLatitude, double endLongitude) async {
+    double distanceInMeters = Geolocator.distanceBetween(
+        startLatitude, startLongitude, endLatitude, endLongitude);
     return distanceInMeters / 1000; // convert to kilometers
   }
 
@@ -112,7 +116,8 @@ class VendorController extends GetxController {
       log('Error fetching vendors: $e');
     }
   }
- // Fetch list of vendors from Firebase
+
+  // Fetch list of vendors from Firebase
   Future<void> fetchVendorsf(
     String type,
   ) async {
@@ -227,7 +232,7 @@ class VendorController extends GetxController {
 ////////////////////////////////////////////////////////////////////////////////
   RxList<VendorModel> vCat = RxList<VendorModel>();
 
-  Future<List<String>> getVendorIdOfCategory(String cat, String type) async {
+  Future<Set<String>> getVendorIdOfCategory(String cat, String type) async {
     try {
       QuerySnapshot categorySnapshot = await FirebaseFirestore.instance
           .collection(type)
@@ -238,21 +243,22 @@ class VendorController extends GetxController {
           .get();
 
       // Clear the list before adding new vendor IDs
-      List<String> vendorIds = [];
+      Set<String> vendorIds = {};
 
       // Extract the vendor IDs and add them to the vCat list
       for (var doc in categorySnapshot.docs) {
         String vendorId = doc['addedBy'];
         vendorIds.add(vendorId);
-        return vendorIds;
       }
+
+      return vendorIds;
     } catch (e) {
       print('Error getting category document: $e');
     }
-    return [];
+    return {};
   }
 
-  Future<void> getVendorDetails(List<String> vendorIds) async {
+  Future<void> getVendorDetails(Set<String> vendorIds) async {
     try {
       vCat.clear();
 
@@ -275,7 +281,7 @@ class VendorController extends GetxController {
   RxString cat = "".obs;
   Future<void> fetchVendorsCat(String type, String cat) async {
     try {
-      List<String> vendorIds = await getVendorIdOfCategory(cat, type);
+      Set<String> vendorIds = await getVendorIdOfCategory(cat, type);
       await getVendorDetails(vendorIds);
     } catch (e) {
       print('Error fetching vendors: $e');
@@ -283,15 +289,15 @@ class VendorController extends GetxController {
   }
 
 //*...............................................................*//
-  RxList<ItemModel> CatList = RxList<ItemModel>();
-  Future<void> getCatVendor(String userId, String type) async {
+  RxList<ItemModel> ItemsList = RxList<ItemModel>();
+  Future<void> getItemsVendor(String userId, String type) async {
     try {
       print('fetching.....................cat');
-      CatList.clear();
-      var items = await ItemRepository.getCategoriesVendor(userId, type);
-      CatList.addAll(items);
+      ItemsList.clear();
+      var items = await ItemRepository.getItemsVendor(userId, type);
+      ItemsList.addAll(items);
       print("type is $type");
-      print("catlist is ${CatList}");
+      print("catlist is ${ItemsList}");
       log("Items data fetched successfully");
     } catch (e) {
       log('Error fetching items: $e');
@@ -302,13 +308,51 @@ class VendorController extends GetxController {
     try {
       print('fetching.....................cat');
       itemsList.clear();
-      var items = await ItemRepository.getCategoriesVendor(userId, type);
+      var items = await ItemRepository.getItemsVendor(userId, type);
       itemsList.addAll(items);
       print("type is $type");
       print("catlist is ${itemsList}");
       log("Items data fetched successfully");
     } catch (e) {
       log('Error fetching items: $e');
+    }
+  }
+
+////////////////
+  ///deliveryfee
+  Future<void> calculateDeliveryFee(String vid) async {
+    final vendor = await getVendorByUId(userId: vid);
+    print('Vendor Details: ${vendor?.toJson()}');
+
+    if (vendor != null) {
+      final distance = calculateDistance(vendor.location);
+      print('Calculated Distance: $distance');
+
+      double fee;
+      if (distance <= 1) {
+        fee = 0.190;
+      } else if (distance <= 2) {
+        fee = 0.290;
+      } else if (distance <= 3) {
+        fee = 0.390;
+      } else if (distance <= 4) {
+        fee = 0.490;
+      } else if (distance <= 5) {
+        fee = 0.590;
+      } else if (distance <= 6) {
+        fee = 0.860;
+      } else if (distance <= 8) {
+        fee = 1.040;
+      } else {
+        fee = 1.410;
+      }
+
+      deliveryFee.value = fee;
+      // Example fee calculation: $5 base fee + $2 per km
+      //deliveryFee.value = 5.0 + (2.0 * distance);
+      print('Delivery Fee: ${deliveryFee.value}');
+    } else {
+      deliveryFee.value = 0.0; // Set default fee if vendor not found
     }
   }
 }

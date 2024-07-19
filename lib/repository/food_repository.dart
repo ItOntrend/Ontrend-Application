@@ -1,23 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
-import 'package:ontrend_food_and_e_commerce/model/grocery_product_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
-import 'package:ontrend_food_and_e_commerce/utils/constants/firebase_constants.dart';
 
-abstract class GroceryRepository {
-  static Future<List<CategoryModel>> getCategories() async {
-    return FirebaseConstants.dbInstance
-        .collection(FirebaseConstants.grocery)
-        .doc(FirebaseConstants.items)
-        .collection(FirebaseConstants.categories)
-        .get()
-        .then(
-          (snapshot) => snapshot.docs
-              .map((doc) => CategoryModel.fromJson(doc.data()))
-              .toList(),
-        );
-  }
-
+abstract class FoodRepository {
   static Future<List<ItemModel>> getProducts() async {
     List<ItemModel> products = [];
     try {
@@ -28,7 +13,7 @@ abstract class GroceryRepository {
 
       for (var doc in snapshot.docs) {
         // Check if the document path starts with '/Grocery'
-        if (doc.reference.path.split('/')[0] == 'Grocery') {
+        if (doc.reference.path.split('/')[0] == 'Food') {
           print('Document ID: ${doc.id}');
           print('Document Data: ${doc.data()}');
           products.add(ItemModel.fromJson(doc.data() as Map<String, dynamic>));
