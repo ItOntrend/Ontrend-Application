@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
@@ -157,7 +158,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
               Padding(
                 padding: const EdgeInsets.all(0),
                 child: SizedBox(
-                  height: 250, // Adjust the height based on your needs
+                  height: 250.h, // Adjust the height based on your needs
                   child: Obx(
                     () => GridView.builder(
                       scrollDirection: Axis.horizontal,
@@ -182,7 +183,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           onTap: () => Get.to(() => CategorysSearchPage(
                                 category: category,
                                 type: 'Grocery',
-                              )),
+                              ),),
                         );
                       },
                     ),

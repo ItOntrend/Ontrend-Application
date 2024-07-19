@@ -1,8 +1,7 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ontrend_food_and_e_commerce/controller/best_seller_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/food_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
@@ -33,9 +32,9 @@ class FoodPage extends StatefulWidget {
 }
 
 class _FoodPageState extends State<FoodPage> {
-  final foodController = Get.find<FoodController>();
-  final BestSellerController bestSellerController =
-      Get.put(BestSellerController());
+  final FoodController foodController = Get.put(FoodController());
+  // final BestSellerController bestSellerController =
+  //     Get.put(BestSellerController());
   final VendorController vendorController = Get.put(VendorController());
   final LocationController locationController = Get.put(LocationController());
   final CartController cartController = Get.put(CartController());
@@ -45,7 +44,7 @@ class _FoodPageState extends State<FoodPage> {
   void initState() {
     super.initState();
     foodController.getCategories();
-    bestSellerController.getBestSeller();
+    // bestSellerController.getBestSeller();
     vendorController.fetchVendorsf('Food/Restaurant');
   }
 
@@ -162,37 +161,38 @@ class _FoodPageState extends State<FoodPage> {
               // Categories card
               TwoTextHeading(heading: "Categories".tr),
               kHiegth20,
-              Obx(
-                () => foodController.isCategoryLoading.value
-                    ? const CircularProgressIndicator()
-                    : SizedBox(
-                        height: 240, // Adjust the height as needed
-                        child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: foodController.categoryList.length,
-                          itemBuilder: (context, index) {
-                            final category = foodController.categoryList[index];
-                            log(category.imageUrl.toString());
-                            return CategoryCard(
-                              onTap: () {
-                                Get.to(() => CategorysSearchPage(
-                                      type: 'Food',
-                                      category: category,
-                                    ));
-                              },
-                              categoryName:
-                                  lang.currentLanguage.value.languageCode ==
-                                          "ar"
-                                      ? category.localName
-                                      : category.name,
-                              categoryImage: category.imageUrl,
-                            );
-                          },
-                        ),
-                      ),
+              SizedBox(
+                height: 250.h,
+                child: Obx(
+                  () => GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                    ),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: foodController.categoryList.length,
+                    itemBuilder: (context, index) {
+                      print("Category List");
+                      final category = foodController.categoryList[index];
+                      log(category.imageUrl.toString());
+                      return CategoryCard(
+                        onTap: () {
+                          Get.to(
+                            () => CategorysSearchPage(
+                              type: 'Food',
+                              category: category,
+                            ),
+                          );
+                        },
+                        categoryName:
+                            lang.currentLanguage.value.languageCode == "ar"
+                                ? category.localName
+                                : category.name,
+                        categoryImage: category.imageUrl,
+                      );
+                    },
+                  ),
+                ),
               ),
               // kHiegth20,
               // OneTextHeading(

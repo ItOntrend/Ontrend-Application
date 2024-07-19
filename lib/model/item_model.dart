@@ -101,7 +101,9 @@ class ItemModel {
           FirebaseFirestore.instance
               .collection('default')
               .doc(), // Provide a default DocumentReference if null,
-      timeStamp: json["timeStamp"].toDate(),
+      timeStamp: json["timeStamp"] != null
+          ? json["timeStamp"].toDate()
+          : DateTime.now(),
       restaurantName: json["restaurantName"]);
 
   Map<String, dynamic> toJson() => {

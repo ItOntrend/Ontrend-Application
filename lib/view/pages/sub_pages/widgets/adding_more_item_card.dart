@@ -97,28 +97,36 @@ class _AddingMoreItemCardState extends State<AddingMoreItemCard> {
           kHiegth9,
           ...requests.map((request) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "• ",
-                      style: TextStyle(color: Colors.black54),
-                    ),
-                    Expanded(
-                      child: Text(
-                        request,
-                        style: const TextStyle(
-                          color: Colors.black54,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: kBorderLiteBlack),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "• ",
+                        style: TextStyle(color: Colors.black54, fontSize: 42),
+                      ),
+                      Expanded(
+                        child: Text(
+                          request,
+                          style: const TextStyle(
+                            color: Colors.black54,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.remove_circle, color: kDarkOrange),
-                      onPressed: () => _removeRequest(request),
-                    ),
-                  ],
+                      IconButton(
+                        icon:
+                            const Icon(Icons.remove_circle, color: kDarkOrange),
+                        onPressed: () => _removeRequest(request),
+                      ),
+                    ],
+                  ),
                 ),
               )),
         ],

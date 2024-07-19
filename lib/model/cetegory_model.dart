@@ -38,7 +38,7 @@ class CategoryModel {
   factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
         addedBy: json["addedBy"],
         name: json["name"],
-        localName: json["localName"],
+        localName: json["localName"] ?? '',
         isApproved: json["isApproved"],
         imageUrl: json["imageUrl"],
       );
