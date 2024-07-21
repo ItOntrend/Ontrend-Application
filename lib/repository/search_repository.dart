@@ -1,21 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
+import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/utils/constants/firebase_constants.dart';
 
 abstract class SearchRepository {
-  static Future<List<CategoryModel>> getCategories(String type) async {
-    final snapshot = await FirebaseConstants.dbInstance
-        .collection(type)
-        .doc(FirebaseConstants.items)
-        .collection(FirebaseConstants.categories)
-        .get();
+  static Future<List<ItemModel>> getProducts() async {
+    List<ItemModel> products = [];
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collectionGroup('details')
+          // Search across all 'details' subcollections
+          .get();
 
-    final categories = snapshot.docs
-        .map((doc) => CategoryModel.fromJson(doc.data()))
-        .where((category) => category.isApproved)
-        .toList();
-
-    return categories;
-  }
+      for (var doc in snapshot.docs) {
+        products.add(ItemModel.fromJson(doc.data() as Map<String, dynamic>));
+      }
+    } catch (e) {
+      print('Error fetching products: $e');
+    }
+    print('Fetched Products: $products');
+    return products;
+  } //////
 }
 
   

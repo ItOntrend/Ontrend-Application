@@ -9,6 +9,13 @@ class FoodController extends GetxController {
   RxList<CategoryModel> categoryList = RxList();
   RxBool isProductLoading = RxBool(false);
   RxList<ItemModel> productList = RxList();
+  @override
+  void onInit() {
+    super.onInit();
+    getCategories();
+    print("fetching.....................................................");
+  }
+
   Future<void> getCategories() async {
     isCategoryLoading.value = true;
     categoryList.clear();

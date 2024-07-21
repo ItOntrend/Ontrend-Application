@@ -113,6 +113,13 @@ class LocalStrings extends Translations {
           "Cancel": "Cancel",
           "Save": "Save",
           'Service fee': 'Service fee',
+          "Vendor not found": "Vendor not found",
+          "Pizza, Pastas, Desserts": "Pizza, Pastas, Desserts",
+          "Delivery time": "Delivery time",
+          "Delivery by": "Delivery by",
+          "OnTrend": "OnTrend",
+          "No items found": "No items found",
+          "NearBy restaurent": "NearBy restaurent",
         },
         //'hi_IN': {'hello': "नमस्ते दुनिया", 'message': "ऐप में आपका स्वागत है"},
         'ar_OM': {
@@ -222,6 +229,13 @@ class LocalStrings extends Translations {
           "Enter new title": "أدخل عنوانًا جديدًا",
           "Cancel": "يلغي",
           "Save": "يحفظ",
+          "Vendor not found": "لم يتم العثور على البائع",
+          "Pizza, Pastas, Desserts": "البيتزا والمعكرونة والحلويات",
+          "Delivery time": "موعد التسليم",
+          "Delivery by": "التوصيل بواسطه",
+          "OnTrend": "",
+          "No items found": "لم يتم العثور على العناصر",
+          "NearBy restaurent": "مطعم قريب",
         }
       };
 }

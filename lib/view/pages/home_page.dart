@@ -5,12 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/home_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/navigation_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/groceries_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
@@ -18,6 +20,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.da
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/home_search_result.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/oru_service_big_card.dart';
@@ -44,6 +47,8 @@ class _HomePageState extends State<HomePage> {
   final LocationController locationController = Get.put(LocationController());
   final CartController cartController = Get.put(CartController());
   final VendorController vendorController = Get.put(VendorController());
+  List<ItemModel> searchSuggestions = [];
+  final HomeController homeController = Get.put(HomeController());
 
   @override
   void initState() {
@@ -51,7 +56,23 @@ class _HomePageState extends State<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // bestSellerController.getBestSeller();
       vendorController.fetchVendors('Food/Restaurant');
+      homeController.getProducts();
     });
+  }
+
+  void _updateSearchSuggestions(String query) async {
+    if (query.isNotEmpty) {
+      // Fetch suggestions from the controller
+      final products = await homeController.searchProducts(query);
+
+      setState(() {
+        searchSuggestions = products;
+      });
+    } else {
+      setState(() {
+        searchSuggestions = [];
+      });
+    }
   }
 
   @override
@@ -190,11 +211,44 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               TextfieldWithMic(
-                hintText: "Biryani, Burger, Ice Cream...".tr,
-                onTap: () {
-                  Get.to(() => const SearchPage());
+                hintText: "Vegetables, fruits...".tr,
+                onChanged: _updateSearchSuggestions, // Update suggestions
+                onSubmitted: (query) {
+                  if (query.isNotEmpty) {
+                    homeController.searchProducts(query).then((products) {
+                      Get.to(() => SearchResultHome(
+                            products: products,
+                            title: "Search Result",
+                          ));
+                    });
+                  }
                 },
               ),
+              if (searchSuggestions.isNotEmpty)
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: searchSuggestions.length,
+                  itemBuilder: (context, index) {
+                    final item = searchSuggestions[index];
+                    return ListTile(
+                      title: Text(item.name),
+                      onTap: () {
+                        if (item.name.isNotEmpty) {
+                          homeController
+                              .searchProducts(item.name)
+                              .then((products) {
+                            Get.to(() => SearchResultHome(
+                                  products: products,
+                                  title: 'Search Result',
+                                ));
+                          });
+                        }
+                      },
+                    );
+                  },
+                ),
+              kHiegth20,
               SPromoSliderWidget(),
               OneTextHeading(
                 heading: "Our Services".tr,
