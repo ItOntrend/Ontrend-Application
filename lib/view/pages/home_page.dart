@@ -211,11 +211,44 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               TextfieldWithMic(
-                hintText: "Biryani, Burger, Ice Cream...".tr,
-                onTap: () {
-                  Get.to(() => SearchPage());
+                hintText: "Vegetables, fruits...".tr,
+                onChanged: _updateSearchSuggestions, // Update suggestions
+                onSubmitted: (query) {
+                  if (query.isNotEmpty) {
+                    homeController.searchProducts(query).then((products) {
+                      Get.to(() => SearchResultHome(
+                            products: products,
+                            title: "Search Result",
+                          ));
+                    });
+                  }
                 },
               ),
+              if (searchSuggestions.isNotEmpty)
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: searchSuggestions.length,
+                  itemBuilder: (context, index) {
+                    final item = searchSuggestions[index];
+                    return ListTile(
+                      title: Text(item.name),
+                      onTap: () {
+                        if (item.name.isNotEmpty) {
+                          homeController
+                              .searchProducts(item.name)
+                              .then((products) {
+                            Get.to(() => SearchResultHome(
+                                  products: products,
+                                  title: 'Search Result',
+                                ));
+                          });
+                        }
+                      },
+                    );
+                  },
+                ),
+              kHiegth20,
               SPromoSliderWidget(),
               OneTextHeading(
                 heading: "Our Services".tr,

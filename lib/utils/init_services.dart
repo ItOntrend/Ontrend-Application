@@ -9,7 +9,6 @@ import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart'
 import 'package:ontrend_food_and_e_commerce/controller/locale_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/order_controller.dart';
-import 'package:ontrend_food_and_e_commerce/controller/search_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 
@@ -22,12 +21,9 @@ Future<void> initServices() async {
   Get.put<CartController>(CartController());
   Get.put<ItemsController>(ItemsController());
   Get.put<GroceryController>(GroceryController());
-    Get.put<LanguageController>(LanguageController());
+  Get.put<LanguageController>(LanguageController());
   Get.put<LocalizationController>(LocalizationController());
   Get.put<LocationController>(LocationController());
   Get.put<OrderController>(OrderController());
-  Get.put<MySearchController>(MySearchController());
   Get.put<LocationController>(LocationController());
-
-
 }

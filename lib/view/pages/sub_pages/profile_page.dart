@@ -179,7 +179,15 @@ class _ProfilePageState extends State<ProfilePage>
                                 controller: _tabController,
                                 isScrollable: true,
                                 tabs: tagList.map((tag) {
-                                  return Tab(text: tag); // Use tag for each tab
+                                  final displayTag = lang.currentLanguage.value
+                                              .languageCode ==
+                                          "ar"
+                                      ? vendorController.ItemsList.firstWhere(
+                                          (item) => item.tag == tag).localTag
+                                      : tag;
+                                  return Tab(
+                                      text: displayTag ??
+                                          tag); // Use localTag if available, else use tag
                                 }).toList(),
                               )
                             : const SizedBox.shrink();
