@@ -28,12 +28,30 @@ class CategorysSearchPage extends StatefulWidget {
 class _CategorysSearchPageState extends State<CategorysSearchPage> {
   final VendorController vendorController = Get.put(VendorController());
   final LanguageController languageController = Get.find();
+  RxList filteredVendors = [].obs;
   @override
   void initState() {
     super.initState();
     //if (widget.category) vendorController.fetchVendors(widget.type);
     // vendorController.getVendors(widget.userId);
+    //vendorController.fetchVendors(widget.type);
   }
+
+  /* void fetchVendors() async {
+    await vendorController.fetchVendorsCat(widget.type, widget.category.name);
+    filteredVendors.value = vendorController.vCat;
+  }
+
+  void filterVendors(String query) {
+    if (query.isEmpty) {
+      filteredVendors.value = vendorController.vCat;
+    } else {
+      filteredVendors.value = vendorController.vCat
+          .where((vendor) =>
+              vendor.restaurantName.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +65,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
               children: [
                 TextfieldWithMic(
                   hintText: "Search...".tr,
-                  onTap: () {
-                    Get.to(const SearchPage());
-                  },
+                  onTap: () {},
                 ),
                 kHiegth20,
                 Row(

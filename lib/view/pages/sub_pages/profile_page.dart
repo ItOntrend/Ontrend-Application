@@ -166,7 +166,15 @@ class _ProfilePageState extends State<ProfilePage>
                                 controller: _tabController,
                                 isScrollable: true,
                                 tabs: tagList.map((tag) {
-                                  return Tab(text: tag); // Use tag for each tab
+                                  final displayTag = lang.currentLanguage.value
+                                              .languageCode ==
+                                          "ar"
+                                      ? vendorController.ItemsList.firstWhere(
+                                          (item) => item.tag == tag).localTag
+                                      : tag;
+                                  return Tab(
+                                      text: displayTag ??
+                                          tag); // Use tag for each tab
                                 }).toList(),
                               )
                             : const SizedBox.shrink();
@@ -180,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage>
                           return const Center(
                               child: CircularProgressIndicator());
                         } else if (vendorController.itemsList.isEmpty) {
-                          return const Center(child: Text("No items found"));
+                          return Center(child: Text("No items found".tr));
                         }
 
                         // Create a Set to store unique tags

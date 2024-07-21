@@ -57,8 +57,8 @@ class _ProfileCardState extends State<ProfileCard> {
         }
 
         if (_vendorController.vendorDetail.value == null) {
-          return const Center(
-            child: Text("Vendor not found"),
+          return Center(
+            child: Text("Vendor not found".tr),
           );
         }
         return Column(
@@ -100,8 +100,8 @@ class _ProfileCardState extends State<ProfileCard> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Text(
-                      "Pizza, Pastas, Desserts",
+                    Text(
+                      "Pizza, Pastas, Desserts".tr,
                       style: TextStyle(fontSize: 14, color: kGrey),
                     ),
                   ],
@@ -115,7 +115,7 @@ class _ProfileCardState extends State<ProfileCard> {
                 Column(
                   children: [
                     Text(
-                      "Delivery fee",
+                      "Delivery fee".tr,
                       style: TextStyle(
                         fontSize: 14,
                         color: kGrey,
@@ -137,14 +137,14 @@ class _ProfileCardState extends State<ProfileCard> {
                 Column(
                   children: [
                     Text(
-                      "Delivery time",
+                      "Delivery time".tr,
                       style: TextStyle(
                         fontSize: 14,
                         color: kGrey,
                       ),
                     ),
                     Text(
-                      "18 min",
+                      "18 min".tr,
                       style: TextStyle(
                         fontSize: 12,
                         color: kBlack,
@@ -159,14 +159,14 @@ class _ProfileCardState extends State<ProfileCard> {
                 Column(
                   children: [
                     Text(
-                      "Delivery by",
+                      "Delivery by".tr,
                       style: TextStyle(
                         fontSize: 14,
                         color: kGrey,
                       ),
                     ),
                     Text(
-                      "OnTrend",
+                      "OnTrend".tr,
                       style: TextStyle(
                         fontSize: 12,
                         color: kOrange,

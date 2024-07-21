@@ -100,7 +100,10 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.name,
+                    languageController.currentLanguage.value.languageCode ==
+                            "ar"
+                        ? widget.localName
+                        : widget.name,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
