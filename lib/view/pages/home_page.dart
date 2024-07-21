@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                             fontWeight: FontWeight.w700),
                       ),
                       Text(
-                        "${userController.rewardPoints.value} pts",
+                        "${userController.rewardPoints.value.toInt()} pts",
                         style: GoogleFonts.abhayaLibre(
                             color: kWhite,
                             fontSize: 16,

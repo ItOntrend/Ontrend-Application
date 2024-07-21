@@ -16,7 +16,7 @@ class AuthController extends GetxController {
   final lastNameController = TextEditingController();
   final nationalityController = TextEditingController();
   final numberController = TextEditingController();
-  final rewardPointsController = TextEditingController(); // Add this
+  final rewardPointsController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   RxBool isLoading = RxBool(false);
 
@@ -48,7 +48,7 @@ class AuthController extends GetxController {
       number: numberController.text.trim(),
       role: 'User',
       timeStamp: DateTime.now(),
-      rewardPoints: 0.0,
+      rewardPoints: double.tryParse(rewardPointsController.text.trim()) ?? 0.0,
     );
 
     Utils.instance.hideLoader();
