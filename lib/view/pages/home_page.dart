@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/home_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
@@ -41,7 +43,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // final BestSellerController bestSellerController =
   //     Get.put(BestSellerController());
-  final userController = Get.find<UserController>();
+  final UserController userController = Get.put(UserController());
   final LocationController locationController = Get.put(LocationController());
   final CartController cartController = Get.put(CartController());
   final VendorController vendorController = Get.put(VendorController());
@@ -111,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        locationController.countryName.value,
+                        "${locationController.cityName},${locationController.countryName.value}",
                         style: const TextStyle(
                           color: kBlue,
                           fontSize: 10,
@@ -141,24 +143,34 @@ class _HomePageState extends State<HomePage> {
                     child: Image.asset("assets/icons/notification_icon.png"),
                   ),
                   kWidth25,
-                  Badge.count(
-                    count: cartController.getItemCount(),
-                    backgroundColor: kDarkOrange,
-                    textColor: Colors.white,
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(const AddToCartPage(
-                          addedBy: "",
-                          restaurantName: "",
-                        ));
-                      },
-                      child: Image.asset("assets/icons/cart_icon.png"),
-                    ),
-                  ),
+                  cartController.getItemCount() > 0
+                      ? Badge.count(
+                          count: cartController.getItemCount(),
+                          backgroundColor: kDarkOrange,
+                          textColor: Colors.white,
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.to(const AddToCartPage(
+                                addedBy: "",
+                                restaurantName: "",
+                              ));
+                            },
+                            child: Image.asset("assets/icons/cart_icon.png"),
+                          ),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            Get.to(const AddToCartPage(
+                              addedBy: "",
+                              restaurantName: "",
+                            ));
+                          },
+                          child: Image.asset("assets/icons/cart_icon.png"),
+                        ),
                 ],
               ),
             ),
-          ),
+          )
         ],
       ),
       body: SafeArea(
@@ -167,49 +179,48 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Obx(
+                () => Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  padding:
+                      const EdgeInsetsDirectional.symmetric(horizontal: 10),
+                  height: 50.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: kDarkOrange,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Rewards: ",
+                        style: GoogleFonts.aDLaMDisplay(
+                            color: kWhite,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Text(
+                        "${userController.rewardPoints.value.toInt()} pts",
+                        style: GoogleFonts.abhayaLibre(
+                            color: kWhite,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               TextfieldWithMic(
-                hintText: "Vegetables, fruits...".tr,
-                onChanged: _updateSearchSuggestions, // Update suggestions
-                onSubmitted: (query) {
-                  if (query.isNotEmpty) {
-                    homeController.searchProducts(query).then((products) {
-                      Get.to(() => SearchResultHome(
-                            products: products,
-                            title: "Search Result",
-                          ));
-                    });
-                  }
+                hintText: "Biryani, Burger, Ice Cream...".tr,
+                onTap: () {
+                  Get.to(() => SearchPage());
                 },
               ),
-              if (searchSuggestions.isNotEmpty)
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: searchSuggestions.length,
-                  itemBuilder: (context, index) {
-                    final item = searchSuggestions[index];
-                    return ListTile(
-                      title: Text(item.name),
-                      onTap: () {
-                        if (item.name.isNotEmpty) {
-                          homeController
-                              .searchProducts(item.name)
-                              .then((products) {
-                            Get.to(() => SearchResultHome(
-                                  products: products,
-                                  title: 'Grocery',
-                                ));
-                          });
-                        }
-                      },
-                    );
-                  },
-                ),
               SPromoSliderWidget(),
               OneTextHeading(
                 heading: "Our Services".tr,
               ),
-              SizedBox(height: 20),
+              kHiegth20,
               GestureDetector(
                 onTap: () {
                   Get.find<NavigationController>().changeTabIndex(2);
@@ -219,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                   name: "E-Store".tr,
                 ),
               ),
-              SizedBox(height: 20),
+              kHiegth20,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -252,7 +263,7 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 20),
               OneTextHeading(
-                heading: "NearBy restaurent".tr,
+                heading: "Nearby Restaurant".tr,
               ),
               SizedBox(height: 20),
               Obx(
@@ -283,7 +294,7 @@ class _HomePageState extends State<HomePage> {
                                   Get.to(() => ProfilePage(
                                         userId: vendor.reference.id,
                                         cat: "",
-                                        type: "Food",
+                                        type: "Food/Restaurent",
                                       ));
                                 },
                               );

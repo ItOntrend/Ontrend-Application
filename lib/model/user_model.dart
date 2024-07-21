@@ -7,6 +7,7 @@ class UserModel {
   String role;
   DateTime timeStamp;
   bool isEmailVerified;
+  double rewardPoints; // New field
 
   UserModel({
     required this.userId,
@@ -17,6 +18,7 @@ class UserModel {
     required this.role,
     required this.timeStamp,
     required this.isEmailVerified,
+    required this.rewardPoints, // New field
   });
 
   UserModel copyWith({
@@ -28,6 +30,7 @@ class UserModel {
     String? role,
     DateTime? timeStamp,
     bool? isEmailVerified,
+    double? rewardPoints, // New field
   }) =>
       UserModel(
         userId: userId ?? this.userId,
@@ -38,6 +41,7 @@ class UserModel {
         role: role ?? this.role,
         timeStamp: timeStamp ?? this.timeStamp,
         isEmailVerified: isEmailVerified ?? this.isEmailVerified,
+        rewardPoints: rewardPoints ?? this.rewardPoints, // New field
       );
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -49,6 +53,7 @@ class UserModel {
         role: json["role"],
         timeStamp: json["timeStamp"].toDate(),
         isEmailVerified: json["isEmailVerified"],
+        rewardPoints: json["rewardPoints"]?.toDouble() ?? 0.0, // New field
       );
 
   Map<String, dynamic> toJson() => {
@@ -60,5 +65,6 @@ class UserModel {
         "role": role,
         "timeStamp": timeStamp,
         "isEmailVerified": isEmailVerified,
+        "rewardPoints": rewardPoints, // New field
       };
 }

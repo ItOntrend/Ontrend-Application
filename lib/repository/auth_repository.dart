@@ -35,7 +35,7 @@ abstract class AuthRepository {
     required String nationality,
     required String number,
     required String role,
-    required DateTime timeStamp,
+    required DateTime timeStamp, required double rewardPoints,
   }) async {
     AuthStatus _status;
 

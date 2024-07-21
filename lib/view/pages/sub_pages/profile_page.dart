@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/food_item_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/profile_card.dart';
 import 'item_view_page.dart';
@@ -32,6 +34,8 @@ class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   final VendorController vendorController = Get.put(VendorController());
   final LanguageController lang = Get.put(LanguageController());
+  final CartController cartController = Get.put(CartController());
+
   TabController? _tabController;
 
   @override
@@ -76,6 +80,15 @@ class _ProfilePageState extends State<ProfilePage>
         vsync: this,
       );
     }
+    vendorController.getVendors(widget.userId);
+    vendorController.getItemsVendor(widget.userId, widget.type);
+
+    // Initialize the TabController based on initial data load
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (vendorController.ItemsList.isNotEmpty) {
+        initializeTabController();
+      }
+    });
   }
 
   @override
@@ -148,33 +161,25 @@ class _ProfilePageState extends State<ProfilePage>
                   children: [
                     Obx(
                       () {
-                        // Create a Set to store unique tags
                         final Set<String> tagSet = {};
-
-                        // Add tags from CatList to the Set
                         for (var category in vendorController.ItemsList) {
                           if (category.tag != null) {
                             tagSet.add(category.tag!);
                           }
                         }
-
-                        // Convert the Set to a List
                         List<String> tagList = tagSet.toList();
-
+                        if (_tabController == null && tagList.isNotEmpty) {
+                          _tabController = TabController(
+                            length: tagList.length,
+                            vsync: this,
+                          );
+                        }
                         return _tabController != null
                             ? TabBar(
                                 controller: _tabController,
                                 isScrollable: true,
                                 tabs: tagList.map((tag) {
-                                  final displayTag = lang.currentLanguage.value
-                                              .languageCode ==
-                                          "ar"
-                                      ? vendorController.ItemsList.firstWhere(
-                                          (item) => item.tag == tag).localTag
-                                      : tag;
-                                  return Tab(
-                                      text: displayTag ??
-                                          tag); // Use tag for each tab
+                                  return Tab(text: tag); // Use tag for each tab
                                 }).toList(),
                               )
                             : const SizedBox.shrink();
@@ -190,28 +195,20 @@ class _ProfilePageState extends State<ProfilePage>
                         } else if (vendorController.itemsList.isEmpty) {
                           return Center(child: Text("No items found".tr));
                         }
-
-                        // Create a Set to store unique tags
                         final Set<String> tagSet = {};
-
-                        // Add tags from CatList to the Set
                         for (var category in vendorController.ItemsList) {
                           if (category.tag != null) {
                             tagSet.add(category.tag!);
                           }
                         }
-
-                        // Convert the Set to a List
                         List<String> tagList = tagSet.toList();
-
                         return SizedBox(
                           height: MediaQuery.of(context).size.height - 450.h,
                           child: _tabController != null
                               ? TabBarView(
                                   controller: _tabController,
                                   children: tagList.map((tag) {
-                                    return buildItemListView(
-                                        tag); // Pass the tag to the item list builder
+                                    return buildItemListView(tag);
                                   }).toList(),
                                 )
                               : const SizedBox.shrink(),
@@ -225,6 +222,55 @@ class _ProfilePageState extends State<ProfilePage>
             ],
           ),
         ),
+        bottomNavigationBar: Obx(() {
+          return BottomAppBar(
+            color: kTransparent,
+            shape: const CircularNotchedRectangle(),
+            notchMargin: 8.0,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: kGreen,
+              ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Items in Cart: ${cartController.getItemCount()}',
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        color: kWhite),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.to(() => const AddToCartPage(
+                            addedBy: '',
+                            restaurantName: '',
+                          ));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: kWhite,
+                      backgroundColor: kWhite,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 10.h),
+                    ),
+                    child: const Text(
+                      'View Cart',
+                      style: TextStyle(
+                        color: kOrange,
+                        decoration: TextDecoration.underline,
+                        decorationColor: kOrange,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }),
       ),
     );
   }

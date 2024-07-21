@@ -7,11 +7,11 @@ class CountController extends StatefulWidget {
   final int count;
 
   const CountController({
-    Key? key,
+    super.key,
     required this.onIncrement,
     required this.onDecrement,
     required this.count,
-  }) : super(key: key);
+  });
 
   @override
   _CountControllerState createState() => _CountControllerState();

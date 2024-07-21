@@ -75,7 +75,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
             kHiegth6,
             BillDetailsRow(
               title: 'Service fee'.tr,
-              amount: cartController.platformFee,
+              amount: cartController.serviceFee.value,
             ),
             kHiegth6,
             BillDetailsRow(
@@ -107,7 +107,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
                   const Spacer(),
                   Text(
                     "Change".tr,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: kGreen,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -135,7 +135,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
               onTap: () async {
                 log("Place Order".tr);
                 String userId = await LocalStorage.instance
-                    .DataFromPrefs(key: HiveKeys.userData);
+                    .dataFromPrefs(key: HiveKeys.userData);
 
                 // Validate if the location information is available
                 if (locationController.currentAddress.value.isEmpty ||
@@ -160,6 +160,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
                   );
 
                   Get.to(() => OrderCompleteSplashPage(orderId: orderId));
+                  log("Order placed");
                 }
               },
               name: "Place Order",

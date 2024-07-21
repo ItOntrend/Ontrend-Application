@@ -69,17 +69,18 @@ class LocalStorage {
     }
   }
 
-  Future<T?> DataFromPrefs<T>({
+  Future<T?> dataFromPrefs<T>({
     required String key,
   }) async {
     final box = await SharedPreferences.getInstance();
-    final encodedString = await box.getString(key);
+    final encodedString = box.getString(key);
     if (encodedString != null) {
       T? decodedData = json.decode(encodedString);
       return decodedData;
     } else {
       return null;
     }
+    
   }
 
   Future<void> deleteData<T>({

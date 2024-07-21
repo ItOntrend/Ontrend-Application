@@ -18,6 +18,7 @@ class OrderModel {
   String userPhone;
   String assignedDeliveryPartnerId;
   RestaurantLocation restaurantLocation;
+  List<String> orderNotes;
 
   OrderModel({
     required this.addedBy,
@@ -39,6 +40,7 @@ class OrderModel {
     required this.deliveryAcceptedBy,
     required this.restaurantLocation,
     required this.assignedDeliveryPartnerId,
+    required this.orderNotes,
   });
 
   OrderModel copyWith({
@@ -61,6 +63,7 @@ class OrderModel {
     String? assignedDeliveryPartnerId,
     RestaurantLocation? restaurantLocation,
     DateTime? orderTimestamp,
+    List<String>? orderNotes,
   }) =>
       OrderModel(
         addedBy: addedBy ?? this.addedBy,
@@ -83,6 +86,7 @@ class OrderModel {
         restaurantLocation: restaurantLocation ?? this.restaurantLocation,
         assignedDeliveryPartnerId:
             assignedDeliveryPartnerId ?? this.assignedDeliveryPartnerId,
+        orderNotes: orderNotes ?? this.orderNotes,
       );
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
@@ -107,6 +111,7 @@ class OrderModel {
         orderTimestamp: json["orderTimeStamp"].toDate(),
         restaurantLocation:
             RestaurantLocation.fromJson(json["restaurantLocation"]),
+        orderNotes: List<String>.from(json['requests'] ?? []),
       );
 
   Map<String, dynamic> toJson() => {
@@ -129,6 +134,7 @@ class OrderModel {
         "userPhone": userPhone,
         "userName": userName,
         "assignedDeliveryPartnerId": assignedDeliveryPartnerId,
+        "orderNotes": orderNotes,
       };
 }
 

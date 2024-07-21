@@ -38,6 +38,19 @@ class _FoodItemCardState extends State<FoodItemCard> {
   final CartController cartController = Get.find<CartController>();
   final LanguageController languageController = Get.find<LanguageController>();
 
+  // Function to add newline characters after every 30 characters
+  String addNewlines(String text, int maxChars) {
+    String result = '';
+    for (int i = 0; i < text.length; i += maxChars) {
+      if (i + maxChars < text.length) {
+        result += text.substring(i, i + maxChars) + '\n';
+      } else {
+        result += text.substring(i);
+      }
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     final item = ItemModel(
@@ -82,11 +95,31 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 onTap: () => Get.to(() => ItemViewPage(item: item)),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    widget.image,
-                    fit: BoxFit.cover,
-                    height: 100.h,
-                    width: 150.w,
+                  child: Stack(
+                    children: [
+                      widget.image.isNotEmpty
+                          ? Image.network(
+                              widget.image,
+                              fit: BoxFit.cover,
+                              height: 100.h,
+                              width: 150.w,
+                            )
+                          : Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 6),
+                              height: 100.h,
+                              width: 150.w,
+                              decoration: BoxDecoration(
+                                  color: kLiteBackground,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: const Center(
+                                child: Text(
+                                  "No image available",
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                    ],
                   ),
                 ),
               ),
@@ -119,7 +152,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 ),
               ),
               Text(
-                widget.description,
+                addNewlines(widget.description, 25),
                 style: const TextStyle(fontSize: 12),
               ),
               Spacer(),

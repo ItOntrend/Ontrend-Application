@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/utils/constants/firebase_constants.dart';
 

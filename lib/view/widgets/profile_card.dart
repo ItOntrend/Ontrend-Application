@@ -100,8 +100,8 @@ class _ProfileCardState extends State<ProfileCard> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      "Pizza, Pastas, Desserts".tr,
+                    const Text(
+                      "Pizza, Pastas, Desserts",
                       style: TextStyle(fontSize: 14, color: kGrey),
                     ),
                   ],
@@ -115,9 +115,9 @@ class _ProfileCardState extends State<ProfileCard> {
                 Column(
                   children: [
                     Text(
-                      "Delivery fee".tr,
+                      "Delivery fee",
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: kGrey,
                       ),
                     ),
@@ -137,9 +137,9 @@ class _ProfileCardState extends State<ProfileCard> {
                 Column(
                   children: [
                     Text(
-                      "Delivery time".tr,
+                      "Delivery time",
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: kGrey,
                       ),
                     ),
@@ -159,14 +159,14 @@ class _ProfileCardState extends State<ProfileCard> {
                 Column(
                   children: [
                     Text(
-                      "Delivery by".tr,
+                      "Delivery by",
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: kGrey,
                       ),
                     ),
                     Text(
-                      "OnTrend".tr,
+                      "OnTrend",
                       style: TextStyle(
                         fontSize: 12,
                         color: kOrange,

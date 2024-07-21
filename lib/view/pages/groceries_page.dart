@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
@@ -12,7 +13,6 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_pag
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/search_result.dart';
@@ -95,7 +95,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    locationController.countryName.value,
+                    "${locationController.cityName},${locationController.countryName.value}",
                     style: const TextStyle(
                       color: kBlue,
                       fontSize: 10,
@@ -123,24 +123,34 @@ class _GroceriesPageState extends State<GroceriesPage> {
                     child: Image.asset("assets/icons/notification_icon.png"),
                   ),
                   kWidth25,
-                  Badge.count(
-                    count: cartController.getItemCount(),
-                    backgroundColor: kDarkOrange,
-                    textColor: Colors.white,
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(const AddToCartPage(
-                          addedBy: "",
-                          restaurantName: "",
-                        ));
-                      },
-                      child: Image.asset("assets/icons/cart_icon.png"),
-                    ),
-                  ),
+                  cartController.getItemCount() > 0
+                      ? Badge.count(
+                          count: cartController.getItemCount(),
+                          backgroundColor: kDarkOrange,
+                          textColor: Colors.white,
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.to(const AddToCartPage(
+                                addedBy: "",
+                                restaurantName: "",
+                              ));
+                            },
+                            child: Image.asset("assets/icons/cart_icon.png"),
+                          ),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            Get.to(const AddToCartPage(
+                              addedBy: "",
+                              restaurantName: "",
+                            ));
+                          },
+                          child: Image.asset("assets/icons/cart_icon.png"),
+                        ),
                 ],
               ),
             ),
-          ),
+          )
         ],
       ),
       body: SafeArea(
@@ -199,7 +209,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
               Padding(
                 padding: const EdgeInsets.all(0),
                 child: SizedBox(
-                  height: 250, // Adjust the height based on your needs
+                  height: 250.h, // Adjust the height based on your needs
                   child: Obx(
                     () => GridView.builder(
                       scrollDirection: Axis.horizontal,
@@ -224,7 +234,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                           onTap: () => Get.to(() => CategorysSearchPage(
                                 category: category,
                                 type: 'Grocery',
-                              )),
+                              ),),
                         );
                       },
                     ),
@@ -233,7 +243,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
               ),
               kHiegth20,
               OneTextHeading(
-                heading: "Store to explore".tr,
+                heading: "Stores to Explore".tr,
               ),
               kHiegth20,
               Obx(
