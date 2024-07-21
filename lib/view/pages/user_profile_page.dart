@@ -81,7 +81,10 @@ class UserProfilePage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.language),
+            icon: Image.asset(
+              "assets/icons/translate_icon.png",
+              height: 24,
+            ),
             onPressed: () {
               buildDialog(context);
             },
@@ -143,7 +146,7 @@ class UserProfilePage extends StatelessWidget {
                   icon: "assets/icons/my_orders_icon.png",
                   onTap: () async {
                     String userId = await LocalStorage.instance
-                        .DataFromPrefs(key: HiveKeys.userData);
+                        .dataFromPrefs(key: HiveKeys.userData);
                     Get.to(MyOrders(
                       userId: userId,
                     ));

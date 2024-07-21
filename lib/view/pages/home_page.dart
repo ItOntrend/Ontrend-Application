@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/navigation_controller.dart';
@@ -38,7 +40,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // final BestSellerController bestSellerController =
   //     Get.put(BestSellerController());
-  final userController = Get.find<UserController>();
+  final UserController userController = Get.put(UserController());
   final LocationController locationController = Get.put(LocationController());
   final CartController cartController = Get.put(CartController());
   final VendorController vendorController = Get.put(VendorController());
@@ -156,10 +158,41 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Obx(
+                () => Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  padding:
+                      const EdgeInsetsDirectional.symmetric(horizontal: 10),
+                  height: 50.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: kDarkOrange,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Rewards: ",
+                        style: GoogleFonts.aDLaMDisplay(
+                            color: kWhite,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Text(
+                        "${userController.rewardPoints.value} pts",
+                        style: GoogleFonts.abhayaLibre(
+                            color: kWhite,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...".tr,
                 onTap: () {
-                  Get.to(() => SearchPage());
+                  Get.to(() => const SearchPage());
                 },
               ),
               SPromoSliderWidget(),

@@ -333,7 +333,10 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           ),
           const Divider(),
           _buildOrderDetailRowTwo("Order ID", "#${order.orderID}"),
-          _buildOrderDetailRowTwo("Order Total", "OMR ${order.totalPrice}00"),
+          _buildOrderDetailRowTwo(
+            "Order Total",
+            "OMR ${order.totalPrice.toStringAsFixed(3)}",
+          ),
           _buildOrderDetailRowTwo("Payment Method", "Cash"),
           const Divider(),
           const Text(

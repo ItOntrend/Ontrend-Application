@@ -129,7 +129,9 @@ class _AddToCartPageState extends State<AddToCartPage> {
                           },
                         ),
                         kHiegth9,
-                        const AddingMoreItemCard(),
+                        AddingMoreItemCard(
+                          addedBy: addedBy,
+                        ),
                       ],
                     ),
                   ),

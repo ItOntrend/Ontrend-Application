@@ -68,8 +68,8 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
             ),
             kHiegth6,
             BillDetailsRow(
-              title: 'Platform fee'.tr,
-              amount: cartController.platformFee,
+              title: 'Service fee'.tr,
+              amount: cartController.serviceFee.value,
             ),
             kHiegth6,
             BillDetailsRow(
@@ -105,7 +105,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
                   const Spacer(),
                   Text(
                     "Change".tr,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: kGreen,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -135,7 +135,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
               onTap: () async {
                 log("Place Order".tr);
                 String userId = await LocalStorage.instance
-                    .DataFromPrefs(key: HiveKeys.userData);
+                    .dataFromPrefs(key: HiveKeys.userData);
 
                 if (cartController.totalAmount > 0) {
                   String orderId = await cartController.placeOrder(

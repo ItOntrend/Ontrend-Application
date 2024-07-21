@@ -14,7 +14,6 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_pag
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/search_result.dart';
@@ -216,7 +215,7 @@ class _FoodPageState extends State<FoodPage> {
               TwoTextHeading(heading: "Categories".tr),
               kHiegth20,
               SizedBox(
-                height: 250.h,
+                height: 285.h,
                 child: Obx(
                   () => GridView.builder(
                     gridDelegate:

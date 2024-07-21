@@ -16,6 +16,7 @@ class AuthController extends GetxController {
   final lastNameController = TextEditingController();
   final nationalityController = TextEditingController();
   final numberController = TextEditingController();
+  final rewardPointsController = TextEditingController(); // Add this
   final formKey = GlobalKey<FormState>();
   RxBool isLoading = RxBool(false);
 
@@ -47,6 +48,7 @@ class AuthController extends GetxController {
       number: numberController.text.trim(),
       role: 'User',
       timeStamp: DateTime.now(),
+      rewardPoints: 0.0,
     );
 
     Utils.instance.hideLoader();
@@ -75,7 +77,7 @@ class AuthController extends GetxController {
       );
 
       // Check email verification status periodically
-      final timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+      Timer.periodic(const Duration(seconds: 5), (timer) async {
         final user = FirebaseConstants.authInstance.currentUser;
         await user?.reload();
         if (user?.emailVerified ?? false) {

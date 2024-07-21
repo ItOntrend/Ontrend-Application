@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
@@ -33,6 +34,8 @@ class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   final VendorController vendorController = Get.put(VendorController());
   final LanguageController lang = Get.put(LanguageController());
+    final  CartController cartController = Get.put(CartController());
+
   TabController? _tabController;
 
   @override
@@ -78,29 +81,14 @@ class _ProfilePageState extends State<ProfilePage>
       );
     }
     vendorController.getVendors(widget.userId);
-    vendorController.getCatVendor(widget.userId, widget.type);
+    vendorController.getItemsVendor(widget.userId, widget.type);
 
     // Initialize the TabController based on initial data load
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (vendorController.CatList.isNotEmpty) {
+      if (vendorController.ItemsList.isNotEmpty) {
         initializeTabController();
       }
     });
-  }
-
-  void initializeTabController() {
-    final Set<String> tagSet = {};
-    for (var category in vendorController.CatList) {
-      if (category.tag != null) {
-        tagSet.add(category.tag!);
-      }
-    }
-    List<String> tagList = tagSet.toList();
-    _tabController = TabController(
-      length: tagList.length,
-      vsync: this,
-    );
-    setState(() {}); // Trigger rebuild to update UI
   }
 
   @override
@@ -174,7 +162,7 @@ class _ProfilePageState extends State<ProfilePage>
                     Obx(
                       () {
                         final Set<String> tagSet = {};
-                        for (var category in vendorController.CatList) {
+                        for (var category in vendorController.ItemsList) {
                           if (category.tag != null) {
                             tagSet.add(category.tag!);
                           }
@@ -208,7 +196,7 @@ class _ProfilePageState extends State<ProfilePage>
                           return const Center(child: Text("No items found"));
                         }
                         final Set<String> tagSet = {};
-                        for (var category in vendorController.CatList) {
+                        for (var category in vendorController.ItemsList) {
                           if (category.tag != null) {
                             tagSet.add(category.tag!);
                           }
@@ -288,10 +276,11 @@ class _ProfilePageState extends State<ProfilePage>
   }
 
   Widget buildItemListView(String tag) {
-    final items =
-        vendorController.itemsList.where((item) => item.tag == tag).toList();
+    final items = vendorController.ItemsList.where(
+            (item) => item.tag == tag) // Filter by tag
+        .toList();
     print("Items for tag '$tag': ${items.length}");
-    log("Items for tag '$tag': ${items.length}");
+    log("Items for tag '$tag': ${items.length}"); // Debug log
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,

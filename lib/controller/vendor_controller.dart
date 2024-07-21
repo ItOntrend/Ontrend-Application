@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 import 'package:ontrend_food_and_e_commerce/repository/item_repository.dart';
@@ -212,7 +211,7 @@ class VendorController extends GetxController {
 
     try {
       final userId =
-          await LocalStorage.instance.DataFromPrefs(key: HiveKeys.userData);
+          await LocalStorage.instance.dataFromPrefs(key: HiveKeys.userData);
       data = await VendorRepository.getVendorById(userId: userId);
 
       if (data != null) {

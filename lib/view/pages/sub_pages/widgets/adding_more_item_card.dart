@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 
 class AddingMoreItemCard extends StatefulWidget {
-  const AddingMoreItemCard({super.key});
+  final String addedBy;
+  const AddingMoreItemCard({super.key, required this.addedBy});
 
   @override
   _AddingMoreItemCardState createState() => _AddingMoreItemCardState();
@@ -23,14 +25,18 @@ class _AddingMoreItemCardState extends State<AddingMoreItemCard> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Get.back();
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Row(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        GestureDetector(
+          onTap: () {
+            Get.to(() => ProfilePage(
+                  userId: widget.addedBy,
+                  type: '',
+                  cat: 'someCategory',
+                ));
+          },
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
@@ -59,16 +65,16 @@ class _AddingMoreItemCardState extends State<AddingMoreItemCard> {
               ),
             ],
           ),
-          kHiegth18,
+        ),
+        kHiegth18,
+        if (requests.isEmpty)
           GestureDetector(
-            onTap: requests.length < 5
-                ? () => _showAddRequestDialog(context)
-                : null,
+            onTap: () => _showAddRequestDialog(context),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Add cooking requests".tr,
+                  "Add notes".tr,
                   style: const TextStyle(
                     color: Colors.black54,
                     fontSize: 14,
@@ -94,43 +100,42 @@ class _AddingMoreItemCardState extends State<AddingMoreItemCard> {
               ],
             ),
           ),
-          kHiegth9,
-          ...requests.map((request) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: kBorderLiteBlack),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "• ",
-                        style: TextStyle(color: Colors.black54, fontSize: 42),
-                      ),
-                      Expanded(
-                        child: Text(
-                          request,
-                          style: const TextStyle(
-                            color: Colors.black54,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
+        kHiegth9,
+        ...requests.map((request) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: kBorderLiteBlack),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "• ",
+                      style: TextStyle(color: Colors.black54, fontSize: 42),
+                    ),
+                    Expanded(
+                      child: Text(
+                        request,
+                        style: const TextStyle(
+                          color: Colors.black54,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                      IconButton(
-                        icon:
-                            const Icon(Icons.remove_circle, color: kDarkOrange),
-                        onPressed: () => _removeRequest(request),
-                      ),
-                    ],
-                  ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.remove_circle, color: kDarkOrange),
+                      onPressed: () => _removeRequest(request),
+                    ),
+                  ],
                 ),
-              )),
-        ],
-      ),
+              ),
+            )),
+      ],
     );
   }
 
@@ -167,21 +172,23 @@ class _AddingMoreItemCardState extends State<AddingMoreItemCard> {
                 ),
               ),
               onPressed: () {
-                String request = requestController.text;
+                String request = requestController.text.trim();
 
-                // Limit the request to 100 words
-                List<String> words = request.split(' ');
-                if (words.length > 100) {
-                  words = words.sublist(0, 100);
-                  request = words.join(' ') + '...';
-                }
-
-                setState(() {
-                  if (requests.length < 5) {
-                    requests.add(request);
-                    _saveRequests();
+                if (request.isNotEmpty) {
+                  // Limit the request to 100 words
+                  List<String> words = request.split(' ');
+                  if (words.length > 100) {
+                    words = words.sublist(0, 100);
+                    request = words.join(' ') + '...';
                   }
-                });
+
+                  setState(() {
+                    if (!requests.contains(request)) {
+                      requests.add(request);
+                      _saveRequests();
+                    }
+                  });
+                }
 
                 Get.back();
               },
@@ -211,3 +218,4 @@ class _AddingMoreItemCardState extends State<AddingMoreItemCard> {
     });
   }
 }
+
