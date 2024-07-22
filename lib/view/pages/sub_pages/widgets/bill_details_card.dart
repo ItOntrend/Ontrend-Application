@@ -143,8 +143,8 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
                     locationController.cityName.value.isEmpty ||
                     locationController.countryName.value.isEmpty) {
                   Get.snackbar(
-                    "Location Required",
-                    "You haven't selected your location",
+                    "Location Required".tr,
+                    "You haven't selected your location".tr,
                     backgroundColor: kDarkOrange,
                     colorText: Colors.white,
                   );
@@ -163,7 +163,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
                   log("Order placed");
                 }
               },
-              name: "Place Order",
+              name: "Place Order".tr,
             ),
           ],
         );

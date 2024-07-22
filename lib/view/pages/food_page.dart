@@ -16,6 +16,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_pa
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/home_search_result.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/search_result.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
@@ -42,6 +43,10 @@ class _FoodPageState extends State<FoodPage> {
 
   final lang = Get.put(LanguageController());
   List<ItemModel> searchSuggestions = [];
+  List<ItemModel> itemSearchSuggestions = [];
+  List<ItemModel> restaurantSearchSuggestions = [];
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -53,17 +58,44 @@ class _FoodPageState extends State<FoodPage> {
 
   void _updateSearchSuggestions(String query) async {
     if (query.isNotEmpty) {
-      // Fetch suggestions from the controller
-      final products = await foodController.searchProducts(query);
+      final searchResults = await foodController.searchProducts(query);
+
+      // Use a Set to filter out duplicate restaurant names
+      final uniqueRestaurantNames = <String>{};
+      final uniqueRestaurantSuggestions = <ItemModel>[];
+
+      for (var item in searchResults) {
+        if (item.restaurantName != null &&
+            item.restaurantName!.toLowerCase().contains(query.toLowerCase())) {
+          if (uniqueRestaurantNames.add(item.restaurantName!)) {
+            uniqueRestaurantSuggestions.add(item);
+          }
+        }
+      }
 
       setState(() {
-        searchSuggestions = products;
+        itemSearchSuggestions = searchResults
+            .where((item) =>
+                item.name != null &&
+                item.name!.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+        restaurantSearchSuggestions = uniqueRestaurantSuggestions;
       });
     } else {
       setState(() {
-        searchSuggestions = [];
+        itemSearchSuggestions = [];
+        restaurantSearchSuggestions = [];
       });
     }
+  }
+
+  void _clearSearchField() {
+    _searchController.clear();
+    FocusScope.of(context).unfocus();
+    setState(() {
+      itemSearchSuggestions = [];
+      restaurantSearchSuggestions = [];
+    });
   }
 
   @override
@@ -169,42 +201,74 @@ class _FoodPageState extends State<FoodPage> {
               TextfieldWithMic(
                 hintText: "Biryani, Burger, Ice Cream...".tr,
                 onChanged: _updateSearchSuggestions, // Update suggestions
+                controller: _searchController,
                 onSubmitted: (query) {
                   if (query.isNotEmpty) {
                     foodController.searchProducts(query).then((products) {
-                      Get.to(() => SearchResult(
-                            products: products,
-                            title: "Search Result",
-                            type: 'Food',
+                      Get.to(() => SearchResultHome(
+                            items: itemSearchSuggestions,
+                            restaurants: restaurantSearchSuggestions,
+                            title: "Search Result".tr,
                           ));
+                      _clearSearchField();
                     });
                   }
                 },
               ),
-              if (searchSuggestions.isNotEmpty)
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: searchSuggestions.length,
-                  itemBuilder: (context, index) {
-                    final item = searchSuggestions[index];
-                    return ListTile(
-                      title: Text(item.name),
-                      onTap: () {
-                        if (item.name.isNotEmpty) {
-                          foodController
-                              .searchProducts(item.name)
-                              .then((products) {
-                            Get.to(() => SearchResult(
-                                  products: products,
-                                  title: 'Food',
-                                  type: 'Food',
-                                ));
-                          });
-                        }
-                      },
-                    );
-                  },
+              if (itemSearchSuggestions.isNotEmpty ||
+                  restaurantSearchSuggestions.isNotEmpty)
+                Column(
+                  children: [
+                    if (itemSearchSuggestions.isNotEmpty) ...[
+                      // Text('Items:',
+                      // style: Theme.of(context).textTheme.headlineMedium),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: itemSearchSuggestions.length,
+                        itemBuilder: (context, index) {
+                          final item = itemSearchSuggestions[index];
+
+                          return ListTile(
+                            title: Text(item.name),
+                            onTap: () {
+                              final type = item.reference!.path.split('/')[0];
+                              Get.to(() => ProfilePage(
+                                    userId: item.addedBy,
+                                    cat: "",
+                                    type: type,
+                                  ));
+                              _clearSearchField();
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                    if (restaurantSearchSuggestions.isNotEmpty) ...[
+                      // Text('Restaurants:',
+                      //  style: Theme.of(context).textTheme.headlineMedium),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: restaurantSearchSuggestions.length,
+                        itemBuilder: (context, index) {
+                          final item = restaurantSearchSuggestions[index];
+                          return ListTile(
+                            title: Text(item.restaurantName ?? ''),
+                            onTap: () {
+                              final typeo = item.reference!.path.split('/')[0];
+                              Get.to(() => ProfilePage(
+                                    userId: item.addedBy,
+                                    cat: "",
+                                    type: typeo,
+                                  ));
+                              _clearSearchField();
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ],
                 ),
               kHiegth15,
               // Welcome card
@@ -309,7 +373,10 @@ class _FoodPageState extends State<FoodPage> {
                                 locationCityCountry: '',
                                 distance: vendorController
                                     .calculateDistance(vendor.location),
-                                name: vendor.restaurantName,
+                                name: lang.currentLanguage.value.languageCode ==
+                                        "ar"
+                                    ? vendor.restaurantArabicName
+                                    : vendor.restaurantName,
                                 image: vendor.bannerImage,
                                 onTap: () {
                                   Get.to(() => ProfilePage(

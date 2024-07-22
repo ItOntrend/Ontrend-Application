@@ -153,8 +153,8 @@ class _AddToCartPageState extends State<AddToCartPage> {
                   Center(
                     child: Column(
                       children: [
-                        const Text(
-                          "No items found in the cart.",
+                        Text(
+                          "No items found in the cart.".tr,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -167,8 +167,8 @@ class _AddToCartPageState extends State<AddToCartPage> {
                           onPressed: () {
                             Get.back();
                           },
-                          child: const Text(
-                            "Add Items to Cart",
+                          child: Text(
+                            "Add Items to Cart".tr,
                             style: TextStyle(color: kDarkOrange),
                           ),
                         ),

@@ -37,7 +37,8 @@ class ExploreCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(10)),
               child: image.isNotEmpty
                   ? Image.network(
                       image,
@@ -51,7 +52,7 @@ class ExploreCard extends StatelessWidget {
                       color: Colors.grey[300],
                       child: Center(
                         child: Text(
-                          'No image available',
+                          'No image available'.tr,
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 16,
@@ -115,7 +116,7 @@ class ExploreCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '${distance.toStringAsFixed(2)} km away',
+                    '${distance.toStringAsFixed(2)} ${"km away".tr}',
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 14,

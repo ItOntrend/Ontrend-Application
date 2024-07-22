@@ -5,68 +5,106 @@ import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
+import 'package:flutter/material.dart';
+import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 
 class SearchResultHome extends StatelessWidget {
+  final List<ItemModel> items;
+  final List<ItemModel> restaurants;
   final String title;
-  final List<ItemModel> products;
 
   const SearchResultHome({
     Key? key,
+    required this.items,
+    required this.restaurants,
     required this.title,
-    required this.products,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final GroceryController groceryController = Get.put(GroceryController());
-    final FoodController foodController = Get.put(FoodController());
-
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: products.isEmpty
-          ? Center(child: Text('No products found'))
-          : GridView.builder(
-              scrollDirection: Axis.vertical,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Number of rows
-                crossAxisSpacing: 10,
-                childAspectRatio:
-                    0.75, // Adjust the aspect ratio based on your design
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (items.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Items:',
+                      style: Theme.of(context).textTheme.headlineMedium),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      final item = items[index];
+                      return ListTile(
+                        title: Text(item.name),
+                        onTap: () {
+                          if (item.addedBy != null) {
+                            final type = item.reference!.path.split('/')[0];
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProfilePage(
+                                  userId: item.addedBy!,
+                                  cat: "",
+                                  type: type,
+                                ),
+                              ),
+                            );
+                          }
+                          // Handle item tap
+                        },
+                      );
+                    },
+                  ),
+                ],
               ),
-              itemCount: products.length,
-              itemBuilder: (_, index) {
-                ItemModel product = products[index];
-                CategoryModel? category;
-                String type = product.reference!.path.split('/')[0];
-                // Check the type and get the corresponding category
-                if (type == 'Grocery') {
-                  print("type is $type");
-                  category = groceryController.getCategoryByName(product.tag!);
-                } else if (type == 'Food') {
-                  print("type is $type");
-                  category = foodController.getCategoryByName(product.tag!);
-                }
-
-                return CategoryCard(
-                  categoryName: product.name,
-                  categoryImage: product.imageUrl,
-                  onTap: () {
-                    if (category != null) {
-                      print(
-                          "Navigating to CategorySearchPage with category: ${category!.name}, type: $type");
-                      Get.to(() => CategorysSearchPage(
-                            category: category!,
-                            type: type,
-                          ));
-                    } else {
-                      print(
-                          "Category not found for product: ${product.name}, type: $type");
-                    }
-                  },
-                );
-              },
-            ),
+            if (restaurants.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Restaurants:',
+                      style: Theme.of(context).textTheme.headlineMedium),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: restaurants.length,
+                    itemBuilder: (context, index) {
+                      final item = restaurants[index];
+                      return ListTile(
+                        title: Text(item.restaurantName ?? ''),
+                        onTap: () {
+                          if (item.addedBy != null) {
+                            final type = item.reference!.path.split('/')[0];
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProfilePage(
+                                  userId: item.addedBy!,
+                                  cat: "",
+                                  type: type,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

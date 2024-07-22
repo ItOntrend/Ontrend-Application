@@ -52,10 +52,33 @@ class GroceryController extends GetxController {
   }
 
   Future<List<ItemModel>> searchProducts(String query) async {
-    return productList.where((item) {
+    /*return productList.where((item) {
       return item.name.toLowerCase().contains(query.toLowerCase()) ||
-          item.localName.toLowerCase().contains(query.toLowerCase());
+          item.restaurantName.toLowerCase().contains(query.toLowerCase());
+    }).toList();*/
+    // Filter the products based on the query
+    final filteredProducts = productList.where((item) {
+      return (item.name != null &&
+              item.name!.toLowerCase().contains(query.toLowerCase())) ||
+          (item.restaurantName != null &&
+              item.restaurantName!.toLowerCase().contains(query.toLowerCase()));
     }).toList();
+
+    return filteredProducts;
+  } // Method to get unique restaurant names from the filtered products
+
+  List<ItemModel> getUniqueRestaurants(List<ItemModel> products) {
+    final Set<String> restaurantNames = {};
+    final List<ItemModel> uniqueRestaurants = [];
+
+    for (var product in products) {
+      if (product.restaurantName != null &&
+          restaurantNames.add(product.restaurantName!)) {
+        uniqueRestaurants.add(product);
+      }
+    }
+
+    return uniqueRestaurants;
   }
 
   CategoryModel? getCategoryByName(String categoryName) {

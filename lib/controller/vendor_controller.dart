@@ -16,7 +16,7 @@ class VendorController extends GetxController {
   RxBool isItemsLoading = RxBool(false);
   Rx<VendorModel?> vendorDetail = Rx<VendorModel?>(null);
   RxList<VendorModel> vendorsList = RxList<VendorModel>();
-  RxList<VendorModel> vendorsListCat = RxList<VendorModel>();
+  RxList<VendorModel> vendorsListg = RxList<VendorModel>();
   RxList<VendorModel> vendorsListf = RxList<VendorModel>();
   RxList<ItemModel> itemsList = RxList<ItemModel>();
   RxString userName = ''.obs;
@@ -93,8 +93,7 @@ class VendorController extends GetxController {
     }
   }
 
-  // Fetch list of vendors from Firebase
-  Future<void> fetchVendors(
+  Future<void> fetchVendorsg(
     String type,
   ) async {
     try {
@@ -102,14 +101,15 @@ class VendorController extends GetxController {
           .collection('users')
           .where('role', isEqualTo: 'Vendor')
           .where('vendorType',
-              isEqualTo: type) // Add this condition to filter by vendorType
+              isEqualTo:
+                  'Grocery') // Add this condition to filter by vendorType
           .get();
 
       var vendors = vendorsQuerySnapshot.docs.map((doc) {
         return VendorModel.fromMap(doc.data(), doc.id);
       }).toList();
 
-      vendorsListCat.assignAll(vendors);
+      vendorsListg.assignAll(vendors);
       log("Vendors data fetched successfully");
     } catch (e) {
       log('Error fetching vendors: $e');
@@ -125,7 +125,8 @@ class VendorController extends GetxController {
           .collection('users')
           .where('role', isEqualTo: 'Vendor')
           .where('vendorType',
-              isEqualTo: type) // Add this condition to filter by vendorType
+              isEqualTo:
+                  'Food/Restaurant') // Add this condition to filter by vendorType
           .get();
 
       var vendors = vendorsQuerySnapshot.docs.map((doc) {
@@ -346,7 +347,7 @@ class VendorController extends GetxController {
         fee = 1.410;
       }
 
-      deliveryFee.value = fee;
+      deliveryFee.value = double.parse(fee.toStringAsFixed(3));
       // Example fee calculation: $5 base fee + $2 per km
       //deliveryFee.value = 5.0 + (2.0 * distance);
       print('Delivery Fee: ${deliveryFee.value}');

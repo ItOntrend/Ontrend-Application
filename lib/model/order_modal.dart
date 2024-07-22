@@ -1,6 +1,9 @@
 class OrderModel {
   String addedBy;
   double adminEarnings;
+  double servicFee;
+  double deliveryFee;
+  double deliveryCharge;
   bool deliveryAccepted;
   DeliveryLocation deliveryLocation;
   DeliveryAcceptedBy deliveryAcceptedBy;
@@ -23,6 +26,9 @@ class OrderModel {
   OrderModel({
     required this.addedBy,
     required this.adminEarnings,
+    required this.servicFee,
+    required this.deliveryFee,
+    required this.deliveryCharge,
     required this.discountApplied,
     required this.items,
     required this.promoCode,
@@ -46,6 +52,9 @@ class OrderModel {
   OrderModel copyWith({
     String? addedBy,
     double? adminEarnings,
+    double? serviceFee,
+    double? deliveryFee,
+    double? deliveryCharge,
     double? discountApplied,
     bool? deliveryAccepted,
     List<Item>? items,
@@ -68,6 +77,9 @@ class OrderModel {
       OrderModel(
         addedBy: addedBy ?? this.addedBy,
         adminEarnings: adminEarnings ?? this.adminEarnings,
+        servicFee: servicFee ?? this.servicFee,
+        deliveryFee: deliveryFee ?? this.deliveryFee,
+        deliveryCharge: deliveryCharge ?? this.deliveryCharge,
         discountApplied: discountApplied ?? this.discountApplied,
         items: items ?? this.items,
         promoCode: promoCode ?? this.promoCode,
@@ -92,6 +104,9 @@ class OrderModel {
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
         addedBy: json["addedBy"] ?? "",
         adminEarnings: json["adminEarnings"].toDouble() ?? 0,
+        deliveryFee: json["deliveryFee"].toDouble() ?? 0,
+        servicFee: json["serviceFee"].toDouble() ?? 0,
+        deliveryCharge: json["deliveryCharge"].toDouble() ?? 0,
         discountApplied: json["discountApplied"].toDouble() ?? 0,
         items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
         promoCode: json["promoCode"] ?? "",
@@ -117,6 +132,9 @@ class OrderModel {
   Map<String, dynamic> toJson() => {
         "addedBy": addedBy,
         "adminEarnings": adminEarnings,
+        "deliveryCharge": deliveryCharge,
+        "serviceFee": servicFee,
+        "deliveryFee": deliveryFee,
         "discountApplied": discountApplied,
         "items": List<dynamic>.from(items.map((x) => x.toJson())),
         "promoCode": promoCode,

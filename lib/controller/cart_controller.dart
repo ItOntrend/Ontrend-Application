@@ -19,11 +19,13 @@ class CartController extends GetxController {
   var cartItems = {}.obs;
   var itemTotal = 0.0.obs;
   final deliveryFee = 0.0.obs;
-  var serviceFee = 0.0.obs;
   final platformFeePercentage = 0.025;
   bool isReturningFromCart = false;
   var isFabVisible = false.obs;
   var rewardPoints = 0.0.obs;
+  var serviceFee = 0.0.obs;
+  var deliveryCharge = 0.0.obs;
+  var commisionrate = 20.00.obs;
 
   @override
   void onInit() {
@@ -90,6 +92,41 @@ class CartController extends GetxController {
         print('Delivery Fee: ${deliveryFee.value}');
       } else {
         deliveryFee.value = 0.0; // Set default fee if vendor not found
+      }
+    }
+  }
+
+  Future<void> calculateDeliveryCharge() async {
+    if (cartItems.isNotEmpty) {
+      final vendorId = cartItems.values.first['item'].addedBy;
+      print('Vendor ID: $vendorId');
+
+      final vendor = await vendorController.getVendorByUId(userId: vendorId);
+      print('Vendor Details: ${vendor?.toJson()}');
+
+      if (vendor != null) {
+        final distance = vendorController.calculateDistance(vendor.location);
+        print('Calculated Distance: $distance');
+        final commision = vendor.commmisionRate;
+        double charge;
+        if (distance <= 6) {
+          charge = 0.600;
+        } else if (distance <= 10) {
+          charge = 0.800;
+        } else if (distance <= 12) {
+          charge = 0.900;
+        } else {
+          charge = 1.040;
+        }
+
+        deliveryCharge.value = charge;
+        commisionrate.value = (commision / 100);
+        print("........commision rate is......${commisionrate.value}");
+        // Example fee calculation: $5 base fee + $2 per km
+        //deliveryFee.value = 5.0 + (2.0 * distance);
+        print('Delivery Charge: ${deliveryCharge.value}');
+      } else {
+        deliveryCharge.value = 0.0; // Set default fee if vendor not found
       }
     }
   }
@@ -177,7 +214,7 @@ class CartController extends GetxController {
     cartItems.refresh();
     saveCartItems();
     calculateDeliveryFee();
-
+    calculateDeliveryCharge();
     // Update isFabVisible to true
     isFabVisible.value = true;
 
@@ -199,7 +236,7 @@ class CartController extends GetxController {
     cartItems.refresh();
     saveCartItems();
     calculateDeliveryFee();
-
+    calculateDeliveryCharge();
     if (isReturningFromCart) {
       showSnackBar('Item removed from cart');
       isReturningFromCart = false; // Reset the flag
@@ -260,108 +297,121 @@ class CartController extends GetxController {
   }
 
   Future<String> placeOrder(String userId, String paymentType, String userName,
-    String userPhone) async {
-  String orderId = generateOrderId();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  List<String> orderNotes = prefs.getStringList('requests') ?? [];
+      String userPhone) async {
+    String orderId = generateOrderId();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> orderNotes = prefs.getStringList('requests') ?? [];
 
-  try {
-    final currentLat = locationController.currentPosition.value.latitude;
-    final currentLng = locationController.currentPosition.value.longitude;
-
-    OrderModel order = OrderModel(
-      userName: userName,
-      deliveryAcceptedBy:
-          DeliveryAcceptedBy(name: "", phoneNumber: "", id: ""),
-      userPhone: userPhone,
-      addedBy: cartItems.values.first['item'].addedBy,
-      adminEarnings: serviceFee.value,
-      discountApplied: 0.0,
-      items: cartItems.values
-          .map((value) => Item(
-                addedBy: value['item'].addedBy.toString(),
-                itemName: value['item'].name,
-                itemPrice:
-                    double.tryParse(value['item'].price.toString()) ?? 0,
-                itemQuantity: (value['quantity'] as num).toInt(),
-                total: (value['item'].price * value['quantity']).toDouble(),
-              ))
-          .toList(),
-      promoCode: null,
-      status: 'Pending',
-      totalPrice: totalAmount,
-      userId: userId,
-      orderTimestamp: DateTime.now(),
-      orderID: orderId,
-      paymentType: paymentType,
-      restaurantName: cartItems.values.first['item'].restaurantName,
-      deliveryLocation: DeliveryLocation(
-          address: locationController.currentAddress.value,
-          apartmentNumber: "apartmentNumber",
-          city: locationController.cityName.value,
-          houseNumber: "houseNumber",
-          lat: currentLat,
-          lng: currentLng,
-          street: locationController.streetName.value),
-      assignedDeliveryPartnerId: '',
-      deliveryAccepted: false,
-      restaurantLocation: RestaurantLocation(lat: 0.0, lng: 0.0),
-      orderNotes: orderNotes,
-    );
-
-    // Ensure the orderId is not empty
-    if (orderId.isEmpty) {
-      throw Exception('Order ID is empty');
-    }
-
-    // Save order to Firestore
-    await FirebaseFirestore.instance
-        .collection('orders')
-        .doc(orderId)
-        .set(order.toJson());
-
-    // Fetch user document and update reward points
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .get();
-    if (!userDoc.exists) {
-      throw Exception('User document does not exist');
-    }
-
-    double rewardPoints = 0.0;
     try {
-      rewardPoints = (userDoc['rewardPoints'] as num).toDouble();
+      final currentLat = locationController.currentPosition.value.latitude;
+      final currentLng = locationController.currentPosition.value.longitude;
+      double adminEarnings = itemTotal.value * commisionrate.value;
+      print("Admin Earnings...$adminEarnings"); // 2% of item total
+      double adminTotalEarnings =
+          adminEarnings + serviceFee.value + deliveryFee.value;
+
+      // If there's an assigned delivery person, subtract the delivery fee from the total earnings
+
+      // Adjust this if you have a different fee for delivery persons
+      adminTotalEarnings -= deliveryCharge.value;
+
+      OrderModel order = OrderModel(
+        userName: userName,
+        deliveryAcceptedBy:
+            DeliveryAcceptedBy(name: "", phoneNumber: "", id: ""),
+        servicFee: serviceFee.value,
+        deliveryFee: deliveryFee.value,
+        userPhone: userPhone,
+        addedBy: cartItems.values.first['item'].addedBy,
+        adminEarnings: adminTotalEarnings,
+        deliveryCharge: deliveryCharge.value,
+        discountApplied: 0.0,
+        items: cartItems.values
+            .map((value) => Item(
+                  addedBy: value['item'].addedBy.toString(),
+                  itemName: value['item'].name,
+                  itemPrice:
+                      double.tryParse(value['item'].price.toString()) ?? 0,
+                  itemQuantity: (value['quantity'] as num).toInt(),
+                  total: (value['item'].price * value['quantity']).toDouble(),
+                ))
+            .toList(),
+        promoCode: null,
+        status: 'Pending',
+        totalPrice: totalAmount,
+        userId: userId,
+        orderTimestamp: DateTime.now(),
+        orderID: orderId,
+        paymentType: paymentType,
+        restaurantName: cartItems.values.first['item'].restaurantName,
+        deliveryLocation: DeliveryLocation(
+            address: locationController.currentAddress.value,
+            apartmentNumber: "apartmentNumber",
+            city: locationController.cityName.value,
+            houseNumber: "houseNumber",
+            lat: currentLat,
+            lng: currentLng,
+            street: locationController.streetName.value),
+        assignedDeliveryPartnerId: '',
+        deliveryAccepted: false,
+        restaurantLocation: RestaurantLocation(lat: 0.0, lng: 0.0),
+        orderNotes: orderNotes,
+      );
+
+      // Ensure the orderId is not empty
+      if (orderId.isEmpty) {
+        throw Exception('Order ID is empty');
+      }
+
+      // Save order to Firestore
+      await FirebaseFirestore.instance
+          .collection('orders')
+          .doc(orderId)
+          .set(order.toJson());
+
+      // Fetch user document and update reward points
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      if (!userDoc.exists) {
+        throw Exception('User document does not exist');
+      }
+
+      double rewardPoints = 0.0;
+      try {
+        rewardPoints = (userDoc['rewardPoints'] as num).toDouble();
+      } catch (e) {
+        print('Error parsing reward points: $e');
+      }
+      rewardPoints += totalAmount * 62;
+
+      // Update reward points in Firebase and Local Storage
+      await updateRewardPoints(userId, rewardPoints);
+
+      await LocalStorage.instance.writeDataToPrefs(
+        key: 'rewardPoints',
+        value: rewardPoints,
+      );
+
+      // Clean up
+      cartItems.clear();
+      itemTotal.value = 0.0;
+      serviceFee.value = 0.0;
+      deliveryFee.value = 0.0;
+      isFabVisible.value = false;
+      prefs.remove('requests');
+      await saveRewardPoints();
+      saveCartItems();
+
+      Get.snackbar('Order', 'Order has been placed successfully');
+      return orderId;
     } catch (e) {
-      print('Error parsing reward points: $e');
+      print('Error placing order: $e');
+      Get.snackbar('Error', 'Failed to place the order');
+      return '';
     }
-    rewardPoints += totalAmount * 62;
-
-    // Update reward points in Firebase and Local Storage
-    await updateRewardPoints(userId, rewardPoints);
-
-    await LocalStorage.instance.writeDataToPrefs(
-      key: 'rewardPoints',
-      value: rewardPoints,
-    );
-
-    // Clean up
-    cartItems.clear();
-    itemTotal.value = 0.0;
-    serviceFee.value = 0.0;
-    isFabVisible.value = false;
-    prefs.remove('requests');
-    await saveRewardPoints();
-    saveCartItems();
-
-    Get.snackbar('Order', 'Order has been placed successfully');
-    return orderId;
-  } catch (e) {
-    print('Error placing order: $e');
-    Get.snackbar('Error', 'Failed to place the order');
-    return '';
   }
-}
 
   void showSnackBar(String message) {
     Get.snackbar('Cart', message,

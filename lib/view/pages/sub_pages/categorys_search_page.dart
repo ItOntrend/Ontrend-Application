@@ -115,7 +115,11 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                                     locationCityCountry: '',
                                     distance: vendorController
                                         .calculateDistance(vendor.location),
-                                    name: vendor.restaurantName,
+                                    name: languageController.currentLanguage
+                                                .value.languageCode ==
+                                            "ar"
+                                        ? vendor.restaurantArabicName
+                                        : vendor.restaurantName,
                                     image: vendor.bannerImage,
                                     onTap: () {
                                       Get.to(() => ProfilePage(
