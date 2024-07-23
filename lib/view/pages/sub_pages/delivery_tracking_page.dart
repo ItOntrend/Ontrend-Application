@@ -24,7 +24,6 @@ class DeliveryTrackingPage extends StatefulWidget {
       required this.longitude});
   final double latitude;
   final double longitude;
-  
 
   @override
   _DeliveryTrackingPageState createState() => _DeliveryTrackingPageState();
@@ -65,8 +64,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     ImageConfiguration configuration =
         const ImageConfiguration(size: Size(0, 0), devicePixelRatio: 5);
 
-    BitmapDescriptor.asset(
-            configuration, "assets/icons/restaurant_icon.png")
+    BitmapDescriptor.asset(configuration, "assets/icons/restaurant_icon.png")
         .then((value) {
       setState(() {
         restaurantIcon = value;
@@ -78,8 +76,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     ImageConfiguration configuration =
         const ImageConfiguration(size: Size(0, 0), devicePixelRatio: 5);
 
-    BitmapDescriptor.asset(
-            configuration, "assets/icons/user_location_icon.png")
+    BitmapDescriptor.asset(configuration, "assets/icons/user_location_icon.png")
         .then((value) {
       setState(() {
         currentLocationIcon = value;
@@ -105,16 +102,17 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
 
   void calculateRemainingDistance() {
     double distance = Geolocator.distanceBetween(
-        deliveryBoyLocation.latitude,
-        deliveryBoyLocation.longitude,
-        destination.latitude,
-        destination.longitude,);
+      deliveryBoyLocation.latitude,
+      deliveryBoyLocation.longitude,
+      destination.latitude,
+      destination.longitude,
+    );
 
-        double distanceInKm = distance / 1000;
+    double distanceInKm = distance / 1000;
 
-        setState(() {
-          remainingDistance = distanceInKm;
-        });
+    setState(() {
+      remainingDistance = distanceInKm;
+    });
   }
 
   @override
@@ -201,13 +199,13 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                               icon: markerIcon,
                               infoWindow: const InfoWindow(
                                 title: 'Delivery Boy',
-                                snippet:
-                                    'Lat: , Lng: ',
+                                snippet: 'Lat: , Lng: ',
                               ),
                             ),
                             Marker(
                               markerId: const MarkerId("Restaurant"),
-                              position: LatLng(order.restaurantLocation.lat, order.restaurantLocation.lng),
+                              position: LatLng(order.restaurantLocation.lat,
+                                  order.restaurantLocation.lng),
                               icon: markerIcon,
                               infoWindow: InfoWindow(
                                 title: 'Restaurant',
@@ -305,37 +303,37 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     );
   }
 
-  void startTracking(String orderId){
+  void startTracking(String orderId) {
     Timer.periodic(const Duration(seconds: 1), (timer) async {
       var trackingData = await getOrderTracking(orderId);
 
-      if (trackingData != null){
+      if (trackingData != null) {
         double latitude = trackingData['deliveryPartnerLat'];
-        double longitude= trackingData['deliveryPartnerLong'];
-        updateUIWithLocation(latitude,longitude);
+        double longitude = trackingData['deliveryPartnerLong'];
+        updateUIWithLocation(latitude, longitude);
         log('Latest location: $latitude, $longitude');
-      } else{
+      } else {
         log('No tracking data available for order ID: $orderId');
       }
     });
   }
 
   Future<Map<String, dynamic>?> getOrderTracking(String orderId) async {
-    try{
+    try {
       var snapshot = await orderTrackingColloction.doc(orderId).get();
 
-      if(snapshot.exists){
+      if (snapshot.exists) {
         return snapshot.data() as Map<String, dynamic>;
       } else {
         return null;
       }
-    } catch(e){
+    } catch (e) {
       log("Error retriving order tracking information: $e");
       return null;
     }
   }
 
-  void updateUIWithLocation(double latitude, double longitude){
+  void updateUIWithLocation(double latitude, double longitude) {
     setState(() {
       deliveryBoyLocation = LatLng(latitude, longitude);
     });
@@ -343,7 +341,6 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     mapController.animateCamera(CameraUpdate.newLatLng(deliveryBoyLocation));
 
     calculateRemainingDistance();
-
   }
 
   Widget _buildDeliveryDetails(OrderModel order) {
@@ -545,13 +542,25 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           ...order.items
-              .map((item) => ListTile(
-                    title: Text(item.itemName),
-                    subtitle:
-                        Text("${item.itemQuantity} x OMR ${item.itemPrice}00"),
-                    trailing: Text("OMR ${item.total}00"),
+              .map((item) => Column(
+                    children: [
+                      ListTile(
+                        title: Text(item.itemName),
+                        subtitle: Text(
+                            "${item.itemQuantity} x OMR ${item.itemPrice}00"),
+                        trailing: Text("OMR ${item.total}00"),
+                      ),
+                    ],
                   ))
               .toList(),
+          ListTile(
+            title: const Text("Delivery fee"),
+            trailing: Text("OMR ${order.deliveryFee}00"),
+          ),
+          ListTile(
+            title: const Text("Service fee"),
+            trailing: Text("OMR ${order.servicFee}00"),
+          ),
           const Divider(),
           _buildOrderDetailRow(order),
         ],

@@ -15,7 +15,6 @@ class OffersAndBenefitsCard extends StatelessWidget {
         horizontal: 20,
         vertical: 12,
       ),
-      height: 107.h,
       width: double.infinity,
       decoration: BoxDecoration(
         color: kWhite,

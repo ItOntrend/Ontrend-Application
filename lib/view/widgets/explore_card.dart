@@ -74,8 +74,8 @@ class ExploreCard extends StatelessWidget {
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(10)),
               child: image.isNotEmpty
-                  ? CachedNetworkImage(imageUrl: 
-                      image,
+                  ? CachedNetworkImage(
+                      imageUrl: image,
                       fit: BoxFit.cover,
                       width: double.infinity,
                       height: 150,
@@ -173,14 +173,7 @@ class ExploreCard extends StatelessWidget {
                         ),
                       ),
                     ],
-                  
                   ),
-                  Text(
-                    '${distance.toStringAsFixed(2)} ${"km away".tr}',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
-                    ),),
                 ],
               ),
             ),

@@ -75,8 +75,8 @@ class _FoodPageState extends State<FoodPage> {
 
       setState(() {
         itemSearchSuggestions = searchResults
-            .where((item) =>
-                item.name.toLowerCase().contains(query.toLowerCase()))
+            .where(
+                (item) => item.name.toLowerCase().contains(query.toLowerCase()))
             .toList();
         restaurantSearchSuggestions = uniqueRestaurantSuggestions;
       });
@@ -117,17 +117,24 @@ class _FoodPageState extends State<FoodPage> {
             ),
           ),
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Obx(() => Text(
-                  locationController.streetName.value,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )),
-            Obx(() => Row(
+        title: GestureDetector(
+          onTap: () {
+            Get.to(
+              const SelectLocationPage(),
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Obx(() => Text(
+                    locationController.streetName.value,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),
+              Obx(
+                () => Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
@@ -142,8 +149,10 @@ class _FoodPageState extends State<FoodPage> {
                       size: 16,
                     ),
                   ],
-                )),
-          ],
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           Obx(

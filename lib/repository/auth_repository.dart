@@ -35,7 +35,8 @@ abstract class AuthRepository {
     required String nationality,
     required String number,
     required String role,
-    required DateTime timeStamp, required double rewardPoints,
+    required DateTime timeStamp,
+    required double rewardPoints,
   }) async {
     AuthStatus _status;
 
@@ -57,7 +58,6 @@ abstract class AuthRepository {
           .createUserWithEmailAndPassword(email: email, password: pass);
 
       if (authResult.user != null) {
-
         // Send email verification
         await authResult.user!.sendEmailVerification();
         await LocalStorage.instance.writeDataToPrefs(
@@ -156,7 +156,18 @@ abstract class AuthRepository {
   }
 
   static Future<void> onLogOut() async {
-    await LocalStorage.instance.clearPrefs();
-    await FirebaseConstants.authInstance.signOut();
+    try {
+      await LocalStorage.instance.clearPrefs();
+      print("Local storage cleared.");
+    } catch (e) {
+      print("Error clearing local storage: $e");
+    }
+
+    try {
+      await FirebaseConstants.authInstance.signOut();
+      print("Signed out from Firebase.");
+    } catch (e) {
+      print("Error signing out from Firebase: $e");
+    }
   }
 }
