@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 
 class OruServiceBigCard extends StatelessWidget {
   const OruServiceBigCard({
@@ -15,6 +17,8 @@ class OruServiceBigCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final LanguageController lang = Get.put(LanguageController());
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       width: double.infinity,
@@ -52,7 +56,7 @@ class OruServiceBigCard extends StatelessWidget {
                 10,
               ),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
@@ -62,7 +66,9 @@ class OruServiceBigCard extends StatelessWidget {
                 ),
                 kWidth10,
                 Text(
-                  "Up to 40% Off",
+                  lang.currentLanguage.value.languageCode == "ar"
+                      ? "تخفيض يصل إلى ٤٠٪"
+                      : "Up to 40% Off",
                   style: TextStyle(
                     fontSize: 10,
                     color: kWhite,

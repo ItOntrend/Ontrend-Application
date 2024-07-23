@@ -450,7 +450,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         "Processing",
         "Ready",
         "Picked Up",
-        "Delivered"
+        "Completed"
       ];
       int currentIndex = steps.indexOf(status);
       int stepIndex = steps.indexOf(step);
@@ -463,7 +463,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         MyTimelineTile(
           isFirst: true,
           isLast: false,
-          isPast: isPast("Pending"),
+          isPast: isPast("Pending".tr),
           child: const Text(
             "Pending",
             style: TextStyle(
@@ -475,8 +475,8 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           isFirst: false,
           isLast: false,
           isPast: isPast("Processing"),
-          child: const Text(
-            "Processing",
+          child: Text(
+            "Processing".tr,
             style: TextStyle(
               fontSize: 12,
             ),
@@ -486,8 +486,8 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           isFirst: false,
           isLast: false,
           isPast: isPast("Ready"),
-          child: const Text(
-            "Ready",
+          child: Text(
+            "Ready".tr,
             style: TextStyle(
               fontSize: 12,
             ),
@@ -497,8 +497,8 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           isFirst: false,
           isLast: false,
           isPast: isPast("Picked Up"),
-          child: const Text(
-            "Picked Up",
+          child: Text(
+            "Picked Up".tr,
             style: TextStyle(
               fontSize: 12,
             ),
@@ -507,9 +507,9 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         MyTimelineTile(
           isFirst: false,
           isLast: true,
-          isPast: isPast("Delivered"),
+          isPast: isPast("Completed"),
           child: const Text(
-            "Delivered",
+            "Completed",
             style: TextStyle(
               fontSize: 12,
             ),
@@ -525,32 +525,28 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Order Details",
+          Text(
+            "Order Details".tr,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           const Divider(),
-          _buildOrderDetailRowTwo("Order ID", "#${order.orderID}"),
+          _buildOrderDetailRowTwo("Order ID".tr, "#${order.orderID}"),
           _buildOrderDetailRowTwo(
-            "Order Total",
-            "OMR ${order.totalPrice.toStringAsFixed(3)}",
+            "Order Total".tr,
+            "${"OMR".tr} ${order.totalPrice.toStringAsFixed(3)}",
           ),
-          _buildOrderDetailRowTwo("Payment Method", "Cash"),
+          _buildOrderDetailRowTwo("Payment Method".tr, "Cash".tr),
           const Divider(),
-          const Text(
-            "Order Menu",
+          Text(
+            "Order Menu".tr,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           ...order.items
-              .map((item) => Column(
-                    children: [
-                      ListTile(
-                        title: Text(item.itemName),
-                        subtitle: Text(
-                            "${item.itemQuantity} x OMR ${item.itemPrice}00"),
-                        trailing: Text("OMR ${item.total}00"),
-                      ),
-                    ],
+              .map((item) => ListTile(
+                    title: Text(item.itemName),
+                    subtitle:
+                        Text("${item.itemQuantity} x OMR ${item.itemPrice}00"),
+                    trailing: Text("${"OMR".tr} ${item.total}00"),
                   ))
               .toList(),
           ListTile(
@@ -588,8 +584,8 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Distance: ${distance.toStringAsFixed(2)} km"),
-        Text("Estimated Delivery Time: $formattedDeliveryTime"),
+        Text("${"Distance:".tr} ${distance.toStringAsFixed(2)} ${"km".tr}"),
+        Text("${"Estimated Delivery Time:".tr} $formattedDeliveryTime"),
       ],
     );
   }
