@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
@@ -12,8 +11,6 @@ class GroceryController extends GetxController {
   RxList<CategoryModel> categoryList = RxList();
   RxBool isProductLoading = RxBool(false);
   RxList<ItemModel> productList = RxList();
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   @override
   void onInit() {
     super.onInit();
@@ -47,7 +44,7 @@ class GroceryController extends GetxController {
     productList.value = await GroceryRepository.getProducts();
     isProductLoading.value = false;
     print("products........");
-    print("${productList.value}");
+    print("${productList}");
     print("${productList[0].name}");
   }
 
@@ -58,10 +55,8 @@ class GroceryController extends GetxController {
     }).toList();*/
     // Filter the products based on the query
     final filteredProducts = productList.where((item) {
-      return (item.name != null &&
-              item.name!.toLowerCase().contains(query.toLowerCase())) ||
-          (item.restaurantName != null &&
-              item.restaurantName!.toLowerCase().contains(query.toLowerCase()));
+      return (item.name.toLowerCase().contains(query.toLowerCase())) ||
+          (item.restaurantName.toLowerCase().contains(query.toLowerCase()));
     }).toList();
 
     return filteredProducts;
@@ -72,8 +67,7 @@ class GroceryController extends GetxController {
     final List<ItemModel> uniqueRestaurants = [];
 
     for (var product in products) {
-      if (product.restaurantName != null &&
-          restaurantNames.add(product.restaurantName!)) {
+      if (restaurantNames.add(product.restaurantName)) {
         uniqueRestaurants.add(product);
       }
     }

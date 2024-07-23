@@ -70,9 +70,8 @@ class _HomePageState extends State<HomePage> {
       final uniqueRestaurantSuggestions = <ItemModel>[];
 
       for (var item in searchResults) {
-        if (item.restaurantName != null &&
-            item.restaurantName!.toLowerCase().contains(query.toLowerCase())) {
-          if (uniqueRestaurantNames.add(item.restaurantName!)) {
+        if (item.restaurantName.toLowerCase().contains(query.toLowerCase())) {
+          if (uniqueRestaurantNames.add(item.restaurantName)) {
             uniqueRestaurantSuggestions.add(item);
           }
         }
@@ -81,8 +80,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         itemSearchSuggestions = searchResults
             .where((item) =>
-                item.name != null &&
-                item.name!.toLowerCase().contains(query.toLowerCase()))
+                item.name.toLowerCase().contains(query.toLowerCase()))
             .toList();
         restaurantSearchSuggestions = uniqueRestaurantSuggestions;
       });
@@ -294,7 +292,7 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (context, index) {
                           final item = restaurantSearchSuggestions[index];
                           return ListTile(
-                            title: Text(item.restaurantName ?? ''),
+                            title: Text(item.restaurantName),
                             onTap: () {
                               final typeo = item.reference!.path.split('/')[0];
                               Get.to(() => ProfilePage(
@@ -369,16 +367,16 @@ class _HomePageState extends State<HomePage> {
                             const SizedBox(height: 18),
                         itemCount: 3,
                       )
-                    : vendorController.vendorsListCat.isEmpty
+                    : vendorController.vendorsListg.isEmpty
                         ? const Center(child: Text("No Vendor Available"))
                         : ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
-                            itemCount: vendorController.vendorsListCat.length,
+                            itemCount: vendorController.vendorsListg.length,
                             itemBuilder: (context, index) {
                               final vendor =
-                                  vendorController.vendorsListCat[index];
+                                  vendorController.vendorsListg[index];
                               log("Vendor Images");
 
                               log(vendor.bannerImage.toString());
@@ -398,36 +396,8 @@ class _HomePageState extends State<HomePage> {
                                       ));
                                 },
                               );
-                () => vendorController.vendorsListf.isEmpty
-                    ? const Center(child: Text("No Vendor Available"))
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        itemCount: vendorController.vendorsListf.length,
-                        itemBuilder: (context, index) {
-                          final vendor = vendorController.vendorsListf[index];
-                          return ExploreCard(
-                            longitude: vendor.location.lng,
-                            latitude: vendor.location.lat,
-                            locationCityCountry: '',
-                            distance: vendorController
-                                .calculateDistance(vendor.location),
-                            name:
-                                lang.currentLanguage.value.languageCode == "ar"
-                                    ? vendor.restaurantArabicName
-                                    : vendor.restaurantName,
-                            image: vendor.bannerImage,
-                            onTap: () {
-                              Get.to(() => ProfilePage(
-                                    userId: vendor.reference.id,
-                                    cat: "",
-                                    type: "Food/Restaurent",
-                                  ));
                             },
-                          );
-                        },
-                      ),
+                          ),
               ),
               kHiegth40,
             ],

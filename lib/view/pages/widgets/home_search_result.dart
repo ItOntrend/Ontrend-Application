@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:ontrend_food_and_e_commerce/controller/food_controller.dart';
-import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
-import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
-import 'package:flutter/material.dart';
-import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
-
 class SearchResultHome extends StatelessWidget {
   final List<ItemModel> items;
   final List<ItemModel> restaurants;
@@ -48,20 +39,18 @@ class SearchResultHome extends StatelessWidget {
                       return ListTile(
                         title: Text(item.name),
                         onTap: () {
-                          if (item.addedBy != null) {
-                            final type = item.reference!.path.split('/')[0];
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProfilePage(
-                                  userId: item.addedBy!,
-                                  cat: "",
-                                  type: type,
-                                ),
+                          final type = item.reference!.path.split('/')[0];
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfilePage(
+                                userId: item.addedBy,
+                                cat: "",
+                                type: type,
                               ),
-                            );
-                          }
-                          // Handle item tap
+                            ),
+                          );
+                                                  // Handle item tap
                         },
                       );
                     },
@@ -81,22 +70,20 @@ class SearchResultHome extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final item = restaurants[index];
                       return ListTile(
-                        title: Text(item.restaurantName ?? ''),
+                        title: Text(item.restaurantName),
                         onTap: () {
-                          if (item.addedBy != null) {
-                            final type = item.reference!.path.split('/')[0];
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProfilePage(
-                                  userId: item.addedBy!,
-                                  cat: "",
-                                  type: type,
-                                ),
+                          final type = item.reference!.path.split('/')[0];
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfilePage(
+                                userId: item.addedBy,
+                                cat: "",
+                                type: type,
                               ),
-                            );
-                          }
-                        },
+                            ),
+                          );
+                                                },
                       );
                     },
                   ),

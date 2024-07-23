@@ -12,7 +12,7 @@ class HomeController extends GetxController {
     productList.value = await SearchRepository.getProducts();
     isProductLoading.value = false;
     print("products........");
-    print("${productList.value}");
+    print("${productList}");
     print("${productList[0].name}");
   }
 
@@ -23,10 +23,8 @@ class HomeController extends GetxController {
     }).toList();*/
     // Filter the products based on the query
     final filteredProducts = productList.where((item) {
-      return (item.name != null &&
-              item.name!.toLowerCase().contains(query.toLowerCase())) ||
-          (item.restaurantName != null &&
-              item.restaurantName!.toLowerCase().contains(query.toLowerCase()));
+      return (item.name.toLowerCase().contains(query.toLowerCase())) ||
+          (item.restaurantName.toLowerCase().contains(query.toLowerCase()));
     }).toList();
 
     return filteredProducts;
@@ -37,8 +35,7 @@ class HomeController extends GetxController {
     final List<ItemModel> uniqueRestaurants = [];
 
     for (var product in products) {
-      if (product.restaurantName != null &&
-          restaurantNames.add(product.restaurantName!)) {
+      if (restaurantNames.add(product.restaurantName)) {
         uniqueRestaurants.add(product);
       }
     }

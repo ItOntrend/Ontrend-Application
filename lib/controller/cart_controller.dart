@@ -321,12 +321,9 @@ class CartController extends GetxController {
             DeliveryAcceptedBy(name: "", phoneNumber: "", id: ""),
         userPhone: userPhone,
         addedBy: cartItems.values.first['item'].addedBy,
-        adminEarnings: serviceFee.value,
+        adminEarnings: adminTotalEarnings,
         servicFee: serviceFee.value,
         deliveryFee: deliveryFee.value,
-        userPhone: userPhone,
-        addedBy: cartItems.values.first['item'].addedBy,
-        adminEarnings: adminTotalEarnings,
         deliveryCharge: deliveryCharge.value,
         discountApplied: 0.0,
         items: cartItems.values

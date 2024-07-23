@@ -77,7 +77,7 @@ class OrderModel {
       OrderModel(
         addedBy: addedBy ?? this.addedBy,
         adminEarnings: adminEarnings ?? this.adminEarnings,
-        servicFee: servicFee ?? this.servicFee,
+        servicFee: servicFee,
         deliveryFee: deliveryFee ?? this.deliveryFee,
         deliveryCharge: deliveryCharge ?? this.deliveryCharge,
         discountApplied: discountApplied ?? this.discountApplied,

@@ -173,13 +173,14 @@ class ExploreCard extends StatelessWidget {
                         ),
                       ),
                     ],
+                  
+                  ),
                   Text(
                     '${distance.toStringAsFixed(2)} ${"km away".tr}',
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 14,
-                    ),
-                  ),
+                    ),),
                 ],
               ),
             ),
