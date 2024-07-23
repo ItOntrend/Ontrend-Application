@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/home_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/navigation_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
@@ -41,38 +42,65 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // final BestSellerController bestSellerController =
-  //     Get.put(BestSellerController());
   final UserController userController = Get.put(UserController());
   final LocationController locationController = Get.put(LocationController());
   final CartController cartController = Get.put(CartController());
   final VendorController vendorController = Get.put(VendorController());
-  List<ItemModel> searchSuggestions = [];
+  List<ItemModel> itemSearchSuggestions = [];
+  List<ItemModel> restaurantSearchSuggestions = [];
   final HomeController homeController = Get.put(HomeController());
+  final LanguageController lang = Get.put(LanguageController());
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // bestSellerController.getBestSeller();
-      vendorController.fetchVendors('Food/Restaurant');
+      vendorController.fetchVendorsf('Food/Restaurant');
       homeController.getProducts();
     });
   }
 
   void _updateSearchSuggestions(String query) async {
     if (query.isNotEmpty) {
-      // Fetch suggestions from the controller
-      final products = await homeController.searchProducts(query);
+      final searchResults = await homeController.searchProducts(query);
+
+      // Use a Set to filter out duplicate restaurant names
+      final uniqueRestaurantNames = <String>{};
+      final uniqueRestaurantSuggestions = <ItemModel>[];
+
+      for (var item in searchResults) {
+        if (item.restaurantName != null &&
+            item.restaurantName!.toLowerCase().contains(query.toLowerCase())) {
+          if (uniqueRestaurantNames.add(item.restaurantName!)) {
+            uniqueRestaurantSuggestions.add(item);
+          }
+        }
+      }
 
       setState(() {
-        searchSuggestions = products;
+        itemSearchSuggestions = searchResults
+            .where((item) =>
+                item.name != null &&
+                item.name!.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+        restaurantSearchSuggestions = uniqueRestaurantSuggestions;
       });
     } else {
       setState(() {
-        searchSuggestions = [];
+        itemSearchSuggestions = [];
+        restaurantSearchSuggestions = [];
       });
     }
+  }
+
+  void _clearSearchField() {
+    _searchController.clear();
+    FocusScope.of(context).unfocus();
+    setState(() {
+      itemSearchSuggestions = [];
+      restaurantSearchSuggestions = [];
+    });
   }
 
   @override
@@ -193,14 +221,14 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Rewards: ",
+                        "Rewards: ".tr,
                         style: GoogleFonts.aDLaMDisplay(
                             color: kWhite,
                             fontSize: 16,
                             fontWeight: FontWeight.w700),
                       ),
                       Text(
-                        "${userController.rewardPoints.value.toInt()} pts",
+                        "${userController.rewardPoints.value.toInt()} ${"pts".tr}",
                         style: GoogleFonts.abhayaLibre(
                             color: kWhite,
                             fontSize: 16,
@@ -212,41 +240,75 @@ class _HomePageState extends State<HomePage> {
               ),
               TextfieldWithMic(
                 hintText: "Vegetables, fruits...".tr,
-                onChanged: _updateSearchSuggestions, // Update suggestions
+                controller: _searchController,
+                onChanged: _updateSearchSuggestions,
                 onSubmitted: (query) {
                   if (query.isNotEmpty) {
                     homeController.searchProducts(query).then((products) {
                       Get.to(() => SearchResultHome(
-                            products: products,
-                            title: "Search Result",
+                            items: itemSearchSuggestions,
+                            restaurants: restaurantSearchSuggestions,
+                            title: "Search Result".tr,
                           ));
+                      _clearSearchField();
                     });
                   }
                 },
               ),
-              if (searchSuggestions.isNotEmpty)
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: searchSuggestions.length,
-                  itemBuilder: (context, index) {
-                    final item = searchSuggestions[index];
-                    return ListTile(
-                      title: Text(item.name),
-                      onTap: () {
-                        if (item.name.isNotEmpty) {
-                          homeController
-                              .searchProducts(item.name)
-                              .then((products) {
-                            Get.to(() => SearchResultHome(
-                                  products: products,
-                                  title: 'Search Result',
-                                ));
-                          });
-                        }
-                      },
-                    );
-                  },
+              if (itemSearchSuggestions.isNotEmpty ||
+                  restaurantSearchSuggestions.isNotEmpty)
+                Column(
+                  children: [
+                    if (itemSearchSuggestions.isNotEmpty) ...[
+                      // Text('Items:',
+                      // style: Theme.of(context).textTheme.headlineMedium),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: itemSearchSuggestions.length,
+                        itemBuilder: (context, index) {
+                          final item = itemSearchSuggestions[index];
+
+                          return ListTile(
+                            title: Text(item.name),
+                            onTap: () {
+                              final type = item.reference!.path.split('/')[0];
+                              Get.to(() => ProfilePage(
+                                    userId: item.addedBy,
+                                    cat: "",
+                                    type: type,
+                                  ));
+                              _clearSearchField();
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                    if (restaurantSearchSuggestions.isNotEmpty) ...[
+                      // Text('Restaurants:',
+                      //  style: Theme.of(context).textTheme.headlineMedium),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: restaurantSearchSuggestions.length,
+                        itemBuilder: (context, index) {
+                          final item = restaurantSearchSuggestions[index];
+                          return ListTile(
+                            title: Text(item.restaurantName ?? ''),
+                            onTap: () {
+                              final typeo = item.reference!.path.split('/')[0];
+                              Get.to(() => ProfilePage(
+                                    userId: item.addedBy,
+                                    cat: "",
+                                    type: typeo,
+                                  ));
+                              _clearSearchField();
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ],
                 ),
               kHiegth20,
               SPromoSliderWidget(),
@@ -336,8 +398,36 @@ class _HomePageState extends State<HomePage> {
                                       ));
                                 },
                               );
+                () => vendorController.vendorsListf.isEmpty
+                    ? const Center(child: Text("No Vendor Available"))
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        itemCount: vendorController.vendorsListf.length,
+                        itemBuilder: (context, index) {
+                          final vendor = vendorController.vendorsListf[index];
+                          return ExploreCard(
+                            longitude: vendor.location.lng,
+                            latitude: vendor.location.lat,
+                            locationCityCountry: '',
+                            distance: vendorController
+                                .calculateDistance(vendor.location),
+                            name:
+                                lang.currentLanguage.value.languageCode == "ar"
+                                    ? vendor.restaurantArabicName
+                                    : vendor.restaurantName,
+                            image: vendor.bannerImage,
+                            onTap: () {
+                              Get.to(() => ProfilePage(
+                                    userId: vendor.reference.id,
+                                    cat: "",
+                                    type: "Food/Restaurent",
+                                  ));
                             },
-                          ),
+                          );
+                        },
+                      ),
               ),
               kHiegth40,
             ],

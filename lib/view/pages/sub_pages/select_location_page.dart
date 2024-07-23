@@ -97,7 +97,7 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
 
   void _saveSearchedAddress(String description) {
     locationController.savedAddresses.add(SavedAddress(
-      title: "Custom Location",
+      title: "Custom Location".tr,
       address: description,
       streetName: locationController.streetName.value,
       cityName: locationController.cityName.value,

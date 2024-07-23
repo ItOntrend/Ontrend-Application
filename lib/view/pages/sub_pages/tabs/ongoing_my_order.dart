@@ -38,8 +38,8 @@ class OngoingMyOrder extends StatelessWidget {
             .sort((a, b) => b.orderTimestamp.compareTo(a.orderTimestamp));
 
         if (filteredOrders.isEmpty) {
-          return const Center(
-            child: Text('No orders found'),
+          return Center(
+            child: Text('No orders found'.tr),
           );
         }
         return ListView.builder(

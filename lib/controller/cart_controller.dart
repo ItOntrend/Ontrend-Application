@@ -19,11 +19,13 @@ class CartController extends GetxController {
   var cartItems = {}.obs;
   var itemTotal = 0.0.obs;
   final deliveryFee = 0.0.obs;
-  var serviceFee = 0.0.obs;
   final platformFeePercentage = 0.025;
   bool isReturningFromCart = false;
   var isFabVisible = false.obs;
   var rewardPoints = 0.0.obs;
+  var serviceFee = 0.0.obs;
+  var deliveryCharge = 0.0.obs;
+  var commisionrate = 20.00.obs;
 
   @override
   void onInit() {
@@ -90,6 +92,41 @@ class CartController extends GetxController {
         print('Delivery Fee: ${deliveryFee.value}');
       } else {
         deliveryFee.value = 0.0; // Set default fee if vendor not found
+      }
+    }
+  }
+
+  Future<void> calculateDeliveryCharge() async {
+    if (cartItems.isNotEmpty) {
+      final vendorId = cartItems.values.first['item'].addedBy;
+      print('Vendor ID: $vendorId');
+
+      final vendor = await vendorController.getVendorByUId(userId: vendorId);
+      print('Vendor Details: ${vendor?.toJson()}');
+
+      if (vendor != null) {
+        final distance = vendorController.calculateDistance(vendor.location);
+        print('Calculated Distance: $distance');
+        final commision = vendor.commmisionRate;
+        double charge;
+        if (distance <= 6) {
+          charge = 0.600;
+        } else if (distance <= 10) {
+          charge = 0.800;
+        } else if (distance <= 12) {
+          charge = 0.900;
+        } else {
+          charge = 1.040;
+        }
+
+        deliveryCharge.value = charge;
+        commisionrate.value = (commision / 100);
+        print("........commision rate is......${commisionrate.value}");
+        // Example fee calculation: $5 base fee + $2 per km
+        //deliveryFee.value = 5.0 + (2.0 * distance);
+        print('Delivery Charge: ${deliveryCharge.value}');
+      } else {
+        deliveryCharge.value = 0.0; // Set default fee if vendor not found
       }
     }
   }
@@ -177,7 +214,7 @@ class CartController extends GetxController {
     cartItems.refresh();
     saveCartItems();
     calculateDeliveryFee();
-
+    calculateDeliveryCharge();
     // Update isFabVisible to true
     isFabVisible.value = true;
 
@@ -199,7 +236,7 @@ class CartController extends GetxController {
     cartItems.refresh();
     saveCartItems();
     calculateDeliveryFee();
-
+    calculateDeliveryCharge();
     if (isReturningFromCart) {
       showSnackBar('Item removed from cart');
       isReturningFromCart = false; // Reset the flag
@@ -268,6 +305,15 @@ class CartController extends GetxController {
     try {
       final currentLat = locationController.currentPosition.value.latitude;
       final currentLng = locationController.currentPosition.value.longitude;
+      double adminEarnings = itemTotal.value * commisionrate.value;
+      print("Admin Earnings...$adminEarnings"); // 2% of item total
+      double adminTotalEarnings =
+          adminEarnings + serviceFee.value + deliveryFee.value;
+
+      // If there's an assigned delivery person, subtract the delivery fee from the total earnings
+
+      // Adjust this if you have a different fee for delivery persons
+      adminTotalEarnings -= deliveryCharge.value;
 
       OrderModel order = OrderModel(
         userName: userName,
@@ -276,6 +322,12 @@ class CartController extends GetxController {
         userPhone: userPhone,
         addedBy: cartItems.values.first['item'].addedBy,
         adminEarnings: serviceFee.value,
+        servicFee: serviceFee.value,
+        deliveryFee: deliveryFee.value,
+        userPhone: userPhone,
+        addedBy: cartItems.values.first['item'].addedBy,
+        adminEarnings: adminTotalEarnings,
+        deliveryCharge: deliveryCharge.value,
         discountApplied: 0.0,
         items: cartItems.values
             .map((value) => Item(
@@ -349,6 +401,7 @@ class CartController extends GetxController {
       cartItems.clear();
       itemTotal.value = 0.0;
       serviceFee.value = 0.0;
+      deliveryFee.value = 0.0;
       isFabVisible.value = false;
       prefs.remove('requests');
       await saveRewardPoints();

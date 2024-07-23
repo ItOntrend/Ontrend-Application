@@ -90,7 +90,7 @@ class ItemViewPage extends StatelessWidget {
                         ),
                       ),
                       kWidth20,
-                      Text(
+                      /* Text(
                         "${"OMR".tr} ${item.price + 50}", // Example original price
                         style: const TextStyle(
                           fontSize: 20,
@@ -98,8 +98,12 @@ class ItemViewPage extends StatelessWidget {
                           color: kGrey,
                           decoration: TextDecoration.lineThrough,
                         ),
-                      ),
+                      ),*/
                     ],
+                  ),
+                  Text(
+                    addNewlines(item.description, 25),
+                    style: const TextStyle(fontSize: 12),
                   ),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,7 +210,7 @@ class ItemViewPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Items in Cart: ${cartController.getItemCount()}',
+                  '${"Items in Cart:".tr} ${cartController.getItemCount()}',
                   style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
@@ -225,8 +229,8 @@ class ItemViewPage extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                   ),
-                  child: const Text(
-                    'View Cart',
+                  child: Text(
+                    'View Cart'.tr,
                     style: TextStyle(
                       color: kOrange,
                       decoration: TextDecoration.underline,
@@ -240,5 +244,17 @@ class ItemViewPage extends StatelessWidget {
         );
       }),
     );
+  }
+
+  String addNewlines(String text, int maxChars) {
+    String result = '';
+    for (int i = 0; i < text.length; i += maxChars) {
+      if (i + maxChars < text.length) {
+        result += text.substring(i, i + maxChars) + '\n';
+      } else {
+        result += text.substring(i);
+      }
+    }
+    return result;
   }
 }

@@ -85,7 +85,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
               ),
               kHiegth6,
               Text(
-                "OMR" "${widget.itemPrice}",
+                " ${"OMR".tr} ${widget.itemPrice}",
                 style: const TextStyle(
                   color: kOrange,
                   fontSize: 12,
@@ -168,9 +168,9 @@ class _AddToCartCardState extends State<AddToCartCard> {
                               color: kLiteBackground,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Text(
-                                "No Image Available",
+                                "No Image Available".tr,
                                 textAlign: TextAlign.center,
                               ),
                             ),

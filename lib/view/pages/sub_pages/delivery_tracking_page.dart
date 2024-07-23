@@ -277,7 +277,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                     // Ensure data is not null and handle missing fields
                     final data = snapshot.data!.data() as Map<String, dynamic>?;
                     if (data == null) {
-                      return const Center(child: Text('Order data is null'));
+                      return Center(child: Text('Order data is null'.tr));
                     }
 
                     try {
@@ -293,8 +293,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                     } catch (e) {
                       // Log the error for debugging purposes
                       print("Error parsing order data: $e");
-                      return const Center(
-                          child: Text('Error parsing order data'));
+                      return Center(child: Text('Error parsing order data'.tr));
                     }
                   },
                 ),
@@ -378,8 +377,8 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                const Text(
-                  "is your delivery hero for\ntoday.",
+                Text(
+                  "is your delivery hero for\ntoday.".tr,
                   style: TextStyle(
                     fontSize: 10,
                     color: kTextStyleGrey,
@@ -388,19 +387,20 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
               ],
             ),
           ] else ...[
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Waiting for acceptance",
+                  "Waiting for acceptance".tr,
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
-                  "Your delivery hero details will\nappear here once accepted.",
+                  "Your delivery hero details will\nappear here once accepted."
+                      .tr,
                   style: TextStyle(
                     fontSize: 10,
                     color: kTextStyleGrey,

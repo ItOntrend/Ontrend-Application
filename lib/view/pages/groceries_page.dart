@@ -15,6 +15,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_pa
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/home_search_result.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/search_result.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
@@ -35,28 +36,57 @@ class _GroceriesPageState extends State<GroceriesPage> {
   final LanguageController languageController = Get.put(LanguageController());
   final CartController cartController = Get.put(CartController());
   List<ItemModel> searchSuggestions = [];
-
+  List<ItemModel> itemSearchSuggestions = [];
+  List<ItemModel> restaurantSearchSuggestions = [];
+  final TextEditingController _searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
     controller.getProducts();
-    vendorController.fetchVendors('Grocery');
+    vendorController.fetchVendorsg('Grocery');
     vendorController.getItems('Grocery');
   }
 
   void _updateSearchSuggestions(String query) async {
     if (query.isNotEmpty) {
-      // Fetch suggestions from the controller
-      final products = await controller.searchProducts(query);
+      final searchResults = await controller.searchProducts(query);
+
+      // Use a Set to filter out duplicate restaurant names
+      final uniqueRestaurantNames = <String>{};
+      final uniqueRestaurantSuggestions = <ItemModel>[];
+
+      for (var item in searchResults) {
+        if (item.restaurantName != null &&
+            item.restaurantName!.toLowerCase().contains(query.toLowerCase())) {
+          if (uniqueRestaurantNames.add(item.restaurantName!)) {
+            uniqueRestaurantSuggestions.add(item);
+          }
+        }
+      }
 
       setState(() {
-        searchSuggestions = products;
+        itemSearchSuggestions = searchResults
+            .where((item) =>
+                item.name != null &&
+                item.name!.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+        restaurantSearchSuggestions = uniqueRestaurantSuggestions;
       });
     } else {
       setState(() {
-        searchSuggestions = [];
+        itemSearchSuggestions = [];
+        restaurantSearchSuggestions = [];
       });
     }
+  }
+
+  void _clearSearchField() {
+    _searchController.clear();
+    FocusScope.of(context).unfocus();
+    setState(() {
+      itemSearchSuggestions = [];
+      restaurantSearchSuggestions = [];
+    });
   }
 
   @override
@@ -162,41 +192,75 @@ class _GroceriesPageState extends State<GroceriesPage> {
               // Search bar
               TextfieldWithMic(
                 hintText: "Vegetables, fruits...".tr,
+                controller: _searchController,
                 onChanged: _updateSearchSuggestions, // Update suggestions
                 onSubmitted: (query) {
                   if (query.isNotEmpty) {
                     controller.searchProducts(query).then((products) {
-                      Get.to(() => SearchResult(
-                            products: products,
-                            title: "Search Result",
-                            type: 'Grocery',
+                      Get.to(() => SearchResultHome(
+                            items: itemSearchSuggestions,
+                            restaurants: restaurantSearchSuggestions,
+                            title: "Search Result".tr,
                           ));
+                      _clearSearchField();
                     });
                   }
                 },
               ),
-              if (searchSuggestions.isNotEmpty)
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: searchSuggestions.length,
-                  itemBuilder: (context, index) {
-                    final item = searchSuggestions[index];
-                    return ListTile(
-                      title: Text(item.name),
-                      onTap: () {
-                        if (item.name.isNotEmpty) {
-                          controller.searchProducts(item.name).then((products) {
-                            Get.to(() => SearchResult(
-                                  products: products,
-                                  title: 'Grocery',
-                                  type: 'Grocery',
-                                ));
-                          });
-                        }
-                      },
-                    );
-                  },
+              if (itemSearchSuggestions.isNotEmpty ||
+                  restaurantSearchSuggestions.isNotEmpty)
+                Column(
+                  children: [
+                    if (itemSearchSuggestions.isNotEmpty) ...[
+                      // Text('Items:',
+                      // style: Theme.of(context).textTheme.headlineMedium),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: itemSearchSuggestions.length,
+                        itemBuilder: (context, index) {
+                          final item = itemSearchSuggestions[index];
+
+                          return ListTile(
+                            title: Text(item.name),
+                            onTap: () {
+                              final type = item.reference!.path.split('/')[0];
+                              Get.to(() => ProfilePage(
+                                    userId: item.addedBy,
+                                    cat: "",
+                                    type: type,
+                                  ));
+                              _clearSearchField();
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                    if (restaurantSearchSuggestions.isNotEmpty) ...[
+                      // Text('Restaurants:',
+                      //  style: Theme.of(context).textTheme.headlineMedium),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: restaurantSearchSuggestions.length,
+                        itemBuilder: (context, index) {
+                          final item = restaurantSearchSuggestions[index];
+                          return ListTile(
+                            title: Text(item.restaurantName ?? ''),
+                            onTap: () {
+                              final typeo = item.reference!.path.split('/')[0];
+                              Get.to(() => ProfilePage(
+                                    userId: item.addedBy,
+                                    cat: "",
+                                    type: typeo,
+                                  ));
+                              _clearSearchField();
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ],
                 ),
               kHiegth20,
               // Welcome card
@@ -231,10 +295,12 @@ class _GroceriesPageState extends State<GroceriesPage> {
                                   "ar"
                               ? category.localName
                               : category.name,
-                          onTap: () => Get.to(() => CategorysSearchPage(
-                                category: category,
-                                type: 'Grocery',
-                              ),),
+                          onTap: () => Get.to(
+                            () => CategorysSearchPage(
+                              category: category,
+                              type: 'Grocery',
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -247,42 +313,43 @@ class _GroceriesPageState extends State<GroceriesPage> {
               ),
               kHiegth20,
               Obx(
-                () => vendorController.isVendorLoading.value
-                    ? const CircularProgressIndicator()
-                    : vendorController.vendorsListCat.isEmpty
-                        ? Center(child: Text("No Vendor Available".tr))
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            itemCount: vendorController.vendorsListCat.length,
-                            itemBuilder: (context, index) {
-                              final vendor =
-                                  vendorController.vendorsListCat[index];
-                              //log("Vendor Images");
+                () => vendorController.vendorsListg.isEmpty
+                    ? Center(child: Text("No Vendor Available".tr))
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        itemCount: vendorController.vendorsListg.length,
+                        itemBuilder: (context, index) {
+                          final vendor = vendorController.vendorsListg[index];
+                          //log("Vendor Images");
 
-                              //log(vendor.bannerImage.toString());
-                              return ExploreCard(
-                                latitude: vendor.location.lat,
-                                longitude: vendor.location.lng,
-                                locationCityCountry: "",
-                                distance: vendorController
-                                    .calculateDistance(vendor.location),
-                                name: vendor.restaurantName,
-                                image: vendor.bannerImage,
-                                onTap: () {
-                                  //log(vendor.reference.id);
-                                  Get.to(
-                                    () => ProfilePage(
-                                      userId: vendor.reference.id,
-                                      type: 'Grocery',
-                                      cat: "",
-                                    ),
-                                  );
-                                },
+                          //log(vendor.bannerImage.toString());
+                          return ExploreCard(
+                            latitude: vendor.location.lat,
+                            longitude: vendor.location.lng,
+                            locationCityCountry: "",
+                            distance: vendorController
+                                .calculateDistance(vendor.location),
+                            name: languageController
+                                        .currentLanguage.value.languageCode ==
+                                    "ar"
+                                ? vendor.restaurantArabicName
+                                : vendor.restaurantName,
+                            image: vendor.bannerImage,
+                            onTap: () {
+                              //log(vendor.reference.id);
+                              Get.to(
+                                () => ProfilePage(
+                                  userId: vendor.reference.id,
+                                  type: 'Grocery',
+                                  cat: "",
+                                ),
                               );
                             },
-                          ),
+                          );
+                        },
+                      ),
               ),
               kHiegth30,
             ],

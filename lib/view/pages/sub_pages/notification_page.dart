@@ -53,7 +53,7 @@ class NotificationPage extends StatelessWidget {
                   tabs: [
                     // Individual tab containers
                     _buildTabItem(
-                      text: "All",
+                      text: "All".tr,
                       // Check if selected
                     ),
                     _buildTabItem(
@@ -63,7 +63,7 @@ class NotificationPage extends StatelessWidget {
                       text: "Groceries".tr,
                     ),
                     _buildTabItem(
-                      text: "E - Cart",
+                      text: "E - Cart".tr,
                     ),
                   ],
                 ),

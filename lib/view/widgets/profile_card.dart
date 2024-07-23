@@ -96,8 +96,14 @@ class _ProfileCardState extends State<ProfileCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      _vendorController.vendorDetail.value?.restaurantName ??
-                          "Not found",
+                      // _vendorController.vendorDetail.value?.restaurantName ??
+                      //   "Not found",   // Check the selected language
+                      lang.currentLanguage.value.languageCode == 'ar'
+                          ? _vendorController
+                              .vendorDetail.value!.restaurantArabicName
+                          : _vendorController
+                              .vendorDetail.value!.restaurantName,
+
                       style: const TextStyle(
                         fontSize: 21,
                         fontWeight: FontWeight.bold,
@@ -125,8 +131,8 @@ class _ProfileCardState extends State<ProfileCard> {
                       ),
                     ),
                     Text(
-                      "${_vendorController.deliveryFee}",
-                      style: const TextStyle(
+                      "${_vendorController.deliveryFee.value.toStringAsFixed(3)}",
+                      style: TextStyle(
                         fontSize: 12,
                         color: kBlack,
                       ),
@@ -147,8 +153,8 @@ class _ProfileCardState extends State<ProfileCard> {
                       ),
                     ),
                     Text(
-                      "18 min".tr,
-                      style: const TextStyle(
+                      "18 ${"min".tr}".tr,
+                      style: TextStyle(
                         fontSize: 12,
                         color: kBlack,
                       ),
