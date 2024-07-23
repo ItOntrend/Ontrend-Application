@@ -17,7 +17,8 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.da
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/home_search_result.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/search_result.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/shimmer_cetegory.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/shimmer_export.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
@@ -65,9 +66,8 @@ class _FoodPageState extends State<FoodPage> {
       final uniqueRestaurantSuggestions = <ItemModel>[];
 
       for (var item in searchResults) {
-        if (item.restaurantName != null &&
-            item.restaurantName!.toLowerCase().contains(query.toLowerCase())) {
-          if (uniqueRestaurantNames.add(item.restaurantName!)) {
+        if (item.restaurantName.toLowerCase().contains(query.toLowerCase())) {
+          if (uniqueRestaurantNames.add(item.restaurantName)) {
             uniqueRestaurantSuggestions.add(item);
           }
         }
@@ -76,8 +76,7 @@ class _FoodPageState extends State<FoodPage> {
       setState(() {
         itemSearchSuggestions = searchResults
             .where((item) =>
-                item.name != null &&
-                item.name!.toLowerCase().contains(query.toLowerCase()))
+                item.name.toLowerCase().contains(query.toLowerCase()))
             .toList();
         restaurantSearchSuggestions = uniqueRestaurantSuggestions;
       });
@@ -254,7 +253,7 @@ class _FoodPageState extends State<FoodPage> {
                         itemBuilder: (context, index) {
                           final item = restaurantSearchSuggestions[index];
                           return ListTile(
-                            title: Text(item.restaurantName ?? ''),
+                            title: Text(item.restaurantName),
                             onTap: () {
                               final typeo = item.reference!.path.split('/')[0];
                               Get.to(() => ProfilePage(
@@ -279,36 +278,48 @@ class _FoodPageState extends State<FoodPage> {
               TwoTextHeading(heading: "Categories".tr),
               kHiegth20,
               SizedBox(
-                height: 285.h,
+                height: 300.h,
                 child: Obx(
-                  () => GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                    ),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: foodController.categoryList.length,
-                    itemBuilder: (context, index) {
-                      print("Category List");
-                      final category = foodController.categoryList[index];
-                      log(category.imageUrl.toString());
-                      return CategoryCard(
-                        onTap: () {
-                          Get.to(
-                            () => CategorysSearchPage(
-                              type: 'Food',
-                              category: category,
-                            ),
-                          );
-                        },
-                        categoryName:
-                            lang.currentLanguage.value.languageCode == "ar"
-                                ? category.localName
-                                : category.name,
-                        categoryImage: category.imageUrl,
-                      );
-                    },
-                  ),
+                  () => foodController.isCategoryLoading.value
+                      ? GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                          itemBuilder: (context, index) =>
+                              const ShimmerCetegory(),
+                          itemCount: 6,
+                          scrollDirection: Axis.horizontal,
+                        )
+                      : GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: foodController.categoryList.length,
+                          itemBuilder: (context, index) {
+                            print("Category List");
+                            final category = foodController.categoryList[index];
+                            log(category.imageUrl.toString());
+                            return CategoryCard(
+                              onTap: () {
+                                Get.to(
+                                  () => CategorysSearchPage(
+                                    type: 'Food',
+                                    category: category,
+                                  ),
+                                );
+                              },
+                              categoryName:
+                                  lang.currentLanguage.value.languageCode ==
+                                          "ar"
+                                      ? category.localName
+                                      : category.name,
+                              categoryImage: category.imageUrl,
+                            );
+                          },
+                        ),
                 ),
               ),
               // kHiegth20,
@@ -353,7 +364,12 @@ class _FoodPageState extends State<FoodPage> {
               kHiegth20,
               Obx(
                 () => vendorController.isVendorLoading.value
-                    ? const CircularProgressIndicator()
+                    ? ListView.separated(
+                        itemBuilder: (context, index) => const ShimmerExport(),
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 18),
+                        itemCount: 3,
+                      )
                     : vendorController.vendorsListf.isEmpty
                         ? Center(child: Text("No Nearby Restaurants".tr))
                         : ListView.builder(

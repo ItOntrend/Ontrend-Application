@@ -1,5 +1,8 @@
+import 'dart:math' as math;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 
@@ -8,8 +11,8 @@ class ExploreCard extends StatelessWidget {
   final double distance;
   final String name;
   final String image;
-  final double latitude; // Change to double
-  final double longitude; // Change to double
+  final double latitude;
+  final double longitude;
   final VoidCallback onTap;
 
   const ExploreCard({
@@ -23,8 +26,39 @@ class ExploreCard extends StatelessWidget {
     required this.onTap,
   });
 
+  double _estimateDeliveryTime(double distance) {
+    // Assume an average speed of 40 km/h
+    const double averageSpeed = 40;
+    final double time = (distance / averageSpeed) * 60; // time in minutes
+    return time;
+  }
+
+  double _degreeToRadian(double degree) {
+    return degree * (math.pi / 180);
+  }
+
+  double _calculateDistance(LatLng start, LatLng end) {
+    const double earthRadius = 6371; // Radius of the Earth in kilometers
+
+    final double dLat = _degreeToRadian(end.latitude - start.latitude);
+    final double dLon = _degreeToRadian(end.longitude - start.longitude);
+
+    final double a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+        math.cos(_degreeToRadian(start.latitude)) *
+            math.cos(_degreeToRadian(end.latitude)) *
+            math.sin(dLon / 2) *
+            math.sin(dLon / 2);
+
+    final double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+    final double distance = earthRadius * c;
+
+    return distance;
+  }
+
   @override
   Widget build(BuildContext context) {
+    double estimatedTime = _estimateDeliveryTime(distance);
+
     return GestureDetector(
       onTap: onTap,
       child: Card(
@@ -40,7 +74,7 @@ class ExploreCard extends StatelessWidget {
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(10)),
               child: image.isNotEmpty
-                  ? Image.network(
+                  ? CachedNetworkImage(imageUrl: 
                       image,
                       fit: BoxFit.cover,
                       width: double.infinity,
@@ -115,13 +149,38 @@ class ExploreCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
+                  Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${distance.toStringAsFixed(2)} km away',
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 14,
+                        ),
+                      ),
+                      Spacer(),
+                      Icon(
+                        Icons.alarm_rounded,
+                        color: Colors.grey[600],
+                        size: 18,
+                      ),
+                      Text(
+                        '${estimatedTime.toStringAsFixed(0)} mins', // Estimated time in minutes
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  
+                  ),
                   Text(
                     '${distance.toStringAsFixed(2)} ${"km away".tr}',
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 14,
-                    ),
-                  ),
+                    ),),
                 ],
               ),
             ),

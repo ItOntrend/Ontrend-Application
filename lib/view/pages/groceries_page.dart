@@ -16,7 +16,6 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.da
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/home_search_result.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/search_result.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
@@ -56,9 +55,8 @@ class _GroceriesPageState extends State<GroceriesPage> {
       final uniqueRestaurantSuggestions = <ItemModel>[];
 
       for (var item in searchResults) {
-        if (item.restaurantName != null &&
-            item.restaurantName!.toLowerCase().contains(query.toLowerCase())) {
-          if (uniqueRestaurantNames.add(item.restaurantName!)) {
+        if (item.restaurantName.toLowerCase().contains(query.toLowerCase())) {
+          if (uniqueRestaurantNames.add(item.restaurantName)) {
             uniqueRestaurantSuggestions.add(item);
           }
         }
@@ -67,8 +65,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
       setState(() {
         itemSearchSuggestions = searchResults
             .where((item) =>
-                item.name != null &&
-                item.name!.toLowerCase().contains(query.toLowerCase()))
+                item.name.toLowerCase().contains(query.toLowerCase()))
             .toList();
         restaurantSearchSuggestions = uniqueRestaurantSuggestions;
       });
@@ -246,7 +243,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                         itemBuilder: (context, index) {
                           final item = restaurantSearchSuggestions[index];
                           return ListTile(
-                            title: Text(item.restaurantName ?? ''),
+                            title: Text(item.restaurantName),
                             onTap: () {
                               final typeo = item.reference!.path.split('/')[0];
                               Get.to(() => ProfilePage(

@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
@@ -28,20 +30,105 @@ class DeliveryTrackingPage extends StatefulWidget {
 }
 
 class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
+  LatLng destination = const LatLng(17.0194, 54.1108);
+  LatLng deliveryBoyLocation = const LatLng(17.0194, 54.1108);
+  LatLng restaurantLocation = const LatLng(17.0194, 54.1108);
   late GoogleMapController mapController;
   final CartController cartController = Get.find<CartController>();
+  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor restaurantIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
+  double remainingDistance = 0.0;
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  late CollectionReference orderTrackingColloction;
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
 
+  void addCustomMarker() {
+    ImageConfiguration configuration =
+        const ImageConfiguration(size: Size(0, 0), devicePixelRatio: 5);
+
+    BitmapDescriptor.asset(
+            configuration, "assets/icons/delivery_boy_location_icon.png")
+        .then((value) {
+      setState(() {
+        markerIcon = value;
+      });
+    });
+  }
+
+  void addRestaurantMarker() {
+    ImageConfiguration configuration =
+        const ImageConfiguration(size: Size(0, 0), devicePixelRatio: 5);
+
+    BitmapDescriptor.asset(configuration, "assets/icons/restaurant_icon.png")
+        .then((value) {
+      setState(() {
+        restaurantIcon = value;
+      });
+    });
+  }
+
+  void addCurrentMarker() {
+    ImageConfiguration configuration =
+        const ImageConfiguration(size: Size(0, 0), devicePixelRatio: 5);
+
+    BitmapDescriptor.asset(configuration, "assets/icons/user_location_icon.png")
+        .then((value) {
+      setState(() {
+        currentLocationIcon = value;
+      });
+    });
+  }
+
+  void updateCurrentLocation(Position position) {
+    setState(() {
+      destination = LatLng(position.latitude, position.longitude);
+    });
+  }
+
+  void updateDeliveryBoyLocation(Position position) {
+    setState(() {
+      deliveryBoyLocation = LatLng(position.latitude, position.longitude);
+    });
+
+    mapController.animateCamera(CameraUpdate.newLatLng(deliveryBoyLocation));
+
+    calculateRemainingDistance();
+  }
+
+  void calculateRemainingDistance() {
+    double distance = Geolocator.distanceBetween(
+      deliveryBoyLocation.latitude,
+      deliveryBoyLocation.longitude,
+      destination.latitude,
+      destination.longitude,
+    );
+
+    double distanceInKm = distance / 1000;
+
+    setState(() {
+      remainingDistance = distanceInKm;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    print("/////////////////////////////////////");
-    log(widget.latitude.toString());
-    log(widget.longitude.toString());
-    print("////////////////////////////////////");
+    orderTrackingColloction = firestore.collection('orderTracking');
+    addCustomMarker();
+    addRestaurantMarker();
+    addCurrentMarker();
+    startTracking(widget.orderId);
+    Geolocator.getPositionStream(
+            locationSettings: const LocationSettings(
+                accuracy: LocationAccuracy.best, distanceFilter: 10))
+        .listen((Position position) {
+      updateCurrentLocation(position);
+    });
   }
 
   @override
@@ -54,44 +141,115 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         slivers: <Widget>[
           SliverAppBar(
             leading: IconButton(
-                onPressed: () {
-                  Get.offAll(const NavigationManu());
-                },
-                icon: const Icon(Icons.arrow_back_ios_new)),
+              onPressed: () {
+                Get.offAll(const NavigationManu());
+              },
+              icon: const Icon(Icons.arrow_back_ios_new),
+            ),
             pinned: true,
             expandedHeight: 300,
-            flexibleSpace: FlexibleSpaceBar(
-              background: SizedBox(
-                child: Image.asset("assets/lottie_animation/pending.gif"),
-              ),
-              stretchModes: const [
-                StretchMode.blurBackground,
-                StretchMode.zoomBackground
-              ],
+            flexibleSpace: StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('orders')
+                  .doc(widget.orderId)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return const Center(
+                      child: Text('Error fetching order status'));
+                }
+
+                // Ensure data is not null and handle missing fields
+                final data = snapshot.data!.data() as Map<String, dynamic>?;
+                if (data == null) {
+                  return const Center(child: Text('Order data is null'));
+                }
+
+                // Parse order data
+                OrderModel order = OrderModel.fromJson(data);
+
+                return FlexibleSpaceBar(
+                  background: order.status == 'Picked Up'
+                      ? GoogleMap(
+                          mapType: MapType.normal,
+                          onMapCreated: (controller) {
+                            mapController = controller;
+                          },
+                          initialCameraPosition: CameraPosition(
+                            target: deliveryBoyLocation,
+                            zoom: 14,
+                          ),
+                          markers: {
+                            Marker(
+                              markerId: const MarkerId("Destination"),
+                              position: destination,
+                              icon: currentLocationIcon,
+                              infoWindow: InfoWindow(
+                                title: 'Destination',
+                                snippet:
+                                    'Lat: ${order.deliveryLocation.lat}, Lng: ${order.deliveryLocation.lng}',
+                              ),
+                            ),
+                            Marker(
+                              markerId: const MarkerId("DeliveryBoy"),
+                              position: deliveryBoyLocation,
+                              icon: markerIcon,
+                              infoWindow: const InfoWindow(
+                                title: 'Delivery Boy',
+                                snippet: 'Lat: , Lng: ',
+                              ),
+                            ),
+                            Marker(
+                              markerId: const MarkerId("Restaurant"),
+                              position: LatLng(order.restaurantLocation.lat,
+                                  order.restaurantLocation.lng),
+                              icon: markerIcon,
+                              infoWindow: InfoWindow(
+                                title: 'Restaurant',
+                                snippet:
+                                    'Lat: ${order.restaurantLocation.lat}, Lng: ${order.restaurantLocation.lng}',
+                              ),
+                            ),
+                          },
+                        )
+                      : SizedBox(
+                          child: Image.asset(
+                              "assets/lottie_animation/pending.gif"),
+                        ),
+                  stretchModes: const [
+                    StretchMode.blurBackground,
+                    StretchMode.zoomBackground
+                  ],
+                );
+              },
             ),
             bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(0.0),
+              preferredSize: const Size.fromHeight(0.0),
+              child: Container(
+                height: 32.h,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  color: kWhite,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    topRight: Radius.circular(32),
+                  ),
+                ),
                 child: Container(
-                  height: 32.h,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: kWhite,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(32),
-                      topRight: Radius.circular(32),
+                  width: 40.w,
+                  height: 5.h,
+                  decoration: BoxDecoration(
+                    color: kLiteBackground,
+                    borderRadius: BorderRadius.circular(
+                      100,
                     ),
                   ),
-                  child: Container(
-                    width: 40.w,
-                    height: 5.h,
-                    decoration: BoxDecoration(
-                      color: kLiteBackground,
-                      borderRadius: BorderRadius.circular(
-                        100,
-                      ),
-                    ),
-                  ),
-                )),
+                ),
+              ),
+            ),
           ),
           SliverToBoxAdapter(
             child: Column(
@@ -143,6 +301,46 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         ],
       ),
     );
+  }
+
+  void startTracking(String orderId) {
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
+      var trackingData = await getOrderTracking(orderId);
+
+      if (trackingData != null) {
+        double latitude = trackingData['deliveryPartnerLat'];
+        double longitude = trackingData['deliveryPartnerLong'];
+        updateUIWithLocation(latitude, longitude);
+        log('Latest location: $latitude, $longitude');
+      } else {
+        log('No tracking data available for order ID: $orderId');
+      }
+    });
+  }
+
+  Future<Map<String, dynamic>?> getOrderTracking(String orderId) async {
+    try {
+      var snapshot = await orderTrackingColloction.doc(orderId).get();
+
+      if (snapshot.exists) {
+        return snapshot.data() as Map<String, dynamic>;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      log("Error retriving order tracking information: $e");
+      return null;
+    }
+  }
+
+  void updateUIWithLocation(double latitude, double longitude) {
+    setState(() {
+      deliveryBoyLocation = LatLng(latitude, longitude);
+    });
+
+    mapController.animateCamera(CameraUpdate.newLatLng(deliveryBoyLocation));
+
+    calculateRemainingDistance();
   }
 
   Widget _buildDeliveryDetails(OrderModel order) {
@@ -248,11 +446,11 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
   Widget _buildOrderTimeline(String status) {
     bool isPast(String step) {
       List<String> steps = [
-        "Pending".tr,
-        "Processing".tr,
-        "Ready".tr,
-        "Picked Up".tr,
-        "Delivered".tr
+        "Pending",
+        "Processing",
+        "Ready",
+        "Picked Up",
+        "Completed"
       ];
       int currentIndex = steps.indexOf(status);
       int stepIndex = steps.indexOf(step);
@@ -309,9 +507,9 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         MyTimelineTile(
           isFirst: false,
           isLast: true,
-          isPast: isPast("Delivered"),
-          child: Text(
-            "Delivered".tr,
+          isPast: isPast("Completed"),
+          child: const Text(
+            "Completed",
             style: TextStyle(
               fontSize: 12,
             ),

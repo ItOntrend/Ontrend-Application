@@ -319,11 +319,11 @@ class CartController extends GetxController {
         userName: userName,
         deliveryAcceptedBy:
             DeliveryAcceptedBy(name: "", phoneNumber: "", id: ""),
-        servicFee: serviceFee.value,
-        deliveryFee: deliveryFee.value,
         userPhone: userPhone,
         addedBy: cartItems.values.first['item'].addedBy,
         adminEarnings: adminTotalEarnings,
+        servicFee: serviceFee.value,
+        deliveryFee: deliveryFee.value,
         deliveryCharge: deliveryCharge.value,
         discountApplied: 0.0,
         items: cartItems.values

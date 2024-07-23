@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart'
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/shimmer_skelton.dart';
 
 class ProfileCard extends StatefulWidget {
   const ProfileCard({
@@ -53,7 +55,7 @@ class _ProfileCardState extends State<ProfileCard> {
         log("It's About Vendor Profile");
         if (_vendorController.isVendorLoading.value ||
             _vendorController.isItemsLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return ShimmerProfile();
         }
 
         if (_vendorController.vendorDetail.value == null) {
@@ -77,13 +79,14 @@ class _ProfileCardState extends State<ProfileCard> {
                         _vendorController.vendorDetail.value?.image != null &&
                                 _vendorController.vendorDetail.value!.image
                                     .startsWith('http')
-                            ? Image.network(
-                                _vendorController.vendorDetail.value!
+                            ? CachedNetworkImage(
+                                imageUrl: _vendorController.vendorDetail.value!
                                     .image, // Use ! for non-null access
                                 fit: BoxFit.cover,
                               )
-                            : Image.network(
-                                'https://service.sarawak.gov.my/web/web/web/web/res/no_image.png', // Replace with your asset path
+                            : CachedNetworkImage(
+                                imageUrl:
+                                    'https://service.sarawak.gov.my/web/web/web/web/res/no_image.png', // Replace with your asset path
                                 fit: BoxFit.cover,
                               ),
                   ),
@@ -108,7 +111,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     ),
                     Text(
                       "Pizza, Pastas, Desserts".tr,
-                      style: TextStyle(fontSize: 14, color: kGrey),
+                      style: const TextStyle(fontSize: 14, color: kGrey),
                     ),
                   ],
                 )
@@ -122,7 +125,7 @@ class _ProfileCardState extends State<ProfileCard> {
                   children: [
                     Text(
                       "Delivery fee".tr,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: kGrey,
                       ),
@@ -136,7 +139,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     ),
                   ],
                 ),
-                VerticalDivider(
+                const VerticalDivider(
                   thickness: 10,
                   color: kBlue,
                 ),
@@ -144,7 +147,7 @@ class _ProfileCardState extends State<ProfileCard> {
                   children: [
                     Text(
                       "Delivery time".tr,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: kGrey,
                       ),
@@ -158,7 +161,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     ),
                   ],
                 ),
-                VerticalDivider(
+                const VerticalDivider(
                   thickness: 10,
                   color: kBlack,
                 ),
@@ -166,14 +169,14 @@ class _ProfileCardState extends State<ProfileCard> {
                   children: [
                     Text(
                       "Delivery by".tr,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: kGrey,
                       ),
                     ),
                     Text(
                       "OnTrend".tr,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: kOrange,
                       ),
@@ -185,6 +188,88 @@ class _ProfileCardState extends State<ProfileCard> {
           ],
         );
       }),
+    );
+  }
+}
+
+class ShimmerProfile extends StatelessWidget {
+  const ShimmerProfile({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: Row(
+        children: [
+          Column(
+            children: [
+              Skelton(
+                height: 55.h,
+                width: 84.w,
+              ),
+              kHiegth6,
+              Skelton(
+                width: 84.w,
+                height: 15.h,
+              ),
+              kHiegth2,
+              Skelton(
+                width: 40.w,
+                height: 15.h,
+              )
+            ],
+          ),
+          kWidth10,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Skelton(
+                width: 70.w,
+                height: 25.h,
+              ),
+              kHiegth10,
+              Skelton(
+                width: 100.w,
+                height: 15.h,
+              ),
+              kHiegth13,
+              Row(
+                children: [
+                  Column(
+                    children: [
+                      Skelton(
+                        width: 84.w,
+                        height: 15.h,
+                      ),
+                      kHiegth2,
+                      Skelton(
+                        width: 40.w,
+                        height: 15.h,
+                      )
+                    ],
+                  ),
+                  kWidth10,
+                  Column(
+                    children: [
+                      Skelton(
+                        width: 84.w,
+                        height: 15.h,
+                      ),
+                      kHiegth2,
+                      Skelton(
+                        width: 40.w,
+                        height: 15.h,
+                      )
+                    ],
+                  ),
+                ],
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }

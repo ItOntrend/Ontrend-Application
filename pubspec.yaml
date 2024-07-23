@@ -63,6 +63,7 @@ dependencies:
   persistent_bottom_nav_bar_plus: ^5.1.1
   provider: ^6.1.2
   shared_preferences: ^2.2.3
+
   time: ^2.1.4
   timeline_tile: ^2.0.0
   url_launcher: ^6.3.0

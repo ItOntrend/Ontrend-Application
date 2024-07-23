@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart'
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/shimmer_skelton.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/food_item_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/profile_card.dart';
@@ -99,12 +101,14 @@ class _ProfilePageState extends State<ProfilePage>
                 () => SizedBox(
                   height: 200.h,
                   width: double.infinity,
-                  child: Image.network(
-                    vendorController.vendorDetail.value?.bannerImage ?? "",
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        vendorController.vendorDetail.value?.bannerImage ?? "",
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.network(
-                        'https://service.sarawak.gov.my/web/web/web/web/res/no_image.png',
+                    errorWidget: (context, error, stackTrace) {
+                      return CachedNetworkImage(
+                        imageUrl:
+                            'https://service.sarawak.gov.my/web/web/web/web/res/no_image.png',
                         fit: BoxFit.cover,
                       );
                     },
@@ -176,8 +180,8 @@ class _ProfilePageState extends State<ProfilePage>
                                           (item) => item.tag == tag).localTag
                                       : tag;
                                   return Tab(
-                                      text: displayTag ??
-                                          tag); // Use localTag if available, else use tag
+                                      text:
+                                          displayTag); // Use localTag if available, else use tag
                                 }).toList(),
                               )
                             : const SizedBox.shrink();
@@ -228,6 +232,7 @@ class _ProfilePageState extends State<ProfilePage>
             ],
           ),
         ),
+        
         bottomNavigationBar: Obx(() {
           return BottomAppBar(
             color: kTransparent,
@@ -287,28 +292,78 @@ class _ProfilePageState extends State<ProfilePage>
         .toList();
     print("Items for tag '$tag': ${items.length}");
     log("Items for tag '$tag': ${items.length}"); // Debug log
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final item = items[index];
-        return GestureDetector(
-          onTap: () {
-            Get.to(() => ItemViewPage(item: item));
-          },
-          child: FoodItemCard(
-            name: item.name,
-            localName: item.localName,
-            localTag: item.localTag,
-            image: item.imageUrl,
-            description: item.description,
-            price: item.price,
-            addedBy: item.addedBy,
-            restaurantName: item.restaurantName,
+    return vendorController.isItemsLoading.value
+        ? const ShimmerFoodItem()
+        : ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+              return GestureDetector(
+                onTap: () {
+                  Get.to(() => ItemViewPage(item: item));
+                },
+                child: FoodItemCard(
+                  name: item.name,
+                  localName: item.localName,
+                  localTag: item.localTag,
+                  image: item.imageUrl,
+                  description: item.description,
+                  price: item.price,
+                  addedBy: item.addedBy,
+                  restaurantName: item.restaurantName,
+                ),
+              );
+            },
+          );
+  }
+}
+
+class ShimmerFoodItem extends StatelessWidget {
+  const ShimmerFoodItem({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Row(
+        children: [
+          Column(
+            children: [
+              Skelton(
+                width: 120.w,
+                height: 20.h,
+              ),
+              kHiegth10,
+              Skelton(
+                width: 50.w,
+                height: 15.h,
+              ),
+              kHiegth10,
+              Skelton(
+                width: 200.w,
+                height: double.infinity,
+              ),
+            ],
           ),
-        );
-      },
+          Column(
+            children: [
+              Skelton(
+                width: 150.w,
+                height: 100.h,
+              ),
+              kHiegth10,
+              Skelton(
+                width: 150.w,
+                height: 50.h,
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }

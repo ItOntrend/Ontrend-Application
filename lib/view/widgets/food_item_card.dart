@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -98,7 +99,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                   child: Stack(
                     children: [
                       widget.image.isNotEmpty
-                          ? Image.network(
+                          ? CachedNetworkImage(imageUrl: 
                               widget.image,
                               fit: BoxFit.cover,
                               height: 100.h,

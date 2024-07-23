@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
@@ -41,11 +42,11 @@ class TrendingCards extends StatelessWidget {
               children: [
                 imagePath.startsWith('http://') ||
                         imagePath.startsWith('https://')
-                    ? Container(
+                    ? SizedBox(
                         height: 170.h,
                         width: 150.h,
-                        child: Image.network(
-                          imagePath,
+                        child: CachedNetworkImage(
+                          imageUrl: imagePath,
                           fit: BoxFit.contain,
                         ),
                       )

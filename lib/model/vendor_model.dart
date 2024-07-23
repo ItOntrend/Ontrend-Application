@@ -227,7 +227,6 @@ class Location {
       };
 }
 */
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class VendorModel {
   DocumentReference reference;
@@ -341,7 +340,7 @@ class VendorModel {
         isOnline: isOnline ?? this.isOnline,
         dayWiseOpenAndClosingTime:
             dayWiseOpenAndClosingTime ?? this.dayWiseOpenAndClosingTime,
-        commmisionRate: commmisionRate ?? this.commmisionRate,
+        commmisionRate: commmisionRate,
       );
 
   factory VendorModel.fromJson(Map<String, dynamic> json) => VendorModel(

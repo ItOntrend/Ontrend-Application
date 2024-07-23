@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard({
@@ -28,8 +29,8 @@ class CategoryCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(70),
               child: CachedNetworkImage(
-                height: 70,
-                width: 70,
+                height: 80.h,
+                width: 80.w,
                 imageUrl: categoryImage,
                 fit: BoxFit.cover,
                 placeholder: (context, url) =>
