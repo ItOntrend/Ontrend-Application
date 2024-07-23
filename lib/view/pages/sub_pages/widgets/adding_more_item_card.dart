@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
+import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
@@ -15,12 +17,14 @@ class AddingMoreItemCard extends StatefulWidget {
 }
 
 class _AddingMoreItemCardState extends State<AddingMoreItemCard> {
+  final VendorController vendorController = Get.put(VendorController());
   List<String> requests = [];
 
   @override
   void initState() {
     super.initState();
     _loadRequests();
+    vendorController.getVendorByUId(userId: widget.addedBy);
   }
 
   @override
@@ -30,11 +34,19 @@ class _AddingMoreItemCardState extends State<AddingMoreItemCard> {
       children: [
         GestureDetector(
           onTap: () {
-            Get.to(() => ProfilePage(
-                  userId: widget.addedBy,
-                  type: '',
-                  cat: 'someCategory',
-                ));
+            final VendorModel? vendor = vendorController.vendorDetail.value;
+            if (vendor != null) {
+              print("vendor type is ......${vendor.vendorType}");
+              Get.to(() => ProfilePage(
+                    userId: vendor.reference.id,
+                    type: vendor
+                        .vendorType, // Assuming the vendor has a 'type' field
+                    cat: "",
+                  ));
+            } else {
+              // Handle the case where the vendor is not found
+              Get.snackbar("Error", "Vendor not found");
+            }
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -218,4 +230,3 @@ class _AddingMoreItemCardState extends State<AddingMoreItemCard> {
     });
   }
 }
-

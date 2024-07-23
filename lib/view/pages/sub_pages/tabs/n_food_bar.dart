@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class NFoodBar extends StatelessWidget {
   const NFoodBar({super.key});
@@ -8,7 +9,7 @@ class NFoodBar extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Center(
-        child: Text("No Notification"),
+        child: Text("No Notification".tr),
       ),
       // ListView(
       //   scrollDirection: Axis.vertical,
