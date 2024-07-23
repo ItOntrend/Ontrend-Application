@@ -119,7 +119,7 @@ class LocalStrings extends Translations {
           "Delivery by": "Delivery by",
           "OnTrend": "OnTrend",
           "No items found": "No items found",
-          "Nearby Restaurant": "NearBy restaurent",
+          "Nearby Restaurants": "Nearby Restaurants",
           "Search for area, street name...": "Search for area, street name...",
           "Select Location": "Select Location",
           "Use my current location": "Use my current location",
@@ -137,7 +137,7 @@ class LocalStrings extends Translations {
           "All": "All",
           "E - Cart": "E - Cart",
           "Rewards: ": "Rewards: ",
-          "pts": "pts",
+          "Points": "Points",
           "Stores to Explore": "Stores to Explore",
           "min": "min",
           'View Cart': 'View Cart',
@@ -169,6 +169,8 @@ class LocalStrings extends Translations {
           "Distance:": "Distance:",
           "Estimated Delivery Time:": "Estimated Delivery Time:",
           "km": "km",
+          "No Nearby Restaurants": "No Nearby Restaurants",
+          "No Nearby Stores": "No Nearby Stores",
         },
         //'hi_IN': {'hello': "नमस्ते दुनिया", 'message': "ऐप में आपका स्वागत है"},
         'ar_OM': {
@@ -188,7 +190,7 @@ class LocalStrings extends Translations {
           'Our Services': 'خدماتنا',
           'Biryani, Burger, Ice Cream...': 'مثال: الفاكهة، خضروات.. الخ',
           'E-Store': 'المتجر الإلكتروني',
-          'Food': 'طعام',
+          'Food': 'الأطعمة',
           'Groceries': 'البقالة',
           'Best Sellers': 'أفضل البائعين',
           'Categories': 'الفئات',
@@ -284,7 +286,7 @@ class LocalStrings extends Translations {
           "Delivery by": "التوصيل بواسطة",
           "OnTrend": "اونتريند",
           "No items found": "لم يتم العثور على العناصر",
-          "Nearby Restaurant": "مطعم قريب",
+          "Nearby Restaurants": "مطعم قريب",
           "Search for area, street name...": "البحث عن المنطقة، اسم الشارع...",
           "Select Location": "اختر موقعا",
           "Use my current location": "استخدام موقعي الحالي",
@@ -301,7 +303,7 @@ class LocalStrings extends Translations {
           "All": "الجميع",
           "E - Cart": "العربة الإلكترونية",
           "Rewards: ": "المكافآت ",
-          "pts": "نقاط",
+          "Points": "نقاط",
           "Stores to Explore": "مطاعم مقترحة",
           "min": "دقائق",
           'View Cart': "عرض العربة",
@@ -332,6 +334,8 @@ class LocalStrings extends Translations {
           "Distance:": "مسافة:",
           "Estimated Delivery Time:": "يقدر وقت التسليم:",
           "km": "الكيلومتر",
+          "No Nearby Restaurants": "لا توجد مطاعم قريبة",
+          "No Nearby Stores": "لا توجد متاجر قريبة"
         }
       };
 }

@@ -93,48 +93,74 @@ class VendorController extends GetxController {
     }
   }
 
-  Future<void> fetchVendorsg(
-    String type,
-  ) async {
+  Future<void> fetchVendorsg() async {
     try {
+      if (userPosition == null) {
+        await fetchUserLocation();
+      }
+
+      // Fetch all vendors
       var vendorsQuerySnapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('role', isEqualTo: 'Vendor')
-          .where('vendorType',
-              isEqualTo:
-                  'Grocery') // Add this condition to filter by vendorType
+          .where('vendorType', isEqualTo: 'Grocery') // Adjust as needed
           .get();
 
-      var vendors = vendorsQuerySnapshot.docs.map((doc) {
-        return VendorModel.fromMap(doc.data(), doc.id);
+      // Calculate the distance and filter vendors
+      List<VendorModel> allVendors = vendorsQuerySnapshot.docs.map((doc) {
+        return VendorModel.fromMap(doc.data() as Map<String, dynamic>, doc.id);
       }).toList();
 
-      vendorsListg.assignAll(vendors);
-      log("Vendors data fetched successfully");
+      List<VendorModel> filteredVendors = [];
+
+      for (VendorModel vendor in allVendors) {
+        double distance = calculateDistance(vendor.location);
+        // Filter based on your distance criteria
+        if (distance <= 20.0) {
+          // Example: Filter vendors within 5 km
+          filteredVendors.add(vendor);
+        }
+      }
+
+      vendorsListg.assignAll(filteredVendors);
+      log("Filtered vendors data fetched successfully");
     } catch (e) {
       log('Error fetching vendors: $e');
     }
   }
 
   // Fetch list of vendors from Firebase
-  Future<void> fetchVendorsf(
-    String type,
-  ) async {
+  Future<void> fetchVendorsf() async {
     try {
+      if (userPosition == null) {
+        await fetchUserLocation();
+      }
+
+      // Fetch all vendors
       var vendorsQuerySnapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('role', isEqualTo: 'Vendor')
-          .where('vendorType',
-              isEqualTo:
-                  'Food/Restaurant') // Add this condition to filter by vendorType
+          .where('vendorType', isEqualTo: 'Food/Restaurant') // Adjust as needed
           .get();
 
-      var vendors = vendorsQuerySnapshot.docs.map((doc) {
-        return VendorModel.fromMap(doc.data(), doc.id);
+      // Calculate the distance and filter vendors
+      List<VendorModel> allVendors = vendorsQuerySnapshot.docs.map((doc) {
+        return VendorModel.fromMap(doc.data() as Map<String, dynamic>, doc.id);
       }).toList();
 
-      vendorsListf.assignAll(vendors);
-      log("Vendors data fetched successfully");
+      List<VendorModel> filteredVendors = [];
+
+      for (VendorModel vendor in allVendors) {
+        double distance = calculateDistance(vendor.location);
+        // Filter based on your distance criteria
+        if (distance <= 20.0) {
+          // Example: Filter vendors within 5 km
+          filteredVendors.add(vendor);
+        }
+      }
+
+      vendorsListg.assignAll(filteredVendors);
+      log("Filtered vendors data fetched successfully");
     } catch (e) {
       log('Error fetching vendors: $e');
     }

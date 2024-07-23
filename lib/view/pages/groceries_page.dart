@@ -43,7 +43,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
   void initState() {
     super.initState();
     controller.getProducts();
-    vendorController.fetchVendorsg('Grocery');
+    vendorController.fetchVendorsg();
     vendorController.getItems('Grocery');
   }
 
@@ -314,7 +314,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
               kHiegth20,
               Obx(
                 () => vendorController.vendorsListg.isEmpty
-                    ? Center(child: Text("No Vendor Available".tr))
+                    ? Center(child: Text("No Nearby Stores".tr))
                     : ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),

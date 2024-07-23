@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      vendorController.fetchVendorsf('Food/Restaurant');
+      vendorController.fetchVendorsf();
       homeController.getProducts();
     });
   }
@@ -221,14 +221,14 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Rewards: ".tr,
+                        "Points".tr,
                         style: GoogleFonts.aDLaMDisplay(
                             color: kWhite,
                             fontSize: 16,
                             fontWeight: FontWeight.w700),
                       ),
                       Text(
-                        "${userController.rewardPoints.value.toInt()} ${"pts".tr}",
+                        "${userController.rewardPoints.value.toInt()}",
                         style: GoogleFonts.abhayaLibre(
                             color: kWhite,
                             fontSize: 16,
@@ -358,12 +358,12 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 20),
               OneTextHeading(
-                heading: "Nearby Restaurant".tr,
+                heading: "Nearby Restaurants".tr,
               ),
               SizedBox(height: 20),
               Obx(
                 () => vendorController.vendorsListf.isEmpty
-                    ? const Center(child: Text("No Vendor Available"))
+                    ? Center(child: Text("No Nearby Restaurants".tr))
                     : ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),

@@ -53,7 +53,7 @@ class _FoodPageState extends State<FoodPage> {
     foodController.getProducts();
     foodController.getCategories();
     // bestSellerController.getBestSeller();
-    vendorController.fetchVendorsf('Food/Restaurant');
+    vendorController.fetchVendorsf();
   }
 
   void _updateSearchSuggestions(String query) async {
@@ -348,14 +348,14 @@ class _FoodPageState extends State<FoodPage> {
               // ),
               kHiegth20,
               OneTextHeading(
-                heading: "Restaurants to explore".tr,
+                heading: "Nearby Restaurants".tr,
               ),
               kHiegth20,
               Obx(
                 () => vendorController.isVendorLoading.value
                     ? const CircularProgressIndicator()
                     : vendorController.vendorsListf.isEmpty
-                        ? const Center(child: Text("No Vendor Available"))
+                        ? Center(child: Text("No Nearby Restaurants".tr))
                         : ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
