@@ -21,8 +21,8 @@ class UserProfilePage extends StatelessWidget {
   final userController = Get.find<UserController>();
   final languageController = Get.put(LanguageController());
   final List locale = [
-    {'name': "ENGLISH", 'locale': Locale('en', 'US')},
-    {'name': "عربي", 'locale': Locale('ar', 'OM')}
+    {'name': "ENGLISH", 'locale': const Locale('en', 'US')},
+    {'name': "عربي", 'locale': const Locale('ar', 'OM')}
   ];
   updateLanguage(Locale locale) {
     print("Updating language to ${locale.languageCode}");
@@ -52,7 +52,7 @@ class UserProfilePage extends StatelessWidget {
                 );
               },
               separatorBuilder: (context, index) {
-                return Divider(
+                return const Divider(
                   color: Colors.orange,
                 );
               },
@@ -178,7 +178,7 @@ class UserProfilePage extends StatelessWidget {
                   icon: "assets/icons/power_icon.png",
                   onTap: () async {
                     print("Logging out...");
-                    await authController.onLogOut();
+                    await _showLogoutConfirmationDialog(context);
                     Get.back();
                   },
                 ),
@@ -188,6 +188,49 @@ class UserProfilePage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _showLogoutConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap a button
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: kWhite,
+          title: const Text(
+            'LogOut ?',
+          ),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  'Are you sure you want to log out?',
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: kBlack),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+            ),
+            TextButton(
+              child: const Text('Log Out', style: TextStyle(color: kDarkOrange)),
+              onPressed: () async {
+                await authController.onLogOut();
+                Navigator.of(context).pop(); // Dismiss the dialog
+                Get.back(); // Navigate back
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 

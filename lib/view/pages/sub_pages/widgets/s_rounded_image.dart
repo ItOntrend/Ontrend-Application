@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class SRoundedImageWidget extends StatelessWidget {
@@ -45,7 +46,7 @@ class SRoundedImageWidget extends StatelessWidget {
               ? BorderRadius.circular(borderRadius)
               : BorderRadius.vertical(top: Radius.circular(15)),
           child: isnetworkImage
-              ? Image.network(imageUrl, fit: fit)
+              ? CachedNetworkImage(imageUrl: imageUrl, fit: fit)
               : Image.asset(imageUrl, fit: fit),
         ),
       ),

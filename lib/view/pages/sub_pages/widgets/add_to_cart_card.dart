@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -159,7 +160,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: widget.image.isNotEmpty
-                        ? Image.network(widget.image)
+                        ? CachedNetworkImage(imageUrl: widget.image)
                         : Container(
                             height: 88.h,
                             width: 117.w,

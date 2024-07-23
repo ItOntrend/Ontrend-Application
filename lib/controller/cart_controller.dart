@@ -260,108 +260,108 @@ class CartController extends GetxController {
   }
 
   Future<String> placeOrder(String userId, String paymentType, String userName,
-    String userPhone) async {
-  String orderId = generateOrderId();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  List<String> orderNotes = prefs.getStringList('requests') ?? [];
+      String userPhone) async {
+    String orderId = generateOrderId();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> orderNotes = prefs.getStringList('requests') ?? [];
 
-  try {
-    final currentLat = locationController.currentPosition.value.latitude;
-    final currentLng = locationController.currentPosition.value.longitude;
-
-    OrderModel order = OrderModel(
-      userName: userName,
-      deliveryAcceptedBy:
-          DeliveryAcceptedBy(name: "", phoneNumber: "", id: ""),
-      userPhone: userPhone,
-      addedBy: cartItems.values.first['item'].addedBy,
-      adminEarnings: serviceFee.value,
-      discountApplied: 0.0,
-      items: cartItems.values
-          .map((value) => Item(
-                addedBy: value['item'].addedBy.toString(),
-                itemName: value['item'].name,
-                itemPrice:
-                    double.tryParse(value['item'].price.toString()) ?? 0,
-                itemQuantity: (value['quantity'] as num).toInt(),
-                total: (value['item'].price * value['quantity']).toDouble(),
-              ))
-          .toList(),
-      promoCode: null,
-      status: 'Pending',
-      totalPrice: totalAmount,
-      userId: userId,
-      orderTimestamp: DateTime.now(),
-      orderID: orderId,
-      paymentType: paymentType,
-      restaurantName: cartItems.values.first['item'].restaurantName,
-      deliveryLocation: DeliveryLocation(
-          address: locationController.currentAddress.value,
-          apartmentNumber: "apartmentNumber",
-          city: locationController.cityName.value,
-          houseNumber: "houseNumber",
-          lat: currentLat,
-          lng: currentLng,
-          street: locationController.streetName.value),
-      assignedDeliveryPartnerId: '',
-      deliveryAccepted: false,
-      restaurantLocation: RestaurantLocation(lat: 0.0, lng: 0.0),
-      orderNotes: orderNotes,
-    );
-
-    // Ensure the orderId is not empty
-    if (orderId.isEmpty) {
-      throw Exception('Order ID is empty');
-    }
-
-    // Save order to Firestore
-    await FirebaseFirestore.instance
-        .collection('orders')
-        .doc(orderId)
-        .set(order.toJson());
-
-    // Fetch user document and update reward points
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .get();
-    if (!userDoc.exists) {
-      throw Exception('User document does not exist');
-    }
-
-    double rewardPoints = 0.0;
     try {
-      rewardPoints = (userDoc['rewardPoints'] as num).toDouble();
+      final currentLat = locationController.currentPosition.value.latitude;
+      final currentLng = locationController.currentPosition.value.longitude;
+
+      OrderModel order = OrderModel(
+        userName: userName,
+        deliveryAcceptedBy:
+            DeliveryAcceptedBy(name: "", phoneNumber: "", id: ""),
+        userPhone: userPhone,
+        addedBy: cartItems.values.first['item'].addedBy,
+        adminEarnings: serviceFee.value,
+        discountApplied: 0.0,
+        items: cartItems.values
+            .map((value) => Item(
+                  addedBy: value['item'].addedBy.toString(),
+                  itemName: value['item'].name,
+                  itemPrice:
+                      double.tryParse(value['item'].price.toString()) ?? 0,
+                  itemQuantity: (value['quantity'] as num).toInt(),
+                  total: (value['item'].price * value['quantity']).toDouble(),
+                ))
+            .toList(),
+        promoCode: null,
+        status: 'Pending',
+        totalPrice: totalAmount,
+        userId: userId,
+        orderTimestamp: DateTime.now(),
+        orderID: orderId,
+        paymentType: paymentType,
+        restaurantName: cartItems.values.first['item'].restaurantName,
+        deliveryLocation: DeliveryLocation(
+            address: locationController.currentAddress.value,
+            apartmentNumber: "apartmentNumber",
+            city: locationController.cityName.value,
+            houseNumber: "houseNumber",
+            lat: currentLat,
+            lng: currentLng,
+            street: locationController.streetName.value),
+        assignedDeliveryPartnerId: '',
+        deliveryAccepted: false,
+        restaurantLocation: RestaurantLocation(lat: 0.0, lng: 0.0),
+        orderNotes: orderNotes,
+      );
+
+      // Ensure the orderId is not empty
+      if (orderId.isEmpty) {
+        throw Exception('Order ID is empty');
+      }
+
+      // Save order to Firestore
+      await FirebaseFirestore.instance
+          .collection('orders')
+          .doc(orderId)
+          .set(order.toJson());
+
+      // Fetch user document and update reward points
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      if (!userDoc.exists) {
+        throw Exception('User document does not exist');
+      }
+
+      double rewardPoints = 0.0;
+      try {
+        rewardPoints = (userDoc['rewardPoints'] as num).toDouble();
+      } catch (e) {
+        print('Error parsing reward points: $e');
+      }
+      rewardPoints += totalAmount * 62;
+
+      // Update reward points in Firebase and Local Storage
+      await updateRewardPoints(userId, rewardPoints);
+
+      await LocalStorage.instance.writeDataToPrefs(
+        key: 'rewardPoints',
+        value: rewardPoints,
+      );
+
+      // Clean up
+      cartItems.clear();
+      itemTotal.value = 0.0;
+      serviceFee.value = 0.0;
+      isFabVisible.value = false;
+      prefs.remove('requests');
+      await saveRewardPoints();
+      saveCartItems();
+
+      Get.snackbar('Order', 'Order has been placed successfully');
+      return orderId;
     } catch (e) {
-      print('Error parsing reward points: $e');
+      print('Error placing order: $e');
+      Get.snackbar('Error', 'Failed to place the order');
+      return '';
     }
-    rewardPoints += totalAmount * 62;
-
-    // Update reward points in Firebase and Local Storage
-    await updateRewardPoints(userId, rewardPoints);
-
-    await LocalStorage.instance.writeDataToPrefs(
-      key: 'rewardPoints',
-      value: rewardPoints,
-    );
-
-    // Clean up
-    cartItems.clear();
-    itemTotal.value = 0.0;
-    serviceFee.value = 0.0;
-    isFabVisible.value = false;
-    prefs.remove('requests');
-    await saveRewardPoints();
-    saveCartItems();
-
-    Get.snackbar('Order', 'Order has been placed successfully');
-    return orderId;
-  } catch (e) {
-    print('Error placing order: $e');
-    Get.snackbar('Error', 'Failed to place the order');
-    return '';
   }
-}
 
   void showSnackBar(String message) {
     Get.snackbar('Cart', message,

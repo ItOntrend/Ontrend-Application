@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -85,7 +86,7 @@ class _BestSellerCardState extends State<BestSellerCard> {
                         ),
                       )
                     : _isOnline
-                        ? Image.network(
+                        ? CachedNetworkImage(imageUrl: 
                             widget.imagePath,
                             fit: BoxFit.cover,
                           )

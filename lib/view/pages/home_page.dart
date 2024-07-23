@@ -17,10 +17,10 @@ import 'package:ontrend_food_and_e_commerce/view/pages/groceries_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousal_slider.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/home_search_result.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/shimmer_export.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/oru_service_big_card.dart';
@@ -301,7 +301,12 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 20),
               Obx(
                 () => vendorController.isVendorLoading.value
-                    ? const CircularProgressIndicator()
+                    ? ListView.separated(
+                        itemBuilder: (context, index) => const ShimmerExport(),
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 18),
+                        itemCount: 3,
+                      )
                     : vendorController.vendorsListCat.isEmpty
                         ? const Center(child: Text("No Vendor Available"))
                         : ListView.builder(
