@@ -44,7 +44,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
       margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.symmetric(horizontal: 16)
           .copyWith(bottom: 8, top: 16),
-      height: 280.h,
+      height: 290.h,
       width: double.infinity,
       decoration: BoxDecoration(
         color: kWhite,

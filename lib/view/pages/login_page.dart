@@ -112,7 +112,10 @@ class LoginPage extends StatelessWidget {
                         authController.onLogin(context);
                       }
                     },
-                    child: MainBotton(name: "Login".tr)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: MainBotton(name: "Login".tr),
+                    )),
               ),
               kHiegth35,
               Row(
@@ -140,7 +143,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ],
               ),
-              // kHiegth25,
+              kHiegth25,
             ],
           ),
         ),

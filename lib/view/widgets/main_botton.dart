@@ -17,7 +17,7 @@ class MainBotton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 58.h,
-        width: 344.w,
+        width: double.infinity,
         decoration: BoxDecoration(
           color: kDarkOrange,
           borderRadius: BorderRadius.circular(

@@ -32,10 +32,10 @@ import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.da
 class HomePage extends StatefulWidget {
   final NavigationController? controller;
 
-  HomePage({
-    Key? key,
+  const HomePage({
+    super.key,
     this.controller,
-  }) : super(key: key);
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -129,7 +129,9 @@ class _HomePageState extends State<HomePage> {
           } else {
             return GestureDetector(
               onTap: () {
-                Get.to(() => const SelectLocationPage());
+                Get.to(
+                  () => const SelectLocationPage(),
+                );
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -549,6 +549,14 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                     trailing: Text("${"OMR".tr} ${item.total}00"),
                   ))
               .toList(),
+          ListTile(
+            title: const Text("Delivery fee"),
+            trailing: Text("OMR ${order.deliveryFee}00"),
+          ),
+          ListTile(
+            title: const Text("Service fee"),
+            trailing: Text("OMR ${order.servicFee}00"),
+          ),
           const Divider(),
           _buildOrderDetailRow(order),
         ],

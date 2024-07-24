@@ -384,7 +384,7 @@ class CartController extends GetxController {
       } catch (e) {
         print('Error parsing reward points: $e');
       }
-      rewardPoints += totalAmount * 62;
+      rewardPoints += itemTotal.value * 62;
 
       // Update reward points in Firebase and Local Storage
       await updateRewardPoints(userId, rewardPoints);

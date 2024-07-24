@@ -50,9 +50,9 @@ class LocalStorage {
     required String key,
     required T value,
   }) async {
-    final box = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     String encodedValue = json.encode(value);
-    await box.setString(key, encodedValue);
+    await prefs.setString(key, encodedValue);
   }
 
   Future<T?> readData<T>({
@@ -62,7 +62,7 @@ class LocalStorage {
     final box = await _getBoxByName(boxName);
     final encodedString = await box!.get(key);
     if (encodedString != null) {
-      T? decodedData = json.decode(encodedString);
+      T? decodedData = json.decode(encodedString) as T?;
       return decodedData;
     } else {
       return null;
@@ -72,15 +72,14 @@ class LocalStorage {
   Future<T?> dataFromPrefs<T>({
     required String key,
   }) async {
-    final box = await SharedPreferences.getInstance();
-    final encodedString = box.getString(key);
+    final prefs = await SharedPreferences.getInstance();
+    final encodedString = prefs.getString(key);
     if (encodedString != null) {
-      T? decodedData = json.decode(encodedString);
+      T? decodedData = json.decode(encodedString) as T?;
       return decodedData;
     } else {
       return null;
     }
-    
   }
 
   Future<void> deleteData<T>({
@@ -96,8 +95,8 @@ class LocalStorage {
   }
 
   Future<void> clearPrefs() async {
-    final box = await SharedPreferences.getInstance();
-    await box.clear();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
   }
 
   Box? user;

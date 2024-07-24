@@ -54,7 +54,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
         left: 13,
         right: 7,
       ),
-      height: 101.h,
+      height: 110.h,
       width: double.infinity,
       decoration: BoxDecoration(
         color: kWhite,
@@ -108,7 +108,6 @@ class _AddToCartCardState extends State<AddToCartCard> {
                 int quantity = cartItem['quantity'] ?? 1;
                 return Container(
                   height: 22.h,
-                  // width: 124.w,
                   decoration: BoxDecoration(
                     color: kGreen,
                     borderRadius: BorderRadius.circular(6),

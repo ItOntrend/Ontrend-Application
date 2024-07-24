@@ -24,7 +24,17 @@ class LocationController extends GetxController {
   Future<void> _requestPermissions() async {
     var status = await Permission.location.request();
     if (status.isGranted) {
-      getCurrentLocation();
+      if (savedAddresses.isEmpty) {
+        getCurrentLocation();
+      } else {
+        // Handle logic if addresses are already saved
+        // For example, set the current position to the first saved address
+        currentPosition.value = LatLng(
+          savedAddresses[0].latitude,
+          savedAddresses[0].longitude,
+        );
+        currentAddress.value = savedAddresses[0].address;
+      }
     } else {
       currentAddress.value = "Location permissions are denied.";
     }
@@ -64,8 +74,8 @@ class LocationController extends GetxController {
         Placemark place = placemarks[0];
         currentAddress.value =
             "${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}";
-        streetName.value = place.locality ?? 'Unknown';
-        cityName.value = place.street ?? 'Unknown';
+        streetName.value = place.street ?? 'Unknown';
+        cityName.value = place.locality ?? 'Unknown';
         countryName.value = place.country ?? 'Unknown';
         savedAddresses.add(SavedAddress(
           title: "Custom Location",
@@ -73,6 +83,8 @@ class LocationController extends GetxController {
           streetName: streetName.value,
           cityName: cityName.value,
           countryName: countryName.value,
+          latitude: position.latitude,
+          longitude: position.longitude,
         ));
       } else {
         currentAddress.value = "No address found";
@@ -97,6 +109,8 @@ class LocationController extends GetxController {
         streetName: address.streetName,
         cityName: address.cityName,
         countryName: address.countryName,
+        latitude: address.latitude,
+        longitude: address.longitude,
       );
       savedAddresses.refresh();
     }
@@ -121,6 +135,8 @@ class SavedAddress {
   final String streetName;
   final String cityName;
   final String countryName;
+  final double latitude;
+  final double longitude;
 
   SavedAddress({
     required this.title,
@@ -128,14 +144,15 @@ class SavedAddress {
     required this.streetName,
     required this.cityName,
     required this.countryName,
+    required this.latitude,
+    required this.longitude,
   });
 }
 
 /*class PlacePickerScreen extends StatelessWidget {
   final LocationController controller;
 
-  const PlacePickerScreen({Key? key, required this.controller})
-      : super(key: key);
+  const PlacePickerScreen({super.key, required this.controller,});
 
   @override
   Widget build(BuildContext context) {

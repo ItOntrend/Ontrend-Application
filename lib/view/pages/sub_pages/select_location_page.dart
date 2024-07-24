@@ -102,6 +102,8 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
       streetName: locationController.streetName.value,
       cityName: locationController.cityName.value,
       countryName: locationController.countryName.value,
+      latitude: 0.0,
+      longitude: 0.0,
     ));
     searchController.clear();
     listOfLocation.clear();
