@@ -165,7 +165,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                 // Ensure data is not null and handle missing fields
                 final data = snapshot.data!.data() as Map<String, dynamic>?;
                 if (data == null) {
-                  return const Center(child: Text('Order data is null'));
+                  return Center(child: Text('Order data is null'.tr));
                 }
 
                 // Parse order data
@@ -450,7 +450,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         "Processing",
         "Ready",
         "Picked Up",
-        "Completed"
+        "Delivered"
       ];
       int currentIndex = steps.indexOf(status);
       int stepIndex = steps.indexOf(step);
@@ -507,9 +507,9 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         MyTimelineTile(
           isFirst: false,
           isLast: true,
-          isPast: isPast("Completed"),
+          isPast: isPast("Delivered"),
           child: const Text(
-            "Completed",
+            "Delivered",
             style: TextStyle(
               fontSize: 12,
             ),

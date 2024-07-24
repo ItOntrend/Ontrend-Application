@@ -140,6 +140,7 @@ class LocalStrings extends Translations {
           "Points": "Points",
           "Stores to Explore": "Stores to Explore",
           "min": "min",
+          "mins": "mins",
           'View Cart': 'View Cart',
           "Items in Cart:": "Items in Cart:",
           'No image available': 'No image available',
@@ -171,6 +172,7 @@ class LocalStrings extends Translations {
           "km": "km",
           "No Nearby Restaurants": "No Nearby Restaurants",
           "No Nearby Stores": "No Nearby Stores",
+          "Up to 40% Off": "Up to 40% Off",
         },
         //'hi_IN': {'hello': "नमस्ते दुनिया", 'message': "ऐप में आपका स्वागत है"},
         'ar_OM': {
@@ -286,7 +288,7 @@ class LocalStrings extends Translations {
           "Delivery by": "التوصيل بواسطة",
           "OnTrend": "اونتريند",
           "No items found": "لم يتم العثور على العناصر",
-          "Nearby Restaurants": "مطعم قريب",
+          "Nearby Restaurants": "مطاعم بالقرب منك",
           "Search for area, street name...": "البحث عن المنطقة، اسم الشارع...",
           "Select Location": "اختر موقعا",
           "Use my current location": "استخدام موقعي الحالي",
@@ -305,6 +307,7 @@ class LocalStrings extends Translations {
           "Rewards: ": "المكافآت ",
           "Points": "نقاط",
           "Stores to Explore": "مطاعم مقترحة",
+          "mins": "دقائق",
           "min": "دقائق",
           'View Cart': "عرض العربة",
           "Items in Cart:": "العناصر الموجودة في سلة التسوق:",
@@ -335,7 +338,8 @@ class LocalStrings extends Translations {
           "Estimated Delivery Time:": "يقدر وقت التسليم:",
           "km": "الكيلومتر",
           "No Nearby Restaurants": "لا توجد مطاعم قريبة",
-          "No Nearby Stores": "لا توجد متاجر قريبة"
+          "No Nearby Stores": "لا توجد متاجر قريبة",
+          "Up to 40% Off": "تخفيض يصل إلى ٤٠٪",
         }
       };
 }

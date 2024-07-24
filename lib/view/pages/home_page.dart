@@ -79,8 +79,8 @@ class _HomePageState extends State<HomePage> {
 
       setState(() {
         itemSearchSuggestions = searchResults
-            .where((item) =>
-                item.name.toLowerCase().contains(query.toLowerCase()))
+            .where(
+                (item) => item.name.toLowerCase().contains(query.toLowerCase()))
             .toList();
         restaurantSearchSuggestions = uniqueRestaurantSuggestions;
       });
@@ -113,8 +113,14 @@ class _HomePageState extends State<HomePage> {
             Get.to(() => const SelectLocationPage());
           },
           child: Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Image.asset("assets/icons/location_icon.png"),
+            padding: (lang.currentLanguage.value.languageCode == 'ar')
+                ? EdgeInsets.only(right: 20)
+                : EdgeInsets.only(left: 20),
+            child: Image.asset(
+              "assets/icons/location_icon.png",
+              width: 30, // Set the desired width
+              height: 30,
+            ),
           ),
         ),
         title: Obx(() {
@@ -361,7 +367,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 20),
               Obx(
                 () => vendorController.vendorsListf.isEmpty
-                    ? const Center(child: Text("No Vendor Available"))
+                    ? Center(child: Text("No Nearby Restaurants".tr))
                     : ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),

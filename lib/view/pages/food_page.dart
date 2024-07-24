@@ -75,8 +75,8 @@ class _FoodPageState extends State<FoodPage> {
 
       setState(() {
         itemSearchSuggestions = searchResults
-            .where((item) =>
-                item.name.toLowerCase().contains(query.toLowerCase()))
+            .where(
+                (item) => item.name.toLowerCase().contains(query.toLowerCase()))
             .toList();
         restaurantSearchSuggestions = uniqueRestaurantSuggestions;
       });
@@ -111,9 +111,13 @@ class _FoodPageState extends State<FoodPage> {
             );
           },
           child: Padding(
-            padding: const EdgeInsets.only(left: 20),
+            padding: (lang.currentLanguage.value.languageCode == 'ar')
+                ? EdgeInsets.only(right: 20)
+                : EdgeInsets.only(left: 20),
             child: Image.asset(
               "assets/icons/location_icon.png",
+              width: 30,
+              height: 30,
             ),
           ),
         ),
