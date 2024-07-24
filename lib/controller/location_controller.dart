@@ -131,7 +131,7 @@ class SavedAddress {
   });
 }
 
-class PlacePickerScreen extends StatelessWidget {
+/*class PlacePickerScreen extends StatelessWidget {
   final LocationController controller;
 
   const PlacePickerScreen({Key? key, required this.controller})
@@ -149,6 +149,35 @@ class PlacePickerScreen extends StatelessWidget {
           LatLng(result.geometry!.location.lat, result.geometry!.location.lng),
         );
         Get.back();
+      },
+    );
+  }
+}*/
+class PlacePickerScreen extends StatelessWidget {
+  final LocationController controller;
+
+  const PlacePickerScreen({Key? key, required this.controller})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PlacePicker(
+      apiKey: "AIzaSyAcEE-vXwPyOkwcPROiC3h17CdtJL8onKs",
+      initialPosition: controller.currentPosition.value,
+      useCurrentLocation: true,
+      selectInitialPosition: true,
+      onPlacePicked: (result) {
+        controller.updateCurrentLocation(
+          LatLng(result.geometry!.location.lat, result.geometry!.location.lng),
+        );
+        Get.back(); // Go back to the previous screen
+        // You can add additional code here if needed
+        // For example, save the location and navigate to the next page
+        Get.snackbar(
+          "Location Selected",
+          "Your location has been updated.",
+          snackPosition: SnackPosition.BOTTOM,
+        );
       },
     );
   }
