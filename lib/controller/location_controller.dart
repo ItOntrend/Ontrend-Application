@@ -4,6 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_place_picker_mb/google_maps_place_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationController extends GetxController {
   var currentPosition = const LatLng(21.4735, 55.9754).obs;
@@ -57,6 +58,7 @@ class LocationController extends GetxController {
       isLoading.value = true;
       currentPosition.value = newPosition;
       await _getAddressFromLatLng(newPosition);
+      await saveLocationToPreferences(newPosition);
     } catch (e) {
       currentAddress.value = "Failed to update location.";
     } finally {
@@ -113,6 +115,23 @@ class LocationController extends GetxController {
         longitude: address.longitude,
       );
       savedAddresses.refresh();
+    }
+  }
+
+  Future<void> saveLocationToPreferences(LatLng position) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('latitude', position.latitude);
+    await prefs.setDouble('longitude', position.longitude);
+  }
+
+  Future<void> loadLocationFromPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    final latitude = prefs.getDouble('latitude');
+    final longitude = prefs.getDouble('longitude');
+    if (latitude != null && longitude != null) {
+      updateCurrentLocation(LatLng(latitude, longitude));
+    } else {
+      getCurrentLocation();
     }
   }
 
