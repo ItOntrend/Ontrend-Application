@@ -8,6 +8,7 @@ import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/forgot_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/navigation_manu.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sing_up_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/main_textfield.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/main_textfield_password.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_botton.dart';

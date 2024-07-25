@@ -393,6 +393,26 @@ class CartController extends GetxController {
         key: 'rewardPoints',
         value: rewardPoints,
       );
+      // Update admin earnings in superAdmin document
+      DocumentSnapshot superAdminDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc('dbDs1m9ORGMzcbvhWmaPAI6Sl5i2')
+          .get();
+      if (superAdminDoc.exists) {
+        // Ensure the field is treated as a double
+        double currentAdminEarnings =
+            (superAdminDoc['adminEarnings'] as num).toDouble();
+        double newAdminEarnings = currentAdminEarnings + adminTotalEarnings;
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc('dbDs1m9ORGMzcbvhWmaPAI6Sl5i2')
+            .update({
+          'adminEarnings': newAdminEarnings,
+        });
+        print('Admin earnings updated successfully');
+      } else {
+        throw Exception('Super admin document does not exist');
+      }
 
       // Clean up
       cartItems.clear();

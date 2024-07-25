@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/Model/core/constant.dart';
 
@@ -50,7 +51,7 @@ class OurServiceCard extends StatelessWidget {
                 10,
               ),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
@@ -60,7 +61,7 @@ class OurServiceCard extends StatelessWidget {
                 ),
                 kWidth10,
                 Text(
-                  "Up to 40% Off",
+                  "Up to 40% Off".tr,
                   style: TextStyle(
                     fontSize: 10,
                     color: kWhite,

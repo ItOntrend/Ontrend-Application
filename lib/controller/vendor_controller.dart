@@ -159,7 +159,7 @@ class VendorController extends GetxController {
         }
       }
 
-      vendorsListg.assignAll(filteredVendors);
+      vendorsListf.assignAll(filteredVendors);
       log("Filtered vendors data fetched successfully");
     } catch (e) {
       log('Error fetching vendors: $e');

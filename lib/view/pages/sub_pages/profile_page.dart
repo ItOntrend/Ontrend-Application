@@ -38,11 +38,17 @@ class _ProfilePageState extends State<ProfilePage>
   final LanguageController lang = Get.put(LanguageController());
   final CartController cartController = Get.find<CartController>();
   TabController? _tabController;
+  final ScrollController _scrollController = ScrollController();
+  late List<String> tagList;
+  final Map<String, GlobalKey> _keys = {};
+  bool _isTabAnimating = false;
+  bool _isScrollAnimating = false;
 
   @override
   void initState() {
     super.initState();
     fetchInitialData();
+    _scrollController.addListener(_onScroll);
   }
 
   void fetchInitialData() async {
@@ -61,31 +67,69 @@ class _ProfilePageState extends State<ProfilePage>
   }
 
   void initializeTabController() {
-    // Create a Set to store unique tags
     final Set<String> tagSet = {};
-
-    // Add tags from CatList to the Set
     for (var category in vendorController.ItemsList) {
       if (category.tag != null) {
         tagSet.add(category.tag!);
       }
     }
+    tagList = tagSet.toList();
 
-    // Convert the Set to a List
-    List<String> tagList = tagSet.toList();
-
-    // Initialize the TabController with the length of the tag list
     if (tagList.isNotEmpty) {
       _tabController = TabController(
         length: tagList.length,
         vsync: this,
+        initialIndex: widget.initialTabIndex,
       );
+
+      _tabController!.addListener(() {
+        if (_tabController!.indexIsChanging) {
+          _isTabAnimating = true;
+          scrollToTag(tagList[_tabController!.index]);
+        }
+      });
+    }
+  }
+
+  void scrollToTag(String tag) {
+    final keyContext = _keys[tag]?.currentContext;
+    if (keyContext != null) {
+      _isScrollAnimating = true;
+      Scrollable.ensureVisible(
+        keyContext,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        alignment: 0.1,
+      ).then((_) {
+        _isScrollAnimating = false;
+        _isTabAnimating = false;
+      });
+    }
+  }
+
+  void _onScroll() {
+    if (_isScrollAnimating || _isTabAnimating) return;
+
+    final offset = _scrollController.offset;
+    for (int index = 0; index < tagList.length; index++) {
+      final keyContext = _keys[tagList[index]]?.currentContext;
+      if (keyContext != null) {
+        final box = keyContext.findRenderObject() as RenderBox?;
+        final pos = box?.localToGlobal(Offset.zero);
+        if (pos != null && pos.dy < 200) {
+          if (_tabController?.index != index) {
+            _tabController?.animateTo(index);
+          }
+          break;
+        }
+      }
     }
   }
 
   @override
   void dispose() {
     _tabController?.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -94,143 +138,151 @@ class _ProfilePageState extends State<ProfilePage>
     return SafeArea(
       child: Scaffold(
         backgroundColor: kWhite,
-        body: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Obx(
-                () => SizedBox(
-                  height: 200.h,
-                  width: double.infinity,
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        vendorController.vendorDetail.value?.bannerImage ?? "",
-                    fit: BoxFit.cover,
-                    errorWidget: (context, error, stackTrace) {
-                      return CachedNetworkImage(
-                        imageUrl:
-                            'https://service.sarawak.gov.my/web/web/web/web/res/no_image.png',
-                        fit: BoxFit.cover,
-                      );
+        body: Stack(
+          children: [
+            Obx(
+              () => SizedBox(
+                height: 200.h,
+                width: double.infinity,
+                child: CachedNetworkImage(
+                  imageUrl:
+                      vendorController.vendorDetail.value?.bannerImage ?? "",
+                  fit: BoxFit.cover,
+                  errorWidget: (context, error, stackTrace) {
+                    return CachedNetworkImage(
+                      imageUrl:
+                          'https://service.sarawak.gov.my/web/web/web/web/res/no_image.png',
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
+              ),
+            ),
+            Positioned(
+              left: 12,
+              top: 20,
+              child: GestureDetector(
+                onTap: () {
+                  Get.back();
+                },
+                child: Container(
+                  height: 38.h,
+                  width: 38.w,
+                  decoration: const BoxDecoration(
+                    color: kWhite,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.arrow_back_ios_outlined,
+                      size: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 100,
+              left: 30,
+              right: 30,
+              child: Center(
+                child: ProfileCard(userId: widget.userId),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 250),
+              child: Column(
+                children: [
+                  Obx(
+                    () {
+                      final Set<String> tagSet = {};
+                      for (var category in vendorController.ItemsList) {
+                        if (category.tag != null) {
+                          tagSet.add(category.tag!);
+                        }
+                      }
+                      tagList = tagSet.toList();
+
+                      return _tabController != null
+                          ? TabBar(
+                              controller: _tabController,
+                              isScrollable: true,
+                              tabs: tagList.map((tag) {
+                                final displayTag =
+                                    lang.currentLanguage.value.languageCode ==
+                                            "ar"
+                                        ? vendorController.ItemsList.firstWhere(
+                                            (item) => item.tag == tag).localTag
+                                        : tag;
+                                return Tab(text: displayTag);
+                              }).toList(),
+                            )
+                          : const SizedBox.shrink();
                     },
                   ),
-                ),
-              ),
-              Positioned(
-                left: 12,
-                top: 20,
-                child: GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    height: 38.h,
-                    width: 38.w,
-                    decoration: const BoxDecoration(
-                      color: kWhite,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.arrow_back_ios_outlined,
-                        size: 18,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 100,
-                left: 30,
-                right: 30,
-                child: Center(
-                  child: ProfileCard(
-                    userId: widget.userId,
-                  ),
-                ),
-              ),
-              kHiegth20,
-              Padding(
-                padding: const EdgeInsets.only(top: 250),
-                child: Column(
-                  children: [
-                    Obx(
-                      () {
-                        // Create a Set to store unique tags
-                        final Set<String> tagSet = {};
-
-                        // Add tags from CatList to the Set
-                        for (var category in vendorController.ItemsList) {
-                          if (category.tag != null) {
-                            tagSet.add(category.tag!);
-                          }
-                        }
-
-                        // Convert the Set to a List
-                        List<String> tagList = tagSet.toList();
-
-                        return _tabController != null
-                            ? TabBar(
-                                controller: _tabController,
-                                isScrollable: true,
-                                tabs: tagList.map((tag) {
-                                  final displayTag = lang.currentLanguage.value
-                                              .languageCode ==
-                                          "ar"
-                                      ? vendorController.ItemsList.firstWhere(
-                                          (item) => item.tag == tag).localTag
-                                      : tag;
-                                  return Tab(
-                                      text:
-                                          displayTag); // Use localTag if available, else use tag
-                                }).toList(),
-                              )
-                            : const SizedBox.shrink();
-                      },
-                    ),
-                    kHiegth25,
-                    Obx(
+                  kHiegth25,
+                  Expanded(
+                    child: Obx(
                       () {
                         if (vendorController.isItemsLoading.value) {
-                          log("Loading items...");
                           return const Center(
                               child: CircularProgressIndicator());
-                        } else if (vendorController.itemsList.isEmpty) {
+                        } else if (vendorController.ItemsList.isEmpty) {
                           return Center(child: Text("No items found".tr));
                         }
 
-                        // Create a Set to store unique tags
-                        final Set<String> tagSet = {};
+                        return ListView.builder(
+                          controller: _scrollController,
+                          itemCount: vendorController.ItemsList.length,
+                          itemBuilder: (context, index) {
+                            final item = vendorController.ItemsList[index];
+                            final tagKey = item.tag ?? '';
+                            _keys.putIfAbsent(tagKey, () => GlobalKey());
 
-                        // Add tags from CatList to the Set
-                        for (var category in vendorController.ItemsList) {
-                          if (category.tag != null) {
-                            tagSet.add(category.tag!);
-                          }
-                        }
-
-                        // Convert the Set to a List
-                        List<String> tagList = tagSet.toList();
-
-                        return SizedBox(
-                          height: MediaQuery.of(context).size.height - 450.h,
-                          child: _tabController != null
-                              ? TabBarView(
-                                  controller: _tabController,
-                                  children: tagList.map((tag) {
-                                    return buildItemListView(
-                                        tag); // Pass the tag to the item list builder
-                                  }).toList(),
-                                )
-                              : const SizedBox.shrink(),
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (index == 0 ||
+                                    vendorController.ItemsList[index - 1].tag !=
+                                        item.tag)
+                                  Padding(
+                                    key: _keys[tagKey],
+                                    padding: const EdgeInsets.only(
+                                        top: 16.0, left: 16.0),
+                                    child: Text(
+                                      item.tag ?? '',
+                                      style: TextStyle(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.to(() => ItemViewPage(item: item));
+                                  },
+                                  child: FoodItemCard(
+                                    name: item.name,
+                                    localName: item.localName,
+                                    localTag: item.localTag,
+                                    image: item.imageUrl,
+                                    description: item.description,
+                                    price: item.price,
+                                    addedBy: item.addedBy,
+                                    restaurantName: item.restaurantName,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         );
                       },
                     ),
-                    kHiegth25,
-                  ],
-                ),
+                  ),
+                  kHiegth25,
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         bottomNavigationBar: Obx(() {
           return BottomAppBar(
@@ -281,87 +333,6 @@ class _ProfilePageState extends State<ProfilePage>
             ),
           );
         }),
-      ),
-    );
-  }
-
-  Widget buildItemListView(String tag) {
-    final items = vendorController.ItemsList.where(
-            (item) => item.tag == tag) // Filter by tag
-        .toList();
-    print("Items for tag '$tag': ${items.length}");
-    log("Items for tag '$tag': ${items.length}"); // Debug log
-    return vendorController.isItemsLoading.value
-        ? const ShimmerFoodItem()
-        : ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              final item = items[index];
-              return GestureDetector(
-                onTap: () {
-                  Get.to(() => ItemViewPage(item: item));
-                },
-                child: FoodItemCard(
-                  name: item.name,
-                  localName: item.localName,
-                  localTag: item.localTag,
-                  image: item.imageUrl,
-                  description: item.description,
-                  price: item.price,
-                  addedBy: item.addedBy,
-                  restaurantName: item.restaurantName,
-                ),
-              );
-            },
-          );
-  }
-}
-
-class ShimmerFoodItem extends StatelessWidget {
-  const ShimmerFoodItem({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: Row(
-        children: [
-          Column(
-            children: [
-              Skelton(
-                width: 120.w,
-                height: 20.h,
-              ),
-              kHiegth10,
-              Skelton(
-                width: 50.w,
-                height: 15.h,
-              ),
-              kHiegth10,
-              Skelton(
-                width: 200.w,
-                height: double.infinity,
-              ),
-            ],
-          ),
-          Column(
-            children: [
-              Skelton(
-                width: 150.w,
-                height: 100.h,
-              ),
-              kHiegth10,
-              Skelton(
-                width: 150.w,
-                height: 50.h,
-              )
-            ],
-          )
-        ],
       ),
     );
   }

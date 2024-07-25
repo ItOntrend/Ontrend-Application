@@ -124,7 +124,7 @@ class ExploreCard extends StatelessWidget {
                             );
                           } else if (snapshot.hasError) {
                             return Text(
-                              'Location information unavailable',
+                              'Location information unavailable'.tr,
                               style: TextStyle(
                                 color: Colors.grey[600],
                                 fontSize: 14,
@@ -132,7 +132,7 @@ class ExploreCard extends StatelessWidget {
                             );
                           } else {
                             return Text(
-                              'Fetching location...',
+                              'Fetching location...'.tr,
                               style: TextStyle(
                                 color: Colors.grey[600],
                                 fontSize: 14,
@@ -153,7 +153,7 @@ class ExploreCard extends StatelessWidget {
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${distance.toStringAsFixed(2)} km away',
+                        '${distance.toStringAsFixed(2)} ${"km away".tr}',
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 14,
@@ -166,7 +166,7 @@ class ExploreCard extends StatelessWidget {
                         size: 18,
                       ),
                       Text(
-                        '${estimatedTime.toStringAsFixed(0)} mins', // Estimated time in minutes
+                        '${estimatedTime.toStringAsFixed(0)} ${"mins".tr}', // Estimated time in minutes
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 14,

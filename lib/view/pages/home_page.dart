@@ -54,6 +54,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      locationController.loadLocationFromPreferences();
       vendorController.fetchVendorsf();
       homeController.getProducts();
     });
@@ -111,8 +112,14 @@ class _HomePageState extends State<HomePage> {
             Get.to(() => const SelectLocationPage());
           },
           child: Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Image.asset("assets/icons/location_icon.png"),
+            padding: (lang.currentLanguage.value.languageCode == 'ar')
+                ? EdgeInsets.only(right: 20)
+                : EdgeInsets.only(left: 20),
+            child: Image.asset(
+              "assets/icons/location_icon.png",
+              width: 30, // Set the desired width
+              height: 30,
+            ),
           ),
         ),
         title: Obx(() {
