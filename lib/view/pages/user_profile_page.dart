@@ -44,8 +44,10 @@ class UserProfilePage extends StatelessWidget {
                 return GestureDetector(
                   onTap: () {
                     Locale selectedLocale = locale[index]['locale'];
-                    updateLanguage(selectedLocale);
+
                     languageController.changeLanguage(selectedLocale);
+
+                    updateLanguage(selectedLocale);
                     //updateLanguage(locale[index]['locale']);
                   },
                   child: Text(locale[index]['name']),
@@ -221,7 +223,8 @@ class UserProfilePage extends StatelessWidget {
               },
             ),
             TextButton(
-              child: const Text('Log Out', style: TextStyle(color: kDarkOrange)),
+              child:
+                  const Text('Log Out', style: TextStyle(color: kDarkOrange)),
               onPressed: () async {
                 await authController.onLogOut();
                 Navigator.of(context).pop(); // Dismiss the dialog

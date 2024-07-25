@@ -153,7 +153,7 @@ class VendorController extends GetxController {
       for (VendorModel vendor in allVendors) {
         double distance = calculateDistance(vendor.location);
         // Filter based on your distance criteria
-        if (distance <= 14000.0) {
+        if (distance <= 20.0) {
           // Example: Filter vendors within 5 km
           filteredVendors.add(vendor);
         }
