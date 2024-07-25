@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -207,35 +205,34 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Obx(
-                () => Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  padding:
-                      const EdgeInsetsDirectional.symmetric(horizontal: 10),
-                  height: 50.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: kDarkOrange,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Points".tr,
-                        style: GoogleFonts.aDLaMDisplay(
-                            color: kWhite,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      Text(
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
+                height: 50.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: kDarkOrange,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Points".tr,
+                      style: GoogleFonts.aDLaMDisplay(
+                          color: kWhite,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    Obx(
+                      () => Text(
                         "${userController.rewardPoints.value.toInt()}",
                         style: GoogleFonts.abhayaLibre(
                             color: kWhite,
                             fontSize: 16,
                             fontWeight: FontWeight.w700),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               TextfieldWithMic(
@@ -356,42 +353,50 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              kHiegth20,
               OneTextHeading(
                 heading: "Nearby Restaurants".tr,
               ),
-              SizedBox(height: 20),
+              kHiegth20,
               Obx(
-                () => vendorController.vendorsListf.isEmpty
-                    ? const Center(child: Text("No Vendor Available"))
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        itemCount: vendorController.vendorsListf.length,
-                        itemBuilder: (context, index) {
-                          final vendor = vendorController.vendorsListf[index];
-                          return ExploreCard(
-                            longitude: vendor.location.lng,
-                            latitude: vendor.location.lat,
-                            locationCityCountry: '',
-                            distance: vendorController
-                                .calculateDistance(vendor.location),
-                            name:
-                                lang.currentLanguage.value.languageCode == "ar"
+                () => vendorController.isItemsLoading.value
+                    ? ListView.separated(
+                        itemBuilder: (context, index) => const ShimmerExport(),
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 18),
+                        itemCount: 3,
+                      )
+                    : vendorController.vendorsListf.isEmpty
+                        ? const Center(child: Text("No Vendor Available"))
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: vendorController.vendorsListf.length,
+                            itemBuilder: (context, index) {
+                              final vendor =
+                                  vendorController.vendorsListf[index];
+                              return ExploreCard(
+                                longitude: vendor.location.lng,
+                                latitude: vendor.location.lat,
+                                locationCityCountry: '',
+                                distance: vendorController
+                                    .calculateDistance(vendor.location),
+                                name: lang.currentLanguage.value.languageCode ==
+                                        "ar"
                                     ? vendor.restaurantArabicName
                                     : vendor.restaurantName,
-                            image: vendor.bannerImage,
-                            onTap: () {
-                              Get.to(() => ProfilePage(
-                                    userId: vendor.reference.id,
-                                    cat: "",
-                                    type: "Food/Restaurent",
-                                  ));
+                                image: vendor.bannerImage,
+                                onTap: () {
+                                  Get.to(() => ProfilePage(
+                                        userId: vendor.reference.id,
+                                        cat: "",
+                                        type: "Food/Restaurent",
+                                      ));
+                                },
+                              );
                             },
-                          );
-                        },
-                      ),
+                          ),
               ),
               kHiegth40,
             ],

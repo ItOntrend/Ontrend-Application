@@ -232,7 +232,6 @@ class _ProfilePageState extends State<ProfilePage>
             ],
           ),
         ),
-        
         bottomNavigationBar: Obx(() {
           return BottomAppBar(
             color: kTransparent,

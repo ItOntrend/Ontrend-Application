@@ -26,6 +26,7 @@ class DeliveryTrackingPage extends StatefulWidget {
   final double longitude;
 
   @override
+  // ignore: library_private_types_in_public_api
   _DeliveryTrackingPageState createState() => _DeliveryTrackingPageState();
 }
 
@@ -39,6 +40,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
   BitmapDescriptor restaurantIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
   double remainingDistance = 0.0;
+  bool isSnackBarShown = false;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   late CollectionReference orderTrackingColloction;
@@ -376,7 +378,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                 ),
                 Text(
                   "is your delivery hero for\ntoday.".tr,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 10,
                     color: kTextStyleGrey,
                   ),
@@ -390,7 +392,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
               children: [
                 Text(
                   "Waiting for acceptance".tr,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                   ),
@@ -398,7 +400,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                 Text(
                   "Your delivery hero details will\nappear here once accepted."
                       .tr,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 10,
                     color: kTextStyleGrey,
                   ),
@@ -444,6 +446,24 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
   }
 
   Widget _buildOrderTimeline(String status) {
+    // Check if the order status is "Completed" and show the SnackBar
+    if (status == 'Completed' && !isSnackBarShown) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Your order is completed!'),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.only(
+                top: kToolbarHeight + 10.h, left: 10.w, right: 10.w),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+        isSnackBarShown =
+            true; // Update the variable to indicate that the SnackBar has been shown
+      });
+    }
+
     bool isPast(String step) {
       List<String> steps = [
         "Pending",
@@ -477,7 +497,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           isPast: isPast("Processing"),
           child: Text(
             "Processing".tr,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),
@@ -488,7 +508,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           isPast: isPast("Ready"),
           child: Text(
             "Ready".tr,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),
@@ -499,7 +519,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           isPast: isPast("Picked Up"),
           child: Text(
             "Picked Up".tr,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),
@@ -527,7 +547,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         children: [
           Text(
             "Order Details".tr,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           const Divider(),
           _buildOrderDetailRowTwo("Order ID".tr, "#${order.orderID}"),
@@ -539,7 +559,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           const Divider(),
           Text(
             "Order Menu".tr,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           ...order.items
               .map((item) => ListTile(
@@ -555,7 +575,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           ),
           ListTile(
             title: const Text("Service fee"),
-            trailing: Text("OMR ${order.servicFee}00"),
+            trailing: Text("OMR ${order.servicFee.toStringAsFixed(3)}"),
           ),
           const Divider(),
           _buildOrderDetailRow(order),
