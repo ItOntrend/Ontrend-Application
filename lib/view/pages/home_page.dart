@@ -384,6 +384,7 @@ class _HomePageState extends State<HomePage> {
                               final vendor =
                                   vendorController.vendorsListf[index];
                               return ExploreCard(
+                                isOnline: vendor.isOnline,
                                 longitude: vendor.location.lng,
                                 latitude: vendor.location.lat,
                                 locationCityCountry: '',

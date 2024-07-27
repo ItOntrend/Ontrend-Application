@@ -14,6 +14,7 @@ class ExploreCard extends StatelessWidget {
   final double latitude;
   final double longitude;
   final VoidCallback onTap;
+  final bool isOnline;
 
   const ExploreCard({
     super.key,
@@ -24,6 +25,7 @@ class ExploreCard extends StatelessWidget {
     required this.latitude,
     required this.longitude,
     required this.onTap,
+    required this.isOnline,
   });
 
   double _estimateDeliveryTime(double distance) {
@@ -70,116 +72,145 @@ class ExploreCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(10)),
-              child: image.isNotEmpty
-                  ? CachedNetworkImage(
-                      imageUrl: image,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 150,
-                    )
-                  : Container(
-                      width: double.infinity,
-                      height: 150,
-                      color: Colors.grey[300],
-                      child: Center(
-                        child: Text(
-                          'No image available'.tr,
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+            if (!isOnline)
+              Container(
+                width: double.infinity,
+                height: 150,
+                color: Colors.grey[300],
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Image.asset(
+                        "assets/image/vendor_unavailable.png", // Replace with your unavailable image asset
+                        height: 50,
+                        width: 50,
+                      ),
+                      const SizedBox(height: 10),
                       Text(
-                        name,
-                        style: const TextStyle(
+                        'Vendor is not available'.tr,
+                        style: TextStyle(
+                          color: Colors.red,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Spacer(),
-                      FutureBuilder<String>(
-                        future: Get.find<VendorController>()
-                            .getAddressFromLatLng(latitude, longitude),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Text(
-                              snapshot.data!,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 14,
-                              ),
-                            );
-                          } else if (snapshot.hasError) {
-                            return Text(
-                              'Location information unavailable'.tr,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 14,
-                              ),
-                            );
-                          } else {
-                            return Text(
-                              'Fetching location...'.tr,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 14,
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                      Image.asset(
-                        "assets/image/small_location_image.png",
-                        height: 16,
-                        width: 16,
-                      )
                     ],
                   ),
-                  const SizedBox(height: 8),
-                  Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${distance.toStringAsFixed(2)} ${"km away".tr}',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 14,
-                        ),
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.alarm_rounded,
-                        color: Colors.grey[600],
-                        size: 18,
-                      ),
-                      Text(
-                        '${estimatedTime.toStringAsFixed(0)} ${"mins".tr}', // Estimated time in minutes
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
-            ),
+            if (isOnline) ...[
+              ClipRRect(
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(10)),
+                child: image.isNotEmpty
+                    ? CachedNetworkImage(
+                        imageUrl: image,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 150,
+                      )
+                    : Container(
+                        width: double.infinity,
+                        height: 150,
+                        color: Colors.grey[300],
+                        child: Center(
+                          child: Text(
+                            'No image available'.tr,
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Spacer(),
+                        FutureBuilder<String>(
+                          future: Get.find<VendorController>()
+                              .getAddressFromLatLng(latitude, longitude),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data!,
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 14,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text(
+                                'Location information unavailable'.tr,
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 14,
+                                ),
+                              );
+                            } else {
+                              return Text(
+                                'Fetching location...'.tr,
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 14,
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                        Image.asset(
+                          "assets/image/small_location_image.png",
+                          height: 16,
+                          width: 16,
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Text(
+                          '${distance.toStringAsFixed(2)} ${"km away".tr}',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                          ),
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.alarm_rounded,
+                          color: Colors.grey[600],
+                          size: 18,
+                        ),
+                        Text(
+                          '${estimatedTime.toStringAsFixed(0)} ${"mins".tr}', // Estimated time in minutes
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ],
         ),
       ),
     );
   }
 }
+
