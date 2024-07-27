@@ -14,6 +14,7 @@ class FoodItemCard extends StatefulWidget {
     super.key,
     required this.name,
     required this.localName,
+    required this.arabicRestaurantName,
     required this.localTag,
     required this.image,
     required this.price,
@@ -25,6 +26,7 @@ class FoodItemCard extends StatefulWidget {
   final String name;
   final String image;
   final String localName;
+  final String arabicRestaurantName;
   final String localTag;
   final int price;
   final String description;
@@ -57,6 +59,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
     final item = ItemModel(
       name: widget.name,
       localName: widget.localName,
+      arabicRestaurantName: widget.arabicRestaurantName,
       localTag: widget.localTag,
       imageUrl: widget.image,
       price: widget.price,
@@ -99,8 +102,8 @@ class _FoodItemCardState extends State<FoodItemCard> {
                   child: Stack(
                     children: [
                       widget.image.isNotEmpty
-                          ? CachedNetworkImage(imageUrl: 
-                              widget.image,
+                          ? CachedNetworkImage(
+                              imageUrl: widget.image,
                               fit: BoxFit.cover,
                               height: 100.h,
                               width: 150.w,

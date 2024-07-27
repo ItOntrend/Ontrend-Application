@@ -200,22 +200,22 @@ class UserProfilePage extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: kWhite,
-          title: const Text(
-            'LogOut ?',
+          title: Text(
+            'LogOut ?'.tr,
           ),
-          content: const SingleChildScrollView(
+          content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text(
-                  'Are you sure you want to log out?',
+                  'Are you sure you want to log out?'.tr,
                 ),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text(
-                'Cancel',
+              child: Text(
+                'Cancel'.tr,
                 style: TextStyle(color: kBlack),
               ),
               onPressed: () {
@@ -223,8 +223,7 @@ class UserProfilePage extends StatelessWidget {
               },
             ),
             TextButton(
-              child:
-                  const Text('Log Out', style: TextStyle(color: kDarkOrange)),
+              child: Text('Log Out'.tr, style: TextStyle(color: kDarkOrange)),
               onPressed: () async {
                 await authController.onLogOut();
                 Navigator.of(context).pop(); // Dismiss the dialog

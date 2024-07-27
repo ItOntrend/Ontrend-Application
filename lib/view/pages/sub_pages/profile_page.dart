@@ -248,9 +248,15 @@ class _ProfilePageState extends State<ProfilePage>
                                   Padding(
                                     key: _keys[tagKey],
                                     padding: const EdgeInsets.only(
-                                        top: 16.0, left: 16.0),
+                                        top: 16.0,
+                                        left: 16.0,
+                                        right: 16.0,
+                                        bottom: 16.0),
                                     child: Text(
-                                      item.tag ?? '',
+                                      lang.currentLanguage.value.languageCode ==
+                                              "ar"
+                                          ? item.localTag ?? ''
+                                          : item.tag ?? '',
                                       style: TextStyle(
                                           fontSize: 18.sp,
                                           fontWeight: FontWeight.bold),
@@ -263,6 +269,8 @@ class _ProfilePageState extends State<ProfilePage>
                                   child: FoodItemCard(
                                     name: item.name,
                                     localName: item.localName,
+                                    arabicRestaurantName:
+                                        item.arabicRestaurantName,
                                     localTag: item.localTag,
                                     image: item.imageUrl,
                                     description: item.description,

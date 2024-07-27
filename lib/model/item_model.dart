@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ItemModel {
   String name;
   String localName;
+  String arabicRestaurantName;
   String localTag;
   int price;
   String? tag;
@@ -21,6 +22,7 @@ class ItemModel {
   ItemModel({
     required this.name,
     required this.localName,
+    required this.arabicRestaurantName,
     required this.localTag,
     required this.price,
     this.tag,
@@ -40,6 +42,7 @@ class ItemModel {
   ItemModel copyWith(
           {String? name,
           String? localName,
+          String? arabicrestaurantName,
           String? localTag,
           int? price,
           String? tag,
@@ -59,6 +62,7 @@ class ItemModel {
         name: name ?? this.name,
         localTag: localTag ?? this.localTag,
         localName: localName ?? this.localName,
+        arabicRestaurantName: arabicRestaurantName ?? this.arabicRestaurantName,
         price: price ?? this.price,
         tag: tag ?? this.tag,
         type: type ?? this.type,
@@ -77,6 +81,7 @@ class ItemModel {
   factory ItemModel.fromJson(Map<String, dynamic> json) => ItemModel(
       name: json["name"],
       localName: json["localName"],
+      arabicRestaurantName: json["arabicRestaurantName"],
       localTag: json["localTag"],
       price: (json["price"] is int)
           ? json["price"]
@@ -109,6 +114,7 @@ class ItemModel {
   Map<String, dynamic> toJson() => {
         "name": name,
         "localName": localName,
+        "arabicRestaurantName": arabicRestaurantName,
         "localTag": localTag,
         "price": price,
         "tag": tag,
@@ -129,6 +135,7 @@ class ItemModel {
     return ItemModel(
       name: data["name"],
       localName: data["localName"],
+      arabicRestaurantName: data["arabicRestaurantName"],
       localTag: data["localTag"],
       price: (data["price"] is int)
           ? data["price"]

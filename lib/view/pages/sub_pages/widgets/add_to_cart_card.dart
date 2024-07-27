@@ -13,6 +13,7 @@ class AddToCartCard extends StatefulWidget {
     super.key,
     required this.itemName,
     required this.localName,
+    required this.arabicRestaurantName,
     required this.localTag,
     required this.itemPrice,
     required this.image,
@@ -22,6 +23,7 @@ class AddToCartCard extends StatefulWidget {
 
   final String itemName;
   final String localName;
+  final String arabicRestaurantName;
   final String localTag;
   final String itemPrice;
   final String image;
@@ -40,6 +42,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
     ItemModel item = ItemModel(
       name: widget.itemName,
       localName: widget.localName,
+      arabicRestaurantName: widget.arabicRestaurantName,
       localTag: widget.localTag,
       price: int.parse(widget.itemPrice),
       imageUrl: widget.image,

@@ -1,9 +1,12 @@
+import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/repository/search_repository.dart';
 
 class HomeController extends GetxController {
+  LanguageController lang = Get.put(LanguageController());
   RxBool isProductLoading = RxBool(false);
   RxList<ItemModel> productList = RxList();
   Future<void> getProducts() async {
@@ -17,14 +20,16 @@ class HomeController extends GetxController {
   }
 
   Future<List<ItemModel>> searchProducts(String query) async {
-    /*return productList.where((item) {
-      return item.name.toLowerCase().contains(query.toLowerCase()) ||
-          item.restaurantName.toLowerCase().contains(query.toLowerCase());
-    }).toList();*/
-    // Filter the products based on the query
+    final currentLanguageCode = lang.currentLanguage.value.languageCode;
+
     final filteredProducts = productList.where((item) {
-      return (item.name.toLowerCase().contains(query.toLowerCase())) ||
-          (item.restaurantName.toLowerCase().contains(query.toLowerCase()));
+      final itemName = currentLanguageCode == 'ar' ? item.localName : item.name;
+      final restaurantName = currentLanguageCode == 'ar'
+          ? item.arabicRestaurantName
+          : item.restaurantName;
+
+      return itemName.toLowerCase().contains(query.toLowerCase()) ||
+          restaurantName.toLowerCase().contains(query.toLowerCase());
     }).toList();
 
     return filteredProducts;
