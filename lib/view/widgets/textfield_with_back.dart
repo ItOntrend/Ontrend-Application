@@ -9,10 +9,12 @@ class TextfieldWithBack extends StatelessWidget {
     this.controller,
     this.onSubmitted,
     this.initialValue,
+    this.onChanged,
   });
   final String hintText;
   final TextEditingController? controller;
   final Function(String)? onSubmitted;
+  final Function(String)? onChanged;
   final String? initialValue;
 
   @override
@@ -21,6 +23,7 @@ class TextfieldWithBack extends StatelessWidget {
       initialValue: initialValue,
       controller: controller,
       onFieldSubmitted: onSubmitted,
+      onChanged: onChanged,
       enabled: true,
       decoration: InputDecoration(
         fillColor: kWhite,

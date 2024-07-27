@@ -48,15 +48,14 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
     if (query.isEmpty) {
       filteredVendors.value = vendorController.vCat;
     } else {
-      filteredVendors.value = vendorController.vCat
-          .where((vendor) =>
-              (vendor.restaurantName)
-                  .toLowerCase()
-                  .contains(query.toLowerCase()) ||
-              (vendor.restaurantArabicName)
-                  .toLowerCase()
-                  .contains(query.toLowerCase()))
-          .toList();
+      final currentLanguageCode =
+          languageController.currentLanguage.value.languageCode;
+      filteredVendors.value = vendorController.vCat.where((vendor) {
+        final nameToSearch = currentLanguageCode == 'ar'
+            ? vendor.restaurantArabicName
+            : vendor.restaurantName;
+        return nameToSearch.toLowerCase().contains(query.toLowerCase());
+      }).toList();
     }
   }
 
@@ -104,11 +103,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
               children: [
                 TextfieldWithBack(
                   hintText: "Search...".tr,
-                  initialValue:
-                      languageController.currentLanguage.value.languageCode ==
-                              'ar'
-                          ? widget.category.localName
-                          : widget.category.name,
+                  onChanged: filterVendors,
                 ),
                 kHiegth25,
                 Obx(
