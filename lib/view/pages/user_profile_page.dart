@@ -184,7 +184,7 @@ class UserProfilePage extends StatelessWidget {
                     Get.back();
                   },
                 ),
-                kHiegth140,
+                kHiegth30,
               ],
             ),
           ),

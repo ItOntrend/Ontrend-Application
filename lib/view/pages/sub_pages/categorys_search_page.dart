@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
@@ -8,9 +7,9 @@ import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_back.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CategorysSearchPage extends StatefulWidget {
   const CategorysSearchPage({
@@ -29,8 +28,8 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
   final VendorController vendorController = Get.put(VendorController());
   final LanguageController languageController = Get.find();
   RxList filteredVendors = [].obs;
+  RxBool isLoadingfilteredVendors = false.obs;
   final TextEditingController _searchController = TextEditingController();
-  //RxList searchSuggestions = [].obs;
 
   @override
   void initState() {
@@ -39,9 +38,10 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
   }
 
   void fetchVendors() async {
+    isLoadingfilteredVendors.value = true;
     await vendorController.fetchVendorsCat(widget.type, widget.category.name);
     filteredVendors.value = vendorController.vCat;
-    //searchSuggestions.value = vendorController.vCat;
+    isLoadingfilteredVendors.value = false;
   }
 
   void filterVendors(String query) {
@@ -50,39 +50,46 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
     } else {
       filteredVendors.value = vendorController.vCat
           .where((vendor) =>
-              (vendor.restaurantName ?? '')
+              (vendor.restaurantName)
                   .toLowerCase()
                   .contains(query.toLowerCase()) ||
-              (vendor.restaurantArabicName ?? '')
+              (vendor.restaurantArabicName)
                   .toLowerCase()
                   .contains(query.toLowerCase()))
           .toList();
     }
   }
 
-  /*void updateSearchSuggestions(String query) {
-    if (query.isEmpty) {
-      searchSuggestions.value = [];
-    } else {
-      searchSuggestions.value = vendorController.vCat
-          .where((vendor) =>
-              (vendor.restaurantName ?? '')
-                  .toLowerCase()
-                  .contains(query.toLowerCase()) ||
-              (vendor.restaurantArabicName ?? '')
-                  .toLowerCase()
-                  .contains(query.toLowerCase()))
-          .toList();
-    }
-  }*/
-
   void clearSearchField() {
     _searchController.clear();
     FocusScope.of(context).unfocus();
     setState(() {
       filteredVendors.value = vendorController.vCat;
-      //searchSuggestions.value = [];
     });
+  }
+
+  Widget _buildShimmerEffect() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: 6,
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Card(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            child: Container(
+              height: 200.h,
+              decoration: BoxDecoration(
+                color: kWhite,
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -95,106 +102,48 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                TextfieldWithMic(
+                TextfieldWithBack(
                   hintText: "Search...".tr,
-                  controller: _searchController,
-                  onChanged: (query) {
-                    filterVendors(query);
-                    //updateSearchSuggestions(query);
-                  },
-                  onTap: () {},
-                ),
-                /* Obx(() {
-                  if (searchSuggestions.isNotEmpty &&
-                      _searchController.text.isNotEmpty) {
-                    return Column(
-                      children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: searchSuggestions.length,
-                          itemBuilder: (context, index) {
-                            final vendor = searchSuggestions[index];
-                            return ListTile(
-                              title: Text(languageController
-                                          .currentLanguage.value.languageCode ==
-                                      "ar"
-                                  ? vendor.restaurantArabicName
-                                  : vendor.restaurantName),
-                              onTap: () {
-                                _searchController.text = languageController
-                                            .currentLanguage
-                                            .value
-                                            .languageCode ==
-                                        "ar"
-                                    ? vendor.restaurantArabicName
-                                    : vendor.restaurantName;
-                                filterVendors(_searchController.text);
-                                clearSearchField();
-                              },
-                            );
-                          },
-                        ),
-                        const Divider(),
-                      ],
-                    );
-                  } else {
-                    return Container();
-                  }
-                }),*/
-                kHiegth20,
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: const Icon(Icons.arrow_back_ios),
-                    ),
-                    Text(
+                  initialValue:
                       languageController.currentLanguage.value.languageCode ==
                               'ar'
                           ? widget.category.localName
                           : widget.category.name,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
                 ),
                 kHiegth25,
                 Obx(
-                  () => filteredVendors.isEmpty
-                      ? Center(child: Text("No Vendor Available".tr))
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          itemCount: filteredVendors.length,
-                          itemBuilder: (context, index) {
-                            final vendor = filteredVendors[index];
-                            return ExploreCard(
-                              longitude: vendor.location.lng,
-                              latitude: vendor.location.lat,
-                              locationCityCountry: '',
-                              distance: vendorController
-                                  .calculateDistance(vendor.location),
-                              name: languageController
-                                          .currentLanguage.value.languageCode ==
-                                      "ar"
-                                  ? vendor.restaurantArabicName
-                                  : vendor.restaurantName,
-                              image: vendor.bannerImage,
-                              onTap: () {
-                                Get.to(() => ProfilePage(
-                                    userId: vendor.reference.id,
-                                    cat: widget.category.name,
-                                    type: widget.type));
+                  () => isLoadingfilteredVendors.value
+                      ? _buildShimmerEffect()
+                      : filteredVendors.isEmpty
+                          ? Center(child: Text("No Vendor Available".tr))
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              itemCount: filteredVendors.length,
+                              itemBuilder: (context, index) {
+                                final vendor = filteredVendors[index];
+                                return ExploreCard(
+                                  longitude: vendor.location.lng,
+                                  latitude: vendor.location.lat,
+                                  locationCityCountry: '',
+                                  distance: vendorController
+                                      .calculateDistance(vendor.location),
+                                  name: languageController.currentLanguage.value
+                                              .languageCode ==
+                                          "ar"
+                                      ? vendor.restaurantArabicName
+                                      : vendor.restaurantName,
+                                  image: vendor.bannerImage,
+                                  onTap: () {
+                                    Get.to(() => ProfilePage(
+                                        userId: vendor.reference.id,
+                                        cat: widget.category.name,
+                                        type: widget.type));
+                                  },
+                                );
                               },
-                            );
-                          },
-                        ),
+                            ),
                 ),
               ],
             ),

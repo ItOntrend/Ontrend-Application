@@ -33,9 +33,6 @@ class CategoryCard extends StatelessWidget {
                 width: 80.w,
                 imageUrl: categoryImage,
                 fit: BoxFit.cover,
-                placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
             Text(

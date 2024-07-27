@@ -1,20 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/grocery_controller.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/s_rounded_image.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/widgets/shimmer_skelton.dart';
+import 'package:shimmer/shimmer.dart';
 // Import your controller
 
 class SPromoSliderWidget extends StatelessWidget {
+  SPromoSliderWidget({super.key});
+
   final GroceryController imageController = Get.put(GroceryController());
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       if (imageController.imageUrls.isEmpty) {
-        return Center(child: CircularProgressIndicator());
+        return Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: ListView.builder(
+            itemCount: 1,
+            itemBuilder: (context, index) {
+              return Skelton(
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: 150.h,
+              );
+            },
+          ),
+        );
       } else {
-        return Container(
+        return SizedBox(
           width: MediaQuery.of(context).size.width * 0.9,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16).copyWith(top: 16),
@@ -22,8 +39,8 @@ class SPromoSliderWidget extends StatelessWidget {
               options: CarouselOptions(
                 viewportFraction: 1,
                 autoPlay: true,
-                autoPlayInterval: Duration(seconds: 3),
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                autoPlayInterval: const Duration(seconds: 3),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
                 autoPlayCurve: Curves.fastOutSlowIn,
               ),
               items: imageController.imageUrls.map((url) {
