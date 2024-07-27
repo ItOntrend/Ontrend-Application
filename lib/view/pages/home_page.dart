@@ -71,17 +71,24 @@ class _HomePageState extends State<HomePage> {
       final uniqueRestaurantSuggestions = <ItemModel>[];
 
       for (var item in searchResults) {
-        if (item.restaurantName.toLowerCase().contains(query.toLowerCase())) {
-          if (uniqueRestaurantNames.add(item.restaurantName)) {
+        final currentLanguageCode = lang.currentLanguage.value.languageCode;
+        final restaurantName = currentLanguageCode == 'ar'
+            ? item.arabicRestaurantName
+            : item.restaurantName;
+
+        if (restaurantName.toLowerCase().contains(query.toLowerCase())) {
+          if (uniqueRestaurantNames.add(restaurantName)) {
             uniqueRestaurantSuggestions.add(item);
           }
         }
       }
 
       setState(() {
+        final currentLanguageCode = lang.currentLanguage.value.languageCode;
         itemSearchSuggestions = searchResults
-            .where(
-                (item) => item.name.toLowerCase().contains(query.toLowerCase()))
+            .where((item) => (currentLanguageCode == 'ar'
+                ? item.localName.toLowerCase().contains(query.toLowerCase())
+                : item.name.toLowerCase().contains(query.toLowerCase())))
             .toList();
         restaurantSearchSuggestions = uniqueRestaurantSuggestions;
       });
@@ -275,9 +282,12 @@ class _HomePageState extends State<HomePage> {
                         itemCount: itemSearchSuggestions.length,
                         itemBuilder: (context, index) {
                           final item = itemSearchSuggestions[index];
-
+                          final itemName =
+                              lang.currentLanguage.value.languageCode == 'ar'
+                                  ? item.localName
+                                  : item.name;
                           return ListTile(
-                            title: Text(item.name),
+                            title: Text(itemName),
                             onTap: () {
                               final type = item.reference!.path.split('/')[0];
                               Get.to(() => ProfilePage(
@@ -300,8 +310,12 @@ class _HomePageState extends State<HomePage> {
                         itemCount: restaurantSearchSuggestions.length,
                         itemBuilder: (context, index) {
                           final item = restaurantSearchSuggestions[index];
+                          final restaurantName =
+                              lang.currentLanguage.value.languageCode == 'ar'
+                                  ? item.arabicRestaurantName
+                                  : item.restaurantName;
                           return ListTile(
-                            title: Text(item.restaurantName),
+                            title: Text(restaurantName),
                             onTap: () {
                               final typeo = item.reference!.path.split('/')[0];
                               Get.to(() => ProfilePage(

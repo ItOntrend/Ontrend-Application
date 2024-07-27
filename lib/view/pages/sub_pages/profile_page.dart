@@ -263,6 +263,8 @@ class _ProfilePageState extends State<ProfilePage>
                                   child: FoodItemCard(
                                     name: item.name,
                                     localName: item.localName,
+                                    arabicRestaurantName:
+                                        item.arabicRestaurantName,
                                     localTag: item.localTag,
                                     image: item.imageUrl,
                                     description: item.description,

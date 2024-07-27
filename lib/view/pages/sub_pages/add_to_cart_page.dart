@@ -120,6 +120,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                             return AddToCartCard(
                               itemName: item.name,
                               localName: item.localName,
+                              arabicRestaurantName: item.arabicRestaurantName,
                               localTag: item.localTag,
                               itemPrice: item.price.toString(),
                               image: item.imageUrl,
