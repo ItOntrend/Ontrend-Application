@@ -19,15 +19,20 @@ class FoodController extends GetxController {
   }
 
   Future<void> getCategories() async {
-    isCategoryLoading.value = true;
-    categoryList.clear();
-    categoryList.value = await CategoryRepository.getCategories();
-    print('Fetched Categories: ${categoryList.length}');
-    for (var category in categoryList) {
-      print(
-          'Category: ${category.name}, ${category.localName}, ${category.imageUrl}');
+    try {
+      isCategoryLoading.value = true;
+      categoryList.clear();
+      categoryList.value = await CategoryRepository.getCategories();
+      print('Fetched Categories: ${categoryList.length}');
+      for (var category in categoryList) {
+        print(
+            'Category: ${category.name}, ${category.localName}, ${category.imageUrl}');
+      }
+    } catch (e) {
+      print("Error fetching categories: $e");
+    } finally {
+      isCategoryLoading.value = false;
     }
-    isCategoryLoading.value = false;
   }
 
   Future<void> getProducts() async {

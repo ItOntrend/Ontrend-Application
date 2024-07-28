@@ -48,14 +48,15 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
     if (query.isEmpty) {
       filteredVendors.value = vendorController.vCat;
     } else {
-      final currentLanguageCode =
-          languageController.currentLanguage.value.languageCode;
-      filteredVendors.value = vendorController.vCat.where((vendor) {
-        final nameToSearch = currentLanguageCode == 'ar'
-            ? vendor.restaurantArabicName
-            : vendor.restaurantName;
-        return nameToSearch.toLowerCase().contains(query.toLowerCase());
-      }).toList();
+      filteredVendors.value = vendorController.vCat
+          .where((vendor) =>
+              (vendor.restaurantName)
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
+              (vendor.restaurantArabicName)
+                  .toLowerCase()
+                  .contains(query.toLowerCase()))
+          .toList();
     }
   }
 
@@ -104,8 +105,11 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                 TextfieldWithBack(
                   hintText: "Search...".tr,
                   onChanged: filterVendors,
-                  initialValue: widget.category.name,
-
+                  //initialValue:
+                  //languageController.currentLanguage.value.languageCode ==
+                  //     'ar'
+                  //? widget.category.localName
+                  //: widget.category.name,
                 ),
                 kHiegth25,
                 Obx(
@@ -136,7 +140,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                                   onTap: () {
                                     Get.to(() => ProfilePage(
                                         userId: vendor.reference.id,
-                                        cat: widget.category.name,
+                                        cat: "",
                                         type: widget.type));
                                   },
                                 );
