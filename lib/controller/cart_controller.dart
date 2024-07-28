@@ -330,6 +330,7 @@ class CartController extends GetxController {
             .map((value) => Item(
                   addedBy: value['item'].addedBy.toString(),
                   itemName: value['item'].name,
+                  localName: value['item'].localName,
                   itemPrice:
                       double.tryParse(value['item'].price.toString()) ?? 0,
                   itemQuantity: (value['quantity'] as num).toInt(),

@@ -9,6 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/model/order_modal.dart';
@@ -36,6 +37,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
   LatLng restaurantLocation = const LatLng(17.0194, 54.1108);
   late GoogleMapController mapController;
   final CartController cartController = Get.find<CartController>();
+  final LanguageController lang = Get.find<LanguageController>();
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor restaurantIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
@@ -451,7 +453,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Your order is completed!'),
+            content: Text('Your order is completed!'.tr),
             backgroundColor: Colors.green,
             behavior: SnackBarBehavior.floating,
             margin: EdgeInsets.only(
@@ -483,7 +485,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         MyTimelineTile(
           isFirst: true,
           isLast: false,
-          isPast: isPast("Pending".tr),
+          isPast: isPast("Pending"),
           child: const Text(
             "Pending",
             style: TextStyle(
@@ -496,7 +498,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           isLast: false,
           isPast: isPast("Processing"),
           child: Text(
-            "Processing".tr,
+            "Processing",
             style: const TextStyle(
               fontSize: 12,
             ),
@@ -507,7 +509,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           isLast: false,
           isPast: isPast("Ready"),
           child: Text(
-            "Ready".tr,
+            "Ready",
             style: const TextStyle(
               fontSize: 12,
             ),
@@ -518,7 +520,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           isLast: false,
           isPast: isPast("Picked Up"),
           child: Text(
-            "Picked Up".tr,
+            "Picked Up",
             style: const TextStyle(
               fontSize: 12,
             ),
@@ -563,19 +565,23 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           ),
           ...order.items
               .map((item) => ListTile(
-                    title: Text(item.itemName),
-                    subtitle:
-                        Text("${item.itemQuantity} x OMR ${item.itemPrice}00"),
-                    trailing: Text("${"OMR".tr} ${item.total}00"),
+                    title: Text(lang.currentLanguage.value.languageCode == "ar"
+                        ? item.localName
+                        : item.itemName),
+                    subtitle: Text(
+                        "${item.itemQuantity} x ${"OMR".tr} ${item.itemPrice.toStringAsFixed(3)}"),
+                    trailing:
+                        Text("${"OMR".tr} ${item.total.toStringAsFixed(3)}"),
                   ))
               .toList(),
           ListTile(
-            title: const Text("Delivery fee"),
-            trailing: Text("OMR ${order.deliveryFee}00"),
+            title: Text("Delivery fee".tr),
+            trailing:
+                Text("${"OMR".tr} ${order.deliveryFee.toStringAsFixed(3)}"),
           ),
           ListTile(
-            title: const Text("Service fee"),
-            trailing: Text("OMR ${order.servicFee.toStringAsFixed(3)}"),
+            title: Text("Service fee".tr),
+            trailing: Text("${"OMR".tr} ${order.servicFee.toStringAsFixed(3)}"),
           ),
           const Divider(),
           _buildOrderDetailRow(order),
@@ -596,9 +602,9 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
       final hours = (deliveryTime / 60).floor();
       final minutes = (deliveryTime % 60).floor();
       formattedDeliveryTime =
-          "$hours hour${hours > 1 ? 's' : ''} ${minutes > 0 ? '$minutes minute${minutes > 1 ? 's' : ''}' : ''}";
+          "$hours ${"hour".tr}${hours > 1 ? 's' : ''} ${minutes > 0 ? '$minutes ${"minute".tr}${minutes > 1 ? 's' : ''}' : ''}";
     } else {
-      formattedDeliveryTime = "${deliveryTime.toStringAsFixed(0)} mins";
+      formattedDeliveryTime = "${deliveryTime.toStringAsFixed(0)} ${"mins".tr}";
     }
 
     return Column(

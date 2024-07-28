@@ -176,6 +176,9 @@ class LocalStrings extends Translations {
           'LogOut ?': 'LogOut ?',
           'Are you sure you want to log out?':
               'Are you sure you want to log out?',
+          "hour": "hour",
+          "minute": "minute",
+          'Your order is completed!': 'Your order is completed!',
         },
         //'hi_IN': {'hello': "नमस्ते दुनिया", 'message': "ऐप में आपका स्वागत है"},
         'ar_OM': {
@@ -324,7 +327,7 @@ class LocalStrings extends Translations {
           "is your delivery hero for\ntoday.": "هو بطل التوصيل اليوم.",
           "Waiting for acceptance": "في انتظار القبول",
           "Your delivery hero details will\nappear here once accepted.":
-              "سوف تظهر تفاصيل التسليم الرئيسي هنا بمجرد قبولها.",
+              "سوف تظهر تفاصيل التسليم  هنا بمجرد قبولها.",
           "No Notification": "لا يوجد إشعارات",
           "Pending": "قيد الانتظار",
           "Processing": "يعالج",
@@ -346,6 +349,9 @@ class LocalStrings extends Translations {
           'LogOut ?': 'تسجيل خروج ؟',
           'Are you sure you want to log out?':
               "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+          "hour": "ساعة",
+          "minute": "دقيقة",
+          'Your order is completed!': "اكتمل طلبك!",
         }
       };
 }

@@ -159,6 +159,7 @@ class OrderModel {
 class Item {
   String addedBy;
   String itemName;
+  String localName;
   double itemPrice;
   int itemQuantity;
   double total;
@@ -166,6 +167,7 @@ class Item {
   Item({
     required this.addedBy,
     required this.itemName,
+    required this.localName,
     required this.itemPrice,
     required this.itemQuantity,
     required this.total,
@@ -174,6 +176,7 @@ class Item {
   Item copyWith({
     String? addedBy,
     String? itemName,
+    String? localName,
     double? itemPrice,
     int? itemQuantity,
     double? total,
@@ -181,6 +184,7 @@ class Item {
       Item(
         addedBy: addedBy ?? this.addedBy,
         itemName: itemName ?? this.itemName,
+        localName: localName ?? this.localName,
         itemPrice: itemPrice ?? this.itemPrice,
         itemQuantity: itemQuantity ?? this.itemQuantity,
         total: total ?? this.total,
@@ -189,6 +193,7 @@ class Item {
   factory Item.fromJson(Map<String, dynamic> json) => Item(
         addedBy: json["addedBy"] ?? "",
         itemName: json["itemName"] ?? "",
+        localName: json["localName"] ?? "",
         itemPrice: json["itemPrice"].toDouble() ?? 0,
         itemQuantity: json["itemQuantity"] ?? "",
         total: json["total"].toDouble() ?? 0,
@@ -197,6 +202,7 @@ class Item {
   Map<String, dynamic> toJson() => {
         "addedBy": addedBy,
         "itemName": itemName,
+        "localName": localName,
         "itemPrice": itemPrice,
         "itemQuantity": itemQuantity,
         "total": total,
