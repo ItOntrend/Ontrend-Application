@@ -104,11 +104,12 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
               children: [
                 TextfieldWithBack(
                   hintText: "Search...".tr,
-                  initialValue:
-                      languageController.currentLanguage.value.languageCode ==
-                              'ar'
-                          ? widget.category.localName
-                          : widget.category.name,
+                  onChanged: filterVendors,
+                  //initialValue:
+                  //languageController.currentLanguage.value.languageCode ==
+                  //     'ar'
+                  //? widget.category.localName
+                  //: widget.category.name,
                 ),
                 kHiegth25,
                 Obx(
