@@ -162,13 +162,14 @@ class Item {
   double itemPrice;
   int itemQuantity;
   double total;
-
+  String localName;
   Item({
     required this.addedBy,
     required this.itemName,
     required this.itemPrice,
     required this.itemQuantity,
     required this.total,
+    required this.localName,
   });
 
   Item copyWith({
@@ -177,6 +178,7 @@ class Item {
     double? itemPrice,
     int? itemQuantity,
     double? total,
+    String? localName,
   }) =>
       Item(
         addedBy: addedBy ?? this.addedBy,
@@ -184,6 +186,7 @@ class Item {
         itemPrice: itemPrice ?? this.itemPrice,
         itemQuantity: itemQuantity ?? this.itemQuantity,
         total: total ?? this.total,
+        localName: localName ?? this.localName,
       );
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
@@ -192,6 +195,7 @@ class Item {
         itemPrice: json["itemPrice"].toDouble() ?? 0,
         itemQuantity: json["itemQuantity"] ?? "",
         total: json["total"].toDouble() ?? 0,
+        localName: json["localName"] ?? ""
       );
 
   Map<String, dynamic> toJson() => {
@@ -200,6 +204,7 @@ class Item {
         "itemPrice": itemPrice,
         "itemQuantity": itemQuantity,
         "total": total,
+        "localName": localName,
       };
 }
 

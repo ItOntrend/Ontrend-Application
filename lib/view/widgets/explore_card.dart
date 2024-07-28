@@ -1,8 +1,10 @@
 import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 
@@ -75,20 +77,23 @@ class ExploreCard extends StatelessWidget {
             if (!isOnline)
               Container(
                 width: double.infinity,
-                height: 150,
-                color: Colors.grey[300],
+                height: 180.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[300],
+                ),
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        "assets/image/vendor_unavailable.png", // Replace with your unavailable image asset
-                        height: 50,
-                        width: 50,
+                      LottieBuilder.network(
+                        "https://lottie.host/cee2de9e-78a7-4181-8222-0c3a85e21dc3/YmN00UuZXI.json",
+                        height: 100.h,
+                        width: 100.w,
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Vendor is not available'.tr,
+                        'Vendor is offline'.tr,
                         style: TextStyle(
                           color: Colors.red,
                           fontSize: 16,
@@ -213,4 +218,3 @@ class ExploreCard extends StatelessWidget {
     );
   }
 }
-

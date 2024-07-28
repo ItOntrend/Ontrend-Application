@@ -104,6 +104,8 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                 TextfieldWithBack(
                   hintText: "Search...".tr,
                   onChanged: filterVendors,
+                  initialValue: widget.category.name,
+
                 ),
                 kHiegth25,
                 Obx(
@@ -117,11 +119,9 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                               scrollDirection: Axis.vertical,
                               itemCount: filteredVendors.length,
                               itemBuilder: (context, index) {
-                                final vendorsListf =
-                                    vendorController.vendorsListf[index];
                                 final vendor = filteredVendors[index];
                                 return ExploreCard(
-                                  isOnline: vendorsListf.isOnline,
+                                  isOnline: vendor.isOnline,
                                   longitude: vendor.location.lng,
                                   latitude: vendor.location.lat,
                                   locationCityCountry: '',
@@ -143,6 +143,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                               },
                             ),
                 ),
+                kHiegth30,
               ],
             ),
           ),

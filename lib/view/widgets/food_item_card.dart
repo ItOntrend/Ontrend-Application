@@ -46,7 +46,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
     String result = '';
     for (int i = 0; i < text.length; i += maxChars) {
       if (i + maxChars < text.length) {
-        result += text.substring(i, i + maxChars) + '\n';
+        result += '${text.substring(i, i + maxChars)}\n';
       } else {
         result += text.substring(i);
       }
@@ -159,10 +159,10 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 addNewlines(widget.description, 25),
                 style: const TextStyle(fontSize: 12),
               ),
-              Spacer(),
+              const Spacer(),
               Row(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   Obx(() {
                     final quantity = cartController.getItemQuantity(item);
                     return quantity > 0
