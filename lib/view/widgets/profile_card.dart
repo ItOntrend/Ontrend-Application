@@ -109,10 +109,6 @@ class _ProfileCardState extends State<ProfileCard> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      "Pizza, Pastas, Desserts".tr,
-                      style: const TextStyle(fontSize: 14, color: kGrey),
-                    ),
                   ],
                 )
               ],

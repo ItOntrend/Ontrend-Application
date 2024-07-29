@@ -18,6 +18,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousa
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/home_search_result.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/nearby_vendor_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
@@ -38,6 +39,8 @@ class _GroceriesPageState extends State<GroceriesPage> {
   List<ItemModel> itemSearchSuggestions = [];
   List<ItemModel> restaurantSearchSuggestions = [];
   final TextEditingController _searchController = TextEditingController();
+  bool isGridView = false;
+
   @override
   void initState() {
     super.initState();
@@ -110,7 +113,10 @@ class _GroceriesPageState extends State<GroceriesPage> {
             Get.to(() => SelectLocationPage());
           },
           child: Padding(
-            padding: const EdgeInsets.only(left: 20),
+            padding:
+                (languageController.currentLanguage.value.languageCode == 'ar')
+                    ? EdgeInsets.only(right: 20)
+                    : EdgeInsets.only(left: 20),
             child: Image.asset("assets/icons/location_icon.png"),
           ),
         ),
@@ -324,48 +330,90 @@ class _GroceriesPageState extends State<GroceriesPage> {
                 ),
               ),
               kHiegth20,
-              OneTextHeading(
-                heading: "Stores to Explore".tr,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  OneTextHeading(heading: "Stores to Explore".tr),
+                  IconButton(
+                    icon: Icon(isGridView ? Icons.list : Icons.grid_view),
+                    onPressed: () {
+                      setState(() {
+                        isGridView = !isGridView;
+                      });
+                    },
+                  ),
+                ],
               ),
               kHiegth20,
               Obx(
                 () => vendorController.vendorsListg.isEmpty
                     ? Center(child: Text("No Nearby Stores".tr))
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        itemCount: vendorController.vendorsListg.length,
-                        itemBuilder: (context, index) {
-                          final vendor = vendorController.vendorsListg[index];
-                          //log("Vendor Images");
-
-                          //log(vendor.bannerImage.toString());
-                          return ExploreCard(
-                            latitude: vendor.location.lat,
-                            longitude: vendor.location.lng,
-                            locationCityCountry: "",
-                            distance: vendorController
-                                .calculateDistance(vendor.location),
-                            name: languageController
-                                        .currentLanguage.value.languageCode ==
-                                    "ar"
-                                ? vendor.restaurantArabicName
-                                : vendor.restaurantName,
-                            image: vendor.bannerImage,
-                            onTap: () {
-                              //log(vendor.reference.id);
-                              Get.to(
-                                () => ProfilePage(
-                                  userId: vendor.reference.id,
-                                  type: 'Grocery',
-                                  cat: "",
-                                ),
+                    : isGridView
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: vendorController.vendorsListg.length,
+                            itemBuilder: (context, index) {
+                              final vendor =
+                                  vendorController.vendorsListg[index];
+                              return NearbyRestaurantCard(
+                                latitude: vendor.location.lat,
+                                longitude: vendor.location.lng,
+                                locationCityCountry: "",
+                                distance: vendorController
+                                    .calculateDistance(vendor.location),
+                                name: languageController.currentLanguage.value
+                                            .languageCode ==
+                                        "ar"
+                                    ? vendor.restaurantArabicName
+                                    : vendor.restaurantName,
+                                image: vendor.bannerImage,
+                                onTap: () {
+                                  Get.to(() => ProfilePage(
+                                        userId: vendor.reference.id,
+                                        cat: "",
+                                        type: "Grocery",
+                                      ));
+                                },
                               );
                             },
-                          );
-                        },
-                      ),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: vendorController.vendorsListg.length,
+                            itemBuilder: (context, index) {
+                              final vendor =
+                                  vendorController.vendorsListg[index];
+                              //log("Vendor Images");
+
+                              //log(vendor.bannerImage.toString());
+                              return ExploreCard(
+                                latitude: vendor.location.lat,
+                                longitude: vendor.location.lng,
+                                locationCityCountry: "",
+                                distance: vendorController
+                                    .calculateDistance(vendor.location),
+                                name: languageController.currentLanguage.value
+                                            .languageCode ==
+                                        "ar"
+                                    ? vendor.restaurantArabicName
+                                    : vendor.restaurantName,
+                                image: vendor.bannerImage,
+                                onTap: () {
+                                  //log(vendor.reference.id);
+                                  Get.to(
+                                    () => ProfilePage(
+                                      userId: vendor.reference.id,
+                                      type: 'Grocery',
+                                      cat: "",
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
               ),
               kHiegth30,
             ],

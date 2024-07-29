@@ -179,6 +179,7 @@ class LocalStrings extends Translations {
           "hour": "hour",
           "minute": "minute",
           'Your order is completed!': 'Your order is completed!',
+          "Total Price": "Total Price",
         },
         //'hi_IN': {'hello': "नमस्ते दुनिया", 'message': "ऐप में आपका स्वागत है"},
         'ar_OM': {
@@ -352,6 +353,7 @@ class LocalStrings extends Translations {
           "hour": "ساعة",
           "minute": "دقيقة",
           'Your order is completed!': "اكتمل طلبك!",
+          "Total Price": "السعر الكلي",
         }
       };
 }
