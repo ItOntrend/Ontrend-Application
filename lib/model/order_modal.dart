@@ -206,7 +206,6 @@ class Item {
         "itemPrice": itemPrice,
         "itemQuantity": itemQuantity,
         "total": total,
-        "localName": localName,
       };
 }
 

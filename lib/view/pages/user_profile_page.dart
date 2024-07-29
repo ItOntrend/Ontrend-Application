@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -164,14 +166,7 @@ class UserProfilePage extends StatelessWidget {
                   name: "Contact Us".tr,
                   icon: "assets/icons/call_icon.png",
                   onTap: () {
-                    launchWhatsApp(
-                      phone:
-                          '96898710707', // Ensure correct format without dashes
-                      message: 'Hello! This is a message from my app.',
-                    ).catchError((e) {
-                      print('Error launching WhatsApp: $e');
-                      // Optionally, show an error message to the user
-                    });
+                    whatsapp();
                   },
                 ),
                 kHiegth25,
@@ -207,7 +202,7 @@ class UserProfilePage extends StatelessWidget {
             child: ListBody(
               children: <Widget>[
                 Text(
-                  'Are you sure you want to log out?'.tr,
+                  'Are you sure you want to logOut?'.tr,
                 ),
               ],
             ),
@@ -236,15 +231,27 @@ class UserProfilePage extends StatelessWidget {
     );
   }
 
-  Future<void> launchWhatsApp(
-      {required String message, required String phone}) async {
-    final Uri whatsappUrl = Uri.parse(
-        "whatsapp://send?phone=$phone&text=${Uri.encodeFull(message)}");
+  whatsapp() async {
+    String contact = "+968-98710707";
+    String text = 'Hello, Ontrend Support, i need assistance with';
+    String androidUrl = "whatsapp://send?phone=$contact&text=$text";
+    String iosUrl = "https://wa.me/$contact?text=${Uri.parse(text)}";
 
-    if (await canLaunchUrl(whatsappUrl)) {
-      await launchUrl(whatsappUrl);
-    } else {
-      print('Could not launch $whatsappUrl');
+    String webUrl = 'https://api.whatsapp.com/send/?phone=$contact&text=hi';
+
+    try {
+      if (Platform.isIOS) {
+        if (await canLaunchUrl(Uri.parse(iosUrl))) {
+          await launchUrl(Uri.parse(iosUrl));
+        }
+      } else {
+        if (await canLaunchUrl(Uri.parse(androidUrl))) {
+          await launchUrl(Uri.parse(androidUrl));
+        }
+      }
+    } catch (e) {
+      print('object');
+      await launchUrl(Uri.parse(webUrl), mode: LaunchMode.externalApplication);
     }
   }
 }

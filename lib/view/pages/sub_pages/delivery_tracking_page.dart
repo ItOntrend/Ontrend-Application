@@ -133,6 +133,8 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         .listen((Position position) {
       updateCurrentLocation(position);
     });
+    log("Widget OrderId:");
+    log(widget.orderId);
   }
 
   @override
@@ -497,9 +499,9 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           isFirst: false,
           isLast: false,
           isPast: isPast("Processing"),
-          child: Text(
+          child: const Text(
             "Processing",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
             ),
           ),
@@ -508,9 +510,9 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           isFirst: false,
           isLast: false,
           isPast: isPast("Ready"),
-          child: Text(
+          child: const Text(
             "Ready",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
             ),
           ),
@@ -519,9 +521,9 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
           isFirst: false,
           isLast: false,
           isPast: isPast("Picked Up"),
-          child: Text(
+          child: const Text(
             "Picked Up",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
             ),
           ),
@@ -610,8 +612,9 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("${"Distance:".tr} ${distance.toStringAsFixed(2)} ${"km".tr}"),
-        Text("${"Estimated Delivery Time:".tr} $formattedDeliveryTime"),
+        Obx(() =>
+            Text("${"Remaining Distance:".tr} $remainingDistance ${"km".tr}")),
+        // Text("${"Estimated Delivery Time:".tr} $formattedDeliveryTime"),
       ],
     );
   }
