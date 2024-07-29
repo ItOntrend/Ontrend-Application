@@ -390,6 +390,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
 
                               //log(vendor.bannerImage.toString());
                               return ExploreCard(
+                                isOnline: vendor.isOnline,
                                 latitude: vendor.location.lat,
                                 longitude: vendor.location.lng,
                                 locationCityCountry: "",

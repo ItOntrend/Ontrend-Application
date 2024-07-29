@@ -122,8 +122,8 @@ class _FoodPageState extends State<FoodPage> {
           },
           child: Padding(
             padding: (lang.currentLanguage.value.languageCode == 'ar')
-                ? EdgeInsets.only(right: 20)
-                : EdgeInsets.only(left: 20),
+                ? const EdgeInsets.only(right: 20)
+                : const EdgeInsets.only(left: 20),
             child: Image.asset(
               "assets/icons/location_icon.png",
               width: 30,
@@ -457,6 +457,7 @@ class _FoodPageState extends State<FoodPage> {
 
                                   log(vendor.bannerImage.toString());
                                   return ExploreCard(
+                                    isOnline: vendor.isOnline,
                                     longitude: vendor.location.lng,
                                     latitude: vendor.location.lat,
                                     locationCityCountry: '',

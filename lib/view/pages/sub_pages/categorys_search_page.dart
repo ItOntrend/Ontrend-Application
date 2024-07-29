@@ -125,6 +125,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                               itemBuilder: (context, index) {
                                 final vendor = filteredVendors[index];
                                 return ExploreCard(
+                                  isOnline: vendor.isOnline,
                                   longitude: vendor.location.lng,
                                   latitude: vendor.location.lat,
                                   locationCityCountry: '',
@@ -146,6 +147,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                               },
                             ),
                 ),
+                kHiegth30,
               ],
             ),
           ),

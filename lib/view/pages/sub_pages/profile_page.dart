@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +7,6 @@ import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart'
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/widgets/shimmer_skelton.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/food_item_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/profile_card.dart';
@@ -255,7 +252,7 @@ class _ProfilePageState extends State<ProfilePage>
                                     child: Text(
                                       lang.currentLanguage.value.languageCode ==
                                               "ar"
-                                          ? item.localTag ?? ''
+                                          ? item.localTag
                                           : item.tag ?? '',
                                       style: TextStyle(
                                           fontSize: 18.sp,

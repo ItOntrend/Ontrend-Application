@@ -55,7 +55,7 @@ class _ProfileCardState extends State<ProfileCard> {
         log("It's About Vendor Profile");
         if (_vendorController.isVendorLoading.value ||
             _vendorController.isItemsLoading.value) {
-          return ShimmerProfile();
+          return const ShimmerProfile();
         }
 
         if (_vendorController.vendorDetail.value == null) {
@@ -127,8 +127,8 @@ class _ProfileCardState extends State<ProfileCard> {
                       ),
                     ),
                     Text(
-                      "${_vendorController.deliveryFee.value.toStringAsFixed(3)}",
-                      style: TextStyle(
+                      _vendorController.deliveryFee.value.toStringAsFixed(3),
+                      style: const TextStyle(
                         fontSize: 12,
                         color: kBlack,
                       ),
@@ -150,7 +150,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     ),
                     Text(
                       "18 ${"min".tr}".tr,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: kBlack,
                       ),
