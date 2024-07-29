@@ -296,124 +296,143 @@ class CartController extends GetxController {
     return timestamp + randomDigits;
   }
 
-  Future<String> placeOrder(String userId, String paymentType, String userName, String userPhone) async {
-  String orderId = generateOrderId();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  List<String> orderNotes = prefs.getStringList('requests') ?? [];
+  Future<String> placeOrder(String userId, String paymentType, String userName,
+      String userPhone) async {
+    String orderId = generateOrderId();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> orderNotes = prefs.getStringList('requests') ?? [];
 
-  try {
-    final currentLat = locationController.currentPosition.value.latitude;
-    final currentLng = locationController.currentPosition.value.longitude;
-    double adminEarnings = itemTotal.value * commisionrate.value;
-    print("Admin Earnings...$adminEarnings"); // 2% of item total
-    double adminTotalEarnings = adminEarnings + serviceFee.value + deliveryFee.value;
-
-    // Adjust this if you have a different fee for delivery persons
-    adminTotalEarnings -= deliveryCharge.value;
-
-    OrderModel order = OrderModel(
-      userName: userName,
-      deliveryAcceptedBy: DeliveryAcceptedBy(name: "", phoneNumber: "", id: ""),
-      userPhone: userPhone,
-      addedBy: cartItems.values.first['item'].addedBy,
-      adminEarnings: adminTotalEarnings,
-      servicFee: serviceFee.value,
-      deliveryFee: deliveryFee.value,
-      deliveryCharge: deliveryCharge.value,
-      discountApplied: 0.0,
-      items: cartItems.values.map((value) => Item(
-        addedBy: value['item'].addedBy.toString(),
-        itemName: value['item'].name,
-        itemPrice: double.tryParse(value['item'].price.toString()) ?? 0,
-        itemQuantity: (value['quantity'] as num).toInt(),
-        total: (value['item'].price * value['quantity']).toDouble(),
-        localName: value['item'].localName,
-      )).toList(),
-      promoCode: null,
-      status: 'Pending',
-      totalPrice: totalAmount,
-      userId: userId,
-      orderTimestamp: DateTime.now(),
-      orderID: orderId,
-      paymentType: paymentType,
-      restaurantName: cartItems.values.first['item'].restaurantName,
-      deliveryLocation: DeliveryLocation(
-        address: locationController.currentAddress.value,
-        apartmentNumber: "apartmentNumber",
-        city: locationController.cityName.value,
-        houseNumber: "houseNumber",
-        lat: currentLat,
-        lng: currentLng,
-        street: locationController.streetName.value
-      ),
-      assignedDeliveryPartnerId: '',
-      deliveryAccepted: false,
-      restaurantLocation: RestaurantLocation(lat: 0.0, lng: 0.0),
-      orderNotes: orderNotes,
-    );
-
-    // Ensure the orderId is not empty
-    if (orderId.isEmpty) {
-      throw Exception('Order ID is empty');
-    }
-
-    // Save order to Firestore
-    await FirebaseFirestore.instance.collection('orders').doc(orderId).set(order.toJson());
-
-    // Fetch user document and update reward points
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
-    if (!userDoc.exists) {
-      throw Exception('User document does not exist');
-    }
-
-    double rewardPoints = 0.0;
     try {
-      rewardPoints = (userDoc['rewardPoints'] as num).toDouble();
+      final currentLat = locationController.currentPosition.value.latitude;
+      final currentLng = locationController.currentPosition.value.longitude;
+      double adminEarnings = itemTotal.value * commisionrate.value;
+      print("Admin Earnings...$adminEarnings"); // 2% of item total
+      double adminTotalEarnings =
+          adminEarnings + serviceFee.value + deliveryFee.value;
+
+      // If there's an assigned delivery person, subtract the delivery fee from the total earnings
+
+      // Adjust this if you have a different fee for delivery persons
+      adminTotalEarnings -= deliveryCharge.value;
+
+      OrderModel order = OrderModel(
+        userName: userName,
+        deliveryAcceptedBy:
+            DeliveryAcceptedBy(name: "", phoneNumber: "", id: ""),
+        userPhone: userPhone,
+        addedBy: cartItems.values.first['item'].addedBy,
+        adminEarnings: adminTotalEarnings,
+        servicFee: serviceFee.value,
+        deliveryFee: deliveryFee.value,
+        deliveryCharge: deliveryCharge.value,
+        discountApplied: 0.0,
+        items: cartItems.values
+            .map((value) => Item(
+                  addedBy: value['item'].addedBy.toString(),
+                  itemName: value['item'].name,
+                  localName: value['item'].localName,
+                  itemPrice:
+                      double.tryParse(value['item'].price.toString()) ?? 0,
+                  itemQuantity: (value['quantity'] as num).toInt(),
+                  total: (value['item'].price * value['quantity']).toDouble(),
+                ))
+            .toList(),
+        promoCode: null,
+        status: 'Pending',
+        totalPrice: totalAmount,
+        userId: userId,
+        orderTimestamp: DateTime.now(),
+        orderID: orderId,
+        paymentType: paymentType,
+        restaurantName: cartItems.values.first['item'].restaurantName,
+        deliveryLocation: DeliveryLocation(
+            address: locationController.currentAddress.value,
+            apartmentNumber: "apartmentNumber",
+            city: locationController.cityName.value,
+            houseNumber: "houseNumber",
+            lat: currentLat,
+            lng: currentLng,
+            street: locationController.streetName.value),
+        assignedDeliveryPartnerId: '',
+        deliveryAccepted: false,
+        restaurantLocation: RestaurantLocation(lat: 0.0, lng: 0.0),
+        orderNotes: orderNotes,
+      );
+
+      // Ensure the orderId is not empty
+      if (orderId.isEmpty) {
+        throw Exception('Order ID is empty');
+      }
+
+      // Save order to Firestore
+      await FirebaseFirestore.instance
+          .collection('orders')
+          .doc(orderId)
+          .set(order.toJson());
+
+      // Fetch user document and update reward points
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      if (!userDoc.exists) {
+        throw Exception('User document does not exist');
+      }
+
+      double rewardPoints = 0.0;
+      try {
+        rewardPoints = (userDoc['rewardPoints'] as num).toDouble();
+      } catch (e) {
+        print('Error parsing reward points: $e');
+      }
+      rewardPoints += itemTotal.value * 62;
+
+      // Update reward points in Firebase and Local Storage
+      await updateRewardPoints(userId, rewardPoints);
+
+      await LocalStorage.instance.writeDataToPrefs(
+        key: 'rewardPoints',
+        value: rewardPoints,
+      );
+      // Update admin earnings in superAdmin document
+      DocumentSnapshot superAdminDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc('dbDs1m9ORGMzcbvhWmaPAI6Sl5i2')
+          .get();
+      if (superAdminDoc.exists) {
+        // Ensure the field is treated as a double
+        double currentAdminEarnings =
+            (superAdminDoc['adminEarnings'] as num).toDouble();
+        double newAdminEarnings = currentAdminEarnings + adminTotalEarnings;
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc('dbDs1m9ORGMzcbvhWmaPAI6Sl5i2')
+            .update({
+          'adminEarnings': newAdminEarnings,
+        });
+        print('Admin earnings updated successfully');
+      } else {
+        throw Exception('Super admin document does not exist');
+      }
+
+      // Clean up
+      cartItems.clear();
+      itemTotal.value = 0.0;
+      serviceFee.value = 0.0;
+      deliveryFee.value = 0.0;
+      isFabVisible.value = false;
+      prefs.remove('requests');
+      await saveRewardPoints();
+      saveCartItems();
+
+      Get.snackbar('Order', 'Order has been placed successfully');
+      return orderId;
     } catch (e) {
-      print('Error parsing reward points: $e');
+      print('Error placing order: $e');
+      Get.snackbar('Error', 'Failed to place the order');
+      return '';
     }
-    rewardPoints += itemTotal.value * 62;
-
-    // Update reward points in Firebase and Local Storage
-    await updateRewardPoints(userId, rewardPoints);
-
-    await LocalStorage.instance.writeDataToPrefs(
-      key: 'rewardPoints',
-      value: rewardPoints,
-    );
-
-    // Update admin earnings in superAdmin document
-    DocumentSnapshot superAdminDoc = await FirebaseFirestore.instance.collection('users').doc('dbDs1m9ORGMzcbvhWmaPAI6Sl5i2').get();
-    if (superAdminDoc.exists) {
-      double currentAdminEarnings = (superAdminDoc['adminEarnings'] as num).toDouble();
-      double newAdminEarnings = currentAdminEarnings + adminTotalEarnings;
-      await FirebaseFirestore.instance.collection('users').doc('dbDs1m9ORGMzcbvhWmaPAI6Sl5i2').update({
-        'adminEarnings': newAdminEarnings,
-      });
-      print('Admin earnings updated successfully');
-    } else {
-      throw Exception('Super admin document does not exist');
-    }
-
-    // Clean up
-    cartItems.clear();
-    itemTotal.value = 0.0;
-    serviceFee.value = 0.0;
-    deliveryFee.value = 0.0;
-    isFabVisible.value = false;
-    prefs.remove('requests');
-    await saveRewardPoints();
-    saveCartItems();
-
-    Get.snackbar('Order', 'Order has been placed successfully');
-    return orderId;
-  } catch (e) {
-    print('Error placing order: $e');
-    Get.snackbar('Error', 'Failed to place the order');
-    return '';
   }
-}
-
 
   void showSnackBar(String message) {
     Get.snackbar('Cart', message,
