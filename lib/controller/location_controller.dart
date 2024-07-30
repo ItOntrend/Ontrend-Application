@@ -22,6 +22,15 @@ class LocationController extends GetxController {
     _requestPermissions();
   }
 
+  String removeFirstPart(String input) {
+    List<String> parts = input.split(' ');
+    if (parts.length > 1) {
+      return parts.sublist(1).join(' ');
+    } else {
+      return input; // If there is only one part, return it as is.
+    }
+  }
+
   Future<void> _requestPermissions() async {
     var status = await Permission.location.request();
     if (status.isGranted) {

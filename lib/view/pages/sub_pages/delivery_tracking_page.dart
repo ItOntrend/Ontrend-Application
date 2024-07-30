@@ -612,8 +612,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Obx(() =>
-            Text("${"Remaining Distance:".tr} $remainingDistance ${"km".tr}")),
+        Text("${"Remaining Distance:".tr} $remainingDistance ${"km".tr}"),
         // Text("${"Estimated Delivery Time:".tr} $formattedDeliveryTime"),
       ],
     );

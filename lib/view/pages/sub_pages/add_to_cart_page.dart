@@ -60,7 +60,8 @@ class _AddToCartPageState extends State<AddToCartPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      locationController.streetName.value,
+                      locationController
+                          .removeFirstPart(locationController.streetName.value),
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,

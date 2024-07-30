@@ -141,7 +141,8 @@ class _FoodPageState extends State<FoodPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Obx(() => Text(
-                    locationController.streetName.value,
+                    locationController
+                        .removeFirstPart(locationController.streetName.value),
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -305,7 +306,10 @@ class _FoodPageState extends State<FoodPage> {
               kHiegth25,
 
               // Categories card
-              TwoTextHeading(heading: "Categories".tr),
+              TwoTextHeading(
+                  heading: lang.currentLanguage.value.languageCode == "ar"
+                      ? "اصناف الطعام"
+                      : "Categories"),
               kHiegth20,
               SizedBox(
                 height: 300.h,
@@ -419,10 +423,10 @@ class _FoodPageState extends State<FoodPage> {
                             ? ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: vendorController.vendorsListg.length,
+                                itemCount: vendorController.vendorsListf.length,
                                 itemBuilder: (context, index) {
                                   final vendor =
-                                      vendorController.vendorsListg[index];
+                                      vendorController.vendorsListf[index];
                                   return NearbyRestaurantCard(
                                     latitude: vendor.location.lat,
                                     longitude: vendor.location.lng,

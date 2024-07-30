@@ -8,7 +8,10 @@ import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/nearby_vendor_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_back.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CategorysSearchPage extends StatefulWidget {
@@ -30,6 +33,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
   RxList filteredVendors = [].obs;
   RxBool isLoadingfilteredVendors = false.obs;
   final TextEditingController _searchController = TextEditingController();
+  bool isGridView = false;
 
   @override
   void initState() {
@@ -102,7 +106,42 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                TextfieldWithBack(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Icon(
+                            Icons.arrow_back_ios_new,
+                            color: kDarkOrange,
+                          ),
+                        ),
+                        kWidth10,
+                        OneTextHeading(
+                          heading: languageController
+                                      .currentLanguage.value.languageCode ==
+                                  "ar"
+                              ? widget.category.localName
+                              : widget.category.name,
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      icon: Icon(isGridView ? Icons.list : Icons.grid_view),
+                      onPressed: () {
+                        setState(() {
+                          isGridView = !isGridView;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                kHiegth20,
+                TextfieldWithMic(
                   hintText: "Search...".tr,
                   onChanged: filterVendors,
                   //initialValue:
@@ -117,35 +156,65 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                       ? _buildShimmerEffect()
                       : filteredVendors.isEmpty
                           ? Center(child: Text("No Vendor Available".tr))
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.vertical,
-                              itemCount: filteredVendors.length,
-                              itemBuilder: (context, index) {
-                                final vendor = filteredVendors[index];
-                                return ExploreCard(
-                                  isOnline: vendor.isOnline,
-                                  longitude: vendor.location.lng,
-                                  latitude: vendor.location.lat,
-                                  locationCityCountry: '',
-                                  distance: vendorController
-                                      .calculateDistance(vendor.location),
-                                  name: languageController.currentLanguage.value
-                                              .languageCode ==
-                                          "ar"
-                                      ? vendor.restaurantArabicName
-                                      : vendor.restaurantName,
-                                  image: vendor.bannerImage,
-                                  onTap: () {
-                                    Get.to(() => ProfilePage(
-                                        userId: vendor.reference.id,
-                                        cat: "",
-                                        type: widget.type));
+                          : isGridView
+                              ? ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: filteredVendors.length,
+                                  itemBuilder: (context, index) {
+                                    final vendor = filteredVendors[index];
+                                    return NearbyRestaurantCard(
+                                      //isOnline: vendor.isOnline,
+                                      longitude: vendor.location.lng,
+                                      latitude: vendor.location.lat,
+                                      locationCityCountry: '',
+                                      distance: vendorController
+                                          .calculateDistance(vendor.location),
+                                      name: languageController.currentLanguage
+                                                  .value.languageCode ==
+                                              "ar"
+                                          ? vendor.restaurantArabicName
+                                          : vendor.restaurantName,
+                                      image: vendor.bannerImage,
+                                      onTap: () {
+                                        Get.to(() => ProfilePage(
+                                            userId: vendor.reference.id,
+                                            cat: "",
+                                            type: widget.type));
+                                      },
+                                    );
                                   },
-                                );
-                              },
-                            ),
+                                )
+                              : ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: filteredVendors.length,
+                                  itemBuilder: (context, index) {
+                                    final vendor = filteredVendors[index];
+                                    return ExploreCard(
+                                      isOnline: vendor.isOnline,
+                                      longitude: vendor.location.lng,
+                                      latitude: vendor.location.lat,
+                                      locationCityCountry: '',
+                                      distance: vendorController
+                                          .calculateDistance(vendor.location),
+                                      name: languageController.currentLanguage
+                                                  .value.languageCode ==
+                                              "ar"
+                                          ? vendor.restaurantArabicName
+                                          : vendor.restaurantName,
+                                      image: vendor.bannerImage,
+                                      onTap: () {
+                                        Get.to(() => ProfilePage(
+                                            userId: vendor.reference.id,
+                                            cat: "",
+                                            type: widget.type));
+                                      },
+                                    );
+                                  },
+                                ),
                 ),
                 kHiegth30,
               ],

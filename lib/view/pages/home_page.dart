@@ -47,6 +47,8 @@ class _HomePageState extends State<HomePage> {
   final VendorController vendorController = Get.put(VendorController());
   List<ItemModel> itemSearchSuggestions = [];
   List<ItemModel> restaurantSearchSuggestions = [];
+  final NavigationController navigationController =
+      Get.put(NavigationController());
   final HomeController homeController = Get.put(HomeController());
   final LanguageController lang = Get.put(LanguageController());
   final TextEditingController _searchController = TextEditingController();
@@ -145,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    locationController.streetName.value,
+                    locationController.removeFirstPart(locationController.streetName.value),
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -404,36 +406,67 @@ class _HomePageState extends State<HomePage> {
                       )
                     : vendorController.vendorsListf.isEmpty
                         ? const Center(child: Text("No Vendor Available"))
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            itemCount: vendorController.vendorsListf.length,
-                            itemBuilder: (context, index) {
-                              final vendor =
-                                  vendorController.vendorsListf[index];
-                              return ExploreCard(
-                                isOnline: vendor.isOnline,
-                                longitude: vendor.location.lng,
-                                latitude: vendor.location.lat,
-                                locationCityCountry: '',
-                                distance: vendorController
-                                    .calculateDistance(vendor.location),
-                                name: lang.currentLanguage.value.languageCode ==
-                                        "ar"
-                                    ? vendor.restaurantArabicName
-                                    : vendor.restaurantName,
-                                image: vendor.bannerImage,
-                                onTap: () {
-                                  Get.to(() => ProfilePage(
-                                        userId: vendor.reference.id,
-                                        cat: "",
-                                        type: "Food/Restaurent",
-                                      ));
+                        : isGridView
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: vendorController.vendorsListf.length,
+                                itemBuilder: (context, index) {
+                                  final vendor =
+                                      vendorController.vendorsListf[index];
+                                  return NearbyRestaurantCard(
+                                    latitude: vendor.location.lat,
+                                    longitude: vendor.location.lng,
+                                    locationCityCountry: "",
+                                    distance: vendorController
+                                        .calculateDistance(vendor.location),
+                                    name: lang.currentLanguage.value
+                                                .languageCode ==
+                                            "ar"
+                                        ? vendor.restaurantArabicName
+                                        : vendor.restaurantName,
+                                    image: vendor.bannerImage,
+                                    onTap: () {
+                                      Get.to(() => ProfilePage(
+                                            userId: vendor.reference.id,
+                                            cat: "",
+                                            type: "Grocery",
+                                          ));
+                                    },
+                                  );
                                 },
-                              );
-                            },
-                          ),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                itemCount: vendorController.vendorsListf.length,
+                                itemBuilder: (context, index) {
+                                  final vendor =
+                                      vendorController.vendorsListf[index];
+                                  return ExploreCard(
+                                    isOnline: vendor.isOnline,
+                                    longitude: vendor.location.lng,
+                                    latitude: vendor.location.lat,
+                                    locationCityCountry: '',
+                                    distance: vendorController
+                                        .calculateDistance(vendor.location),
+                                    name: lang.currentLanguage.value
+                                                .languageCode ==
+                                            "ar"
+                                        ? vendor.restaurantArabicName
+                                        : vendor.restaurantName,
+                                    image: vendor.bannerImage,
+                                    onTap: () {
+                                      Get.to(() => ProfilePage(
+                                            userId: vendor.reference.id,
+                                            cat: "",
+                                            type: "Food/Restaurent",
+                                          ));
+                                    },
+                                  );
+                                },
+                              ),
               ),
               kHiegth40,
             ],
@@ -441,5 +474,14 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  String removeFirstPart(String input) {
+    List<String> parts = input.split(' ');
+    if (parts.length > 1) {
+      return parts.sublist(1).join(' ');
+    } else {
+      return input; // If there is only one part, return it as is.
+    }
   }
 }

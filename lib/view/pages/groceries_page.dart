@@ -128,7 +128,8 @@ class _GroceriesPageState extends State<GroceriesPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                locationController.streetName.value,
+                locationController
+                    .removeFirstPart(locationController.streetName.value),
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -290,7 +291,12 @@ class _GroceriesPageState extends State<GroceriesPage> {
               kHiegth20,
               // Trending card
               // Categories card
-              TwoTextHeading(heading: "Categories".tr),
+              TwoTextHeading(
+                  heading:
+                      languageController.currentLanguage.value.languageCode ==
+                              "ar"
+                          ? "تسوق حسب الفئه "
+                          : "Categories"),
               kHiegth20,
               Padding(
                 padding: const EdgeInsets.all(0),
