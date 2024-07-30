@@ -363,6 +363,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                               final vendor =
                                   vendorController.vendorsListg[index];
                               return NearbyRestaurantCard(
+                                isOnline: vendor.isOnline,
                                 latitude: vendor.location.lat,
                                 longitude: vendor.location.lng,
                                 locationCityCountry: "",

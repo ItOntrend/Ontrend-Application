@@ -147,7 +147,8 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    locationController.removeFirstPart(locationController.streetName.value),
+                    locationController
+                        .removeFirstPart(locationController.streetName.value),
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -415,6 +416,7 @@ class _HomePageState extends State<HomePage> {
                                   final vendor =
                                       vendorController.vendorsListf[index];
                                   return NearbyRestaurantCard(
+                                    isOnline: vendor.isOnline,
                                     latitude: vendor.location.lat,
                                     longitude: vendor.location.lng,
                                     locationCityCountry: "",

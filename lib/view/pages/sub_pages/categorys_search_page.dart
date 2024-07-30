@@ -165,7 +165,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                                   itemBuilder: (context, index) {
                                     final vendor = filteredVendors[index];
                                     return NearbyRestaurantCard(
-                                      //isOnline: vendor.isOnline,
+                                      isOnline: vendor.isOnline,
                                       longitude: vendor.location.lng,
                                       latitude: vendor.location.lat,
                                       locationCityCountry: '',
