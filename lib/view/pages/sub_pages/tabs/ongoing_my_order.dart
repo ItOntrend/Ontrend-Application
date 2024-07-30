@@ -27,10 +27,10 @@ class OngoingMyOrder extends StatelessWidget {
         // Filter orders to only show those with statuses from pending to ready
         var filteredOrders = orderController.orders
             .where((order) =>
-                order.status == 'Pending'.tr ||
-                order.status == 'Processing'.tr ||
-                order.status == 'Ready'.tr ||
-                order.status == 'Picked Up'.tr)
+                order.status == 'Pending' ||
+                order.status == 'Processing' ||
+                order.status == 'Ready' ||
+                order.status == 'Picked Up')
             .toList();
 
         // Sort the filtered orders by timestamp in descending order

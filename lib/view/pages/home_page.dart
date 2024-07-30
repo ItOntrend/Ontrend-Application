@@ -21,6 +21,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/carousa
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/home_search_result.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/shimmer_export.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/nearby_vendor_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/oru_service_big_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/oru_service_card.dart';
@@ -49,6 +50,7 @@ class _HomePageState extends State<HomePage> {
   final HomeController homeController = Get.put(HomeController());
   final LanguageController lang = Get.put(LanguageController());
   final TextEditingController _searchController = TextEditingController();
+  bool isGridView = false;
 
   @override
   void initState() {
@@ -375,8 +377,21 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               kHiegth20,
-              OneTextHeading(
-                heading: "Nearby Restaurants".tr,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  OneTextHeading(
+                    heading: "Nearby Restaurants".tr,
+                  ),
+                  IconButton(
+                    icon: Icon(isGridView ? Icons.list : Icons.grid_view),
+                    onPressed: () {
+                      setState(() {
+                        isGridView = !isGridView;
+                      });
+                    },
+                  ),
+                ],
               ),
               kHiegth20,
               Obx(

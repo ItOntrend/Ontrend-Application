@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/model/order_modal.dart';
@@ -32,6 +33,7 @@ class MyOrderCard extends StatefulWidget {
 }
 
 class _MyOrderCardState extends State<MyOrderCard> {
+  LanguageController lang = Get.find();
   String _address = "";
   Future<void> _getAddressFromLatLng(double lat, double lng) async {
     try {
@@ -140,7 +142,7 @@ class _MyOrderCardState extends State<MyOrderCard> {
                                   ),
                                   kWidth10,
                                   Text(
-                                      '${item.itemName} x${item.itemQuantity} - OMR ${item.total.toStringAsFixed(3)}'),
+                                      '${lang.currentLanguage.value.languageCode == "ar" ? item.localName : item.itemName} x${item.itemQuantity} - ${"OMR".tr} ${item.total.toStringAsFixed(3)}'),
                                 ],
                               ))
                           .toList(),
