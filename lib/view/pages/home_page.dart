@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      locationController.loadLocationFromPreferences();
+      //locationController.loadLocationFromPreferences();
       vendorController.fetchVendorsf();
       homeController.getProducts();
     });

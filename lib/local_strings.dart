@@ -174,12 +174,17 @@ class LocalStrings extends Translations {
           "No Nearby Stores": "No Nearby Stores",
           "Up to 40% Off": "Up to 40% Off",
           'LogOut ?': 'LogOut ?',
-          'Are you sure you want to log out?':
-              'Are you sure you want to log out?',
+          'Are you sure you want to logOut?':
+              'Are you sure you want to logOut?',
           "hour": "hour",
           "minute": "minute",
           'Your order is completed!': 'Your order is completed!',
           "Total Price": "Total Price",
+          "Delete Account": "Delete Account",
+          'Delete Account?': 'Delete Account?',
+          'Are you sure you want to delete your account? This action cannot be undone.':
+              'Are you sure you want to delete your account? This action cannot be undone.',
+          'Delete': 'Delete',
         },
         //'hi_IN': {'hello': "नमस्ते दुनिया", 'message': "ऐप में आपका स्वागत है"},
         'ar_OM': {
@@ -192,7 +197,7 @@ class LocalStrings extends Translations {
           'Nationality': 'الجنسية',
           'My Orders': 'طلباتي',
           'Help': "مساعدة",
-          'Contact Us': 'اتصل بنا',
+          'Contact Us': " تواصل معنا",
           'Log Out': 'تسجيل الخروج',
           'English': 'الإنجليزية',
           'Arabic': 'عربي',
@@ -224,7 +229,7 @@ class LocalStrings extends Translations {
           "Login": "تسجيل الدخول",
           "Don’t have an account?": "ليس لديك حساب؟",
           "Sign Up": "اشتراك",
-          "Register": "يسجل",
+          "Register": "تسجيل",
           "Just a few things to get started": "فقط بعض الأشياء للبدء",
           "First Name*": "الاسم الأول*",
           'Please enter your first name': 'يرجى ادخال الاسم الاول',
@@ -279,7 +284,7 @@ class LocalStrings extends Translations {
           'Total amount': 'المبلغ الإجمالي',
           'Add to Cart': 'أضف إلى السلة',
           "History": "تاريخ",
-          "Ongoing": "جاري التنفيذ",
+          "Ongoing": "الطلب الجاري",
           "Sheduled": "المقرر",
           "Type a coupon code here": "اكتب رمز القسيمة هنا",
           "Apply": "استخدم ",
@@ -320,7 +325,7 @@ class LocalStrings extends Translations {
           "Items in Cart:": "طلباتك في السلة",
           'No image available': 'لا توجد صورة',
           "km away": "على بعد كيلومتر",
-          "Past Orders": "الأوامر السابقة",
+          "Past Orders": "الطلبات السابقة",
           'No orders found': 'لم يتم العثور على أية طلبات',
           "No Image Available": "لا توجد صورة",
           'Order data is null': "بيانات الطلب فارغة",
@@ -348,12 +353,17 @@ class LocalStrings extends Translations {
           "No Nearby Stores": "لا توجد متاجر قريبة",
           "Up to 40% Off": "تخفيض يصل إلى ٤٠٪",
           'LogOut ?': 'تسجيل خروج ؟',
-          'Are you sure you want to log out?':
-              "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+          'Are you sure you want to logOut?':
+              "هل أنت متأكد من انك تريد تسجيل الخروج؟",
           "hour": "ساعة",
           "minute": "دقيقة",
           'Your order is completed!': "اكتمل طلبك!",
           "Total Price": "السعر الكلي",
+          "Delete Account": "حذف الحساب",
+          'Delete Account?': 'حذف الحساب؟',
+          'Are you sure you want to delete your account? This action cannot be undone.':
+              'هل انت متأكد انك تريد حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء.',
+          'Delete': 'يمسح',
         }
       };
 }

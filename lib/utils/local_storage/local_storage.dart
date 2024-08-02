@@ -112,4 +112,9 @@ class LocalStorage {
         return commonBox;
     }
   }
+
+  Future<void> clearAll() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
 }

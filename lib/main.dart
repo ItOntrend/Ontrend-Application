@@ -35,7 +35,7 @@ Future<void> main() async {
       initialLocale = Locale('en', 'US'); // Default country code for English
     }
   }
-  Get.put(NavigationController());
+
   runApp(MyApp(initialLocale: initialLocale));
 }
 

@@ -6,6 +6,7 @@ import 'package:ontrend_food_and_e_commerce/utils/constants/firebase_constants.d
 import 'package:ontrend_food_and_e_commerce/utils/enums/auth_status.dart';
 import 'package:ontrend_food_and_e_commerce/utils/exception/auth_exception.dart';
 import 'package:ontrend_food_and_e_commerce/utils/utils.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/login_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/navigation_manu.dart';
 
 class AuthController extends GetxController {
@@ -156,5 +157,25 @@ class AuthController extends GetxController {
 
   Future<void> onLogOut() async {
     await AuthRepository.onLogOut();
+  }
+
+  Future<void> deleteAccount(BuildContext context) async {
+    Utils.instance.showLoader();
+
+    final status = await AuthRepository.deleteAccount();
+    Utils.instance.hideLoader();
+
+    if (status == AuthStatus.successful) {
+      //Utils.instance.showSnackbar(
+      // context: context,
+      // message: 'Your account has been deleted successfully.',
+      // );
+      // Navigate to login or home screen after account deletion
+      print(" 'Your account has been deleted successfully.'");
+      //Get.offAll(() => LoginPage()); // or navigate to home screen
+    } else {
+      final errorMsg = AuthExceptionHandler.generateExceptionMessage(status);
+      Utils.instance.showSnackbar(context: context, message: errorMsg);
+    }
   }
 }
