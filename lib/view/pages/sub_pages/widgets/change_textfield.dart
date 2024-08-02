@@ -8,10 +8,14 @@ class ChangeTextfield extends StatefulWidget {
     Key? key,
     required this.initialValue,
     required this.hintText,
+    required this.onChanged,
+    this.showChangeButton = true,
   }) : super(key: key);
 
   final String hintText;
   final String initialValue;
+  final bool showChangeButton;
+  final Function(String) onChanged;
 
   @override
   _ChangeTextfieldState createState() => _ChangeTextfieldState();
@@ -37,40 +41,49 @@ class _ChangeTextfieldState extends State<ChangeTextfield> {
     setState(() {
       isEditable = !isEditable;
       if (!isEditable) {
-        // Save the updated value to the controller
-        _controller.text = _controller.text;
-        // Here you can also call a method to save the data to Firebase or other storage
+        // Save the updated value
+        widget.onChanged(_controller.text);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: _controller,
-      enabled: isEditable,
-      decoration: InputDecoration(
-        hintText: widget.hintText,
-        suffixIcon: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              color: Colors.grey.shade400,
-              width: 1,
-              height: 20,
-            ),
-            kWidth6,
-            TextButton(
-              onPressed: toggleEditable,
-              child: Text(
-                isEditable ? 'Save'.tr : 'Change'.tr,
-                style: const TextStyle(color: kOrange),
+    return GestureDetector(
+      onTap: () {
+        // Make the field editable when tapped
+        if (!isEditable) {
+          setState(() {
+            isEditable = true; // Enable editing on tap
+          });
+        }
+      },
+      child: TextFormField(
+        controller: _controller,
+        enabled: isEditable,
+        decoration: InputDecoration(
+          hintText: widget.hintText,
+          suffixIcon: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                color: Colors.grey.shade400,
+                width: 1,
+                height: 20,
               ),
-            ),
-          ],
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+              kWidth6,
+              TextButton(
+                onPressed: toggleEditable,
+                child: Text(
+                  isEditable ? 'Save'.tr : 'Change'.tr,
+                  style: const TextStyle(color: kOrange),
+                ),
+              ),
+            ],
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       ),
     );

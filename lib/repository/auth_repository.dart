@@ -170,4 +170,35 @@ abstract class AuthRepository {
       print("Error signing out from Firebase: $e");
     }
   }
+
+  static Future<AuthStatus> deleteAccount() async {
+    AuthStatus _status;
+    try {
+      final user = FirebaseConstants.authInstance.currentUser;
+
+      if (user != null) {
+        // Delete user from Firestore
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .delete();
+
+        // Delete user from Firebase Auth
+        await user.delete();
+
+        // Sign out and clear user data from local storage
+        await FirebaseConstants.authInstance.signOut();
+        await LocalStorage.instance.clearPrefs();
+
+        _status = AuthStatus.successful;
+        print("deleted auth");
+      } else {
+        _status = AuthStatus.undefined;
+      }
+    } catch (e) {
+      print('Exception @deleteAccount: $e');
+      _status = AuthExceptionHandler.handleException(e);
+    }
+    return _status;
+  }
 }

@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 
@@ -14,6 +15,7 @@ class NearbyRestaurantCard extends StatelessWidget {
   final double latitude;
   final double longitude;
   final VoidCallback onTap;
+  final bool isOnline;
 
   const NearbyRestaurantCard({
     super.key,
@@ -24,6 +26,7 @@ class NearbyRestaurantCard extends StatelessWidget {
     required this.latitude,
     required this.longitude,
     required this.onTap,
+    required this.isOnline,
   });
 
   double _estimateDeliveryTime(double distance) {
@@ -68,109 +71,141 @@ class NearbyRestaurantCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.horizontal(
-                    left: Radius.circular(10), right: Radius.circular(10)),
-                child: image.isNotEmpty
-                    ? CachedNetworkImage(
-                        imageUrl: image,
-                        fit: BoxFit.cover,
-                        width: 120,
-                        height: 120,
-                      )
-                    : Container(
-                        width: 120,
-                        height: 120,
-                        color: Colors.grey[300],
-                        child: Center(
-                          child: Text(
-                            'No image available'.tr,
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 16,
+          child: isOnline
+              ? Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.horizontal(
+                        left: Radius.circular(10),
+                        right: Radius.circular(10),
+                      ),
+                      child: image.isNotEmpty
+                          ? CachedNetworkImage(
+                              imageUrl: image,
+                              fit: BoxFit.cover,
+                              width: 120,
+                              height: 120,
+                            )
+                          : Container(
+                              width: 120,
+                              height: 120,
+                              color: Colors.grey[300],
+                              child: Center(
+                                child: Text(
+                                  'No image available'.tr,
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      FutureBuilder<String>(
-                        future: Get.find<VendorController>()
-                            .getAddressFromLatLng(latitude, longitude),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Text(
-                              snapshot.data!,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 14,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              name,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
-                            );
-                          } else if (snapshot.hasError) {
-                            return Text(
-                              'Location information unavailable'.tr,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 14,
-                              ),
-                            );
-                          } else {
-                            return Text(
-                              'Fetching location...'.tr,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 14,
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${distance.toStringAsFixed(2)} ${"km away".tr}',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 14,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.alarm_rounded,
-                            color: Colors.grey[600],
-                            size: 18,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            '${estimatedTime.toStringAsFixed(0)} ${"mins".tr}', // Estimated time in minutes
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 14,
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 4),
+                            FutureBuilder<String>(
+                              future: Get.find<VendorController>()
+                                  .getAddressFromLatLng(latitude, longitude),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(
+                                    snapshot.data!,
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 14,
+                                    ),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text(
+                                    'Location information unavailable'.tr,
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 14,
+                                    ),
+                                  );
+                                } else {
+                                  return Text(
+                                    'Fetching location...'.tr,
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 14,
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '${distance.toStringAsFixed(2)} ${"km away".tr}',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 14,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.alarm_rounded,
+                                  color: Colors.grey[600],
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  '${estimatedTime.toStringAsFixed(0)} ${"mins".tr}', // Estimated time in minutes
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
+                  ],
+                )
+              : Container(
+                  width: double.infinity,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.grey[300],
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        LottieBuilder.network(
+                          "https://lottie.host/cee2de9e-78a7-4181-8222-0c3a85e21dc3/YmN00UuZXI.json",
+                          height: 100,
+                          width: 100,
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Vendor is offline'.tr,
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
         ),
       ),
     );

@@ -22,11 +22,21 @@ class LocationController extends GetxController {
     _requestPermissions();
   }
 
+  String removeFirstPart(String input) {
+    List<String> parts = input.split(' ');
+    if (parts.length > 1) {
+      return parts.sublist(1).join(' ');
+    } else {
+      return input; // If there is only one part, return it as is.
+    }
+  }
+
   Future<void> _requestPermissions() async {
     var status = await Permission.location.request();
     if (status.isGranted) {
       if (savedAddresses.isEmpty) {
-        getCurrentLocation();
+        //getCurrentLocation();
+        loadLocationFromPreferences();
       } else {
         // Handle logic if addresses are already saved
         // For example, set the current position to the first saved address
@@ -168,10 +178,14 @@ class SavedAddress {
   });
 }
 
-/*class PlacePickerScreen extends StatelessWidget {
+/*
+class PlacePickerScreen extends StatelessWidget {
   final LocationController controller;
 
-  const PlacePickerScreen({super.key, required this.controller,});
+  const PlacePickerScreen({
+    super.key,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {

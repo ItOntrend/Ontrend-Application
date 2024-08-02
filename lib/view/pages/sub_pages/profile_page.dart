@@ -20,6 +20,7 @@ class ProfilePage extends StatefulWidget {
     required this.type,
     required this.cat,
   });
+
   final int initialTabIndex;
   final String userId;
   final String type;
@@ -31,8 +32,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
-  final VendorController vendorController = Get.put(VendorController());
-  final LanguageController lang = Get.put(LanguageController());
+  final VendorController vendorController = Get.find();
+  final LanguageController lang = Get.find();
   final CartController cartController = Get.find<CartController>();
   TabController? _tabController;
   final ScrollController _scrollController = ScrollController();
@@ -49,18 +50,24 @@ class _ProfilePageState extends State<ProfilePage>
   }
 
   void fetchInitialData() async {
-    if (widget.cat == "") {
-      await vendorController.getCatVendorNew(widget.userId, widget.type);
-    } else {
-      await vendorController.getItemsGr(widget.userId, widget.cat, widget.type);
-    }
-    await vendorController.getVendors(widget.userId);
-    await vendorController.calculateDeliveryFee(widget.userId);
-    await vendorController.getItemsVendor(widget.userId, widget.type);
+    try {
+      if (widget.cat == "") {
+        await vendorController.getCatVendorNew(widget.userId, widget.type);
+      } else {
+        await vendorController.getItemsGr(
+            widget.userId, widget.cat, widget.type);
+      }
+      await vendorController.getVendors(widget.userId);
+      await vendorController.calculateDeliveryFee(widget.userId);
+      await vendorController.getItemsVendor(widget.userId, widget.type);
 
-    setState(() {
-      initializeTabController();
-    });
+      setState(() {
+        initializeTabController();
+      });
+    } catch (e) {
+      // Handle errors appropriately
+      print('Error fetching initial data: $e');
+    }
   }
 
   void initializeTabController() {
@@ -225,7 +232,11 @@ class _ProfilePageState extends State<ProfilePage>
                           return const Center(
                               child: CircularProgressIndicator());
                         } else if (vendorController.ItemsList.isEmpty) {
+                          //if (vendorController.shouldShowNoItemsMessage.value) {
                           return Center(child: Text("No items found".tr));
+                          //} else {
+                          //return Center(child: CircularProgressIndicator());
+                          //}
                         }
 
                         return ListView.builder(
@@ -248,7 +259,8 @@ class _ProfilePageState extends State<ProfilePage>
                                       top: 16.0,
                                       left: 16.0,
                                       right: 16.0,
-                                    bottom:16.0,),
+                                      bottom: 16.0,
+                                    ),
                                     child: Text(
                                       lang.currentLanguage.value.languageCode ==
                                               "ar"

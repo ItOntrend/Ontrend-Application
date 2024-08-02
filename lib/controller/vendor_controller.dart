@@ -318,15 +318,19 @@ class VendorController extends GetxController {
   RxList<ItemModel> ItemsList = RxList<ItemModel>();
   Future<void> getItemsVendor(String userId, String type) async {
     try {
-      print('fetching.....................cat');
+      isItemsLoading.value = true;
       ItemsList.clear();
+      print('fetching.....................cat');
+      //ItemsList.clear();
       var items = await ItemRepository.getItemsVendor(userId, type);
-      ItemsList.addAll(items);
+      ItemsList.assignAll(items);
       print("type is $type");
       print("catlist is ${ItemsList}");
       log("Items data fetched successfully");
     } catch (e) {
       log('Error fetching items: $e');
+    } finally {
+      isItemsLoading.value = false;
     }
   }
 
@@ -335,7 +339,7 @@ class VendorController extends GetxController {
       print('fetching.....................cat');
       itemsList.clear();
       var items = await ItemRepository.getItemsVendor(userId, type);
-      itemsList.addAll(items);
+      itemsList.assignAll(items);
       print("type is $type");
       print("catlist is ${itemsList}");
       log("Items data fetched successfully");
