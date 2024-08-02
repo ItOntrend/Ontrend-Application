@@ -124,8 +124,8 @@ class _HomePageState extends State<HomePage> {
           },
           child: Padding(
             padding: (lang.currentLanguage.value.languageCode == 'ar')
-                ? EdgeInsets.only(right: 20)
-                : EdgeInsets.only(left: 20),
+                ? const EdgeInsets.only(right: 20)
+                : const EdgeInsets.only(left: 20),
             child: Image.asset(
               "assets/icons/location_icon.png",
               width: 30, // Set the desired width
@@ -367,7 +367,7 @@ class _HomePageState extends State<HomePage> {
                       image: "assets/image/grocerry_image.png",
                     ),
                   ),
-                  SizedBox(width: 20),
+                  kWidth20,
                   GestureDetector(
                     onTap: () {
                       Get.find<NavigationController>().changeTabIndex(1);
