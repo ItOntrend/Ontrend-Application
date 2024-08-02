@@ -23,15 +23,15 @@ Future<void> main() async {
   // Initialize SharedPreferences
   final prefs = await SharedPreferences.getInstance();
   String? savedLanguageCode = prefs.getString('language_code');
-  Locale initialLocale = Locale('en', 'US'); // Default locale
+  Locale initialLocale = const Locale('en', 'US'); // Default locale
 
   // Set the initial locale based on saved language code
   if (savedLanguageCode != null) {
     // Handle both language-only and language-country cases
     if (savedLanguageCode == 'ar') {
-      initialLocale = Locale('ar', 'OM'); // Default country code for Arabic
+      initialLocale = const Locale('ar', 'OM'); // Default country code for Arabic
     } else if (savedLanguageCode == 'en') {
-      initialLocale = Locale('en', 'US'); // Default country code for English
+      initialLocale = const Locale('en', 'US'); // Default country code for English
     }
   }
 

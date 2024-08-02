@@ -36,7 +36,7 @@ class _SplashPageState extends State<SplashPage> {
           ),
         ],
       ),
-      nextScreen: AuthPages(),
+      nextScreen: const AuthPages(),
     );
   }
 }
