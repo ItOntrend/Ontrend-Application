@@ -600,6 +600,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     final deliveryTime = _estimateDeliveryTime(distance);
 
     String formattedDeliveryTime;
+    
     if (deliveryTime >= 60) {
       final hours = (deliveryTime / 60).floor();
       final minutes = (deliveryTime % 60).floor();
