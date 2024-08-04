@@ -9,6 +9,7 @@ import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/widgets/shimmer_skelton.dart';
+import 'package:ontrend_food_and_e_commerce/view/widgets/vendor_info.dart';
 
 class ProfileCard extends StatefulWidget {
   const ProfileCard({
@@ -31,6 +32,7 @@ class _ProfileCardState extends State<ProfileCard> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _vendorController.getVendorByUId(userId: widget.userId);
     });
+    print("vendor is ${widget.userId}");
   }
 
   @override
@@ -110,7 +112,14 @@ class _ProfileCardState extends State<ProfileCard> {
                       ),
                     ),
                   ],
-                )
+                ),
+                IconButton(
+                  icon: const Icon(Icons.info_outline),
+                  onPressed: () {
+                    Get.to(() => VendorInfoPage(
+                        vendor: _vendorController.vendorDetail.value));
+                  },
+                ),
               ],
             ),
             kHiegth10,

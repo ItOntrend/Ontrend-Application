@@ -57,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage>
         await vendorController.getItemsGr(
             widget.userId, widget.cat, widget.type);
       }
-      await vendorController.getVendors(widget.userId);
+      await vendorController.getVendorByUId(userId: widget.userId);
       await vendorController.calculateDeliveryFee(widget.userId);
       await vendorController.getItemsVendor(widget.userId, widget.type);
 

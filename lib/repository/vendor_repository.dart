@@ -22,13 +22,21 @@ class VendorRepository {
   }
 
   static Future<VendorModel?> getVendorById({required String userId}) async {
-    var doc = await _db.collection('users').doc(userId).get();
+    try {
+      var doc = await _db.collection('users').doc(userId).get();
 
-    if (doc.exists) {
-      return VendorModel.fromJson(doc.data()!);
+      if (doc.exists) {
+        log('Vendor data: ${doc.data()}');
+        return VendorModel.fromJson(doc.data()!);
+      } else {
+        log('Vendor with userId $userId does not exist.');
+      }
+
+      return null;
+    } catch (e) {
+      log('Error fetching vendor by ID: $e');
+      return null;
     }
-
-    return null;
   }
 
   static Future<Map<String, dynamic>?> getVendorNameByid(String uid) async {

@@ -342,7 +342,40 @@ class VendorModel {
             dayWiseOpenAndClosingTime ?? this.dayWiseOpenAndClosingTime,
         commmisionRate: commmisionRate,
       );
-
+  factory VendorModel.fromJson(Map<String, dynamic> json) {
+    return VendorModel(
+      ownerName: json['ownerName'] as String? ?? 'No Name',
+      restaurantName: json['restaurantName'] as String? ?? 'No Restaurant Name',
+      restaurantArabicName: json['restaurantArabicName'] as String? ?? '',
+      email: json['email'] as String? ?? 'No Email',
+      phone: json['phone'] as String? ?? 'No Phone',
+      vendorType: json['vendorType'] as String? ?? 'No Vendor Type',
+      bankingCode: json['bankCode'] as String? ?? 'No Banking Code',
+      delete: json['delete'] as bool? ?? false,
+      accountNumber: json['accountNumber'] as String? ?? 'No Account Number',
+      vendorId: json['vendorID'] as String? ?? 'No Vendor ID',
+      vatNumber: json['vatNumber'] as String? ?? 'No VAT Number',
+      businessAddress: json['businessAddress'] as String? ?? 'No Address',
+      workingDays: json['workingDays'] as Map<dynamic, dynamic>? ?? {},
+      dayWiseOpenAndClosingTime:
+          json['dayWiseOpenAndClosingTime'] as Map<dynamic, dynamic>? ?? {},
+      createdTime:
+          (json['timeStamp'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      isApproved: json['isApproved'] as bool? ?? false,
+      emailverified: json['emailVerified'] as bool? ?? false,
+      image: json['image'] as String? ?? 'No Image',
+      role: json['role'] as String? ?? 'No Role',
+      location:
+          Location.fromJson(json['location'] as Map<String, dynamic>? ?? {}),
+      bannerImage: json['bannerImage'] as String? ?? 'No Banner Image',
+      openingTime: json['openingTime'] as String? ?? 'No Opening Time',
+      closingTime: json['closingTime'] as String? ?? 'No Closing Time',
+      isOnline: json['isOnline'] as bool? ?? false,
+      commmisionRate: json['commissionRate'] as int? ?? 0,
+      reference: json['reference'] as DocumentReference,
+    );
+  }
+/*
   factory VendorModel.fromJson(Map<String, dynamic> json) => VendorModel(
         ownerName: json["ownerName"],
         restaurantName: json["restaurantName"],
@@ -371,7 +404,7 @@ class VendorModel {
         isOnline: json['isOnline'],
         commmisionRate: json['commissionRate'],
       );
-
+*/
   Map<String, dynamic> toJson() => {
         "ownerName": ownerName,
         "restaurantName": restaurantName,
