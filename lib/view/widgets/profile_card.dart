@@ -30,6 +30,8 @@ class _ProfileCardState extends State<ProfileCard> {
     super.initState();
     log("This is UserID ${widget.userId}");
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _vendorController.vendorDetail.value = null; // Clear previous vendor data
+      _vendorController.isVendorLoading.value = true;
       _vendorController.getVendorByUId(userId: widget.userId);
     });
     print("vendor is ${widget.userId}");
@@ -46,8 +48,8 @@ class _ProfileCardState extends State<ProfileCard> {
         color: kWhite,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
             blurRadius: 7,
             offset: const Offset(0, 3),
           ),
@@ -55,8 +57,7 @@ class _ProfileCardState extends State<ProfileCard> {
       ),
       child: Obx(() {
         log("It's About Vendor Profile");
-        if (_vendorController.isVendorLoading.value ||
-            _vendorController.isItemsLoading.value) {
+        if (_vendorController.isVendorLoading.value) {
           return const ShimmerProfile();
         }
 

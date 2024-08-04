@@ -254,7 +254,7 @@ class VendorModel {
   String closingTime;
   String openingTime;
   bool isOnline;
-  int commmisionRate;
+  int commissionRate;
   VendorModel({
     required this.ownerName,
     required this.restaurantName,
@@ -281,7 +281,7 @@ class VendorModel {
     required this.closingTime,
     required this.isOnline,
     required this.dayWiseOpenAndClosingTime,
-    this.commmisionRate = 0,
+    this.commissionRate = 0,
   });
 
   VendorModel copyWith({
@@ -311,7 +311,7 @@ class VendorModel {
     String? openingTime,
     String? closingTime,
     bool? isOnline,
-    int? commisionRate,
+    int? commissionRate,
   }) =>
       VendorModel(
         ownerName: ownerName ?? this.ownerName,
@@ -340,7 +340,7 @@ class VendorModel {
         isOnline: isOnline ?? this.isOnline,
         dayWiseOpenAndClosingTime:
             dayWiseOpenAndClosingTime ?? this.dayWiseOpenAndClosingTime,
-        commmisionRate: commmisionRate,
+        commissionRate: commissionRate ?? this.commissionRate,
       );
   factory VendorModel.fromJson(Map<String, dynamic> json) {
     return VendorModel(
@@ -402,7 +402,7 @@ class VendorModel {
         openingTime: json['openingTime'],
         closingTime: json['closingTime'],
         isOnline: json['isOnline'],
-        commmisionRate: json['commissionRate'],
+        commissionRate: json['commissionRate'],
       );
 */
   Map<String, dynamic> toJson() => {
@@ -431,7 +431,7 @@ class VendorModel {
         "closingTime": closingTime,
         "isOnline": isOnline,
         "dayWiseOpenAndClosingTime": dayWiseOpenAndClosingTime,
-        "commissionRate": commmisionRate,
+        "commissionRate": commissionRate,
       };
   factory VendorModel.fromMap(Map<String, dynamic> data, String documentId) {
     return VendorModel(
@@ -462,7 +462,7 @@ class VendorModel {
       openingTime: data['openingTime'] ?? '',
       closingTime: data['closingTime'] ?? '',
       isOnline: data['isOnline'] ?? false,
-      commmisionRate: data['commissionRate'] ?? 0,
+      commissionRate: data['commissionRate'] ?? 0,
     );
   }
 }

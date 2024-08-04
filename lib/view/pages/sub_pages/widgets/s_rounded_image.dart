@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class SRoundedImageWidget extends StatelessWidget {
   const SRoundedImageWidget({
-    Key? key,
+    super.key,
     this.border,
     this.padding,
     this.onPressed,
@@ -15,7 +15,7 @@ class SRoundedImageWidget extends StatelessWidget {
     this.backgroundColor,
     this.isnetworkImage = true,
     this.borderRadius = 8,
-  }) : super(key: key);
+  });
 
   final double? width, height;
   final String imageUrl;

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
@@ -21,6 +22,7 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
   final String token = '1234567890';
   var uuid = const Uuid();
   List<dynamic> listOfLocation = [];
+  SavedAddress? selectedAddress; // Add this variable
 
   @override
   void initState() {
@@ -28,6 +30,10 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
       _onChange();
     });
     super.initState();
+    // Set the default selected address to the first saved address if available
+    if (locationController.savedAddresses.isNotEmpty) {
+      selectedAddress = locationController.savedAddresses.first;
+    }
   }
 
   @override
@@ -99,6 +105,7 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
     locationController.savedAddresses.add(SavedAddress(
       title: "Custom Location".tr,
       address: description,
+      subLocalityName: locationController.subLocalityName.value,
       streetName: locationController.streetName.value,
       cityName: locationController.cityName.value,
       countryName: locationController.countryName.value,
@@ -111,6 +118,17 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
 
   void _openPlacePicker() async {
     await Get.to(() => PlacePickerScreen(controller: locationController));
+  }
+
+  void _onTapSavedAddress(SavedAddress address) {
+    setState(() {
+      selectedAddress = address;
+      locationController.subLocalityName.value = address.subLocalityName;
+      locationController.streetName.value = address.streetName;
+      locationController.cityName.value = address.cityName;
+      locationController.countryName.value = address.countryName;
+    });
+    Get.back();
   }
 
   @override
@@ -128,7 +146,7 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
         ),
         title: Text(
           "Select Location".tr,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
           ),
@@ -187,7 +205,7 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
                   onPressed: locationController.getCurrentLocation,
                   child: Text(
                     "Use my current location".tr,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
                     ),
@@ -225,31 +243,94 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
               ),
             ),
             kHiegth20,
-            Expanded(
-              child: Obx(
-                () => ListView(
-                  children: locationController.savedAddresses
-                      .map((address) => ListTile(
-                            leading: SvgPicture.asset(
-                              "assets/svg/small_location_grey_icon.svg",
-                            ),
-                            title: Text(address.title),
-                            subtitle: Text(address.address),
-                            onTap: () => _editAddressTitle(context, address),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                locationController.deleteAddress(address);
-                              },
-                            ),
-                          ))
-                      .toList(),
+            // Display selected address or default to the first saved address
+            if (selectedAddress != null) ...[
+              Text(
+                "Selected Address:",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
               ),
-            ),
+              Text(
+                selectedAddress!.address,
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ],
+            Expanded(
+              child: Obx(
+                () {
+                  return ListView(
+                    children: locationController.savedAddresses
+                        .map(
+                          (address) => GestureDetector(
+                            onTap: () => _onTapSavedAddress(address),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/svg/small_location_grey_icon.svg",
+                                ),
+                                kWidth25,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      address.title,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    SizedBox(
+                                      width: 230.w,
+                                      child: Text(
+                                        _formatAddressTitle(address.address),
+                                        style: TextStyle(),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Spacer(),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    size: 20,
+                                  ),
+                                  onPressed: () {
+                                    _editAddressTitle(context, address);
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    size: 20,
+                                    color: kDarkOrange,
+                                  ),
+                                  onPressed: () {
+                                    locationController.deleteAddress(address);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),
     );
+  }
+
+  String _formatAddressTitle(String title) {
+    if (title.length > 28) {
+      return '${title.substring(0, 21)}\n${title.substring(21)}';
+    }
+    return title;
   }
 }

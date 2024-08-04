@@ -10,6 +10,7 @@ import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/food_item_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/profile_card.dart';
+import 'package:shimmer/shimmer.dart';
 import 'item_view_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -51,13 +52,16 @@ class _ProfilePageState extends State<ProfilePage>
 
   void fetchInitialData() async {
     try {
+      // Clear previous data
+      vendorController.ItemsList.clear();
+
       if (widget.cat == "") {
         await vendorController.getCatVendorNew(widget.userId, widget.type);
       } else {
         await vendorController.getItemsGr(
             widget.userId, widget.cat, widget.type);
       }
-      await vendorController.getVendorByUId(userId: widget.userId);
+      vendorController.getVendors(widget.userId);
       await vendorController.calculateDeliveryFee(widget.userId);
       await vendorController.getItemsVendor(widget.userId, widget.type);
 
@@ -65,7 +69,6 @@ class _ProfilePageState extends State<ProfilePage>
         initializeTabController();
       });
     } catch (e) {
-      // Handle errors appropriately
       print('Error fetching initial data: $e');
     }
   }
@@ -114,7 +117,6 @@ class _ProfilePageState extends State<ProfilePage>
   void _onScroll() {
     if (_isScrollAnimating || _isTabAnimating) return;
 
-    final offset = _scrollController.offset;
     for (int index = 0; index < tagList.length; index++) {
       final keyContext = _keys[tagList[index]]?.currentContext;
       if (keyContext != null) {
@@ -148,18 +150,29 @@ class _ProfilePageState extends State<ProfilePage>
               () => SizedBox(
                 height: 200.h,
                 width: double.infinity,
-                child: CachedNetworkImage(
-                  imageUrl:
-                      vendorController.vendorDetail.value?.bannerImage ?? "",
-                  fit: BoxFit.cover,
-                  errorWidget: (context, error, stackTrace) {
-                    return CachedNetworkImage(
-                      imageUrl:
-                          'https://service.sarawak.gov.my/web/web/web/web/res/no_image.png',
-                      fit: BoxFit.cover,
-                    );
-                  },
-                ),
+                child: vendorController.vendorDetail.value?.bannerImage == null
+                    ? const ShimmerBanner()
+                    : CachedNetworkImage(
+                        imageUrl:
+                            vendorController.vendorDetail.value?.bannerImage ??
+                                "",
+                        fit: BoxFit.cover,
+                        errorWidget: (context, error, stackTrace) {
+                          return Container(
+                            height: 200.h,
+                            color: kWhite,
+                            child: Column(
+                              children: [
+                                kHiegth10,
+                                Image.asset(
+                                    height: 100.h,
+                                    width: 100.w,
+                                    "assets/icons/no_image_found_icon.png"),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
               ),
             ),
             Positioned(
@@ -194,7 +207,7 @@ class _ProfilePageState extends State<ProfilePage>
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 250),
+              padding: EdgeInsets.only(top: 280.h),
               child: Column(
                 children: [
                   Obx(
@@ -229,14 +242,14 @@ class _ProfilePageState extends State<ProfilePage>
                     child: Obx(
                       () {
                         if (vendorController.isItemsLoading.value) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else if (vendorController.ItemsList.isEmpty) {
-                          //if (vendorController.shouldShowNoItemsMessage.value) {
-                          return Center(child: Text("No items found".tr));
-                          //} else {
-                          //return Center(child: CircularProgressIndicator());
-                          //}
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: 3,
+                            itemBuilder: (context, index) {
+                              return const ShimmerItems();
+                            },
+                          );
                         }
 
                         return ListView.builder(
@@ -271,22 +284,17 @@ class _ProfilePageState extends State<ProfilePage>
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(() => ItemViewPage(item: item));
-                                  },
-                                  child: FoodItemCard(
-                                    name: item.name,
-                                    localName: item.localName,
-                                    arabicRestaurantName:
-                                        item.arabicRestaurantName,
-                                    localTag: item.localTag,
-                                    image: item.imageUrl,
-                                    description: item.description,
-                                    price: item.price,
-                                    addedBy: item.addedBy,
-                                    restaurantName: item.restaurantName,
-                                  ),
+                                FoodItemCard(
+                                  name: item.name,
+                                  localName: item.localName,
+                                  arabicRestaurantName:
+                                      item.arabicRestaurantName,
+                                  localTag: item.localTag,
+                                  image: item.imageUrl,
+                                  description: item.description,
+                                  price: item.itemPrice,
+                                  addedBy: item.addedBy,
+                                  restaurantName: item.restaurantName,
                                 ),
                               ],
                             );
@@ -295,7 +303,6 @@ class _ProfilePageState extends State<ProfilePage>
                       },
                     ),
                   ),
-                  kHiegth25,
                 ],
               ),
             ),
@@ -338,7 +345,8 @@ class _ProfilePageState extends State<ProfilePage>
                     ),
                     child: Text(
                       'View Cart'.tr,
-                      style: TextStyle(
+                      style: const TextStyle(
+                        fontSize: 14,
                         color: kOrange,
                         decoration: TextDecoration.underline,
                         decorationColor: kOrange,
@@ -350,6 +358,59 @@ class _ProfilePageState extends State<ProfilePage>
             ),
           );
         }),
+      ),
+    );
+  }
+}
+
+class ShimmerBanner extends StatelessWidget {
+  const ShimmerBanner({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        color: Colors.white,
+      ),
+    );
+  }
+}
+
+class ShimmerProfileCard extends StatelessWidget {
+  const ShimmerProfileCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        height: 200.h,
+        color: Colors.white,
+      ),
+    );
+  }
+}
+
+class ShimmerItems extends StatelessWidget {
+  const ShimmerItems({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20).copyWith(bottom: 20),
+        decoration: BoxDecoration(
+          color: kWhite,
+          borderRadius: BorderRadius.circular(
+            10,
+          ),
+        ),
+        height: 150.h,
       ),
     );
   }

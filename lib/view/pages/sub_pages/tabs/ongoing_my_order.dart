@@ -15,7 +15,9 @@ class OngoingMyOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Fetch the user's ongoing orders when the widget is built
-    orderController.fetchUserOrders(userId);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      orderController.fetchUserOrders(userId);
+    });
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
