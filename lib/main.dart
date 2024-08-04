@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ontrend_food_and_e_commerce/controller/navigation_controller.dart';
 import 'package:ontrend_food_and_e_commerce/firebase_options.dart';
 import 'package:ontrend_food_and_e_commerce/local_strings.dart';
 import 'package:ontrend_food_and_e_commerce/utils/init_services.dart';

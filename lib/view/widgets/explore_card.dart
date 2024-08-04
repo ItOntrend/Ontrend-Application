@@ -94,7 +94,7 @@ class ExploreCard extends StatelessWidget {
                       const SizedBox(height: 10),
                       Text(
                         'Vendor is offline'.tr,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.red,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

@@ -11,7 +11,6 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.da
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/nearby_vendor_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/onetext_heading.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_back.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart';
 import 'package:shimmer/shimmer.dart';
 

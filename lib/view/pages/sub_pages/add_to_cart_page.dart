@@ -60,8 +60,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      locationController
-                          .removeFirstPart(locationController.streetName.value),
+                      locationController.subLocalityName.value,
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -113,7 +112,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ListView.builder(
-                          shrinkWrap: true, // Wrap content to avoid overflow
+                          shrinkWrap: true,
                           itemCount: cartController.cartItems.length,
                           itemBuilder: (context, index) {
                             final item = cartController.cartItems.values

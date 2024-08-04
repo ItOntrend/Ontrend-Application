@@ -148,8 +148,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    locationController
-                        .removeFirstPart(locationController.streetName.value),
+                    locationController.subLocalityName.value,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,

@@ -107,7 +107,7 @@ class CartController extends GetxController {
       if (vendor != null) {
         final distance = vendorController.calculateDistance(vendor.location);
         print('Calculated Distance: $distance');
-        final commision = vendor.commmisionRate;
+        final commision = vendor.commissionRate;
         double charge;
         if (distance <= 6) {
           charge = 0.600;
@@ -239,7 +239,7 @@ class CartController extends GetxController {
     calculateDeliveryCharge();
     if (isReturningFromCart) {
       showSnackBar('Item removed from cart');
-      isReturningFromCart = false; // Reset the flag
+      isReturningFromCart = false;
     }
   }
 
@@ -277,7 +277,11 @@ class CartController extends GetxController {
   void updateItemTotal() {
     double total = 0.0;
     cartItems.forEach((key, value) {
-      total += (value['item'].price * value['quantity']).toDouble();
+      if (value['item'] != null && value['quantity'] != null) {
+        final itemPrice = value['item'].price ?? 0.0;
+        final quantity = value['quantity'] ?? 0;
+        total += (itemPrice * quantity).toDouble();
+      }
     });
     itemTotal.value = total;
     serviceFee.value = total * platformFeePercentage; // Update service fee

@@ -52,14 +52,14 @@ class _FoodItemCardState extends State<FoodItemCard> {
         border: Border.all(
           color: kBorderLiteBlack,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.grey.withOpacity(0.2),
+        //     spreadRadius: 2,
+        //     blurRadius: 5,
+        //     offset: const Offset(0, 3),
+        //   ),
+        // ],
         color: Colors.white,
       ),
       child: Stack(
@@ -69,10 +69,10 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 languageController.currentLanguage.value.languageCode == 'en';
             return Align(
               alignment: isEnglish ? Alignment.topRight : Alignment.topLeft,
-              child: GestureDetector(
-                onTap: () => Get.to(() => ItemViewPage(item: item)),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: GestureDetector(
+                  onTap: () => Get.to(() => ItemViewPage(item: item)),
                   child: Stack(
                     children: [
                       item.imageUrl.isNotEmpty
@@ -123,7 +123,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 ],
               ),
               Text(
-                '${item.price}',
+                '${item.itemPrice}.000',
                 style: const TextStyle(
                   fontSize: 14,
                   color: kOrange,

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lottie/lottie.dart' as lottie;
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
@@ -15,6 +18,7 @@ import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/model/order_modal.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/navigation_manu.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/my_timeline_tile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DeliveryTrackingPage extends StatefulWidget {
   final String orderId;
@@ -126,7 +130,6 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     addCustomMarker();
     addRestaurantMarker();
     addCurrentMarker();
-    startTracking(widget.orderId);
     Geolocator.getPositionStream(
             locationSettings: const LocationSettings(
                 accuracy: LocationAccuracy.best, distanceFilter: 10))
@@ -212,7 +215,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                               markerId: const MarkerId("Restaurant"),
                               position: LatLng(order.restaurantLocation.lat,
                                   order.restaurantLocation.lng),
-                              icon: markerIcon,
+                              icon: restaurantIcon,
                               infoWindow: InfoWindow(
                                 title: 'Restaurant',
                                 snippet:
@@ -221,10 +224,21 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                             ),
                           },
                         )
-                      : SizedBox(
-                          child: Image.asset(
-                              "assets/lottie_animation/pending.gif"),
-                        ),
+                      : order.status == 'Rejected'
+                          ? SizedBox(
+                              child: lottie.Lottie.asset(
+                                "assets/lottie_animation/rejected_animation.json",
+                              ),
+                            )
+                          : order.status == 'Delivered'
+                              ? SizedBox(
+                                  child: lottie.Lottie.asset(
+                                      "assets/lottie_animation/delivered_animation.json"),
+                                )
+                              : SizedBox(
+                                  child: Image.asset(
+                                      "assets/lottie_animation/pending.gif"),
+                                ),
                   stretchModes: const [
                     StretchMode.blurBackground,
                     StretchMode.zoomBackground
@@ -286,11 +300,13 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
 
                     try {
                       OrderModel order = OrderModel.fromJson(data);
+                      startTracking(order.orderID);
+
                       return Column(
                         children: [
                           _buildDeliveryDetails(order),
                           kHiegth24,
-                          _buildOrderTimeline(order.status),
+                          _buildOrderTimeline(order),
                           _buildOrderDetails(order),
                         ],
                       );
@@ -350,108 +366,142 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
   }
 
   Widget _buildDeliveryDetails(OrderModel order) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-        border: Border.all(color: kBorderLiteBlack),
-        borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(40), topRight: Radius.circular(40)),
-        color: kWhite,
-      ),
-      height: 128.h,
-      child: Row(
-        children: [
-          Image.asset(
-            "assets/image/delivery_boy_image.png",
-            height: 74.h,
-            width: 92.w,
-          ),
-          kWidth15,
-          if (order.deliveryAccepted) ...[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+    return order.status == 'Rejected'
+        ? Text(
+            "Rejected",
+            style: GoogleFonts.alatsi(fontSize: 28, color: kDarkOrange),
+          )
+        : Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+              border: Border.all(color: kBorderLiteBlack),
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+              color: kWhite,
+            ),
+            height: 128.h,
+            child: Row(
               children: [
-                Text(
-                  order.deliveryAcceptedBy.name,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                  ),
+                Image.asset(
+                  "assets/image/delivery_boy_image.png",
+                  height: 74.h,
+                  width: 92.w,
                 ),
-                Text(
-                  "is your delivery hero for\ntoday.".tr,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: kTextStyleGrey,
+                kWidth15,
+                if (order.deliveryAccepted) ...[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        order.deliveryAcceptedBy.name,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        "is your delivery hero for\ntoday.".tr,
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: kTextStyleGrey,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+                ] else ...[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Waiting for acceptance".tr,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        "Your delivery hero details will\nappear here once accepted."
+                            .tr,
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: kTextStyleGrey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                if (order.deliveryAccepted) ...[
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      final Uri phoneUri = Uri(
+                          scheme: 'tel',
+                          path: order.deliveryAcceptedBy.phoneNumber);
+                      launchUrl(phoneUri);
+                    },
+                    child: Container(
+                      height: 36.h,
+                      width: 36.w,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: kBorderLiteBlack),
+                        shape: BoxShape.circle,
+                        color: kWhite,
+                      ),
+                      child: Image.asset("assets/icons/call_icon_image.png"),
+                    ),
+                  ),
+                  kWidth16,
+                  GestureDetector(
+                    onTap: () {
+                      whatsapp(order);
+                    },
+                    child: Container(
+                      height: 36.h,
+                      width: 36.w,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: kBorderLiteBlack),
+                        shape: BoxShape.circle,
+                        color: kWhite,
+                      ),
+                      child: Image.asset("assets/icons/message_icon_image.png"),
+                    ),
+                  ),
+                ],
               ],
             ),
-          ] else ...[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Waiting for acceptance".tr,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                Text(
-                  "Your delivery hero details will\nappear here once accepted."
-                      .tr,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: kTextStyleGrey,
-                  ),
-                ),
-              ],
-            ),
-          ],
-          const Spacer(),
-          if (order.deliveryAccepted) ...[
-            Container(
-              height: 36.h,
-              width: 36.w,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: kWhite,
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.phone, color: Colors.white),
-                onPressed: () {
-                  // Add functionality to call the delivery person
-                },
-              ),
-            ),
-            kWidth16,
-            Container(
-              height: 36.h,
-              width: 36.w,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: kWhite,
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.message, color: Colors.white),
-                onPressed: () {
-                  // Add functionality to call the delivery person
-                },
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
+          );
   }
 
-  Widget _buildOrderTimeline(String status) {
+  whatsapp(OrderModel order) async {
+    String contact = order.deliveryAcceptedBy.phoneNumber;
+    String text = 'Hello, Ontrend Delivery, i need assistance with';
+    String androidUrl = "whatsapp://send?phone=$contact&text=$text";
+    String iosUrl = "https://wa.me/$contact?text=${Uri.parse(text)}";
+
+    String webUrl = 'https://api.whatsapp.com/send/?phone=$contact&text=hi';
+
+    try {
+      if (Platform.isIOS) {
+        if (await canLaunchUrl(Uri.parse(iosUrl))) {
+          await launchUrl(Uri.parse(iosUrl));
+        }
+      } else {
+        if (await canLaunchUrl(Uri.parse(androidUrl))) {
+          await launchUrl(Uri.parse(androidUrl));
+        }
+      }
+    } catch (e) {
+      print('object');
+      await launchUrl(Uri.parse(webUrl), mode: LaunchMode.externalApplication);
+    }
+  }
+
+  Widget _buildOrderTimeline(OrderModel order) {
     // Check if the order status is "Completed" and show the SnackBar
-    if (status == 'Completed' && !isSnackBarShown) {
+    if (order.status == 'Completed' && !isSnackBarShown) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -474,73 +524,79 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         "Processing",
         "Ready",
         "Picked Up",
-        "Delivered"
+        "Delivered",
+        "Rejected"
       ];
-      int currentIndex = steps.indexOf(status);
+      int currentIndex = steps.indexOf(order.status);
       int stepIndex = steps.indexOf(step);
       return stepIndex <= currentIndex;
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        MyTimelineTile(
-          isFirst: true,
-          isLast: false,
-          isPast: isPast("Pending"),
-          child: const Text(
-            "Pending",
-            style: TextStyle(
-              fontSize: 12,
-            ),
-          ),
-        ),
-        MyTimelineTile(
-          isFirst: false,
-          isLast: false,
-          isPast: isPast("Processing"),
-          child: const Text(
-            "Processing",
-            style: TextStyle(
-              fontSize: 12,
-            ),
-          ),
-        ),
-        MyTimelineTile(
-          isFirst: false,
-          isLast: false,
-          isPast: isPast("Ready"),
-          child: const Text(
-            "Ready",
-            style: TextStyle(
-              fontSize: 12,
-            ),
-          ),
-        ),
-        MyTimelineTile(
-          isFirst: false,
-          isLast: false,
-          isPast: isPast("Picked Up"),
-          child: const Text(
-            "Picked Up",
-            style: TextStyle(
-              fontSize: 12,
-            ),
-          ),
-        ),
-        MyTimelineTile(
-          isFirst: false,
-          isLast: true,
-          isPast: isPast("Delivered"),
-          child: const Text(
-            "Delivered",
-            style: TextStyle(
-              fontSize: 12,
-            ),
-          ),
-        ),
-      ],
-    );
+    log(order.status);
+    log(order.status);
+    log(order.status);
+    return order.status == "Rejected"
+        ? const SizedBox()
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MyTimelineTile(
+                isFirst: true,
+                isLast: false,
+                isPast: isPast("Pending"),
+                child: const Text(
+                  "Pending",
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              MyTimelineTile(
+                isFirst: false,
+                isLast: false,
+                isPast: isPast("Processing"),
+                child: const Text(
+                  "Processing",
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              MyTimelineTile(
+                isFirst: false,
+                isLast: false,
+                isPast: isPast("Ready"),
+                child: const Text(
+                  "Ready",
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              MyTimelineTile(
+                isFirst: false,
+                isLast: false,
+                isPast: isPast("Picked Up"),
+                child: const Text(
+                  "Picked Up",
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              MyTimelineTile(
+                isFirst: false,
+                isLast: true,
+                isPast: isPast("Delivered"),
+                child: const Text(
+                  "Delivered",
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
+          );
   }
 
   Widget _buildOrderDetails(OrderModel order) {
@@ -599,21 +655,25 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     final distance = _calculateDistance(vendorLocation, userLocation);
     final deliveryTime = _estimateDeliveryTime(distance);
 
-    String formattedDeliveryTime;
-    
-    if (deliveryTime >= 60) {
-      final hours = (deliveryTime / 60).floor();
-      final minutes = (deliveryTime % 60).floor();
-      formattedDeliveryTime =
-          "$hours ${"hour".tr}${hours > 1 ? 's' : ''} ${minutes > 0 ? '$minutes ${"minute".tr}${minutes > 1 ? 's' : ''}' : ''}";
-    } else {
-      formattedDeliveryTime = "${deliveryTime.toStringAsFixed(0)} ${"mins".tr}";
-    }
+    // String formattedDeliveryTime;
 
+    if (deliveryTime >= 60) {
+      // final hours = (deliveryTime / 60).floor();
+      // final minutes = (deliveryTime % 60).floor();
+      // formattedDeliveryTime =
+      //     "$hours ${"hour".tr}${hours > 1 ? 's' : ''} ${minutes > 0 ? '$minutes ${"minute".tr}${minutes > 1 ? 's' : ''}' : ''}";
+    } else {
+      // formattedDeliveryTime = "${deliveryTime.toStringAsFixed(0)} ${"mins".tr}";
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("${"Remaining Distance:".tr} $remainingDistance ${"km".tr}"),
+        order.status == 'Rejected'
+            ? const SizedBox()
+            : order.status == "Delivered"
+                ? const SizedBox()
+                : Text(
+                    "${"Estimated Distance:".tr} ${remainingDistance.toStringAsFixed(3)} ${"km".tr}"),
         // Text("${"Estimated Delivery Time:".tr} $formattedDeliveryTime"),
       ],
     );

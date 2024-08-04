@@ -82,7 +82,7 @@ class ItemViewPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "${"OMR".tr}  ${item.price}.000",
+                        "${"OMR".tr}  ${item.itemPrice.toStringAsFixed(3)}",
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w700,

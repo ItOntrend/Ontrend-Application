@@ -142,8 +142,7 @@ class _FoodPageState extends State<FoodPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Obx(() => Text(
-                    locationController
-                        .removeFirstPart(locationController.streetName.value),
+                    locationController.cityName.value,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,

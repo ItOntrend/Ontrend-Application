@@ -5,7 +5,7 @@ class ItemModel {
   String localName;
   String arabicRestaurantName;
   String localTag;
-  int price;
+  int? price;
   String? tag;
   String? type;
   int? vId;
@@ -14,7 +14,7 @@ class ItemModel {
   String imageUrl;
   int? preparationTime;
   double? rating;
-  int? itemPrice;
+  double itemPrice;
   DateTime? timeStamp;
   DocumentReference? reference;
   String restaurantName;
@@ -24,7 +24,7 @@ class ItemModel {
     required this.localName,
     required this.arabicRestaurantName,
     required this.localTag,
-    required this.price,
+    this.price,
     this.tag,
     this.type,
     this.vId,
@@ -33,7 +33,7 @@ class ItemModel {
     required this.imageUrl,
     this.preparationTime,
     this.rating,
-    this.itemPrice,
+    required this.itemPrice,
     this.timeStamp,
     this.reference,
     required this.restaurantName,
@@ -42,7 +42,7 @@ class ItemModel {
   ItemModel copyWith(
           {String? name,
           String? localName,
-          String? arabicrestaurantName,
+          String? arabicRestaurantName,
           String? localTag,
           int? price,
           String? tag,
@@ -53,11 +53,10 @@ class ItemModel {
           String? imageUrl,
           int? preparationTime,
           double? rating,
-          int? itemPrice,
+          double? itemPrice,
           DateTime? timeStamp,
           DocumentReference? reference,
-          String? restaurantName,
-          int? quantity}) =>
+          String? restaurantName}) =>
       ItemModel(
         name: name ?? this.name,
         localTag: localTag ?? this.localTag,
@@ -94,20 +93,17 @@ class ItemModel {
       addedBy: json["addedBy"],
       description: json["description"],
       imageUrl: json["imageUrl"],
-      preparationTime:
-          json["preparationTime"] ?? 0, // Provide a default value if null,
+      preparationTime: json["preparationTime"] ?? 0,
       rating: json["rating"] ?? 0.0,
-      itemPrice: (json["itemPrice"] is int)
+      itemPrice: (json["itemPrice"] is double)
           ? json["itemPrice"]
-          : (json["itemPrice"] is double)
-              ? json["itemPrice"].toInt()
-              : 0,
+          : (json["itemPrice"] is int)
+              ? json["itemPrice"].toDouble()
+              : 0.0,
       reference: json["reference"] ??
-          FirebaseFirestore.instance
-              .collection('default')
-              .doc(), // Provide a default DocumentReference if null,
+          FirebaseFirestore.instance.collection('default').doc(),
       timeStamp: json["timeStamp"] != null
-          ? json["timeStamp"].toDate()
+          ? (json["timeStamp"] as Timestamp).toDate()
           : DateTime.now(),
       restaurantName: json["restaurantName"]);
 
@@ -130,6 +126,7 @@ class ItemModel {
         "reference": reference,
         "restaurantName": restaurantName,
       };
+
   factory ItemModel.fromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
     return ItemModel(
@@ -150,11 +147,11 @@ class ItemModel {
       imageUrl: data["imageUrl"],
       preparationTime: data["preparationTime"] ?? 0,
       rating: data["rating"] ?? 0.0,
-      itemPrice: (data["itemPrice"] is int)
+      itemPrice: (data["itemPrice"] is double)
           ? data["itemPrice"]
-          : (data["itemPrice"] is double)
-              ? data["itemPrice"].toInt()
-              : 0,
+          : (data["itemPrice"] is int)
+              ? data["itemPrice"].toDouble()
+              : 0.0,
       reference: snapshot.reference,
       timeStamp: data["timeStamp"]?.toDate(),
       restaurantName: data["restaurantName"],
