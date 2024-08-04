@@ -246,7 +246,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             TextButton(
               child: Text(
                 'Cancel'.tr,
-                style: TextStyle(color: kBlack),
+                style: const TextStyle(color: kBlack),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -280,7 +280,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   .tr),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'.tr, style: TextStyle(color: kBlack)),
+              child: Text('Cancel'.tr, style: const TextStyle(color: kBlack)),
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(

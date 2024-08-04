@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
@@ -11,6 +12,7 @@ import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/order_complete_splash_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/payment_option_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_botton.dart';
 
 class BillDetailsCard extends StatefulWidget {
@@ -142,12 +144,19 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
                     locationController.streetName.value.isEmpty ||
                     locationController.cityName.value.isEmpty ||
                     locationController.countryName.value.isEmpty) {
-                  Get.snackbar(
-                    "Location Required".tr,
-                    "You haven't selected your location".tr,
-                    backgroundColor: kDarkOrange,
-                    colorText: Colors.white,
-                  );
+                  Get.snackbar("Location Required".tr,
+                      "You haven't selected your location".tr,
+                      backgroundColor: kDarkOrange,
+                      colorText: Colors.white,
+                      mainButton: TextButton(
+                          onPressed: () {
+                            Get.to(const SelectLocationPage());
+                          },
+                          child: Text(
+                            "Select Location",
+                            style: GoogleFonts.aDLaMDisplay(
+                                fontSize: 14, color: kWhite),
+                          )));
                   return;
                 }
 

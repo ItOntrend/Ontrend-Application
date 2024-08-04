@@ -28,7 +28,7 @@ class FoodItemCard extends StatefulWidget {
   final String localName;
   final String arabicRestaurantName;
   final String localTag;
-  final int price;
+  final double price;
   final String description;
   final String addedBy;
   final String restaurantName;
@@ -62,7 +62,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
       arabicRestaurantName: widget.arabicRestaurantName,
       localTag: widget.localTag,
       imageUrl: widget.image,
-      price: widget.price,
+      itemPrice: widget.price,
       description: widget.description,
       addedBy: widget.addedBy,
       restaurantName: widget.restaurantName,
@@ -78,14 +78,14 @@ class _FoodItemCardState extends State<FoodItemCard> {
         border: Border.all(
           color: kBorderLiteBlack,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.grey.withOpacity(0.2),
+        //     spreadRadius: 2,
+        //     blurRadius: 5,
+        //     offset: const Offset(0, 3),
+        //   ),
+        // ],
         color: Colors.white,
       ),
       child: Stack(
@@ -95,10 +95,10 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 languageController.currentLanguage.value.languageCode == 'en';
             return Align(
               alignment: isEnglish ? Alignment.topRight : Alignment.topLeft,
-              child: GestureDetector(
-                onTap: () => Get.to(() => ItemViewPage(item: item)),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: GestureDetector(
+                  onTap: () => Get.to(() => ItemViewPage(item: item)),
                   child: Stack(
                     children: [
                       widget.image.isNotEmpty
@@ -149,7 +149,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 ],
               ),
               Text(
-                '${widget.price}.000',
+                widget.price.toStringAsFixed(3),
                 style: const TextStyle(
                   fontSize: 14,
                   color: kOrange,

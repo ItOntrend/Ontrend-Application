@@ -25,7 +25,7 @@ class AddToCartCard extends StatefulWidget {
   final String localName;
   final String arabicRestaurantName;
   final String localTag;
-  final String itemPrice;
+  final double itemPrice;
   final String image;
   final String addedBy;
   final String restaurantName;
@@ -44,7 +44,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
       localName: widget.localName,
       arabicRestaurantName: widget.arabicRestaurantName,
       localTag: widget.localTag,
-      price: int.parse(widget.itemPrice),
+      itemPrice: widget.itemPrice,
       imageUrl: widget.image,
       description: "",
       addedBy: widget.addedBy,

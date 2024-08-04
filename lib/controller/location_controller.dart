@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LocationController extends GetxController {
   var currentPosition = const LatLng(21.4735, 55.9754).obs;
   var currentAddress = ''.obs;
+  var subLocalityName = ''.obs;
   var streetName = ''.obs;
   var cityName = ''.obs;
   var countryName = ''.obs;
@@ -86,12 +87,14 @@ class LocationController extends GetxController {
         Placemark place = placemarks[0];
         currentAddress.value =
             "${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}";
+        subLocalityName.value = place.subLocality ?? 'Unknown';
         streetName.value = place.street ?? 'Unknown';
         cityName.value = place.locality ?? 'Unknown';
         countryName.value = place.country ?? 'Unknown';
         savedAddresses.add(SavedAddress(
           title: "Custom Location",
           address: currentAddress.value,
+          subLocalityName: subLocalityName.value,
           streetName: streetName.value,
           cityName: cityName.value,
           countryName: countryName.value,
@@ -118,12 +121,14 @@ class LocationController extends GetxController {
       savedAddresses[index] = SavedAddress(
         title: newTitle,
         address: address.address,
+        subLocalityName: address.subLocalityName,
         streetName: address.streetName,
         cityName: address.cityName,
         countryName: address.countryName,
         latitude: address.latitude,
         longitude: address.longitude,
       );
+      
       savedAddresses.refresh();
     }
   }
@@ -161,6 +166,7 @@ class LocationController extends GetxController {
 class SavedAddress {
   final String title;
   final String address;
+  final String subLocalityName;
   final String streetName;
   final String cityName;
   final String countryName;
@@ -170,6 +176,7 @@ class SavedAddress {
   SavedAddress({
     required this.title,
     required this.address,
+    required this.subLocalityName,
     required this.streetName,
     required this.cityName,
     required this.countryName,

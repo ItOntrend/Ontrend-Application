@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ontrend_food_and_e_commerce/controller/order_controller.dart';
@@ -15,8 +17,11 @@ class PastOrders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Fetch the user's order history when the widget is built
-    orderController.fetchUserOrders(userId);
-
+    print(userId);
+    log(userId);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      orderController.fetchUserOrders(userId);
+    });
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Obx(() {
@@ -25,8 +30,10 @@ class PastOrders extends StatelessWidget {
         }
 
         // Filter orders to only show rejected and completed
-        var filteredOrders = orderController.orders.where((order) => 
-          order.status == 'Rejected' || order.status == 'Completed').toList();
+        var filteredOrders = orderController.orders
+            .where((order) =>
+                order.status == 'Rejected' || order.status == 'Completed')
+            .toList();
 
         if (filteredOrders.isEmpty) {
           return const Center(
