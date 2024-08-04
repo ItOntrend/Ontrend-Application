@@ -120,7 +120,7 @@ class VendorController extends GetxController {
             .where('addedBy', isEqualTo: vendor.reference.id)
             .get();
 
-        if (itemsSnapshot.docs.isNotEmpty && distance <= 15000.0) {
+        if (itemsSnapshot.docs.isNotEmpty && distance <= 20.0) {
           vendorsWithDistance.add({'vendor': vendor, 'distance': distance});
         }
       }
@@ -168,7 +168,7 @@ class VendorController extends GetxController {
             .where('addedBy', isEqualTo: vendor.reference.id)
             .get();
 
-        if (itemsSnapshot.docs.isNotEmpty && distance <= 15000.0) {
+        if (itemsSnapshot.docs.isNotEmpty && distance <= 20.0) {
           vendorsWithDistance.add({'vendor': vendor, 'distance': distance});
         }
       }
