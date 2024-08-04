@@ -107,28 +107,89 @@ class VendorController extends GetxController {
           .get();
 
       // Calculate the distance and filter vendors
-      List<VendorModel> allVendors = vendorsQuerySnapshot.docs.map((doc) {
-        return VendorModel.fromMap(doc.data() as Map<String, dynamic>, doc.id);
-      }).toList();
+      List<Map<String, dynamic>> vendorsWithDistance = [];
 
-      List<VendorModel> filteredVendors = [];
-
-      for (VendorModel vendor in allVendors) {
+      for (var doc in vendorsQuerySnapshot.docs) {
+        VendorModel vendor =
+            VendorModel.fromMap(doc.data() as Map<String, dynamic>, doc.id);
         double distance = calculateDistance(vendor.location);
-        // Filter based on your distance criteria
-        if (distance <= 20.0) {
-          // Example: Filter vendors within 5 km
-          filteredVendors.add(vendor);
+
+        // Check for available items in the vendor
+        var itemsSnapshot = await FirebaseFirestore.instance
+            .collectionGroup('details')
+            .where('addedBy', isEqualTo: vendor.reference.id)
+            .get();
+
+        if (itemsSnapshot.docs.isNotEmpty && distance <= 15000.0) {
+          vendorsWithDistance.add({'vendor': vendor, 'distance': distance});
         }
       }
 
-      vendorsListg.assignAll(filteredVendors);
-      log("Filtered vendors data fetched successfully");
+      // Sort vendors by ascending order of distance
+      vendorsWithDistance
+          .sort((a, b) => a['distance'].compareTo(b['distance']));
+
+      // Extract the sorted vendor models
+      List<VendorModel> sortedVendors = vendorsWithDistance
+          .map((entry) => entry['vendor'] as VendorModel)
+          .toList();
+
+      vendorsListg.assignAll(sortedVendors);
+      log("Filtered and sorted vendors data fetched successfully");
     } catch (e) {
       log('Error fetching vendors: $e');
     }
   }
 
+  Future<void> fetchVendorsf() async {
+    try {
+      if (userPosition == null) {
+        await fetchUserLocation();
+      }
+
+      // Fetch all vendors
+      var vendorsQuerySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('role', isEqualTo: 'Vendor')
+          .where('vendorType', isEqualTo: 'Food/Restaurant') // Adjust as needed
+          .get();
+
+      // Calculate the distance and filter vendors
+      List<Map<String, dynamic>> vendorsWithDistance = [];
+
+      for (var doc in vendorsQuerySnapshot.docs) {
+        VendorModel vendor =
+            VendorModel.fromMap(doc.data() as Map<String, dynamic>, doc.id);
+        double distance = calculateDistance(vendor.location);
+
+        // Check for available items in the vendor
+        var itemsSnapshot = await FirebaseFirestore.instance
+            .collectionGroup('details')
+            .where('addedBy', isEqualTo: vendor.reference.id)
+            .get();
+
+        if (itemsSnapshot.docs.isNotEmpty && distance <= 15000.0) {
+          vendorsWithDistance.add({'vendor': vendor, 'distance': distance});
+        }
+      }
+
+      // Sort vendors by ascending order of distance
+      vendorsWithDistance
+          .sort((a, b) => a['distance'].compareTo(b['distance']));
+
+      // Extract the sorted vendor models
+      List<VendorModel> sortedVendors = vendorsWithDistance
+          .map((entry) => entry['vendor'] as VendorModel)
+          .toList();
+
+      vendorsListf.assignAll(sortedVendors);
+      log("Filtered and sorted vendors data fetched successfully");
+    } catch (e) {
+      log('Error fetching vendors: $e');
+    }
+  }
+
+/*
   // Fetch list of vendors from Firebase
   Future<void> fetchVendorsf() async {
     try {
@@ -165,7 +226,7 @@ class VendorController extends GetxController {
       log('Error fetching vendors: $e');
     }
   }
-
+*/
   Future<void> getItems(String userId) async {
     try {
       isItemsLoading.value = true;
