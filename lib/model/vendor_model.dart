@@ -371,7 +371,7 @@ class VendorModel {
       openingTime: json['openingTime'] as String? ?? 'No Opening Time',
       closingTime: json['closingTime'] as String? ?? 'No Closing Time',
       isOnline: json['isOnline'] as bool? ?? false,
-      commmisionRate: json['commissionRate'] as int? ?? 0,
+      commissionRate: json['commissionRate'] as int? ?? 0,
       reference: json['reference'] as DocumentReference,
     );
   }
