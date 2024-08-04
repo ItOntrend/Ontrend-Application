@@ -18,7 +18,7 @@ class VendorController extends GetxController {
   RxList<VendorModel> vendorsList = RxList<VendorModel>();
   RxList<VendorModel> vendorsListg = RxList<VendorModel>();
   RxList<VendorModel> vendorsListf = RxList<VendorModel>();
-  RxList<ItemModel> itemsList = RxList<ItemModel>();
+  RxList<ProductModel> itemsList = RxList<ProductModel>();
   RxString userName = ''.obs;
   final deliveryFee = 0.0.obs;
   Position? userPosition;
@@ -376,7 +376,7 @@ class VendorController extends GetxController {
   }
 
 //*...............................................................*//
-  RxList<ItemModel> ItemsList = RxList<ItemModel>();
+  RxList<ProductModel> ItemsList = RxList<ProductModel>();
   Future<void> getItemsVendor(String userId, String type) async {
     try {
       isItemsLoading.value = true;

@@ -12,6 +12,7 @@ import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
+import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/groceries_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
@@ -45,8 +46,8 @@ class _HomePageState extends State<HomePage> {
   final LocationController locationController = Get.put(LocationController());
   final CartController cartController = Get.put(CartController());
   final VendorController vendorController = Get.put(VendorController());
-  List<ItemModel> itemSearchSuggestions = [];
-  List<ItemModel> restaurantSearchSuggestions = [];
+  List<ProductModel> itemSearchSuggestions = [];
+  List<ProductModel> restaurantSearchSuggestions = [];
   final NavigationController navigationController =
       Get.put(NavigationController());
   final HomeController homeController = Get.put(HomeController());
@@ -70,7 +71,7 @@ class _HomePageState extends State<HomePage> {
 
       // Use a Set to filter out duplicate restaurant names
       final uniqueRestaurantNames = <String>{};
-      final uniqueRestaurantSuggestions = <ItemModel>[];
+      final uniqueRestaurantSuggestions = <ProductModel>[];
 
       for (var item in searchResults) {
         final currentLanguageCode = lang.currentLanguage.value.languageCode;
@@ -429,11 +430,8 @@ class _HomePageState extends State<HomePage> {
                                         : vendor.restaurantName,
                                     image: vendor.bannerImage,
                                     onTap: () {
-                                      Get.to(() => ProfilePage(
-                                            userId: vendor.reference.id,
-                                            cat: "",
-                                            type: "Grocery",
-                                          ));
+                                      Get.to(() => navigateToProfileIfOnline(
+                                          vendor, "Food/Restaurant"));
                                     },
                                   );
                                 },
@@ -460,11 +458,8 @@ class _HomePageState extends State<HomePage> {
                                         : vendor.restaurantName,
                                     image: vendor.bannerImage,
                                     onTap: () {
-                                      Get.to(() => ProfilePage(
-                                            userId: vendor.reference.id,
-                                            cat: "",
-                                            type: "Food/Restaurent",
-                                          ));
+                                      Get.to(() => navigateToProfileIfOnline(
+                                          vendor, "Food/Restaurant"));
                                     },
                                   );
                                 },
@@ -484,6 +479,22 @@ class _HomePageState extends State<HomePage> {
       return parts.sublist(1).join(' ');
     } else {
       return input; // If there is only one part, return it as is.
+    }
+  }
+
+  void navigateToProfileIfOnline(VendorModel vendor, String type) {
+    if (vendor.isOnline) {
+      Get.to(() => ProfilePage(
+            userId: vendor.reference.id,
+            cat: "",
+            type: type,
+          ));
+    } else {
+      Get.snackbar(
+        'Vendor Offline',
+        'This vendor is currently offline. Please try again later.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 }

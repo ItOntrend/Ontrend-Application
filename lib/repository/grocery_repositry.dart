@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
+
 import 'package:ontrend_food_and_e_commerce/utils/constants/firebase_constants.dart';
 
 abstract class GroceryRepository {
@@ -17,8 +18,8 @@ abstract class GroceryRepository {
         );
   }
 
-  static Future<List<ItemModel>> getProducts() async {
-    List<ItemModel> products = [];
+  static Future<List<ProductModel>> getProducts() async {
+    List<ProductModel> products = [];
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collectionGroup('details')
@@ -30,7 +31,8 @@ abstract class GroceryRepository {
         if (doc.reference.path.split('/')[0] == 'Grocery') {
           print('Document ID: ${doc.id}');
           print('Document Data: ${doc.data()}');
-          products.add(ItemModel.fromJson(doc.data() as Map<String, dynamic>));
+          products
+              .add(ProductModel.fromJson(doc.data() as Map<String, dynamic>));
         }
       }
     } catch (e) {

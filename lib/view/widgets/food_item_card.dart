@@ -12,26 +12,10 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/add_button.dart';
 class FoodItemCard extends StatefulWidget {
   const FoodItemCard({
     super.key,
-    required this.name,
-    required this.localName,
-    required this.arabicRestaurantName,
-    required this.localTag,
-    required this.image,
-    required this.price,
-    required this.description,
-    required this.addedBy,
-    required this.restaurantName,
+    required this.item,
   });
 
-  final String name;
-  final String image;
-  final String localName;
-  final String arabicRestaurantName;
-  final String localTag;
-  final int price;
-  final String description;
-  final String addedBy;
-  final String restaurantName;
+  final ProductModel item;
 
   @override
   _FoodItemCardState createState() => _FoodItemCardState();
@@ -56,17 +40,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
 
   @override
   Widget build(BuildContext context) {
-    final item = ItemModel(
-      name: widget.name,
-      localName: widget.localName,
-      arabicRestaurantName: widget.arabicRestaurantName,
-      localTag: widget.localTag,
-      imageUrl: widget.image,
-      price: widget.price,
-      description: widget.description,
-      addedBy: widget.addedBy,
-      restaurantName: widget.restaurantName,
-    );
+    final item = widget.item;
 
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 10, bottom: 8, top: 12),
@@ -101,9 +75,9 @@ class _FoodItemCardState extends State<FoodItemCard> {
                   borderRadius: BorderRadius.circular(10),
                   child: Stack(
                     children: [
-                      widget.image.isNotEmpty
+                      item.imageUrl.isNotEmpty
                           ? CachedNetworkImage(
-                              imageUrl: widget.image,
+                              imageUrl: item.imageUrl,
                               fit: BoxFit.cover,
                               height: 100.h,
                               width: 150.w,
@@ -139,8 +113,8 @@ class _FoodItemCardState extends State<FoodItemCard> {
                   Text(
                     languageController.currentLanguage.value.languageCode ==
                             "ar"
-                        ? widget.localName
-                        : widget.name,
+                        ? item.localName
+                        : item.name,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
@@ -149,14 +123,14 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 ],
               ),
               Text(
-                '${widget.price}.000',
+                '${item.price}',
                 style: const TextStyle(
                   fontSize: 14,
                   color: kOrange,
                 ),
               ),
               Text(
-                addNewlines(widget.description, 25),
+                addNewlines(item.description, 25),
                 style: const TextStyle(fontSize: 12),
               ),
               const Spacer(),

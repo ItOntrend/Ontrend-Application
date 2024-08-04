@@ -9,6 +9,7 @@ import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
+import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/categorys_search_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/notification_page.dart';
@@ -35,9 +36,9 @@ class _GroceriesPageState extends State<GroceriesPage> {
   final GroceryController controller = Get.put(GroceryController());
   final LanguageController languageController = Get.put(LanguageController());
   final CartController cartController = Get.put(CartController());
-  List<ItemModel> searchSuggestions = [];
-  List<ItemModel> itemSearchSuggestions = [];
-  List<ItemModel> restaurantSearchSuggestions = [];
+  List<ProductModel> searchSuggestions = [];
+  List<ProductModel> itemSearchSuggestions = [];
+  List<ProductModel> restaurantSearchSuggestions = [];
   final TextEditingController _searchController = TextEditingController();
   bool isGridView = false;
 
@@ -55,7 +56,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
 
       // Use a Set to filter out duplicate restaurant names
       final uniqueRestaurantNames = <String>{};
-      final uniqueRestaurantSuggestions = <ItemModel>[];
+      final uniqueRestaurantSuggestions = <ProductModel>[];
 
       for (var item in searchResults) {
         final currentLanguageCode =
@@ -376,11 +377,8 @@ class _GroceriesPageState extends State<GroceriesPage> {
                                     : vendor.restaurantName,
                                 image: vendor.bannerImage,
                                 onTap: () {
-                                  Get.to(() => ProfilePage(
-                                        userId: vendor.reference.id,
-                                        cat: "",
-                                        type: "Grocery",
-                                      ));
+                                  Get.to(() => navigateToProfileIfOnline(
+                                      vendor, "Grocery"));
                                 },
                               );
                             },
@@ -412,11 +410,8 @@ class _GroceriesPageState extends State<GroceriesPage> {
                                 onTap: () {
                                   //log(vendor.reference.id);
                                   Get.to(
-                                    () => ProfilePage(
-                                      userId: vendor.reference.id,
-                                      type: 'Grocery',
-                                      cat: "",
-                                    ),
+                                    () => navigateToProfileIfOnline(
+                                        vendor, "Grocery"),
                                   );
                                 },
                               );
@@ -429,5 +424,21 @@ class _GroceriesPageState extends State<GroceriesPage> {
         ),
       ),
     );
+  }
+
+  void navigateToProfileIfOnline(VendorModel vendor, String type) {
+    if (vendor.isOnline) {
+      Get.to(() => ProfilePage(
+            userId: vendor.reference.id,
+            cat: "",
+            type: type,
+          ));
+    } else {
+      Get.snackbar(
+        'Vendor Offline',
+        'This vendor is currently offline. Please try again later.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }

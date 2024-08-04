@@ -119,14 +119,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                             final item = cartController.cartItems.values
                                 .toList()[index]['item'];
                             return AddToCartCard(
-                              itemName: item.name,
-                              localName: item.localName,
-                              arabicRestaurantName: item.arabicRestaurantName,
-                              localTag: item.localTag,
-                              itemPrice: item.price.toString(),
-                              image: item.imageUrl,
-                              addedBy: item.addedBy.toString(),
-                              restaurantName: item.restaurantName,
+                              item: item,
                             );
                           },
                         ),

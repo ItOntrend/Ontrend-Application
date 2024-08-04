@@ -8,7 +8,7 @@ import 'package:ontrend_food_and_e_commerce/repository/search_repository.dart';
 class HomeController extends GetxController {
   LanguageController lang = Get.put(LanguageController());
   RxBool isProductLoading = RxBool(false);
-  RxList<ItemModel> productList = RxList();
+  RxList<ProductModel> productList = RxList();
   Future<void> getProducts() async {
     isProductLoading.value = true;
     productList.clear();
@@ -19,7 +19,7 @@ class HomeController extends GetxController {
     print("${productList[0].name}");
   }
 
-  Future<List<ItemModel>> searchProducts(String query) async {
+  Future<List<ProductModel>> searchProducts(String query) async {
     final currentLanguageCode = lang.currentLanguage.value.languageCode;
 
     final filteredProducts = productList.where((item) {
@@ -35,9 +35,9 @@ class HomeController extends GetxController {
     return filteredProducts;
   } // Method to get unique restaurant names from the filtered products
 
-  List<ItemModel> getUniqueRestaurants(List<ItemModel> products) {
+  List<ProductModel> getUniqueRestaurants(List<ProductModel> products) {
     final Set<String> restaurantNames = {};
-    final List<ItemModel> uniqueRestaurants = [];
+    final List<ProductModel> uniqueRestaurants = [];
 
     for (var product in products) {
       if (restaurantNames.add(product.restaurantName)) {

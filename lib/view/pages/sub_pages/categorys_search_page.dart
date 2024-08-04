@@ -6,6 +6,7 @@ import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/cetegory_model.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/explore_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/nearby_vendor_card.dart';
@@ -207,10 +208,8 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                                           : vendor.restaurantName,
                                       image: vendor.bannerImage,
                                       onTap: () {
-                                        Get.to(() => ProfilePage(
-                                            userId: vendor.reference.id,
-                                            cat: "",
-                                            type: widget.type));
+                                        Get.to(() => navigateToProfileIfOnline(
+                                            vendor, widget.type));
                                       },
                                     );
                                   },
@@ -223,5 +222,21 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
         ),
       ),
     );
+  }
+
+  void navigateToProfileIfOnline(VendorModel vendor, String type) {
+    if (vendor.isOnline) {
+      Get.to(() => ProfilePage(
+            userId: vendor.reference.id,
+            cat: "",
+            type: type,
+          ));
+    } else {
+      Get.snackbar(
+        'Vendor Offline',
+        'This vendor is currently offline. Please try again later.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }

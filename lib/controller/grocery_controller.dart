@@ -12,7 +12,7 @@ class GroceryController extends GetxController {
   RxBool isCategoryLoading = RxBool(false);
   RxList<CategoryModel> categoryList = RxList();
   RxBool isProductLoading = RxBool(false);
-  RxList<ItemModel> productList = RxList();
+  RxList<ProductModel> productList = RxList();
   @override
   void onInit() {
     super.onInit();
@@ -50,7 +50,7 @@ class GroceryController extends GetxController {
     print("${productList[0].name}");
   }
 
-  Future<List<ItemModel>> searchProducts(String query) async {
+  Future<List<ProductModel>> searchProducts(String query) async {
     final currentLanguageCode = lang.currentLanguage.value.languageCode;
 
     final filteredProducts = productList.where((item) {
@@ -66,9 +66,9 @@ class GroceryController extends GetxController {
     return filteredProducts;
   } // Method to get unique restaurant names from the filtered products
 
-  List<ItemModel> getUniqueRestaurants(List<ItemModel> products) {
+  List<ProductModel> getUniqueRestaurants(List<ProductModel> products) {
     final Set<String> restaurantNames = {};
-    final List<ItemModel> uniqueRestaurants = [];
+    final List<ProductModel> uniqueRestaurants = [];
 
     for (var product in products) {
       if (restaurantNames.add(product.restaurantName)) {

@@ -4,7 +4,7 @@ import 'package:ontrend_food_and_e_commerce/repository/item_repository.dart';
 
 class ItemsController extends GetxController {
   RxBool isItemsLoading = RxBool(false);
-  RxList<ItemModel> itemsList = RxList();
+  RxList<ProductModel> itemsList = RxList();
   Future<void> getItems(String userId) async {
     isItemsLoading.value = true;
     itemsList.clear();

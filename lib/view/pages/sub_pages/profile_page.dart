@@ -276,16 +276,7 @@ class _ProfilePageState extends State<ProfilePage>
                                     Get.to(() => ItemViewPage(item: item));
                                   },
                                   child: FoodItemCard(
-                                    name: item.name,
-                                    localName: item.localName,
-                                    arabicRestaurantName:
-                                        item.arabicRestaurantName,
-                                    localTag: item.localTag,
-                                    image: item.imageUrl,
-                                    description: item.description,
-                                    price: item.price,
-                                    addedBy: item.addedBy,
-                                    restaurantName: item.restaurantName,
+                                    item: item,
                                   ),
                                 ),
                               ],
