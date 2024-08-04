@@ -24,7 +24,7 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/textfield_with_mic.dart
 import 'package:ontrend_food_and_e_commerce/view/widgets/two_text_heading.dart';
 
 class GroceriesPage extends StatefulWidget {
-  GroceriesPage({Key? key}) : super(key: key);
+  const GroceriesPage({super.key});
 
   @override
   State<GroceriesPage> createState() => _GroceriesPageState();
@@ -110,26 +110,26 @@ class _GroceriesPageState extends State<GroceriesPage> {
         centerTitle: false,
         leading: GestureDetector(
           onTap: () {
-            Get.to(() => SelectLocationPage());
+            Get.to(() => const SelectLocationPage());
           },
           child: Padding(
             padding:
                 (languageController.currentLanguage.value.languageCode == 'ar')
-                    ? EdgeInsets.only(right: 20)
-                    : EdgeInsets.only(left: 20),
+                    ? const EdgeInsets.only(right: 20)
+                    : const EdgeInsets.only(left: 20),
             child: Image.asset("assets/icons/location_icon.png"),
           ),
         ),
         title: GestureDetector(
           onTap: () {
-            Get.to(SelectLocationPage());
+            Get.to(const SelectLocationPage());
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 locationController
-                    .removeFirstPart(locationController.streetName.value),
+                    .removeFirstPart(locationController.subLocalityName.value),
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -139,7 +139,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "${locationController.cityName},${locationController.countryName.value}",
+                    "${locationController.cityName.value},${locationController.countryName.value}",
                     style: const TextStyle(
                       color: kBlue,
                       fontSize: 10,
@@ -374,7 +374,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                                         "ar"
                                     ? vendor.restaurantArabicName
                                     : vendor.restaurantName,
-                                image: vendor.bannerImage,
+                                images: vendor.bannerImage,
                                 onTap: () {
                                   Get.to(() => ProfilePage(
                                         userId: vendor.reference.id,
@@ -408,7 +408,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
                                         "ar"
                                     ? vendor.restaurantArabicName
                                     : vendor.restaurantName,
-                                image: vendor.bannerImage,
+                                images: vendor.bannerImage,
                                 onTap: () {
                                   //log(vendor.reference.id);
                                   Get.to(

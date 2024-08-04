@@ -278,7 +278,7 @@ class CartController extends GetxController {
     double total = 0.0;
     cartItems.forEach((key, value) {
       if (value['item'] != null && value['quantity'] != null) {
-        final itemPrice = value['item'].price ?? 0.0;
+        final itemPrice = value['item'].itemPrice ?? 0.0;
         final quantity = value['quantity'] ?? 0;
         total += (itemPrice * quantity).toDouble();
       }
@@ -332,13 +332,12 @@ class CartController extends GetxController {
         discountApplied: 0.0,
         items: cartItems.values
             .map((value) => Item(
-                  addedBy: value['item'].addedBy.toString(),
-                  itemName: value['item'].name,
-                  localName: value['item'].localName,
-                  itemPrice:
-                      double.tryParse(value['item'].price.toString()) ?? 0,
-                  itemQuantity: (value['quantity'] as num).toInt(),
-                  total: (value['item'].price * value['quantity']).toDouble(),
+                addedBy: value['item'].addedBy.toString(),
+                itemName: value['item'].name,
+                localName: value['item'].localName,
+                itemPrice: double.tryParse(value['item'].price.toString()) ?? 0,
+                itemQuantity: (value['quantity'] as num).toInt(),
+                total: (value['item'].itemPrice * value['quantity']).toDouble(),
                 ))
             .toList(),
         promoCode: null,

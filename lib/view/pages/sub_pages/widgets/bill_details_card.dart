@@ -18,12 +18,9 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/main_botton.dart';
 class BillDetailsCard extends StatefulWidget {
   const BillDetailsCard({
     super.key,
-    required this.addedBy,
-    required this.restaurantName,
+   
   });
 
-  final String addedBy;
-  final String restaurantName;
 
   @override
   State<BillDetailsCard> createState() => _BillDetailsCardState();
@@ -138,7 +135,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
                 log("Place Order".tr);
                 String userId = await LocalStorage.instance
                     .dataFromPrefs(key: HiveKeys.userData);
-
+                log(userId);
                 // Validate if the location information is available
                 if (locationController.currentAddress.value.isEmpty ||
                     locationController.streetName.value.isEmpty ||

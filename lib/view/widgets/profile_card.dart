@@ -98,18 +98,22 @@ class _ProfileCardState extends State<ProfileCard> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      // _vendorController.vendorDetail.value?.restaurantName ??
-                      //   "Not found",   // Check the selected language
-                      lang.currentLanguage.value.languageCode == 'ar'
-                          ? _vendorController
-                              .vendorDetail.value!.restaurantArabicName
-                          : _vendorController
-                              .vendorDetail.value!.restaurantName,
+                    SizedBox(
+                      width: 155.w,
+                      child: Text(
+                        // _vendorController.vendorDetail.value?.restaurantName ??
+                        //   "Not found",   // Check the selected language
+                        lang.currentLanguage.value.languageCode == 'ar'
+                            ? _vendorController
+                                .vendorDetail.value!.restaurantArabicName
+                            : _vendorController
+                                .vendorDetail.value!.restaurantName,
 
-                      style: const TextStyle(
-                        fontSize: 21,
-                        fontWeight: FontWeight.bold,
+                        style: const TextStyle(
+                          fontSize: 21,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],

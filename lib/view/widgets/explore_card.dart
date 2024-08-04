@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +13,7 @@ class ExploreCard extends StatelessWidget {
   final String locationCityCountry;
   final double distance;
   final String name;
-  final String image;
+  final List<String> images;
   final double latitude;
   final double longitude;
   final VoidCallback onTap;
@@ -23,7 +24,7 @@ class ExploreCard extends StatelessWidget {
     required this.locationCityCountry,
     required this.distance,
     required this.name,
-    required this.image,
+    required this.images,
     required this.latitude,
     required this.longitude,
     required this.onTap,
@@ -108,12 +109,27 @@ class ExploreCard extends StatelessWidget {
               ClipRRect(
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(10)),
-                child: image.isNotEmpty
-                    ? CachedNetworkImage(
-                        imageUrl: image,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 150,
+                child: images.isNotEmpty
+                    ? CarouselSlider(
+                        options: CarouselOptions(
+                          viewportFraction: 1.0,
+                          autoPlayInterval: const Duration(seconds: 2),
+                          autoPlayAnimationDuration:
+                              const Duration(milliseconds: 600),
+                          autoPlay: images.length > 1,
+                        ),
+                        items: images.map((imageUrl) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return CachedNetworkImage(
+                                imageUrl: imageUrl,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: 150,
+                              );
+                            },
+                          );
+                        }).toList(),
                       )
                     : Container(
                         width: double.infinity,
@@ -137,11 +153,15 @@ class ExploreCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Text(
-                          name,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        SizedBox(
+                          width: 230.w,
+                          child: Text(
+                            name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         const Spacer(),

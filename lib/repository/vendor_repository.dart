@@ -17,17 +17,19 @@ class VendorRepository {
 
     log('Vendors found: ${snapshot.docs.length}');
     return snapshot.docs
-        .map((doc) => VendorModel.fromJson(doc.data()))
+        .map((doc) => VendorModel.fromJson(doc.data(), doc.id))
         .toList();
   }
 
   static Future<VendorModel?> getVendorById({required String userId}) async {
     try {
+      log(userId);
+      log("++++++");
       var doc = await _db.collection('users').doc(userId).get();
 
       if (doc.exists) {
         log('Vendor data: ${doc.data()}');
-        return VendorModel.fromJson(doc.data()!);
+        return VendorModel.fromJson(doc.data()!, doc.id);
       } else {
         log('Vendor with userId $userId does not exist.');
       }

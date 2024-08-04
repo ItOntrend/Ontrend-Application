@@ -175,7 +175,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                                               "ar"
                                           ? vendor.restaurantArabicName
                                           : vendor.restaurantName,
-                                      image: vendor.bannerImage,
+                                      images: vendor.bannerImage,
                                       onTap: () {
                                         Get.to(() => ProfilePage(
                                             userId: vendor.reference.id,
@@ -204,7 +204,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                                               "ar"
                                           ? vendor.restaurantArabicName
                                           : vendor.restaurantName,
-                                      image: vendor.bannerImage,
+                                      images: vendor.bannerImage,
                                       onTap: () {
                                         Get.to(() => ProfilePage(
                                             userId: vendor.reference.id,

@@ -70,6 +70,7 @@ dependencies:
   timeline_tile: ^2.0.0
   url_launcher: ^6.3.0
   uuid: ^4.4.0
+  video_player: ^2.9.1
 
 dev_dependencies:
   flutter_lints: ^4.0.0
@@ -93,6 +94,7 @@ flutter:
     - assets/svg/
     - assets/icons/
     - assets/lottie_animation/
+    - assets/videos/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

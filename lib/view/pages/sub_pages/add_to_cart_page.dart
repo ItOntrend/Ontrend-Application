@@ -32,7 +32,6 @@ class _AddToCartPageState extends State<AddToCartPage> {
   @override
   Widget build(BuildContext context) {
     String addedBy = widget.addedBy;
-    String restaurantName = widget.restaurantName;
 
     return Scaffold(
       backgroundColor: kWhite,
@@ -122,9 +121,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                               localName: item.localName,
                               arabicRestaurantName: item.arabicRestaurantName,
                               localTag: item.localTag,
-                              itemPrice: (item.price != null)
-                                  ? item.price!.toDouble()
-                                  : 0.0,
+                              itemPrice: item.itemPrice,
                               image: item.imageUrl,
                               addedBy: item.addedBy.toString(),
                               restaurantName: item.restaurantName,
@@ -149,8 +146,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                   ),
                   kHiegth15,
                   BillDetailsCard(
-                    restaurantName: restaurantName,
-                    addedBy: addedBy,
+                    
                   ),
                   kHiegth15,
                   const TermsAndCondition(),

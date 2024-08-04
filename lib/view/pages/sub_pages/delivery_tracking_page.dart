@@ -60,7 +60,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         const ImageConfiguration(size: Size(0, 0), devicePixelRatio: 5);
 
     BitmapDescriptor.asset(
-            configuration, "assets/icons/delivery_boy_location_icon.png")
+            configuration, "assets/icons/deliveryboy_location_icon.png", width: 30,height: 30)
         .then((value) {
       setState(() {
         markerIcon = value;
@@ -72,7 +72,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     ImageConfiguration configuration =
         const ImageConfiguration(size: Size(0, 0), devicePixelRatio: 5);
 
-    BitmapDescriptor.asset(configuration, "assets/icons/restaurant_icon.png")
+    BitmapDescriptor.asset(configuration, "assets/icons/restaurant_icon.png", width: 30, height: 30)
         .then((value) {
       setState(() {
         restaurantIcon = value;
@@ -84,7 +84,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     ImageConfiguration configuration =
         const ImageConfiguration(size: Size(0, 0), devicePixelRatio: 5);
 
-    BitmapDescriptor.asset(configuration, "assets/icons/user_location_icon.png")
+    BitmapDescriptor.asset(configuration, "assets/icons/user_location_icon.png", width: 30, height: 30)
         .then((value) {
       setState(() {
         currentLocationIcon = value;
@@ -183,13 +183,14 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                 return FlexibleSpaceBar(
                   background: order.status == 'Picked Up'
                       ? GoogleMap(
+                        zoomControlsEnabled: false,
                           mapType: MapType.normal,
                           onMapCreated: (controller) {
                             mapController = controller;
                           },
                           initialCameraPosition: CameraPosition(
                             target: deliveryBoyLocation,
-                            zoom: 14,
+                            zoom: 18,
                           ),
                           markers: {
                             Marker(

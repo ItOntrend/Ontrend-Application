@@ -426,7 +426,7 @@ class _HomePageState extends State<HomePage> {
                                             "ar"
                                         ? vendor.restaurantArabicName
                                         : vendor.restaurantName,
-                                    image: vendor.bannerImage,
+                                    images: vendor.bannerImage,
                                     onTap: () {
                                       Get.to(() => ProfilePage(
                                             userId: vendor.reference.id,
@@ -457,7 +457,7 @@ class _HomePageState extends State<HomePage> {
                                             "ar"
                                         ? vendor.restaurantArabicName
                                         : vendor.restaurantName,
-                                    image: vendor.bannerImage,
+                                    images: vendor.bannerImage,
                                     onTap: () {
                                       Get.to(() => ProfilePage(
                                             userId: vendor.reference.id,

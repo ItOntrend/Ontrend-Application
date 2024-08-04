@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -11,7 +14,6 @@ import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_pag
 import 'package:ontrend_food_and_e_commerce/view/widgets/food_item_card.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/profile_card.dart';
 import 'package:shimmer/shimmer.dart';
-import 'item_view_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
@@ -48,6 +50,8 @@ class _ProfilePageState extends State<ProfilePage>
     super.initState();
     fetchInitialData();
     _scrollController.addListener(_onScroll);
+    log(widget.userId);
+    log("-------------------------");
   }
 
   void fetchInitialData() async {
@@ -152,26 +156,40 @@ class _ProfilePageState extends State<ProfilePage>
                 width: double.infinity,
                 child: vendorController.vendorDetail.value?.bannerImage == null
                     ? const ShimmerBanner()
-                    : CachedNetworkImage(
-                        imageUrl:
-                            vendorController.vendorDetail.value?.bannerImage ??
-                                "",
-                        fit: BoxFit.cover,
-                        errorWidget: (context, error, stackTrace) {
-                          return Container(
-                            height: 200.h,
-                            color: kWhite,
-                            child: Column(
-                              children: [
-                                kHiegth10,
-                                Image.asset(
-                                    height: 100.h,
-                                    width: 100.w,
-                                    "assets/icons/no_image_found_icon.png"),
-                              ],
-                            ),
+                    : CarouselSlider(
+                        options: CarouselOptions(
+                          height: 200.h,
+                          autoPlay: true,
+                          viewportFraction: 1.0,
+                          aspectRatio: 16 / 9,
+                          enableInfiniteScroll: true,
+                          autoPlayInterval: const Duration(seconds: 2),
+                          autoPlayAnimationDuration:
+                              const Duration(milliseconds: 600),
+                        ),
+                        items: vendorController.vendorDetail.value!.bannerImage
+                            .map((imageUrl) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return CachedNetworkImage(
+                                imageUrl: imageUrl,
+                                fit: BoxFit.cover,
+                                errorWidget: (context, error, stackTrace) {
+                                  return Container(
+                                    color: kWhite,
+                                    child: Center(
+                                      child: Image.asset(
+                                        height: 100.h,
+                                        width: 100.w,
+                                        "assets/icons/no_image_found_icon.png",
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
                           );
-                        },
+                        }).toList(),
                       ),
               ),
             ),
@@ -332,8 +350,8 @@ class _ProfilePageState extends State<ProfilePage>
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Get.to(() => const AddToCartPage(
-                            addedBy: '',
+                      Get.to(() => AddToCartPage(
+                            addedBy: widget.userId,
                             restaurantName: '',
                           ));
                     },

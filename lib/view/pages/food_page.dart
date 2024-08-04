@@ -141,7 +141,7 @@ class _FoodPageState extends State<FoodPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Obx(() => Text(
-                    locationController.cityName.value,
+                    locationController.subLocalityName.value,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -438,7 +438,7 @@ class _FoodPageState extends State<FoodPage> {
                                             "ar"
                                         ? vendor.restaurantArabicName
                                         : vendor.restaurantName,
-                                    image: vendor.bannerImage,
+                                    images: vendor.bannerImage,
                                     onTap: () {
                                       Get.to(() => ProfilePage(
                                             userId: vendor.reference.id,
@@ -472,7 +472,7 @@ class _FoodPageState extends State<FoodPage> {
                                             "ar"
                                         ? vendor.restaurantArabicName
                                         : vendor.restaurantName,
-                                    image: vendor.bannerImage,
+                                    images: vendor.bannerImage,
                                     onTap: () {
                                       Get.to(() => ProfilePage(
                                             userId: vendor.reference.id,

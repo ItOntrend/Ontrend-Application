@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,7 +12,7 @@ class NearbyRestaurantCard extends StatelessWidget {
   final String locationCityCountry;
   final double distance;
   final String name;
-  final String image;
+  final List<String> images; // Changed to List<String> for carousel  
   final double latitude;
   final double longitude;
   final VoidCallback onTap;
@@ -22,7 +23,7 @@ class NearbyRestaurantCard extends StatelessWidget {
     required this.locationCityCountry,
     required this.distance,
     required this.name,
-    required this.image,
+    required this.images, // Changed to images
     required this.latitude,
     required this.longitude,
     required this.onTap,
@@ -74,32 +75,31 @@ class NearbyRestaurantCard extends StatelessWidget {
           child: isOnline
               ? Row(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.horizontal(
-                        left: Radius.circular(10),
-                        right: Radius.circular(10),
+                    // CarouselSlider for images
+                    SizedBox(
+                      width: 120,
+                      height: 120,
+                      child: CarouselSlider(
+                        options: CarouselOptions(
+                          viewportFraction: 1.0,
+                          autoPlay: images.length > 1,
+                          autoPlayInterval: const Duration(seconds: 2),
+                          autoPlayAnimationDuration:
+                              const Duration(milliseconds: 600),
+                        ),
+                        items: images.map((imageUrl) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return CachedNetworkImage(
+                                imageUrl: imageUrl,
+                                fit: BoxFit.cover,
+                                width: 120,
+                                height: 120,
+                              );
+                            },
+                          );
+                        }).toList(),
                       ),
-                      child: image.isNotEmpty
-                          ? CachedNetworkImage(
-                              imageUrl: image,
-                              fit: BoxFit.cover,
-                              width: 120,
-                              height: 120,
-                            )
-                          : Container(
-                              width: 120,
-                              height: 120,
-                              color: Colors.grey[300],
-                              child: Center(
-                                child: Text(
-                                  'No image available'.tr,
-                                  style: TextStyle(
-                                    color: Colors.grey[600],
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                            ),
                     ),
                     Expanded(
                       child: Padding(
