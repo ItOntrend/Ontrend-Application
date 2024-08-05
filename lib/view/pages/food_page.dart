@@ -48,7 +48,6 @@ class _FoodPageState extends State<FoodPage> {
   List<ItemModel> itemSearchSuggestions = [];
   List<ItemModel> restaurantSearchSuggestions = [];
   final TextEditingController _searchController = TextEditingController();
-  bool isGridView = false;
 
   @override
   void initState() {
@@ -57,6 +56,7 @@ class _FoodPageState extends State<FoodPage> {
     foodController.getCategories();
     // bestSellerController.getBestSeller();
     vendorController.fetchVendorsf();
+    vendorController.loadGridViewPreference();
   }
 
   void _updateSearchSuggestions(String query) async {
@@ -397,14 +397,15 @@ class _FoodPageState extends State<FoodPage> {
                   OneTextHeading(
                     heading: "Nearby Restaurants".tr,
                   ),
-                  IconButton(
-                    icon: Icon(isGridView ? Icons.list : Icons.grid_view),
-                    onPressed: () {
-                      setState(() {
-                        isGridView = !isGridView;
-                      });
-                    },
-                  ),
+                  Obx(() => IconButton(
+                        icon: Icon(vendorController.isGridView.value
+                            ? Icons.list
+                            : Icons.grid_view),
+                        onPressed: () {
+                          vendorController.saveGridViewPreference(
+                              !vendorController.isGridView.value);
+                        },
+                      )),
                 ],
               ),
               kHiegth20,
@@ -418,7 +419,7 @@ class _FoodPageState extends State<FoodPage> {
                       )
                     : vendorController.vendorsListf.isEmpty
                         ? Center(child: Text("No Nearby Restaurants".tr))
-                        : isGridView
+                        : vendorController.isGridView.value
                             ? ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),

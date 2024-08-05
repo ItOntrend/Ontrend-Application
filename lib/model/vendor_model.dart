@@ -26,8 +26,8 @@ class VendorModel {
   String closingTime;
   String openingTime;
   bool isOnline;
-  double sellerEarnings;
-  int commissionRate;
+  double? sellerEarnings; // Nullable
+  int? commissionRate; // Nullable
 
   VendorModel({
     required this.ownerName,
@@ -55,8 +55,8 @@ class VendorModel {
     required this.closingTime,
     required this.isOnline,
     required this.dayWiseOpenAndClosingTime,
-    required this.sellerEarnings,
-    required this.commissionRate,
+    this.sellerEarnings, // Make optional
+    this.commissionRate, // Make optional
   });
 
   VendorModel copyWith({
@@ -132,12 +132,9 @@ class VendorModel {
         accountNumber: json["accountNumber"],
         vendorId: json["vendorID"],
         vatNumber: json["vatNumber"],
-        workingDays:
-            json["workingDays"] ?? {}, // Default to an empty map if null
-        dayWiseOpenAndClosingTime: json["dayWiseOpenAndClosingTime"] ??
-            {}, // Default to an empty map if null
-        createdTime: (json['timeStamp'] as Timestamp)
-            .toDate(), // Convert Timestamp to DateTime
+        workingDays: json["workingDays"] ?? {},
+        dayWiseOpenAndClosingTime: json["dayWiseOpenAndClosingTime"] ?? {},
+        createdTime: (json['timeStamp'] as Timestamp).toDate(),
         reference: json['reference'] as DocumentReference,
         businessAddress: json['businessAddress'],
         isApproved: json['isApproved'],
@@ -145,15 +142,16 @@ class VendorModel {
         image: json['image'],
         role: json['role'],
         location: Location.fromJson(json['location']),
-        bannerImage: List<String>.from(
-            json['bannerImage'] ?? []), // Cast to List<String>
+        bannerImage: List<String>.from(json['bannerImage'] ?? []),
         openingTime: json['openingTime'],
         closingTime: json['closingTime'],
         isOnline: json['isOnline'],
-        sellerEarnings:
-            (json["sellerEarnings"] as num).toDouble(), // Convert num to double
-        commissionRate:
-            (json["commissionRate"] as num).toInt(), // Convert num to int
+        sellerEarnings: json["sellerEarnings"] != null
+            ? (json["sellerEarnings"] as num).toDouble()
+            : null,
+        commissionRate: json["commissionRate"] != null
+            ? (json["commissionRate"] as num).toInt()
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -206,8 +204,8 @@ class Location {
       );
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
-        lat: (json["lat"] as num).toDouble(), // Convert num to double
-        lng: (json["lng"] as num).toDouble(), // Convert num to double
+        lat: (json["lat"] as num).toDouble(),
+        lng: (json["lng"] as num).toDouble(),
       );
 
   Map<String, dynamic> toJson() => {

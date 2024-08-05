@@ -120,7 +120,7 @@ class CartController extends GetxController {
         }
 
         deliveryCharge.value = charge;
-        commisionrate.value = (commision / 100);
+        commisionrate.value = (commision! / 100);
         print("........commision rate is......${commisionrate.value}");
         // Example fee calculation: $5 base fee + $2 per km
         //deliveryFee.value = 5.0 + (2.0 * distance);
@@ -332,12 +332,14 @@ class CartController extends GetxController {
         discountApplied: 0.0,
         items: cartItems.values
             .map((value) => Item(
-                addedBy: value['item'].addedBy.toString(),
-                itemName: value['item'].name,
-                localName: value['item'].localName,
-                itemPrice: double.tryParse(value['item'].price.toString()) ?? 0,
-                itemQuantity: (value['quantity'] as num).toInt(),
-                total: (value['item'].itemPrice * value['quantity']).toDouble(),
+                  addedBy: value['item'].addedBy.toString(),
+                  itemName: value['item'].name,
+                  localName: value['item'].localName,
+                  itemPrice:
+                      double.tryParse(value['item'].price.toString()) ?? 0,
+                  itemQuantity: (value['quantity'] as num).toInt(),
+                  total:
+                      (value['item'].itemPrice * value['quantity']).toDouble(),
                 ))
             .toList(),
         promoCode: null,

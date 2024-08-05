@@ -9,6 +9,7 @@ import 'package:ontrend_food_and_e_commerce/repository/item_repository.dart';
 import 'package:ontrend_food_and_e_commerce/repository/vendor_repository.dart';
 import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VendorController extends GetxController {
   static VendorController get instance => Get.find();
@@ -168,7 +169,7 @@ class VendorController extends GetxController {
             .where('addedBy', isEqualTo: vendor.reference.id)
             .get();
 
-        if (itemsSnapshot.docs.isNotEmpty && distance <= 20.0) {
+        if (itemsSnapshot.docs.isNotEmpty && distance <= 15000.0) {
           vendorsWithDistance.add({'vendor': vendor, 'distance': distance});
         }
       }
@@ -445,5 +446,21 @@ class VendorController extends GetxController {
     } else {
       deliveryFee.value = 0.0; // Set default fee if vendor not found
     }
+  } // Load grid view preference from SharedPreferences
+
+  var isGridView = false.obs;
+
+  // Load grid view preference from SharedPreferences
+  Future<void> loadGridViewPreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    isGridView.value =
+        prefs.getBool('isGridView') ?? false; // Default to list view
+  }
+
+  // Save grid view preference to SharedPreferences
+  Future<void> saveGridViewPreference(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isGridView', value);
+    isGridView.value = value;
   }
 }

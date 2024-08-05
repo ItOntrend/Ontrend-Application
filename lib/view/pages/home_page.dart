@@ -52,15 +52,15 @@ class _HomePageState extends State<HomePage> {
   final HomeController homeController = Get.put(HomeController());
   final LanguageController lang = Get.put(LanguageController());
   final TextEditingController _searchController = TextEditingController();
-  bool isGridView = false;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       //locationController.loadLocationFromPreferences();
       vendorController.fetchVendorsf();
       homeController.getProducts();
+      await vendorController.loadGridViewPreference();
     });
   }
 
@@ -385,13 +385,16 @@ class _HomePageState extends State<HomePage> {
                   OneTextHeading(
                     heading: "Nearby Restaurants".tr,
                   ),
-                  IconButton(
-                    icon: Icon(isGridView ? Icons.list : Icons.grid_view),
-                    onPressed: () {
-                      setState(() {
-                        isGridView = !isGridView;
-                      });
-                    },
+                  Obx(
+                    ()=>IconButton(
+                      icon: Icon(vendorController.isGridView.value
+                          ? Icons.list
+                          : Icons.grid_view),
+                      onPressed: () {
+                        vendorController.saveGridViewPreference(
+                            !vendorController.isGridView.value);
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -406,7 +409,7 @@ class _HomePageState extends State<HomePage> {
                       )
                     : vendorController.vendorsListf.isEmpty
                         ? const Center(child: Text("No Vendor Available"))
-                        : isGridView
+                        : vendorController.isGridView.value
                             ? ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),

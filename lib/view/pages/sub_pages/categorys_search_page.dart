@@ -32,12 +32,13 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
   RxList filteredVendors = [].obs;
   RxBool isLoadingfilteredVendors = false.obs;
   final TextEditingController _searchController = TextEditingController();
-  bool isGridView = false;
+  //bool isGridView = false;
 
   @override
   void initState() {
     super.initState();
     fetchVendors();
+    vendorController.loadGridViewPreference();
   }
 
   void fetchVendors() async {
@@ -129,13 +130,16 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                         ),
                       ],
                     ),
-                    IconButton(
-                      icon: Icon(isGridView ? Icons.list : Icons.grid_view),
-                      onPressed: () {
-                        setState(() {
-                          isGridView = !isGridView;
-                        });
-                      },
+                    Obx(
+                      () => IconButton(
+                        icon: Icon(vendorController.isGridView.value
+                            ? Icons.list
+                            : Icons.grid_view),
+                        onPressed: () {
+                          vendorController.saveGridViewPreference(
+                              !vendorController.isGridView.value);
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -155,7 +159,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                       ? _buildShimmerEffect()
                       : filteredVendors.isEmpty
                           ? Center(child: Text("No Vendor Available".tr))
-                          : isGridView
+                          : vendorController.isGridView.value
                               ? ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
