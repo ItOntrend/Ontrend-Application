@@ -1,12 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
-import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 import 'dart:math' as math;
 
@@ -16,13 +12,13 @@ class VendorInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LanguageController lang = Get.find();
+    // final LanguageController lang = Get.find();
     final VendorController _vendorController = Get.find();
     final distance = _vendorController.calculateDistance(vendor!.location);
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
-        title: Text(""),
+        title: const Text(""),
       ),
       /* body: SingleChildScrollView(
         child: Padding(
@@ -137,7 +133,7 @@ class VendorInfoPage extends StatelessWidget {
             Row(
               children: [
                 _buildImage(),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,21 +145,21 @@ class VendorInfoPage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Row(
                     children: [
-                      Icon(Icons.location_on),
-                      SizedBox(width: 10),
-                      Text(
+                      const Icon(Icons.location_on),
+                      const SizedBox(width: 10),
+                      const Text(
                         "Restaurant Area",
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 15),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       FutureBuilder<String>(
                         future: Get.find<VendorController>()
                             .getAddressFromLatLng(
@@ -172,22 +168,22 @@ class VendorInfoPage extends StatelessWidget {
                           if (snapshot.hasData) {
                             return Text(
                               snapshot.data!,
-                              style: TextStyle(color: Colors.grey),
+                              style: const TextStyle(color: Colors.grey),
                             );
                           } else if (snapshot.hasError) {
                             return Text('Location information unavailable'.tr,
-                                style: TextStyle(fontWeight: FontWeight.bold));
+                                style: const TextStyle(fontWeight: FontWeight.bold));
                           } else {
                             return Text('Fetching location...'.tr,
-                                style: TextStyle(fontWeight: FontWeight.bold));
+                                style: const TextStyle(fontWeight: FontWeight.bold));
                           }
                         },
                       ),
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30),
+                const Padding(
+                  padding: EdgeInsets.only(left: 30),
                   child: Divider(
                     thickness: 1,
                   ),
@@ -220,7 +216,7 @@ class VendorInfoPage extends StatelessWidget {
   Widget _buildName() {
     return Text(
       vendor?.restaurantName ?? 'Restaurant',
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
     );
   }
 
@@ -241,18 +237,18 @@ class VendorInfoPage extends StatelessWidget {
           child: Row(
             children: [
               Icon(icon),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Text(
                 label,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
               ),
-              Spacer(),
-              Text(value, style: TextStyle(color: Colors.grey)),
+              const Spacer(),
+              Text(value, style: const TextStyle(color: Colors.grey)),
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 30),
+        const Padding(
+          padding: EdgeInsets.only(left: 30),
           child: Divider(
             thickness: 1,
           ),
@@ -262,10 +258,10 @@ class VendorInfoPage extends StatelessWidget {
   }
 
   Widget _buildPaymentOptions() {
-    return Column(
+    return const Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: 10),
           child: Row(
             children: [
               Icon(Icons.payment),
@@ -286,7 +282,7 @@ class VendorInfoPage extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 30),
+          padding: EdgeInsets.only(left: 30),
           child: Divider(),
         )
       ],

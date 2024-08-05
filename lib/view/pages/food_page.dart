@@ -48,6 +48,7 @@ class _FoodPageState extends State<FoodPage> {
   List<ItemModel> itemSearchSuggestions = [];
   List<ItemModel> restaurantSearchSuggestions = [];
   final TextEditingController _searchController = TextEditingController();
+  bool isGridView = false;
 
   @override
   void initState() {

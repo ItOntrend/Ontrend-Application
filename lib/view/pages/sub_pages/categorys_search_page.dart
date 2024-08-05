@@ -32,7 +32,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
   RxList filteredVendors = [].obs;
   RxBool isLoadingfilteredVendors = false.obs;
   final TextEditingController _searchController = TextEditingController();
-  //bool isGridView = false;
+  bool isGridView = false;
 
   @override
   void initState() {

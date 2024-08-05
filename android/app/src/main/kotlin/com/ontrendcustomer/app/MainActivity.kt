@@ -1,4 +1,4 @@
-package com.ontrend.app
+package com.ontrendcustomer.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -148,7 +148,10 @@ class VendorModel {
         role: json['role'],
         location: Location.fromJson(json['location']),
         bannerImage: List<String>.from(
-            json['bannerImage'] ?? []), // Cast to List<String>
+            json['bannerImage'] ?? []),
+        bannerVideo: List<String>.from(
+            json['bannerVideo'] ?? []),
+             // Cast to List<String>
         openingTime: json['openingTime'],
         closingTime: json['closingTime'],
         isOnline: json['isOnline'],

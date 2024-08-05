@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage> {
   final HomeController homeController = Get.put(HomeController());
   final LanguageController lang = Get.put(LanguageController());
   final TextEditingController _searchController = TextEditingController();
+  bool isGridView = false;
 
   @override
   void initState() {
