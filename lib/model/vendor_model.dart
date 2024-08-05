@@ -23,6 +23,8 @@ class VendorModel {
   String role;
   Location location;
   List<String> bannerImage;
+  List<String> bannerVideo;
+
   String closingTime;
   String openingTime;
   bool isOnline;
@@ -55,8 +57,9 @@ class VendorModel {
     required this.closingTime,
     required this.isOnline,
     required this.dayWiseOpenAndClosingTime,
-    this.sellerEarnings, // Make optional
-    this.commissionRate, // Make optional
+    required this.sellerEarnings,
+    required this.commissionRate,
+    required this.bannerVideo,
   });
 
   VendorModel copyWith({
@@ -82,6 +85,7 @@ class VendorModel {
     String? role,
     Location? location,
     List<String>? bannerImage,
+    List<String>? bannerVideo,
     String? openingTime,
     String? closingTime,
     bool? isOnline,
@@ -110,6 +114,7 @@ class VendorModel {
         role: role ?? this.role,
         location: location ?? this.location,
         bannerImage: bannerImage ?? this.bannerImage,
+        bannerVideo: bannerVideo ?? this.bannerVideo,
         openingTime: openingTime ?? this.openingTime,
         closingTime: closingTime ?? this.closingTime,
         isOnline: isOnline ?? this.isOnline,
@@ -142,7 +147,8 @@ class VendorModel {
         image: json['image'],
         role: json['role'],
         location: Location.fromJson(json['location']),
-        bannerImage: List<String>.from(json['bannerImage'] ?? []),
+        bannerImage: List<String>.from(
+            json['bannerImage'] ?? []), // Cast to List<String>
         openingTime: json['openingTime'],
         closingTime: json['closingTime'],
         isOnline: json['isOnline'],
@@ -176,6 +182,7 @@ class VendorModel {
         "role": role,
         "location": location.toJson(),
         "bannerImage": bannerImage,
+        "bannerVideo": bannerVideo,
         "openingTime": openingTime,
         "closingTime": closingTime,
         "isOnline": isOnline,

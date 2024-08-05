@@ -41,19 +41,20 @@ class _ProfileCardState extends State<ProfileCard> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       height: 152.h,
       width: 340.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: kWhite,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 7,
-            offset: const Offset(0, 3),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.grey.withOpacity(0.2),
+        //     spreadRadius: 2,
+        //     blurRadius: 7,
+        //     offset: const Offset(0, 3),
+        //   ),
+        // ],
       ),
       child: Obx(() {
         log("It's About Vendor Profile");

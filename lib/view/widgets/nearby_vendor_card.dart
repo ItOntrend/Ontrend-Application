@@ -126,6 +126,7 @@ class NearbyRestaurantCard extends StatelessWidget {
                                       color: Colors.grey[600],
                                       fontSize: 14,
                                     ),
+                                    overflow: TextOverflow.ellipsis,
                                   );
                                 } else if (snapshot.hasError) {
                                   return Text(

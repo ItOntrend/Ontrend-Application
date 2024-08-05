@@ -408,8 +408,8 @@ class _HomePageState extends State<HomePage> {
                         itemCount: 3,
                       )
                     : vendorController.vendorsListf.isEmpty
-                        ? const Center(child: Text("No Vendor Available"))
-                        : vendorController.isGridView.value
+                        ? const ShimmerExport()
+                        : isGridView
                             ? ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),

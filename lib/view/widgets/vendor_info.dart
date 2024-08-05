@@ -5,13 +5,14 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
+import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 import 'dart:math' as math;
 
 class VendorInfoPage extends StatelessWidget {
   final VendorModel? vendor;
-  const VendorInfoPage({Key? key, required this.vendor}) : super(key: key);
+  const VendorInfoPage({super.key, required this.vendor});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,7 @@ class VendorInfoPage extends StatelessWidget {
     final VendorController _vendorController = Get.find();
     final distance = _vendorController.calculateDistance(vendor!.location);
     return Scaffold(
+      backgroundColor: kWhite,
       appBar: AppBar(
         title: Text(""),
       ),
@@ -67,12 +69,12 @@ class VendorInfoPage extends StatelessWidget {
               ),
               SizedBox(height: 20.h),
               Text(
-                "Distance : ${distance}",
+                "Distance : ${distance.toStringAsFixed(3)} Km",
                 style: TextStyle(fontSize: 16.sp),
               ),
               SizedBox(height: 10.h),
               Text(
-                "Delivery time: ${_estimateDeliveryTime(distance)} mins",
+                "Delivery time: ${_estimateDeliveryTime(distance).toStringAsFixed(1)} mins",
                 style: TextStyle(fontSize: 16.sp),
               ),
               SizedBox(height: 10.h),

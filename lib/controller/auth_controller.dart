@@ -6,7 +6,6 @@ import 'package:ontrend_food_and_e_commerce/utils/constants/firebase_constants.d
 import 'package:ontrend_food_and_e_commerce/utils/enums/auth_status.dart';
 import 'package:ontrend_food_and_e_commerce/utils/exception/auth_exception.dart';
 import 'package:ontrend_food_and_e_commerce/utils/utils.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/login_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/navigation_manu.dart';
 
 class AuthController extends GetxController {
