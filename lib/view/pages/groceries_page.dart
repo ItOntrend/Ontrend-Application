@@ -60,8 +60,6 @@ class _GroceriesPageState extends State<GroceriesPage> {
       for (var item in searchResults) {
         final currentLanguageCode =
             languageController.currentLanguage.value.languageCode;
-        final itemName =
-            currentLanguageCode == 'ar' ? item.localName : item.name;
         final restaurantName = currentLanguageCode == 'ar'
             ? item.arabicRestaurantName
             : item.restaurantName;

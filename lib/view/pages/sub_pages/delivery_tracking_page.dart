@@ -60,7 +60,8 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
         const ImageConfiguration(size: Size(0, 0), devicePixelRatio: 5);
 
     BitmapDescriptor.asset(
-            configuration, "assets/icons/deliveryboy_location_icon.png", width: 30,height: 30)
+            configuration, "assets/icons/deliveryboy_location_icon.png",
+            width: 45, height: 45)
         .then((value) {
       setState(() {
         markerIcon = value;
@@ -72,7 +73,8 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     ImageConfiguration configuration =
         const ImageConfiguration(size: Size(0, 0), devicePixelRatio: 5);
 
-    BitmapDescriptor.asset(configuration, "assets/icons/restaurant_icon.png", width: 30, height: 30)
+    BitmapDescriptor.asset(configuration, "assets/icons/restaurant_icon.png",
+            width: 45, height: 45)
         .then((value) {
       setState(() {
         restaurantIcon = value;
@@ -84,7 +86,8 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
     ImageConfiguration configuration =
         const ImageConfiguration(size: Size(0, 0), devicePixelRatio: 5);
 
-    BitmapDescriptor.asset(configuration, "assets/icons/user_location_icon.png", width: 30, height: 30)
+    BitmapDescriptor.asset(configuration, "assets/icons/user_location_icon.png",
+            width: 45, height: 45)
         .then((value) {
       setState(() {
         currentLocationIcon = value;
@@ -156,7 +159,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
               icon: const Icon(Icons.arrow_back_ios_new),
             ),
             pinned: true,
-            expandedHeight: 300,
+            expandedHeight: 700.h,
             flexibleSpace: StreamBuilder<DocumentSnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('orders')
@@ -183,7 +186,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                 return FlexibleSpaceBar(
                   background: order.status == 'Picked Up'
                       ? GoogleMap(
-                        zoomControlsEnabled: false,
+                          zoomControlsEnabled: false,
                           mapType: MapType.normal,
                           onMapCreated: (controller) {
                             mapController = controller;
@@ -234,12 +237,24 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                           : order.status == 'Delivered'
                               ? SizedBox(
                                   child: lottie.Lottie.asset(
-                                      "assets/lottie_animation/delivered_animation.json"),
+                                      "assets/lottie_animation/delivered_animations.json"),
                                 )
-                              : SizedBox(
-                                  child: Image.asset(
-                                      "assets/lottie_animation/pending.gif"),
-                                ),
+                              : order.status == 'Ready'
+                                  ? SizedBox(
+                                      child: lottie.Lottie.asset(
+                                          "assets/lottie_animation/ready_animation.json"),
+                                    )
+                                  : order.status == 'Processing'
+                                      ? SizedBox(
+                                          child: Image.asset(
+                                            "assets/lottie_animation/processing_animation.gif",
+                                          ),
+                                        )
+                                      : SizedBox(
+                                          child: Image.asset(
+                                            "assets/lottie_animation/pending.gif",
+                                          ),
+                                        ),
                   stretchModes: const [
                     StretchMode.blurBackground,
                     StretchMode.zoomBackground
@@ -377,8 +392,9 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
               border: Border.all(color: kBorderLiteBlack),
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(20),
+              ),
               color: kWhite,
             ),
             height: 128.h,

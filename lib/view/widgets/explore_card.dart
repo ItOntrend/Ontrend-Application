@@ -154,7 +154,7 @@ class ExploreCard extends StatelessWidget {
                     Row(
                       children: [
                         SizedBox(
-                          width: 230.w,
+                          width: 225.w,
                           child: Text(
                             name,
                             style: const TextStyle(
@@ -170,11 +170,15 @@ class ExploreCard extends StatelessWidget {
                               .getAddressFromLatLng(latitude, longitude),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              return Text(
-                                snapshot.data!,
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 14,
+                              return SizedBox(
+                                width: 110.w,
+                                child: Text(
+                                  snapshot.data!,
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               );
                             } else if (snapshot.hasError) {

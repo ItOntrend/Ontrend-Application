@@ -154,7 +154,16 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                   () => isLoadingfilteredVendors.value
                       ? _buildShimmerEffect()
                       : filteredVendors.isEmpty
-                          ? Center(child: Text("No Vendor Available".tr))
+                          ? Center(
+                              child: Column(
+                              children: [
+                                Image.asset(
+                                  "assets/lottie_animation/no_vendor_found.gif",
+                                  height: 250.h,
+                                ),
+                                Text("No Vendor".tr),
+                              ],
+                            ))
                           : isGridView
                               ? ListView.builder(
                                   shrinkWrap: true,
