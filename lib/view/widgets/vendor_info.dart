@@ -20,9 +20,9 @@ class VendorInfoPage extends StatelessWidget {
     final distance = _vendorController.calculateDistance(vendor!.location);
     return Scaffold(
       appBar: AppBar(
-        title: Text(vendor!.restaurantName),
+        title: Text(""),
       ),
-      body: SingleChildScrollView(
+      /* body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -125,7 +125,169 @@ class VendorInfoPage extends StatelessWidget {
             ],
           ),
         ),
+      ),*/
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Top section with restaurant image and name
+            Row(
+              children: [
+                _buildImage(),
+                SizedBox(width: 20),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildName(),
+                      _buildRating(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.location_on),
+                      SizedBox(width: 10),
+                      Text(
+                        "Restaurant Area",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 15),
+                      ),
+                      Spacer(),
+                      FutureBuilder<String>(
+                        future: Get.find<VendorController>()
+                            .getAddressFromLatLng(
+                                vendor!.location.lat, vendor!.location.lng),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(
+                              snapshot.data!,
+                              style: TextStyle(color: Colors.grey),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Location information unavailable'.tr,
+                                style: TextStyle(fontWeight: FontWeight.bold));
+                          } else {
+                            return Text('Fetching location...'.tr,
+                                style: TextStyle(fontWeight: FontWeight.bold));
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: Divider(
+                    thickness: 1,
+                  ),
+                )
+              ],
+            ),
+            _buildInfoRow(Icons.access_time, 'Delivery time',
+                '${_estimateDeliveryTime(distance).toStringAsFixed(2)}  mins'),
+            //_buildInfoRow(Icons.shopping_cart, 'Minimum order', 'OMR 0.800'),
+            _buildInfoRow(Icons.money, 'Delivery fee',
+                'OMR ${_vendorController.deliveryFee.value.toStringAsFixed(3)}'),
+            _buildInfoRow(Icons.info_outline, 'Pre-order', 'Yes'),
+            _buildPaymentOptions(),
+            _buildInfoRow(
+                Icons.account_balance, 'Legal name', 'Al Amar Food LLC'),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildImage() {
+    return CircleAvatar(
+      radius: 40,
+      backgroundImage: NetworkImage(vendor?.image ?? ''),
+      backgroundColor: Colors.grey.shade300,
+    );
+  }
+
+  Widget _buildName() {
+    return Text(
+      vendor?.restaurantName ?? 'Restaurant',
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+    );
+  }
+
+  Widget _buildRating() {
+    return Row(
+      children: [
+        //Icon(Icons.star, color: Colors.amber),
+        Text(vendor?.ownerName ?? 'Owner'),
+      ],
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String label, String value) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
+          child: Row(
+            children: [
+              Icon(icon),
+              SizedBox(width: 10),
+              Text(
+                label,
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+              ),
+              Spacer(),
+              Text(value, style: TextStyle(color: Colors.grey)),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: Divider(
+            thickness: 1,
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildPaymentOptions() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              Icon(Icons.payment),
+              SizedBox(width: 10),
+              Text(
+                "Payment Options",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+              ),
+              Spacer(),
+              Wrap(
+                children: [
+                  Icon(Icons.credit_card_outlined),
+                  SizedBox(width: 10),
+                  Icon(Icons.credit_card),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: Divider(),
+        )
+      ],
     );
   }
 
