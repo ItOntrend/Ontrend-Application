@@ -387,7 +387,7 @@ class _HomePageState extends State<HomePage> {
                     heading: "Nearby Restaurants".tr,
                   ),
                   Obx(
-                    ()=>IconButton(
+                    () => IconButton(
                       icon: Icon(vendorController.isGridView.value
                           ? Icons.list
                           : Icons.grid_view),
@@ -410,7 +410,7 @@ class _HomePageState extends State<HomePage> {
                       )
                     : vendorController.vendorsListf.isEmpty
                         ? const ShimmerExport()
-                        : isGridView
+                        : vendorController.isGridView.value
                             ? ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),

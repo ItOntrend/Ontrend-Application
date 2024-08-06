@@ -446,7 +446,7 @@ class VendorController extends GetxController {
     }
   } // Load grid view preference from SharedPreferences
 
-  var isGridView = false.obs;
+ var isGridView = false.obs;
 
   // Load grid view preference from SharedPreferences
   Future<void> loadGridViewPreference() async {

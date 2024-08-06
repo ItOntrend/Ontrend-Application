@@ -9,7 +9,6 @@ import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
-import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/video_playback_controller.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/video_widget.dart';
@@ -45,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage>
   final VideoPlaybackController videoPlaybackController =
       Get.put(VideoPlaybackController());
 
-  late List<String> tagList;
+  List<String> tagList = []; // Initialize with an empty list
   final Map<String, GlobalKey> _keys = {};
   bool _isTabAnimating = false;
   bool _isScrollAnimating = false;
@@ -59,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage>
     log("-------------------------");
   }
 
-  void fetchInitialData() async {
+  Future<void> fetchInitialData() async {
     try {
       // Clear previous data
       vendorController.ItemsList.clear();
@@ -74,6 +73,7 @@ class _ProfilePageState extends State<ProfilePage>
       await vendorController.calculateDeliveryFee(widget.userId);
       await vendorController.getItemsVendor(widget.userId, widget.type);
 
+      // Initialize tagList and TabController after data is fetched
       setState(() {
         initializeTabController();
       });
@@ -152,279 +152,261 @@ class _ProfilePageState extends State<ProfilePage>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          bottomNavigationBar: Obx(() {
-            return BottomAppBar(
-              color: kTransparent,
-              shape: const CircularNotchedRectangle(),
-              notchMargin: 8.0,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: kGreen,
-                ),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '${"Items in Cart:".tr} ${cartController.getItemCount()}',
-                      style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: kWhite),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Get.to(() => AddToCartPage(
-                              addedBy: widget.userId,
-                              restaurantName: '',
-                            ));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: kWhite,
-                        backgroundColor: kWhite,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 10.h),
-                      ),
-                      child: Text(
-                        'View Cart'.tr,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: kOrange,
-                          decoration: TextDecoration.underline,
-                          decorationColor: kOrange,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+        bottomNavigationBar: Obx(() {
+          return BottomAppBar(
+            color: kTransparent,
+            shape: const CircularNotchedRectangle(),
+            notchMargin: 8.0,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: kGreen,
               ),
-            );
-          }),
-          backgroundColor: kWhite,
-          body: Obx(
-            () {
-              final bannerVideos =
-                  vendorController.vendorDetail.value?.bannerVideo ?? [];
-              final bannerImage =
-                  vendorController.vendorDetail.value?.bannerImage ?? [];
-              log("Banner Images");
-              log(bannerImage.length.toString());
-              log("Banner Videos");
-              log(bannerVideos.length.toString());
-              return CustomScrollView(
-                slivers: <Widget>[
-                  SliverAppBar(
-                    leading: GestureDetector(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.all(6),
-                        height: 20.h,
-                        width: 20.w,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: kWhite),
-                        child: const Center(
-                          child: Icon(
-                            Icons.arrow_back_ios_new,
-                            size: 20,
-                          ),
-                        ),
-                      ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${"Items in Cart:".tr} ${cartController.getItemCount()}',
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        color: kWhite),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.to(() => AddToCartPage(
+                            addedBy: widget.userId,
+                            restaurantName: '',
+                          ));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: kWhite,
+                      backgroundColor: kWhite,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 10.h),
                     ),
-                    backgroundColor: kWhite,
-                    pinned: true,
-                    expandedHeight: bannerVideos.isEmpty ? 250.h : 660.h,
-                    bottom: PreferredSize(
-                      preferredSize: const Size.fromHeight(0.0),
-                      child: Container(
-                        height: 32.h,
-                        alignment: Alignment.center,
-                        decoration: const BoxDecoration(
-                          color: kWhite,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(32),
-                            topRight: Radius.circular(32),
-                          ),
-                        ),
+                    child: Text(
+                      'View Cart'.tr,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: kOrange,
+                        decoration: TextDecoration.underline,
+                        decorationColor: kOrange,
                       ),
-                    ),
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: bannerVideos.isEmpty && bannerImage.isEmpty
-                          ? const ShimmerBanner()
-                          : bannerVideos.isEmpty
-                              ? CarouselSlider.builder(
-                                  options: CarouselOptions(
-                                    height: 250.h,
-                                    autoPlay: true,
-                                    viewportFraction: 1.0,
-                                    aspectRatio: 16 / 9,
-                                    enableInfiniteScroll: true,
-                                    autoPlayInterval:
-                                        const Duration(seconds: 10),
-                                    autoPlayAnimationDuration:
-                                        const Duration(milliseconds: 600),
-                                  ),
-                                  itemCount: bannerImage.length,
-                                  itemBuilder: (context, index, realIndex) =>
-                                      CachedNetworkImage(
-                                    imageUrl: bannerImage[index],
-                                    fit: BoxFit.cover,
-                                    height: 250.h,
-                                    width: double.infinity,
-                                  ),
-                                )
-                              : CarouselSlider.builder(
-                                  options: CarouselOptions(
-                                    height: 660.h,
-                                    autoPlay: true,
-                                    viewportFraction: 1.0,
-                                    aspectRatio: 16 / 9,
-                                    enableInfiniteScroll:
-                                        bannerVideos.length > 1,
-                                    autoPlayInterval:
-                                        const Duration(seconds: 10),
-                                    autoPlayAnimationDuration:
-                                        const Duration(milliseconds: 600),
-                                  ),
-                                  itemCount: bannerVideos.length,
-                                  itemBuilder: (context, index, realIndex) =>
-                                      VideoWidget(
-                                    videoUrl: bannerVideos[index],
-                                    videoPlaybackController:
-                                        videoPlaybackController,
-                                  ),
-                                ),
                     ),
                   ),
-                  SliverToBoxAdapter(
+                ],
+              ),
+            ),
+          );
+        }),
+        backgroundColor: kWhite,
+        body: Obx(
+          () {
+            final bannerVideos =
+                vendorController.vendorDetail.value?.bannerVideo ?? [];
+            final bannerImage =
+                vendorController.vendorDetail.value?.bannerImage ?? [];
+            log("Banner Images");
+            log(bannerImage.length.toString());
+            log("Banner Videos");
+            log(bannerVideos.length.toString());
+            return CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  floating: true,
+                  stretch: true,
+                  leading: GestureDetector(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.all(6),
+                      height: 20.h,
+                      width: 20.w,
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: kWhite),
+                      child: const Center(
+                        child: Icon(
+                          Icons.arrow_back_ios_new,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                  backgroundColor: kWhite,
+                  pinned: true,
+                  expandedHeight: bannerVideos.isEmpty ? 250.h : 660.h,
+                  bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(0.0),
+                    child: Container(
+                      height: 32.h,
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        color: kWhite,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(32),
+                          topRight: Radius.circular(32),
+                        ),
+                      ),
+                    ),
+                  ),
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: bannerVideos.isEmpty && bannerImage.isEmpty
+                        ? const ShimmerBanner()
+                        : bannerVideos.isEmpty
+                            ? CarouselSlider.builder(
+                                options: CarouselOptions(
+                                  height: 250.h,
+                                  autoPlay: true,
+                                  viewportFraction: 1.0,
+                                  aspectRatio: 16 / 9,
+                                  enableInfiniteScroll: true,
+                                  autoPlayInterval: const Duration(seconds: 10),
+                                  autoPlayAnimationDuration:
+                                      const Duration(milliseconds: 600),
+                                ),
+                                itemCount: bannerImage.length,
+                                itemBuilder: (context, index, realIndex) =>
+                                    CachedNetworkImage(
+                                  imageUrl: bannerImage[index],
+                                  fit: BoxFit.cover,
+                                  height: 250.h,
+                                  width: double.infinity,
+                                ),
+                              )
+                            : CarouselSlider.builder(
+                                options: CarouselOptions(
+                                  height: 660.h,
+                                  autoPlay: true,
+                                  viewportFraction: 1.0,
+                                  aspectRatio: 16 / 9,
+                                  enableInfiniteScroll: bannerVideos.length > 1,
+                                  autoPlayInterval: const Duration(seconds: 10),
+                                  autoPlayAnimationDuration:
+                                      const Duration(milliseconds: 600),
+                                ),
+                                itemCount: bannerVideos.length,
+                                itemBuilder: (context, index, realIndex) =>
+                                    VideoWidget(
+                                  videoUrl: bannerVideos[index],
+                                  videoPlaybackController:
+                                      videoPlaybackController,
+                                ),
+                              ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: ProfileCard(userId: widget.userId),
+                      ),
+                    ],
+                  ),
+                ),
+                if (_tabController != null && tagList.isNotEmpty)
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: _SliverAppBarDelegate(
+                    TabBar(
+                      controller: _tabController,
+                      isScrollable: true,
+                      tabs: tagList.map((tag) {
+                        final displayTag =
+                            lang.currentLanguage.value.languageCode == "ar"
+                                ? vendorController.ItemsList.firstWhere(
+                                    (item) => item.tag == tag).localTag
+                                : tag;
+                        return Tab(text: displayTag);
+                      }).toList(),
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 20.h),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Center(child: ProfileCard(userId: widget.userId)),
-                        Padding(
-                          padding: EdgeInsets.only(top: 20.h),
-                          child: Column(
-                            children: [
-                              Obx(
-                                () {
-                                  final Set<String> tagSet = {};
-                                  for (var category
-                                      in vendorController.ItemsList) {
-                                    if (category.tag != null) {
-                                      tagSet.add(category.tag!);
-                                    }
-                                  }
-                                  tagList = tagSet.toList();
-
-                                  return _tabController != null
-                                      ? TabBar(
-                                          controller: _tabController,
-                                          isScrollable: true,
-                                          tabs: tagList.map((tag) {
-                                            final displayTag = lang
-                                                        .currentLanguage
-                                                        .value
-                                                        .languageCode ==
-                                                    "ar"
-                                                ? vendorController.ItemsList
-                                                        .firstWhere((item) =>
-                                                            item.tag == tag)
-                                                    .localTag
-                                                : tag;
-                                            return Tab(text: displayTag);
-                                          }).toList(),
-                                        )
-                                      : const SizedBox.shrink();
+                        Obx(
+                          () {
+                            if (vendorController.isItemsLoading.value) {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: 3,
+                                itemBuilder: (context, index) {
+                                  return const ShimmerItems();
                                 },
-                              ),
-                              kHiegth25,
-                              Obx(
-                                () {
-                                  if (vendorController.isItemsLoading.value) {
-                                    return ListView.builder(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemCount: 3,
-                                      itemBuilder: (context, index) {
-                                        return const ShimmerItems();
-                                      },
-                                    );
-                                  }
+                              );
+                            }
 
-                                  return ListView.builder(
-                                    controller: _scrollController,
-                                    shrinkWrap:
-                                        true, // Ensure that the height is bounded
-                                    itemCount:
-                                        vendorController.ItemsList.length,
-                                    itemBuilder: (context, index) {
-                                      final item =
-                                          vendorController.ItemsList[index];
-                                      final tagKey = item.tag ?? '';
-                                      _keys.putIfAbsent(
-                                          tagKey, () => GlobalKey());
+                            return ListView.builder(
+                              controller: _scrollController,
+                              shrinkWrap:
+                                  true, // Ensure that the height is bounded
+                              itemCount: vendorController.ItemsList.length,
+                              itemBuilder: (context, index) {
+                                final item = vendorController.ItemsList[index];
+                                final tagKey = item.tag ?? '';
+                                _keys.putIfAbsent(tagKey, () => GlobalKey());
 
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          if (index == 0 ||
-                                              vendorController
-                                                      .ItemsList[index - 1]
-                                                      .tag !=
-                                                  item.tag)
-                                            Padding(
-                                              key: _keys[tagKey],
-                                              padding: const EdgeInsets.only(
-                                                top: 16.0,
-                                                left: 16.0,
-                                                right: 16.0,
-                                                bottom: 16.0,
-                                              ),
-                                              child: Text(
-                                                lang.currentLanguage.value
-                                                            .languageCode ==
-                                                        "ar"
-                                                    ? item.localTag
-                                                    : item.tag ?? '',
-                                                style: TextStyle(
-                                                    fontSize: 18.sp,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          FoodItemCard(
-                                            name: item.name,
-                                            localName: item.localName,
-                                            arabicRestaurantName:
-                                                item.arabicRestaurantName,
-                                            localTag: item.localTag,
-                                            image: item.imageUrl,
-                                            description: item.description,
-                                            price: item.itemPrice,
-                                            addedBy: item.addedBy,
-                                            restaurantName: item.restaurantName,
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (index == 0 ||
+                                        vendorController
+                                                .ItemsList[index - 1].tag !=
+                                            item.tag)
+                                      Padding(
+                                        key: _keys[tagKey],
+                                        padding: const EdgeInsets.only(
+                                          top: 16.0,
+                                          left: 16.0,
+                                          right: 16.0,
+                                          bottom: 16.0,
+                                        ),
+                                        child: Text(
+                                          lang.currentLanguage.value
+                                                      .languageCode ==
+                                                  "ar"
+                                              ? item.localTag
+                                              : item.tag ?? '',
+                                          style: TextStyle(
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    FoodItemCard(
+                                      name: item.name,
+                                      localName: item.localName,
+                                      arabicRestaurantName:
+                                          item.arabicRestaurantName,
+                                      localTag: item.localTag,
+                                      image: item.imageUrl,
+                                      description: item.description,
+                                      price: item.itemPrice,
+                                      addedBy: item.addedBy,
+                                      restaurantName: item.restaurantName,
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
                         ),
                       ],
                     ),
                   ),
-                ],
-              );
-            },
-          )),
+                )
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }
@@ -441,6 +423,32 @@ class ShimmerBanner extends StatelessWidget {
         color: Colors.white,
       ),
     );
+  }
+}
+
+// Delegate class for SliverPersistentHeader
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate(this._tabBar);
+
+  final TabBar _tabBar;
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height;
+  @override
+  double get maxExtent => _tabBar.preferredSize.height;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Colors.white,
+      child: _tabBar,
+    );
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return false;
   }
 }
 
@@ -481,3 +489,34 @@ class ShimmerItems extends StatelessWidget {
     );
   }
 }
+
+
+// Obx(
+                        //   () {
+                        //     final Set<String> tagSet = {};
+                        //     for (var category in vendorController.ItemsList) {
+                        //       if (category.tag != null) {
+                        //         tagSet.add(category.tag!);
+                        //       }
+                        //     }
+                        //     tagList = tagSet.toList();
+
+                        //     return _tabController != null
+                        //         ? TabBar(
+                        //             controller: _tabController,
+                        //             isScrollable: true,
+                        //             tabs: tagList.map((tag) {
+                        //               final displayTag = lang.currentLanguage
+                        //                           .value.languageCode ==
+                        //                       "ar"
+                        //                   ? vendorController.ItemsList
+                        //                           .firstWhere(
+                        //                               (item) => item.tag == tag)
+                        //                       .localTag
+                        //                   : tag;
+                        //               return Tab(text: displayTag);
+                        //             }).toList(),
+                        //           )
+                        //         : const SizedBox.shrink();
+                        //   },
+                        // ),
