@@ -186,7 +186,7 @@ class _DeliveryTrackingPageState extends State<DeliveryTrackingPage> {
                 return FlexibleSpaceBar(
                   background: order.status == 'Picked Up'
                       ? GoogleMap(
-                          zoomControlsEnabled: false,
+                          zoomControlsEnabled: true,
                           mapType: MapType.normal,
                           onMapCreated: (controller) {
                             mapController = controller;
