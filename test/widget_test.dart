@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:ontrend_food_and_e_commerce/main.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/splash_page.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

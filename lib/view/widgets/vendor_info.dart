@@ -1,11 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
-import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
+import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/vendor_model.dart';
 import 'dart:math' as math;
 
@@ -13,16 +11,121 @@ final LanguageController lang = Get.find();
 
 class VendorInfoPage extends StatelessWidget {
   final VendorModel? vendor;
-  const VendorInfoPage({Key? key, required this.vendor}) : super(key: key);
+  const VendorInfoPage({super.key, required this.vendor});
 
   @override
   Widget build(BuildContext context) {
     final VendorController _vendorController = Get.find();
     final distance = _vendorController.calculateDistance(vendor!.location);
     return Scaffold(
+      backgroundColor: kWhite,
       appBar: AppBar(
-        title: Text(""),
+        title: const Text(""),
       ),
+      /* body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 65.h,
+                    width: 84.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: CachedNetworkImage(
+                          imageUrl: vendor!.image, // Use ! for non-null access
+                          fit: BoxFit.cover,
+                        )),
+                  ),
+                  kWidth20,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        // _vendorController.vendorDetail.value?.restaurantName ??
+                        //   "Not found",   // Check the selected language
+                        lang.currentLanguage.value.languageCode == 'ar'
+                            ? vendor!.restaurantArabicName
+                            : vendor!.restaurantName,
+
+                        style: const TextStyle(
+                          fontSize: 21,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      // You can add more details in similar fashion
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 20.h),
+              Text(
+                "Distance : ${distance}",
+                style: TextStyle(fontSize: 16.sp),
+              ),
+              SizedBox(height: 10.h),
+              Text(
+                "Delivery time: ${_estimateDeliveryTime(distance)} mins",
+                style: TextStyle(fontSize: 16.sp),
+              ),
+              SizedBox(height: 10.h),
+              Row(
+                children: [
+                  Text(
+                    "Restaurant Area:  ",
+                    style: TextStyle(fontSize: 16.sp),
+                  ),
+                  FutureBuilder<String>(
+                    future: Get.find<VendorController>().getAddressFromLatLng(
+                        vendor!.location.lat, vendor!.location.lng),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(
+                          snapshot.data!,
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text(
+                          'Location information unavailable'.tr,
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                          ),
+                        );
+                      } else {
+                        return Text(
+                          'Fetching location...'.tr,
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.h),
+              Text(
+                "Delivery fee: OMR ${_vendorController.deliveryFee.value.toStringAsFixed(3)}",
+                style: TextStyle(fontSize: 16.sp),
+              ),
+              SizedBox(height: 10.h),
+              // Add more vendor details here
+            ],
+          ),
+        ),
+      ),*/
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -32,7 +135,7 @@ class VendorInfoPage extends StatelessWidget {
             Row(
               children: [
                 _buildImage(),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +147,7 @@ class VendorInfoPage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Column(
               children: [
                 Padding(
@@ -54,11 +157,11 @@ class VendorInfoPage extends StatelessWidget {
                       Icon(Icons.location_on),
                       SizedBox(width: 10),
                       Text(
-                        "Restaurant Area".tr,
+                        "Restaurant Area",
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 15),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       FutureBuilder<String>(
                         future: Get.find<VendorController>()
                             .getAddressFromLatLng(
@@ -67,14 +170,16 @@ class VendorInfoPage extends StatelessWidget {
                           if (snapshot.hasData) {
                             return Text(
                               snapshot.data!,
-                              style: TextStyle(color: Colors.grey),
+                              style: const TextStyle(color: Colors.grey),
                             );
                           } else if (snapshot.hasError) {
                             return Text('Location information unavailable'.tr,
-                                style: TextStyle(fontWeight: FontWeight.bold));
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold));
                           } else {
                             return Text('Fetching location...'.tr,
-                                style: TextStyle(fontWeight: FontWeight.bold));
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold));
                           }
                         },
                       ),
@@ -82,9 +187,7 @@ class VendorInfoPage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: lang.currentLanguage.value.languageCode == 'ar'
-                      ? EdgeInsets.only(right: 30)
-                      : EdgeInsets.only(left: 30),
+                  padding: const EdgeInsets.only(left: 30),
                   child: Divider(
                     thickness: 1,
                   ),
@@ -115,15 +218,9 @@ class VendorInfoPage extends StatelessWidget {
   }
 
   Widget _buildName() {
-    return Obx(
-      () => Text(
-        lang.currentLanguage.value.languageCode == "ar"
-            ? vendor?.restaurantArabicName ??
-                'Restaurant' // Use Arabic name when language is Arabic
-            : vendor?.restaurantName ??
-                'Restaurant', // Use English name otherwise
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-      ),
+    return Text(
+      vendor?.restaurantName ?? 'Restaurant',
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
     );
   }
 
@@ -144,20 +241,19 @@ class VendorInfoPage extends StatelessWidget {
           child: Row(
             children: [
               Icon(icon),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Text(
                 label,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                style:
+                    const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
               ),
-              Spacer(),
-              Text(value, style: TextStyle(color: Colors.grey)),
+              const Spacer(),
+              Text(value, style: const TextStyle(color: Colors.grey)),
             ],
           ),
         ),
         Padding(
-          padding: lang.currentLanguage.value.languageCode == 'ar'
-              ? EdgeInsets.only(right: 30)
-              : EdgeInsets.only(left: 30),
+          padding: const EdgeInsets.only(left: 30),
           child: Divider(
             thickness: 1,
           ),
@@ -170,7 +266,7 @@ class VendorInfoPage extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: 10),
           child: Row(
             children: [
               Icon(Icons.payment),
@@ -191,9 +287,7 @@ class VendorInfoPage extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: lang.currentLanguage.value.languageCode == 'ar'
-              ? EdgeInsets.only(right: 30)
-              : EdgeInsets.only(left: 30),
+          padding: const EdgeInsets.only(left: 30),
           child: Divider(),
         )
       ],

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,6 +16,7 @@ import 'package:ontrend_food_and_e_commerce/view/pages/login_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/my_orders.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/change_textfield.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/main_tile.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UserProfilePage extends StatefulWidget {
@@ -48,7 +50,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
       builder: (builder) {
         return AlertDialog(
           title: Text('Choose a language'.tr),
-          content: Container(
+          content: SizedBox(
             width: double.maxFinite,
             child: ListView.separated(
               shrinkWrap: true,
@@ -119,7 +121,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           child: Center(
             child: Obx(() {
               if (userController.isLoading.value) {
-                return CircularProgressIndicator();
+                return const ShimmerCombine();
               } else {
                 return Column(
                   children: [
@@ -253,7 +255,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
               },
             ),
             TextButton(
-              child: Text('Log Out'.tr, style: TextStyle(color: kDarkOrange)),
+              child: Text('Log Out'.tr,
+                  style: const TextStyle(color: kDarkOrange)),
               onPressed: () async {
                 await authController.onLogOut();
                 Navigator.of(context).pop();
@@ -284,7 +287,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: Text('Delete'.tr, style: TextStyle(color: kDarkOrange)),
+              child:
+                  Text('Delete'.tr, style: const TextStyle(color: kDarkOrange)),
               onPressed: () async {
                 try {
                   await authController.deleteAccount(context);
@@ -323,5 +327,69 @@ class _UserProfilePageState extends State<UserProfilePage> {
       print('object');
       await launchUrl(Uri.parse(webUrl), mode: LaunchMode.externalApplication);
     }
+  }
+}
+
+class ShimmerProfileCard extends StatelessWidget {
+  const ShimmerProfileCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        height: 200.h,
+        width: 200.w,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: kWhite,
+        ),
+      ),
+    );
+  }
+}
+
+class ShimmerItems extends StatelessWidget {
+  const ShimmerItems({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20).copyWith(bottom: 20),
+        decoration: BoxDecoration(
+          color: kWhite,
+          borderRadius: BorderRadius.circular(
+            10,
+          ),
+        ),
+        height: 60.h,
+      ),
+    );
+  }
+}
+
+class ShimmerCombine extends StatelessWidget {
+  const ShimmerCombine({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const ShimmerProfileCard(),
+        kHiegth20,
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 6,
+          itemBuilder: (context, index) {
+            return const ShimmerItems();
+          },
+        ),
+      ],
+    );
   }
 }

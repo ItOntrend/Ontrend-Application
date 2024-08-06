@@ -48,6 +48,7 @@ class _FoodPageState extends State<FoodPage> {
   List<ItemModel> itemSearchSuggestions = [];
   List<ItemModel> restaurantSearchSuggestions = [];
   final TextEditingController _searchController = TextEditingController();
+  bool isGridView = false;
 
   @override
   void initState() {
@@ -69,8 +70,6 @@ class _FoodPageState extends State<FoodPage> {
 
       for (var item in searchResults) {
         final currentLanguageCode = lang.currentLanguage.value.languageCode;
-        final itemName =
-            currentLanguageCode == 'ar' ? item.localName : item.name;
         final restaurantName = currentLanguageCode == 'ar'
             ? item.arabicRestaurantName
             : item.restaurantName;
@@ -418,8 +417,8 @@ class _FoodPageState extends State<FoodPage> {
                         itemCount: 3,
                       )
                     : vendorController.vendorsListf.isEmpty
-                        ? Center(child: Text("No Nearby Restaurants".tr))
-                        : vendorController.isGridView.value
+                        ? const ShimmerExport()
+                        : isGridView
                             ? ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),

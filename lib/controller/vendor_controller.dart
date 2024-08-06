@@ -111,8 +111,7 @@ class VendorController extends GetxController {
       List<Map<String, dynamic>> vendorsWithDistance = [];
 
       for (var doc in vendorsQuerySnapshot.docs) {
-        VendorModel vendor =
-            VendorModel.fromJson(doc.data() as Map<String, dynamic>, doc.id);
+        VendorModel vendor = VendorModel.fromJson(doc.data(), doc.id);
         double distance = calculateDistance(vendor.location);
 
         // Check for available items in the vendor
@@ -159,8 +158,7 @@ class VendorController extends GetxController {
       List<Map<String, dynamic>> vendorsWithDistance = [];
 
       for (var doc in vendorsQuerySnapshot.docs) {
-        VendorModel vendor =
-            VendorModel.fromJson(doc.data() as Map<String, dynamic>, doc.id);
+        VendorModel vendor = VendorModel.fromJson(doc.data(), doc.id);
         double distance = calculateDistance(vendor.location);
 
         // Check for available items in the vendor

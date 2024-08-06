@@ -314,6 +314,10 @@ class CartController extends GetxController {
       double adminTotalEarnings =
           adminEarnings + serviceFee.value + deliveryFee.value;
 
+      print("adminEarnings----$adminEarnings");
+      print("adminTotalEarnings----$adminTotalEarnings");
+      print("itemTotal----${itemTotal.value}");
+      print("commisionrate.value----${commisionrate.value}");
       // If there's an assigned delivery person, subtract the delivery fee from the total earnings
 
       // Adjust this if you have a different fee for delivery persons
@@ -336,7 +340,7 @@ class CartController extends GetxController {
                   itemName: value['item'].name,
                   localName: value['item'].localName,
                   itemPrice:
-                      double.tryParse(value['item'].price.toString()) ?? 0,
+                      double.tryParse(value['item'].itemPrice.toString()) ?? 0,
                   itemQuantity: (value['quantity'] as num).toInt(),
                   total:
                       (value['item'].itemPrice * value['quantity']).toDouble(),
@@ -390,7 +394,7 @@ class CartController extends GetxController {
       } catch (e) {
         print('Error parsing reward points: $e');
       }
-      rewardPoints += itemTotal.value * 62;
+      rewardPoints += itemTotal.value * 64;
 
       // Update reward points in Firebase and Local Storage
       await updateRewardPoints(userId, rewardPoints);
