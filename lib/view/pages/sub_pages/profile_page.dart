@@ -309,23 +309,23 @@ class _ProfilePageState extends State<ProfilePage>
                   ),
                 ),
                 if (_tabController != null && tagList.isNotEmpty)
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: _SliverAppBarDelegate(
-                    TabBar(
-                      controller: _tabController,
-                      isScrollable: true,
-                      tabs: tagList.map((tag) {
-                        final displayTag =
-                            lang.currentLanguage.value.languageCode == "ar"
-                                ? vendorController.ItemsList.firstWhere(
-                                    (item) => item.tag == tag).localTag
-                                : tag;
-                        return Tab(text: displayTag);
-                      }).toList(),
+                  SliverPersistentHeader(
+                    pinned: true,
+                    delegate: _SliverAppBarDelegate(
+                      TabBar(
+                        controller: _tabController,
+                        isScrollable: true,
+                        tabs: tagList.map((tag) {
+                          final displayTag =
+                              lang.currentLanguage.value.languageCode == "ar"
+                                  ? vendorController.ItemsList.firstWhere(
+                                      (item) => item.tag == tag).localTag
+                                  : tag;
+                          return Tab(text: displayTag);
+                        }).toList(),
+                      ),
                     ),
                   ),
-                ),
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.only(top: 20.h),
@@ -381,16 +381,7 @@ class _ProfilePageState extends State<ProfilePage>
                                         ),
                                       ),
                                     FoodItemCard(
-                                      name: item.name,
-                                      localName: item.localName,
-                                      arabicRestaurantName:
-                                          item.arabicRestaurantName,
-                                      localTag: item.localTag,
-                                      image: item.imageUrl,
-                                      description: item.description,
-                                      price: item.itemPrice,
-                                      addedBy: item.addedBy,
-                                      restaurantName: item.restaurantName,
+                                      item: item,
                                     ),
                                   ],
                                 );

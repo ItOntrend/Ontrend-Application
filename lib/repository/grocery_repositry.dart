@@ -9,6 +9,7 @@ abstract class GroceryRepository {
         .collection(FirebaseConstants.grocery)
         .doc(FirebaseConstants.items)
         .collection(FirebaseConstants.categories)
+        .where("isApproved", isEqualTo: true)
         .get()
         .then(
           (snapshot) => snapshot.docs
@@ -17,11 +18,13 @@ abstract class GroceryRepository {
         );
   }
 
-  static Future<List<ItemModel>> getProducts() async {
-    List<ItemModel> products = [];
+  static Future<List<ProductModel>> getProducts() async {
+    List<ProductModel> products = [];
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collectionGroup('details')
+          .where("isApproved", isEqualTo: true)
+          .where("isDisabled", isEqualTo: false)
           // Search across all 'details' subcollections
           .get();
 
@@ -30,7 +33,8 @@ abstract class GroceryRepository {
         if (doc.reference.path.split('/')[0] == 'Grocery') {
           print('Document ID: ${doc.id}');
           print('Document Data: ${doc.data()}');
-          products.add(ItemModel.fromJson(doc.data() as Map<String, dynamic>));
+          products
+              .add(ProductModel.fromJson(doc.data() as Map<String, dynamic>));
         }
       }
     } catch (e) {
@@ -47,6 +51,8 @@ abstract class GroceryRepository {
           .collection(type)
           .where('name', isGreaterThanOrEqualTo: query)
           .where('name', isLessThanOrEqualTo: query + '\uf8ff')
+          .where("isApproved", isEqualTo: true)
+          .where("isDisabled", isEqualTo: false)
           .get();
       return querySnapshot.docs
           .map((doc) => CategoryModel.fromSnapshot(doc))

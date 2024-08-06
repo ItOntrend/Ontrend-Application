@@ -45,8 +45,8 @@ class _HomePageState extends State<HomePage> {
   final LocationController locationController = Get.put(LocationController());
   final CartController cartController = Get.put(CartController());
   final VendorController vendorController = Get.put(VendorController());
-  List<ItemModel> itemSearchSuggestions = [];
-  List<ItemModel> restaurantSearchSuggestions = [];
+  List<ProductModel> itemSearchSuggestions = [];
+  List<ProductModel> restaurantSearchSuggestions = [];
   final NavigationController navigationController =
       Get.put(NavigationController());
   final HomeController homeController = Get.put(HomeController());
@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
 
       // Use a Set to filter out duplicate restaurant names
       final uniqueRestaurantNames = <String>{};
-      final uniqueRestaurantSuggestions = <ItemModel>[];
+      final uniqueRestaurantSuggestions = <ProductModel>[];
 
       for (var item in searchResults) {
         final currentLanguageCode = lang.currentLanguage.value.languageCode;
@@ -435,7 +435,7 @@ class _HomePageState extends State<HomePage> {
                                       Get.to(() => ProfilePage(
                                             userId: vendor.reference.id,
                                             cat: "",
-                                            type: "Grocery",
+                                            type: "Food/Restaurant",
                                           ));
                                     },
                                   );

@@ -19,7 +19,7 @@ class VendorController extends GetxController {
   RxList<VendorModel> vendorsList = RxList<VendorModel>();
   RxList<VendorModel> vendorsListg = RxList<VendorModel>();
   RxList<VendorModel> vendorsListf = RxList<VendorModel>();
-  RxList<ItemModel> itemsList = RxList<ItemModel>();
+  RxList<ProductModel> itemsList = RxList<ProductModel>();
   RxString userName = ''.obs;
   final deliveryFee = 0.0.obs;
   Position? userPosition;
@@ -118,6 +118,8 @@ class VendorController extends GetxController {
         var itemsSnapshot = await FirebaseFirestore.instance
             .collectionGroup('details')
             .where('addedBy', isEqualTo: vendor.reference.id)
+            .where("isApproved", isEqualTo: true)
+            .where("isDisabled", isEqualTo: false)
             .get();
 
         if (itemsSnapshot.docs.isNotEmpty && distance <= 20.0) {
@@ -165,9 +167,11 @@ class VendorController extends GetxController {
         var itemsSnapshot = await FirebaseFirestore.instance
             .collectionGroup('details')
             .where('addedBy', isEqualTo: vendor.reference.id)
+            .where("isApproved", isEqualTo: true)
+            .where("isDisabled", isEqualTo: false)
             .get();
 
-        if (itemsSnapshot.docs.isNotEmpty && distance <= 20.0) {
+        if (itemsSnapshot.docs.isNotEmpty && distance <= 15000.0) {
           vendorsWithDistance.add({'vendor': vendor, 'distance': distance});
         }
       }
@@ -326,6 +330,7 @@ class VendorController extends GetxController {
           .collection('categories')
           .doc(cat)
           .collection('details')
+          .where("isApproved", isEqualTo: true)
           .get();
 
       // Clear the list before adding new vendor IDs
@@ -375,7 +380,7 @@ class VendorController extends GetxController {
   }
 
 //*...............................................................*//
-  RxList<ItemModel> ItemsList = RxList<ItemModel>();
+  RxList<ProductModel> ItemsList = RxList<ProductModel>();
   Future<void> getItemsVendor(String userId, String type) async {
     try {
       isItemsLoading.value = true;
@@ -446,7 +451,7 @@ class VendorController extends GetxController {
     }
   } // Load grid view preference from SharedPreferences
 
- var isGridView = false.obs;
+  var isGridView = false.obs;
 
   // Load grid view preference from SharedPreferences
   Future<void> loadGridViewPreference() async {

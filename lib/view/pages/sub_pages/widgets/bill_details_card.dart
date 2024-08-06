@@ -18,9 +18,7 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/main_botton.dart';
 class BillDetailsCard extends StatefulWidget {
   const BillDetailsCard({
     super.key,
-   
   });
-
 
   @override
   State<BillDetailsCard> createState() => _BillDetailsCardState();
@@ -157,7 +155,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
                   return;
                 }
 
-                if (cartController.totalAmount > 0) {
+                if (cartController.itemTotal > 2) {
                   String orderId = await cartController.placeOrder(
                     userId,
                     'Cash on Delivery',
@@ -167,6 +165,14 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
 
                   Get.to(() => OrderCompleteSplashPage(orderId: orderId));
                   log("Order placed");
+                } else {
+                  Get.snackbar(
+                    "Minimum Order Amount".tr,
+                    "The item total must be at least 2 OMR".tr,
+                    backgroundColor: kDarkOrange,
+                    colorText: Colors.white,
+                  );
+                  return;
                 }
               },
               name: "Place Order".tr,

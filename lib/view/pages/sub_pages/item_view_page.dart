@@ -14,7 +14,7 @@ class ItemViewPage extends StatelessWidget {
     required this.item,
   });
 
-  final ItemModel item;
+  final ProductModel item;
 
   @override
   Widget build(BuildContext context) {

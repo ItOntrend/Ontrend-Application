@@ -11,24 +11,10 @@ import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 class AddToCartCard extends StatefulWidget {
   const AddToCartCard({
     super.key,
-    required this.itemName,
-    required this.localName,
-    required this.arabicRestaurantName,
-    required this.localTag,
-    required this.itemPrice,
-    required this.image,
-    required this.addedBy,
-    required this.restaurantName,
+    required this.item,
   });
 
-  final String itemName;
-  final String localName;
-  final String arabicRestaurantName;
-  final String localTag;
-  final double itemPrice;
-  final String image;
-  final String addedBy;
-  final String restaurantName;
+  final ProductModel item;
 
   @override
   State<AddToCartCard> createState() => _AddToCartCardState();
@@ -39,17 +25,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
   final LanguageController langontroller = Get.find();
   @override
   Widget build(BuildContext context) {
-    ItemModel item = ItemModel(
-      name: widget.itemName,
-      localName: widget.localName,
-      arabicRestaurantName: widget.arabicRestaurantName,
-      localTag: widget.localTag,
-      itemPrice: widget.itemPrice,
-      imageUrl: widget.image,
-      description: "",
-      addedBy: widget.addedBy,
-      restaurantName: widget.restaurantName,
-    );
+    ProductModel item = widget.item;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
@@ -79,8 +55,8 @@ class _AddToCartCardState extends State<AddToCartCard> {
             children: [
               Text(
                 langontroller.currentLanguage.value.languageCode == "ar"
-                    ? widget.localName
-                    : widget.itemName,
+                    ? item.localName
+                    : item.name,
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
@@ -88,7 +64,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
               ),
               kHiegth6,
               Text(
-                " ${"OMR".tr} ${double.parse(widget.itemPrice.toString()).toStringAsFixed(3)}",
+                " ${"OMR".tr} ${double.parse(item.itemPrice.toString()).toStringAsFixed(3)}",
                 style: const TextStyle(
                   color: kOrange,
                   fontSize: 12,
@@ -161,8 +137,8 @@ class _AddToCartCardState extends State<AddToCartCard> {
                 Align(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: widget.image.isNotEmpty
-                        ? CachedNetworkImage(imageUrl: widget.image)
+                    child: item.imageUrl.isNotEmpty
+                        ? CachedNetworkImage(imageUrl: item.imageUrl)
                         : Container(
                             height: 88.h,
                             width: 117.w,

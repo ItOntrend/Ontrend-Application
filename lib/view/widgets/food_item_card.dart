@@ -6,32 +6,17 @@ import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
+import 'package:ontrend_food_and_e_commerce/model/order_modal.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/item_view_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/add_button.dart';
 
 class FoodItemCard extends StatefulWidget {
   const FoodItemCard({
     super.key,
-    required this.name,
-    required this.localName,
-    required this.arabicRestaurantName,
-    required this.localTag,
-    required this.image,
-    required this.price,
-    required this.description,
-    required this.addedBy,
-    required this.restaurantName,
+    required this.item,
   });
 
-  final String name;
-  final String image;
-  final String localName;
-  final String arabicRestaurantName;
-  final String localTag;
-  final double price;
-  final String description;
-  final String addedBy;
-  final String restaurantName;
+  final ProductModel item;
 
   @override
   _FoodItemCardState createState() => _FoodItemCardState();
@@ -72,17 +57,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
 
   @override
   Widget build(BuildContext context) {
-    final item = ItemModel(
-      name: widget.name,
-      localName: widget.localName,
-      arabicRestaurantName: widget.arabicRestaurantName,
-      localTag: widget.localTag,
-      imageUrl: widget.image,
-      itemPrice: widget.price,
-      description: widget.description,
-      addedBy: widget.addedBy,
-      restaurantName: widget.restaurantName,
-    );
+    final item = widget.item;
 
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 10, bottom: 8, top: 12),
@@ -117,9 +92,9 @@ class _FoodItemCardState extends State<FoodItemCard> {
                   onTap: () => Get.to(() => ItemViewPage(item: item)),
                   child: Stack(
                     children: [
-                      widget.image.isNotEmpty
+                      item.imageUrl.isNotEmpty
                           ? CachedNetworkImage(
-                              imageUrl: widget.image,
+                              imageUrl: item.imageUrl,
                               fit: BoxFit.cover,
                               height: 100.h,
                               width: 150.w,
@@ -157,8 +132,8 @@ class _FoodItemCardState extends State<FoodItemCard> {
                     child: Text(
                       languageController.currentLanguage.value.languageCode ==
                               "ar"
-                          ? widget.localName
-                          : widget.name,
+                          ? item.localName
+                          : item.name,
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
@@ -169,7 +144,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 ],
               ),
               Text(
-                widget.price.toStringAsFixed(3),
+                item.price.toStringAsFixed(3),
                 style: const TextStyle(
                   fontSize: 14,
                   color: kOrange,
@@ -178,7 +153,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
               SizedBox(
                 height: 61.h,
                 child: Text(
-                  addNewlines(widget.description, 25),
+                  addNewlines(item.description, 25),
                   style: const TextStyle(fontSize: 12),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -190,7 +165,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                   Obx(() {
                     final quantity = cartController.getItemQuantity(item);
                     return quantity > 0
-                        ? Container(    
+                        ? Container(
                             // height: 34.h,
                             width: 150.w,
                             decoration: BoxDecoration(

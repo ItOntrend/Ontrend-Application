@@ -6,7 +6,7 @@ import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 
 class AddButton extends StatelessWidget {
-  final ItemModel item;
+  final ProductModel item;
 
   const AddButton({
     super.key,

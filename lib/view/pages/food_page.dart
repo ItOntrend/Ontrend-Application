@@ -44,9 +44,9 @@ class _FoodPageState extends State<FoodPage> {
   final CartController cartController = Get.put(CartController());
 
   final lang = Get.put(LanguageController());
-  List<ItemModel> searchSuggestions = [];
-  List<ItemModel> itemSearchSuggestions = [];
-  List<ItemModel> restaurantSearchSuggestions = [];
+  List<ProductModel> searchSuggestions = [];
+  List<ProductModel> itemSearchSuggestions = [];
+  List<ProductModel> restaurantSearchSuggestions = [];
   final TextEditingController _searchController = TextEditingController();
   bool isGridView = false;
 
@@ -66,7 +66,7 @@ class _FoodPageState extends State<FoodPage> {
 
       // Use a Set to filter out duplicate restaurant names
       final uniqueRestaurantNames = <String>{};
-      final uniqueRestaurantSuggestions = <ItemModel>[];
+      final uniqueRestaurantSuggestions = <ProductModel>[];
 
       for (var item in searchResults) {
         final currentLanguageCode = lang.currentLanguage.value.languageCode;
@@ -84,8 +84,8 @@ class _FoodPageState extends State<FoodPage> {
       setState(() {
         itemSearchSuggestions = searchResults
             .where((item) => (lang.currentLanguage.value.languageCode == 'ar'
-                ? item.localName.toLowerCase().contains(query.toLowerCase())
-                : item.name.toLowerCase().contains(query.toLowerCase())))
+                ? item!.localName.toLowerCase().contains(query.toLowerCase())
+                : item!.name.toLowerCase().contains(query.toLowerCase())))
             .toList();
         restaurantSearchSuggestions = uniqueRestaurantSuggestions;
       });

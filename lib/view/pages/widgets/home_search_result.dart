@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/profile_page.dart';
+
 class SearchResultHome extends StatelessWidget {
-  final List<ItemModel> items;
-  final List<ItemModel> restaurants;
+  final List<ProductModel> items;
+  final List<ProductModel> restaurants;
   final String title;
 
   const SearchResultHome({
@@ -50,7 +51,7 @@ class SearchResultHome extends StatelessWidget {
                               ),
                             ),
                           );
-                                                  // Handle item tap
+                          // Handle item tap
                         },
                       );
                     },
@@ -83,7 +84,7 @@ class SearchResultHome extends StatelessWidget {
                               ),
                             ),
                           );
-                                                },
+                        },
                       );
                     },
                   ),

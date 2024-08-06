@@ -35,9 +35,9 @@ class _GroceriesPageState extends State<GroceriesPage> {
   final GroceryController controller = Get.put(GroceryController());
   final LanguageController languageController = Get.put(LanguageController());
   final CartController cartController = Get.put(CartController());
-  List<ItemModel> searchSuggestions = [];
-  List<ItemModel> itemSearchSuggestions = [];
-  List<ItemModel> restaurantSearchSuggestions = [];
+  List<ProductModel> searchSuggestions = [];
+  List<ProductModel> itemSearchSuggestions = [];
+  List<ProductModel> restaurantSearchSuggestions = [];
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -55,7 +55,7 @@ class _GroceriesPageState extends State<GroceriesPage> {
 
       // Use a Set to filter out duplicate restaurant names
       final uniqueRestaurantNames = <String>{};
-      final uniqueRestaurantSuggestions = <ItemModel>[];
+      final uniqueRestaurantSuggestions = <ProductModel>[];
 
       for (var item in searchResults) {
         final currentLanguageCode =

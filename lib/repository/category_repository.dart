@@ -8,12 +8,12 @@ abstract class CategoryRepository {
         .doc(FirebaseConstants.items)
         .collection(FirebaseConstants.categories)
         .get();
-    
+
     final categories = snapshot.docs
         .map((doc) => CategoryModel.fromJson(doc.data()))
         .where((category) => category.isApproved)
         .toList();
-    
+
     return categories;
   }
 }

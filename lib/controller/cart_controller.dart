@@ -46,7 +46,7 @@ class CartController extends GetxController {
       final Map<String, dynamic> cartMap = json.decode(cartString);
       cartItems.value = cartMap.map((key, value) {
         return MapEntry(key, {
-          'item': ItemModel.fromJson(value['item']),
+          'item': ProductModel.fromJson(value['item']),
           'quantity': (value['quantity'] as num).toInt(),
         });
       });
@@ -160,7 +160,7 @@ class CartController extends GetxController {
     super.onClose();
   }
 
-  void addItemToCart(ItemModel item) {
+  void addItemToCart(ProductModel item) {
     if (cartItems.isNotEmpty) {
       // Check if the item is from a different vendor
       final existingVendorId = cartItems.values.first['item'].addedBy;
@@ -203,7 +203,7 @@ class CartController extends GetxController {
     addItemToCartConfirmed(item);
   }
 
-  void addItemToCartConfirmed(ItemModel item) {
+  void addItemToCartConfirmed(ProductModel item) {
     if (cartItems.containsKey(item.name)) {
       cartItems[item.name]['quantity'] =
           (cartItems[item.name]['quantity'] + 1).toInt();
@@ -224,7 +224,7 @@ class CartController extends GetxController {
     }
   }
 
-  void removeItemFromCart(ItemModel item) {
+  void removeItemFromCart(ProductModel item) {
     if (cartItems.containsKey(item.name) &&
         cartItems[item.name]['quantity'] > 1) {
       cartItems[item.name]['quantity'] =
@@ -243,13 +243,13 @@ class CartController extends GetxController {
     }
   }
 
-  int getItemQuantity(ItemModel item) {
+  int getItemQuantity(ProductModel item) {
     return cartItems.containsKey(item.name)
         ? cartItems[item.name]['quantity']
         : 0;
   }
 
-  void removeItemEntirely(ItemModel item) {
+  void removeItemEntirely(ProductModel item) {
     cartItems.remove(item.name);
     updateItemTotal();
     cartItems.refresh();

@@ -117,14 +117,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                             final item = cartController.cartItems.values
                                 .toList()[index]['item'];
                             return AddToCartCard(
-                              itemName: item.name,
-                              localName: item.localName,
-                              arabicRestaurantName: item.arabicRestaurantName,
-                              localTag: item.localTag,
-                              itemPrice: item.itemPrice,
-                              image: item.imageUrl,
-                              addedBy: item.addedBy.toString(),
-                              restaurantName: item.restaurantName,
+                              item: item,
                             );
                           },
                         ),
@@ -145,9 +138,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                     heading: "Bill Details".tr,
                   ),
                   kHiegth15,
-                  BillDetailsCard(
-                    
-                  ),
+                  BillDetailsCard(),
                   kHiegth15,
                   const TermsAndCondition(),
                   kHiegth20,

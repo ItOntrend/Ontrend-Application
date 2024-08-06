@@ -6,7 +6,7 @@ import 'package:ontrend_food_and_e_commerce/utils/constants/firebase_constants.d
 class ItemRepository {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  static Future<List<ItemModel>> getItems(String userId) async {
+  static Future<List<ProductModel>> getItems(String userId) async {
     try {
       var snapshot = await _db
           .collection(FirebaseConstants.food)
@@ -15,6 +15,8 @@ class ItemRepository {
           .doc()
           .collection(FirebaseConstants.details)
           .where("addedBy", isEqualTo: userId)
+          .where("isApproved", isEqualTo: true)
+          .where("isDisabled", isEqualTo: false)
           .get();
 
       if (snapshot.docs.isEmpty) {
@@ -24,7 +26,7 @@ class ItemRepository {
       }
 
       return snapshot.docs
-          .map((doc) => ItemModel.fromJson(doc.data()))
+          .map((doc) => ProductModel.fromJson(doc.data()))
           .toList();
     } catch (e) {
       log('Error fetching items: $e');
@@ -32,7 +34,7 @@ class ItemRepository {
     }
   }
 
-  static Future<List<ItemModel>> getItemsnew(String userId) async {
+  static Future<List<ProductModel>> getItemsnew(String userId) async {
     try {
       var snapshot = await _db
           .collection("Grocery")
@@ -41,6 +43,8 @@ class ItemRepository {
           .doc()
           .collection(FirebaseConstants.details)
           .where("addedBy", isEqualTo: userId)
+          .where("isApproved", isEqualTo: true)
+          .where("isDisabled", isEqualTo: false)
           .get();
 
       if (snapshot.docs.isEmpty) {
@@ -50,7 +54,7 @@ class ItemRepository {
       }
 
       return snapshot.docs
-          .map((doc) => ItemModel.fromJson(doc.data()))
+          .map((doc) => ProductModel.fromJson(doc.data()))
           .toList();
     } catch (e) {
       log('Error fetching items: $e');
@@ -58,7 +62,7 @@ class ItemRepository {
     }
   }
 
-  static Future<List<ItemModel>> getItemsGrocery(
+  static Future<List<ProductModel>> getItemsGrocery(
       String userId, String category, String type) async {
     try {
       var snapshot = await _db
@@ -68,6 +72,8 @@ class ItemRepository {
           .doc(category)
           .collection(FirebaseConstants.details)
           .where("addedBy", isEqualTo: userId)
+          .where("isApproved", isEqualTo: true)
+          .where("isDisabled", isEqualTo: false)
           .get();
 
       if (snapshot.docs.isEmpty) {
@@ -77,7 +83,7 @@ class ItemRepository {
       }
 
       return snapshot.docs
-          .map((doc) => ItemModel.fromJson(doc.data()))
+          .map((doc) => ProductModel.fromJson(doc.data()))
           .toList();
     } catch (e) {
       log('Error fetching items: $e');
@@ -85,16 +91,19 @@ class ItemRepository {
     }
   }
 
-  static Future<List<ItemModel>> getItemsVendor(
+  static Future<List<ProductModel>> getItemsVendor(
       String userId, String type) async {
     try {
       QuerySnapshot snapshot = await FirebaseConstants.dbInstance
           .collectionGroup("details")
           .where('addedBy', isEqualTo: userId) // Apply the filter here
+          .where("isApproved", isEqualTo: true)
+          .where("isDisabled", isEqualTo: false)
           .get();
 
       return snapshot.docs
-          .map((doc) => ItemModel.fromJson(doc.data() as Map<String, dynamic>))
+          .map((doc) =>
+              ProductModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (e) {
       log('Error fetching vendor categories: $e');

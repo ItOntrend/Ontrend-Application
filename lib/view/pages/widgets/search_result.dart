@@ -10,7 +10,7 @@ import 'package:ontrend_food_and_e_commerce/view/widgets/category_card.dart';
 class SearchResult extends StatelessWidget {
   final String type;
   final String title;
-  final List<ItemModel> products;
+  final List<ProductModel> products;
 
   const SearchResult({
     Key? key,
@@ -38,7 +38,7 @@ class SearchResult extends StatelessWidget {
               ),
               itemCount: products.length,
               itemBuilder: (_, index) {
-                ItemModel product = products[index];
+                ProductModel product = products[index];
                 CategoryModel? category;
 
                 // Check the type and get the corresponding category
