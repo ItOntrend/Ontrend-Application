@@ -185,6 +185,8 @@ class LocalStrings extends Translations {
           'Are you sure you want to delete your account? This action cannot be undone.':
               'Are you sure you want to delete your account? This action cannot be undone.',
           'Delete': 'Delete',
+          "Restaurant Area": "Restaurant Area",
+          'Legal name': 'Legal name',
         },
         //'hi_IN': {'hello': "नमस्ते दुनिया", 'message': "ऐप में आपका स्वागत है"},
         'ar_OM': {
@@ -364,6 +366,8 @@ class LocalStrings extends Translations {
           'Are you sure you want to delete your account? This action cannot be undone.':
               'هل انت متأكد انك تريد حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء.',
           'Delete': 'يمسح',
+          "Restaurant Area": "منطقة المطعم",
+          'Legal name': "الاسم القانوني",
         }
       };
 }
