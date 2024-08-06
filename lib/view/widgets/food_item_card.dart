@@ -44,13 +44,29 @@ class _FoodItemCardState extends State<FoodItemCard> {
   // Function to add newline characters after every 30 characters
   String addNewlines(String text, int maxChars) {
     String result = '';
-    for (int i = 0; i < text.length; i += maxChars) {
-      if (i + maxChars < text.length) {
-        result += '${text.substring(i, i + maxChars)}\n';
+    int start = 0;
+
+    while (start < text.length) {
+      int end = start + maxChars;
+
+      // Ensure we don't go out of bounds
+      if (end >= text.length) {
+        result += text.substring(start);
+        break;
+      }
+
+      // If there is a space before the maxChars limit, break at the space
+      int spaceIndex = text.lastIndexOf(' ', end);
+      if (spaceIndex > start) {
+        result += text.substring(start, spaceIndex) + '\n';
+        start = spaceIndex + 1;
       } else {
-        result += text.substring(i);
+        // If no space is found, break at maxChars limit
+        result += text.substring(start, end) + '\n';
+        start = end;
       }
     }
+
     return result;
   }
 
@@ -136,14 +152,18 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    languageController.currentLanguage.value.languageCode ==
-                            "ar"
-                        ? widget.localName
-                        : widget.name,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
+                  SizedBox(
+                    width: 210.w,
+                    child: Text(
+                      languageController.currentLanguage.value.languageCode ==
+                              "ar"
+                          ? widget.localName
+                          : widget.name,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
@@ -155,9 +175,13 @@ class _FoodItemCardState extends State<FoodItemCard> {
                   color: kOrange,
                 ),
               ),
-              Text(
-                addNewlines(widget.description, 25),
-                style: const TextStyle(fontSize: 12),
+              SizedBox(
+                height: 61.h,
+                child: Text(
+                  addNewlines(widget.description, 25),
+                  style: const TextStyle(fontSize: 12),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               const Spacer(),
               Row(
@@ -166,7 +190,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                   Obx(() {
                     final quantity = cartController.getItemQuantity(item);
                     return quantity > 0
-                        ? Container(
+                        ? Container(    
                             // height: 34.h,
                             width: 150.w,
                             decoration: BoxDecoration(

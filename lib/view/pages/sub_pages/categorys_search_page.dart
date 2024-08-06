@@ -168,7 +168,7 @@ class _CategorysSearchPageState extends State<CategorysSearchPage> {
                                 Text("No Vendor".tr),
                               ],
                             ))
-                          : isGridView
+                          : vendorController.isGridView.value
                               ? ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),

@@ -31,10 +31,82 @@
               "client_type": 3
             },
             {
-              "client_id": "192511537789-ol7ihhuct6jdggp5orue6ja8fhumbtqf.apps.googleusercontent.com",
+              "client_id": "192511537789-nh7qlajj77bp89gqnmfl2raauji6fu96.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.ontrendFoodAndECommerce"
+                "bundle_id": "com.example.ontrendVendors"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192511537789:android:c475daf3d6b7f6cbf47714",
+        "android_client_info": {
+          "package_name": "com.ontrendcustomer.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192511537789-qeefjdbksoclpuud8bpp9710apq0uft7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3aMrrW0c68KIOwHFc-w-MyMxE-MvIBLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192511537789-qeefjdbksoclpuud8bpp9710apq0uft7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "192511537789-nh7qlajj77bp89gqnmfl2raauji6fu96.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ontrendVendors"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192511537789:android:1493efe80566cee7f47714",
+        "android_client_info": {
+          "package_name": "com.vendors.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192511537789-qeefjdbksoclpuud8bpp9710apq0uft7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3aMrrW0c68KIOwHFc-w-MyMxE-MvIBLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192511537789-qeefjdbksoclpuud8bpp9710apq0uft7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "192511537789-nh7qlajj77bp89gqnmfl2raauji6fu96.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ontrendVendors"
               }
             }
           ]

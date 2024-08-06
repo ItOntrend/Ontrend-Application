@@ -304,13 +304,14 @@ class _FoodPageState extends State<FoodPage> {
               kHiegth25,
 
               // Categories card
+              // Categories card
               TwoTextHeading(
                   heading: lang.currentLanguage.value.languageCode == "ar"
                       ? "اصناف الطعام"
                       : "Categories"),
               kHiegth20,
               SizedBox(
-                height: 300.h,
+                height: 300.h, // Make sure this height is appropriate
                 child: Obx(
                   () => foodController.isCategoryLoading.value
                       ? GridView.builder(
@@ -331,9 +332,7 @@ class _FoodPageState extends State<FoodPage> {
                           scrollDirection: Axis.horizontal,
                           itemCount: foodController.categoryList.length,
                           itemBuilder: (context, index) {
-                            print("Category List");
                             final category = foodController.categoryList[index];
-                            log(category.imageUrl.toString());
                             return CategoryCard(
                               onTap: () {
                                 Get.to(
@@ -418,7 +417,7 @@ class _FoodPageState extends State<FoodPage> {
                       )
                     : vendorController.vendorsListf.isEmpty
                         ? const ShimmerExport()
-                        : isGridView
+                        : vendorController.isGridView.value
                             ? ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),

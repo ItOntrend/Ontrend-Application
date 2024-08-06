@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC3aMrrW0c68KIOwHFc-w-MyMxE-MvIBLo',
-    appId: '1:192511537789:android:28d4ddef7465a0faf47714',
+    appId: '1:192511537789:android:c475daf3d6b7f6cbf47714',
     messagingSenderId: '192511537789',
     projectId: 'ontrend-db',
     storageBucket: 'ontrend-db.appspot.com',
@@ -66,12 +66,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBXCdL4BaZ1lioNwIOObug-eat1AulDCsw',
-    appId: '1:192511537789:ios:7428d42d527cc743f47714',
+    appId: '1:192511537789:ios:0e61f0807f233534f47714',
     messagingSenderId: '192511537789',
     projectId: 'ontrend-db',
     storageBucket: 'ontrend-db.appspot.com',
-    iosClientId: '192511537789-ol7ihhuct6jdggp5orue6ja8fhumbtqf.apps.googleusercontent.com',
-    iosBundleId: 'com.example.ontrendFoodAndECommerce',
+    androidClientId: '192511537789-b38bccgjdq9k6dqbcsm7rdn95r6qeo46.apps.googleusercontent.com',
+    iosClientId: '192511537789-h2ban4blm0f1qqk3r3bd7aqmafksu97k.apps.googleusercontent.com',
+    iosBundleId: 'com.ontrendcustomer.app',
   );
 
 }
