@@ -466,7 +466,7 @@ class _HomePageState extends State<HomePage> {
                                       Get.to(() => ProfilePage(
                                             userId: vendor.reference.id,
                                             cat: "",
-                                            type: "Food/Restaurent",
+                                            type: "Food/Restaurant",
                                           ));
                                     },
                                   );
