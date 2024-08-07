@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/firebase_options.dart';
 import 'package:ontrend_food_and_e_commerce/local_strings.dart';
+import 'package:ontrend_food_and_e_commerce/notification_service.dart';
 import 'package:ontrend_food_and_e_commerce/utils/init_services.dart';
 import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/splash_page.dart';
@@ -18,6 +19,8 @@ Future<void> main() async {
   );
   await initServices();
   var cart = FlutterCart();
+  NotificationHandler notificationHandler = NotificationHandler();
+  
   await cart.initializeCart(isPersistenceSupportEnabled: true);
   await LocalStorage.instance.initHive();
 
@@ -30,16 +33,18 @@ Future<void> main() async {
   if (savedLanguageCode != null) {
     // Handle both language-only and language-country cases
     if (savedLanguageCode == 'ar') {
-      initialLocale = const Locale('ar', 'OM'); // Default country code for Arabic
+      initialLocale =
+          const Locale('ar', 'OM'); // Default country code for Arabic
     } else if (savedLanguageCode == 'en') {
-      initialLocale = const Locale('en', 'US'); // Default country code for English
+      initialLocale =
+          const Locale('en', 'US'); // Default country code for English
     }
   }
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
   runApp(MyApp(initialLocale: initialLocale));
 }
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async{
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
 

@@ -64,7 +64,7 @@ class _AddToCartCardState extends State<AddToCartCard> {
               ),
               kHiegth6,
               Text(
-                " ${"OMR".tr} ${double.parse(item.itemPrice.toString()).toStringAsFixed(3)}",
+                "${"OMR".tr} ${widget.item.price == 0.0 ? widget.item.itemPrice.toStringAsFixed(3) : widget.item.price.toStringAsFixed(3)}",
                 style: const TextStyle(
                   color: kOrange,
                   fontSize: 12,

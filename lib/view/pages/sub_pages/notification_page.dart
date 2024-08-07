@@ -91,7 +91,7 @@ class NotificationPage extends StatelessWidget {
   // Reusable widget for building tab items
   Widget _buildTabItem({required String text}) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.only(left: 10),
       // height: 40,
       // padding: const EdgeInsets.symmetric(horizontal: 20.0),
       decoration: BoxDecoration(

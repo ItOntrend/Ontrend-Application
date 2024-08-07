@@ -6,7 +6,6 @@ import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
-import 'package:ontrend_food_and_e_commerce/model/order_modal.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/item_view_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/add_button.dart';
 
@@ -43,11 +42,11 @@ class _FoodItemCardState extends State<FoodItemCard> {
       // If there is a space before the maxChars limit, break at the space
       int spaceIndex = text.lastIndexOf(' ', end);
       if (spaceIndex > start) {
-        result += text.substring(start, spaceIndex) + '\n';
+        result += '${text.substring(start, spaceIndex)}\n';
         start = spaceIndex + 1;
       } else {
         // If no space is found, break at maxChars limit
-        result += text.substring(start, end) + '\n';
+        result += '${text.substring(start, end)}\n';
         start = end;
       }
     }
@@ -62,7 +61,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 10, bottom: 8, top: 12),
       margin: const EdgeInsets.symmetric(horizontal: 18).copyWith(bottom: 20),
-      height: 188.h,
+      height: 196.h,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -144,14 +143,16 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 ],
               ),
               Text(
-                item.price.toStringAsFixed(3),
+                item.price == 0.0
+                    ? item.itemPrice.toStringAsFixed(3)
+                    : item.price.toStringAsFixed(3),
                 style: const TextStyle(
                   fontSize: 14,
                   color: kOrange,
                 ),
               ),
               SizedBox(
-                height: 61.h,
+                height: 64.h,
                 child: Text(
                   addNewlines(item.description, 25),
                   style: const TextStyle(fontSize: 12),

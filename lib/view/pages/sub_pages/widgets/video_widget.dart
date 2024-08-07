@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:video_player/video_player.dart';
 import 'video_playback_controller.dart';
 
@@ -7,12 +9,13 @@ class VideoWidget extends StatefulWidget {
   final VideoPlaybackController videoPlaybackController;
 
   const VideoWidget({
-    Key? key,
+    super.key,
     required this.videoUrl,
     required this.videoPlaybackController,
-  }) : super(key: key);
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _VideoWidgetState createState() => _VideoWidgetState();
 }
 
@@ -57,9 +60,25 @@ class _VideoWidgetState extends State<VideoWidget> {
             child: VideoPlayer(_controller),
           );
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return const ShimmerEffects();
         }
       },
+    );
+  }
+}
+
+class ShimmerEffects extends StatelessWidget {
+  const ShimmerEffects({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        height: 660.h,
+        color: Colors.white,
+      ),
     );
   }
 }

@@ -1,45 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ontrend_food_and_e_commerce/model/notification_model.dart';
+import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.dart';
 
 class NAllBar extends StatelessWidget {
   const NAllBar({super.key});
 
+  Future<List<NotificationModel>> _getNotifications() async {
+    var box = await LocalStorage.instance
+        .openBox<NotificationModel>(HiveBox.commonBox);
+    return box.values.toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Center(
-          child: Text("No Notification".tr),
-        )
-        // ListView(
-        //   scrollDirection: Axis.vertical,
-        //   children:  const [
-        // NotificationCard(
-        //   title: "KFC",
-        //   image: "assets/image/kfc_image.png",
-        // ),
-        // kHiegth25,
-        // NotificationCard(
-        //   title: "GK Store",
-        //   image: "assets/image/gk_shop_image.png",
-        // ),
-        // kHiegth25,
-        // NotificationCard(
-        //   title: "MY G",
-        //   image: "assets/image/my_g_image.png",
-        // ),
-        // kHiegth25,
-        // NotificationCard(
-        //   title: "Zoolaa Mall",
-        //   image: "assets/image/zoola_mall_image.png",
-        // ),
-        // kHiegth25,
-        // NotificationCard(
-        //   title: "Soften Future",
-        //   image: "assets/image/soften_future_image.png",
-        // ),
-        // kHiegth25,
-        // ],
+    return FutureBuilder<List<NotificationModel>>(
+      future: _getNotifications(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text("No Notifications".tr));
+        }
+
+        return ListView.builder(
+          itemCount: snapshot.data!.length,
+          itemBuilder: (context, index) {
+            var notification = snapshot.data![index];
+            return ListTile(
+              title: Text(notification.title),
+              subtitle: Text(notification.body),
+              trailing: Text(notification.date.toString()),
+            );
+          },
         );
+      },
+    );
   }
 }

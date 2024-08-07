@@ -175,13 +175,16 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       ),
                     ),
                     kHiegth20,
-                    ChangeTextfield(
-                      hintText: "Nationality".tr,
+                    TextFormField(
+                      enabled: false,
+                      decoration: InputDecoration(
+                        hintText: "Nationality".tr,
+                        suffixIcon: null, // No change button needed
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                       initialValue: userController.nationality.value,
-                      onChanged: (value) {
-                        userController.nationality.value = value;
-                        userController.updateUserField('nationality', value);
-                      },
                     ),
                     kHiegth25,
                     MainTile(

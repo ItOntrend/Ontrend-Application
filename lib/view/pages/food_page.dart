@@ -84,8 +84,8 @@ class _FoodPageState extends State<FoodPage> {
       setState(() {
         itemSearchSuggestions = searchResults
             .where((item) => (lang.currentLanguage.value.languageCode == 'ar'
-                ? item!.localName.toLowerCase().contains(query.toLowerCase())
-                : item!.name.toLowerCase().contains(query.toLowerCase())))
+                ? item.localName.toLowerCase().contains(query.toLowerCase())
+                : item.name.toLowerCase().contains(query.toLowerCase())))
             .toList();
         restaurantSearchSuggestions = uniqueRestaurantSuggestions;
       });
@@ -256,7 +256,7 @@ class _FoodPageState extends State<FoodPage> {
                           return ListTile(
                             title: Text(itemName),
                             onTap: () {
-                              final type = item.reference!.path.split('/')[0];
+                              final type = item.reference.path.split('/')[0];
                               Get.to(() => ProfilePage(
                                     userId: item.addedBy,
                                     cat: "",
@@ -284,7 +284,7 @@ class _FoodPageState extends State<FoodPage> {
                           return ListTile(
                             title: Text(restaurantName),
                             onTap: () {
-                              final typeo = item.reference!.path.split('/')[0];
+                              final typeo = item.reference.path.split('/')[0];
                               Get.to(() => ProfilePage(
                                     userId: item.addedBy,
                                     cat: "",
