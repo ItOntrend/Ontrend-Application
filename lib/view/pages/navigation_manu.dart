@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/navigation_controller.dart';
+import 'package:ontrend_food_and_e_commerce/notification_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 
@@ -12,12 +13,21 @@ class NavigationManu extends StatefulWidget {
 }
 
 class _NavigationManuState extends State<NavigationManu> {
-  // Position? _currentPosition;
+  final NotificationService notificationService = NotificationService();
 
   @override
   void initState() {
     super.initState();
     _requestPermission();
+    notificationService.requestNotificationPermission();
+    notificationService.firebaseInit();
+    notificationService.isTokenRefresh();
+    // notificationService.initialize();
+    notificationService.getDeviceToken().then((value) {
+      print("Device Token");
+      print(value);
+      print("---------------------------------------------------------");
+    });
   }
 
   Future<void> _requestPermission() async {
@@ -35,9 +45,7 @@ class _NavigationManuState extends State<NavigationManu> {
   }
 
   Future<void> _getCurrentLocation() async {
-    // _currentPosition = await Geolocator.getCurrentPosition(
-    //     desiredAccuracy: LocationAccuracy.high);
-    // setState(() {});
+    // Implement your location fetching logic here
   }
 
   @override
@@ -74,40 +82,3 @@ class _NavigationManuState extends State<NavigationManu> {
     });
   }
 }
-
- 
-    // 
-    // 
-    // Scaffold(
-    //   bottomNavigationBar: Obx(
-    //     () => NavigationBar(
-    //       animationDuration: const Duration(milliseconds: 1000),
-    //       elevation: 0,
-    //       height: 80,
-    //       selectedIndex: controller.selectedIndex.value,
-    //       onDestinationSelected: (index) =>
-    //           controller.selectedIndex.value = index,
-    //       backgroundColor: kWhite,
-    //       // indicatorColor: kBlack,
-    //       destinations: [
-    //         NavigationDestination(
-    //           icon: Image.asset("assets/icons/home_icon.png"),
-    //           label: "Home",
-    //         ),
-    //         NavigationDestination(
-    //           icon: Image.asset("assets/icons/food_icon.png"),
-    //           label: "Food",
-    //         ),
-    //         NavigationDestination(
-    //           icon: Image.asset("assets/icons/store_icon.png"),
-    //           label: "E Store",
-    //         ),
-    //         NavigationDestination(
-    //           icon: Image.asset("assets/icons/user_icon.png"),
-    //           label: "Profile",
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    //   body: Obx(() => controller.screens[controller.selectedIndex.value]),
-    // )
