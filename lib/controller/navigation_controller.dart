@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/e_store_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/estore/estore_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/food_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/home_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/user_profile_page.dart';
@@ -16,7 +17,7 @@ class NavigationController extends GetxController {
     return [
       HomePage(),
       const FoodPage(),
-      const EStorePage(),
+      const EstorePage(),
       UserProfilePage(),
     ];
   }
