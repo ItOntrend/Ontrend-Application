@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,16 +30,19 @@ Future<void> main() async {
   if (savedLanguageCode != null) {
     // Handle both language-only and language-country cases
     if (savedLanguageCode == 'ar') {
-      initialLocale = const Locale('ar', 'OM'); // Default country code for Arabic
+      initialLocale =
+          const Locale('ar', 'OM'); // Default country code for Arabic
     } else if (savedLanguageCode == 'en') {
-      initialLocale = const Locale('en', 'US'); // Default country code for English
+      initialLocale =
+          const Locale('en', 'US'); // Default country code for English
     }
   }
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   runApp(MyApp(initialLocale: initialLocale));
 }
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async{
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
 
