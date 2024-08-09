@@ -10,6 +10,7 @@ import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart'
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/item_view_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/video_playback_controller.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/video_widget.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/food_item_card.dart';
@@ -44,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage>
   final VideoPlaybackController videoPlaybackController =
       Get.put(VideoPlaybackController());
 
-  List<String> tagList = []; // Initialize with an empty list
+  List<String> tagList = [];
   final Map<String, GlobalKey> _keys = {};
   bool _isTabAnimating = false;
   bool _isScrollAnimating = false;
@@ -85,9 +86,7 @@ class _ProfilePageState extends State<ProfilePage>
   void initializeTabController() {
     final Set<String> tagSet = {};
     for (var category in vendorController.ItemsList) {
-      if (category.tag != null) {
-        tagSet.add(category.tag!);
-      }
+      tagSet.add(category.tag);
     }
     tagList = tagSet.toList();
 
@@ -126,13 +125,15 @@ class _ProfilePageState extends State<ProfilePage>
   void _onScroll() {
     if (_isScrollAnimating || _isTabAnimating) return;
 
-    for (int index = 0; index < tagList.length; index++) {
-      final keyContext = _keys[tagList[index]]?.currentContext;
-      if (keyContext != null) {
-        final box = keyContext.findRenderObject() as RenderBox?;
-        final pos = box?.localToGlobal(Offset.zero);
-        if (pos != null && pos.dy < 200) {
-          if (_tabController?.index != index) {
+    for (var tag in tagList) {
+      final RenderBox? box =
+          _keys[tag]?.currentContext!.findRenderObject() as RenderBox?;
+      if (box != null) {
+        final position = box.localToGlobal(Offset.zero).dy;
+        if (position >= 0 &&
+            position <= MediaQuery.of(context).size.height / 2) {
+          final index = tagList.indexOf(tag);
+          if (index != _tabController?.index) {
             _tabController?.animateTo(index);
           }
           break;
@@ -144,6 +145,7 @@ class _ProfilePageState extends State<ProfilePage>
   @override
   void dispose() {
     _tabController?.dispose();
+    _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
   }
@@ -151,164 +153,160 @@ class _ProfilePageState extends State<ProfilePage>
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        bottomNavigationBar: Obx(() {
-          return BottomAppBar(
-            color: kTransparent,
-            shape: const CircularNotchedRectangle(),
-            notchMargin: 8.0,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: kGreen,
-              ),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '${"Items in Cart:".tr} ${cartController.getItemCount()}',
-                    style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                        color: kWhite),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.to(() => AddToCartPage(
-                            addedBy: widget.userId,
-                            restaurantName: '',
-                          ));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: kWhite,
-                      backgroundColor: kWhite,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 10.h),
+      child: DefaultTabController(
+        length: tagList.length,
+        child: Scaffold(
+          bottomNavigationBar: Obx(() {
+            return BottomAppBar(
+              color: kTransparent,
+              shape: const CircularNotchedRectangle(),
+              notchMargin: 8.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: kGreen,
+                ),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${"Items in Cart:".tr} ${cartController.getItemCount()}',
+                      style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: kWhite),
                     ),
-                    child: Text(
-                      'View Cart'.tr,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: kOrange,
-                        decoration: TextDecoration.underline,
-                        decorationColor: kOrange,
+                    ElevatedButton(
+                      onPressed: () {
+                        Get.to(() => AddToCartPage(
+                              addedBy: widget.userId,
+                              restaurantName: '',
+                              price: 0,
+                              selectedVariant: "",
+                            ));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: kWhite,
+                        backgroundColor: kWhite,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 10.h),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }),
-        backgroundColor: kWhite,
-        body: Obx(
-          () {
-            final bannerVideos =
-                vendorController.vendorDetail.value?.bannerVideo ?? [];
-            final bannerImage =
-                vendorController.vendorDetail.value?.bannerImage ?? [];
-            log("Banner Images");
-            log(bannerImage.length.toString());
-            log("Banner Videos");
-            log(bannerVideos.length.toString());
-            return CustomScrollView(
-              slivers: <Widget>[
-                SliverAppBar(
-                  floating: true,
-                  stretch: true,
-                  leading: GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.all(6),
-                      height: 20.h,
-                      width: 20.w,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: kWhite),
-                      child: const Center(
-                        child: Icon(
-                          Icons.arrow_back_ios_new,
-                          size: 20,
+                      child: Text(
+                        'View Cart'.tr,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: kOrange,
+                          decoration: TextDecoration.underline,
+                          decorationColor: kOrange,
                         ),
                       ),
                     ),
-                  ),
-                  backgroundColor: kWhite,
-                  pinned: true,
-                  expandedHeight: bannerVideos.isEmpty ? 250.h : 660.h,
-                  bottom: PreferredSize(
-                    preferredSize: const Size.fromHeight(0.0),
-                    child: Container(
-                      height: 32.h,
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                        color: kWhite,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(32),
-                          topRight: Radius.circular(32),
+                  ],
+                ),
+              ),
+            );
+          }),
+          backgroundColor: kWhite,
+          body: Obx(
+            () {
+              final bannerVideos =
+                  vendorController.vendorDetail.value?.bannerVideo ?? [];
+              final bannerImage =
+                  vendorController.vendorDetail.value?.bannerImage ?? [];
+              log("Banner Images");
+              log(bannerImage.length.toString());
+              log("Banner Videos");
+              log(bannerVideos.length.toString());
+              return CustomScrollView(
+                slivers: <Widget>[
+                  SliverAppBar(
+                    floating: true,
+                    stretch: true,
+                    leading: GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(6),
+                        height: 20.h,
+                        width: 20.w,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: kWhite),
+                        child: const Center(
+                          child: Icon(
+                            Icons.arrow_back_ios_new,
+                            size: 20,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: bannerVideos.isEmpty && bannerImage.isEmpty
-                        ? const ShimmerBanner()
-                        : bannerVideos.isEmpty
-                            ? CarouselSlider.builder(
-                                options: CarouselOptions(
-                                  height: 250.h,
-                                  autoPlay: true,
-                                  viewportFraction: 1.0,
-                                  aspectRatio: 16 / 9,
-                                  enableInfiniteScroll: true,
-                                  autoPlayInterval: const Duration(seconds: 10),
-                                  autoPlayAnimationDuration:
-                                      const Duration(milliseconds: 600),
-                                ),
-                                itemCount: bannerImage.length,
-                                itemBuilder: (context, index, realIndex) =>
-                                    CachedNetworkImage(
-                                  imageUrl: bannerImage[index],
-                                  fit: BoxFit.cover,
-                                  height: 250.h,
-                                  width: double.infinity,
-                                ),
-                              )
-                            : CarouselSlider.builder(
-                                options: CarouselOptions(
-                                  height: 660.h,
-                                  autoPlay: true,
-                                  viewportFraction: 1.0,
-                                  aspectRatio: 16 / 9,
-                                  enableInfiniteScroll: bannerVideos.length > 1,
-                                  autoPlayInterval: const Duration(seconds: 10),
-                                  autoPlayAnimationDuration:
-                                      const Duration(milliseconds: 600),
-                                ),
-                                itemCount: bannerVideos.length,
-                                itemBuilder: (context, index, realIndex) =>
-                                    VideoWidget(
-                                  videoUrl: bannerVideos[index],
-                                  videoPlaybackController:
-                                      videoPlaybackController,
-                                ),
-                              ),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: ProfileCard(userId: widget.userId),
+                    backgroundColor: kWhite,
+                    pinned: true,
+                    expandedHeight: bannerVideos.isEmpty ? 250.h : 660.h,
+                    bottom: PreferredSize(
+                      preferredSize: const Size.fromHeight(0.0),
+                      child: Container(
+                        height: 32.h,
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          color: kWhite,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(32),
+                            topRight: Radius.circular(32),
+                          ),
+                        ),
                       ),
-                    ],
+                    ),
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: bannerVideos.isEmpty && bannerImage.isEmpty
+                          ? const ShimmerBanner()
+                          : bannerVideos.isEmpty
+                              ? CarouselSlider.builder(
+                                  options: CarouselOptions(
+                                    height: 250.h,
+                                    autoPlay: true,
+                                    viewportFraction: 1.0,
+                                    aspectRatio: 16 / 9,
+                                    enableInfiniteScroll: true,
+                                    autoPlayInterval:
+                                        const Duration(seconds: 10),
+                                    autoPlayAnimationDuration:
+                                        const Duration(milliseconds: 600),
+                                  ),
+                                  itemCount: bannerImage.length,
+                                  itemBuilder: (context, index, realIndex) =>
+                                      CachedNetworkImage(
+                                    imageUrl: bannerImage[index],
+                                    fit: BoxFit.cover,
+                                    height: 250.h,
+                                    width: double.infinity,
+                                  ),
+                                )
+                              : CarouselSlider.builder(
+                                  options: CarouselOptions(
+                                    height: 660.h,
+                                    autoPlay: true,
+                                    viewportFraction: 1.0,
+                                    aspectRatio: 16 / 9,
+                                    enableInfiniteScroll:
+                                        bannerVideos.length > 1,
+                                    autoPlayInterval:
+                                        const Duration(seconds: 10),
+                                    autoPlayAnimationDuration:
+                                        const Duration(milliseconds: 600),
+                                  ),
+                                  itemCount: bannerVideos.length,
+                                  itemBuilder: (context, index, realIndex) =>
+                                      VideoWidget(
+                                    videoUrl: bannerVideos[index],
+                                    videoPlaybackController:
+                                        videoPlaybackController,
+                                  ),
+                                ),
+                    ),
                   ),
-                ),
-                if (_tabController != null && tagList.isNotEmpty)
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: _SliverAppBarDelegate(
@@ -323,79 +321,187 @@ class _ProfilePageState extends State<ProfilePage>
                                   : tag;
                           return Tab(text: displayTag);
                         }).toList(),
+                        onTap: (index) {
+                          final tag = tagList[index];
+                          final itemIndex =
+                              vendorController.ItemsList.indexWhere(
+                                  (item) => item.tag == tag);
+                          if (itemIndex != -1) {
+                            _scrollController.animateTo(
+                              _keys[tag]
+                                      ?.currentContext
+                                      ?.findRenderObject()
+                                      ?.paintBounds
+                                      .top ??
+                                  0,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          }
+                        },
+                      ),
+                      Container(
+                          width: double.infinity,
+                          height: 152.h,
+                          color: kWhite,
+                          child: ProfileCard(userId: widget.userId)),
+                      152.h,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 20.h),
+                      child: Column(
+                        children: [
+                          Obx(
+                            () {
+                              if (vendorController.isItemsLoading.value) {
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: 3,
+                                  itemBuilder: (context, index) {
+                                    return ShimmerEffect(
+                                      height: 150.h,
+                                    );
+                                  },
+                                );
+                              }
+
+                              return bannerVideos.isNotEmpty
+                                  ? SizedBox(
+                                      height: 600.h,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        controller: _scrollController,
+                                        shrinkWrap:
+                                            true, // Ensure that the height is bounded
+                                        itemCount:
+                                            vendorController.ItemsList.length,
+                                        itemBuilder: (context, index) {
+                                          final item =
+                                              vendorController.ItemsList[index];
+                                          final tagKey = item.tag;
+                                          _keys.putIfAbsent(
+                                              tagKey, () => GlobalKey());
+
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              if (index == 0 ||
+                                                  vendorController
+                                                          .ItemsList[index - 1]
+                                                          .tag !=
+                                                      item.tag)
+                                                Padding(
+                                                  key: _keys[tagKey],
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    top: 16.0,
+                                                    left: 16.0,
+                                                    right: 16.0,
+                                                    bottom: 16.0,
+                                                  ),
+                                                  child: Text(
+                                                    lang.currentLanguage.value
+                                                                .languageCode ==
+                                                            "ar"
+                                                        ? item.localTag
+                                                        : item.tag,
+                                                    style: TextStyle(
+                                                        fontSize: 18.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  if (item
+                                                      .variants.isNotEmpty) {
+                                                    Get.to(
+                                                      ItemViewPage(item: item),
+                                                    );
+                                                  }
+                                                },
+                                                child: FoodItemCard(
+                                                  item: item,
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  : ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      controller: _scrollController,
+                                      shrinkWrap:
+                                          true, // Ensure that the height is bounded
+                                      itemCount:
+                                          vendorController.ItemsList.length,
+                                      itemBuilder: (context, index) {
+                                        final item =
+                                            vendorController.ItemsList[index];
+                                        final tagKey = item.tag;
+                                        _keys.putIfAbsent(
+                                            tagKey, () => GlobalKey());
+
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            if (index == 0 ||
+                                                vendorController
+                                                        .ItemsList[index - 1]
+                                                        .tag !=
+                                                    item.tag)
+                                              Padding(
+                                                key: _keys[tagKey],
+                                                padding: const EdgeInsets.only(
+                                                  top: 16.0,
+                                                  left: 16.0,
+                                                  right: 16.0,
+                                                  bottom: 16.0,
+                                                ),
+                                                child: Text(
+                                                  lang.currentLanguage.value
+                                                              .languageCode ==
+                                                          "ar"
+                                                      ? item.localTag
+                                                      : item.tag,
+                                                  style: TextStyle(
+                                                      fontSize: 18.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                if (item.variants.isNotEmpty) {
+                                                  Get.to(
+                                                    ItemViewPage(item: item),
+                                                  );
+                                                }
+                                              },
+                                              child: FoodItemCard(
+                                                item: item,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 20.h),
-                    child: Column(
-                      children: [
-                        Obx(
-                          () {
-                            if (vendorController.isItemsLoading.value) {
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: 3,
-                                itemBuilder: (context, index) {
-                                  return const ShimmerItems();
-                                },
-                              );
-                            }
-
-                            return ListView.builder(
-                              controller: _scrollController,
-                              shrinkWrap:
-                                  true, // Ensure that the height is bounded
-                              itemCount: vendorController.ItemsList.length,
-                              itemBuilder: (context, index) {
-                                final item = vendorController.ItemsList[index];
-                                final tagKey = item.tag ?? '';
-                                _keys.putIfAbsent(tagKey, () => GlobalKey());
-
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    if (index == 0 ||
-                                        vendorController
-                                                .ItemsList[index - 1].tag !=
-                                            item.tag)
-                                      Padding(
-                                        key: _keys[tagKey],
-                                        padding: const EdgeInsets.only(
-                                          top: 16.0,
-                                          left: 16.0,
-                                          right: 16.0,
-                                          bottom: 16.0,
-                                        ),
-                                        child: Text(
-                                          lang.currentLanguage.value
-                                                      .languageCode ==
-                                                  "ar"
-                                              ? item.localTag
-                                              : item.tag ?? '',
-                                          style: TextStyle(
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    FoodItemCard(
-                                      item: item,
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -419,27 +525,40 @@ class ShimmerBanner extends StatelessWidget {
 
 // Delegate class for SliverPersistentHeader
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._tabBar);
+  _SliverAppBarDelegate(
+      this._tabBar, this._profileCard, this._profileCardHeight);
 
   final TabBar _tabBar;
+  final Widget _profileCard;
+  final double _profileCardHeight;
 
   @override
-  double get minExtent => _tabBar.preferredSize.height;
+  double get minExtent => _profileCardHeight + _tabBar.preferredSize.height;
   @override
-  double get maxExtent => _tabBar.preferredSize.height;
+  double get maxExtent => _profileCardHeight + _tabBar.preferredSize.height;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: Colors.white,
-      child: _tabBar,
+    return Column(
+      children: [
+        Container(
+          height: _profileCardHeight,
+          child: _profileCard,
+        ),
+        Container(
+          color: Colors.white,
+          child: _tabBar,
+        ),
+      ],
     );
   }
 
   @override
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
+    return oldDelegate._tabBar != _tabBar ||
+        oldDelegate._profileCard != _profileCard ||
+        oldDelegate._profileCardHeight != _profileCardHeight;
   }
 }
 
@@ -459,8 +578,9 @@ class ShimmerProfileCard extends StatelessWidget {
   }
 }
 
-class ShimmerItems extends StatelessWidget {
-  const ShimmerItems({super.key});
+class ShimmerEffect extends StatelessWidget {
+  const ShimmerEffect({super.key, required this.height});
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -475,7 +595,7 @@ class ShimmerItems extends StatelessWidget {
             10,
           ),
         ),
-        height: 150.h,
+        height: height,
       ),
     );
   }

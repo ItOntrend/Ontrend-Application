@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ontrend_food_and_e_commerce/controller/navigation_controller.dart';
-import 'package:ontrend_food_and_e_commerce/notification_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 
@@ -13,21 +12,12 @@ class NavigationManu extends StatefulWidget {
 }
 
 class _NavigationManuState extends State<NavigationManu> {
-  final NotificationService notificationService = NotificationService();
 
   @override
   void initState() {
     super.initState();
     _requestPermission();
-    notificationService.requestNotificationPermission();
-    notificationService.firebaseInit();
-    notificationService.isTokenRefresh();
-    // notificationService.initialize();
-    notificationService.getDeviceToken().then((value) {
-      print("Device Token");
-      print(value);
-      print("---------------------------------------------------------");
-    });
+ 
   }
 
   Future<void> _requestPermission() async {

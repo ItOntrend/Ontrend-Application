@@ -26,6 +26,8 @@ class CartController extends GetxController {
   var serviceFee = 0.0.obs;
   var deliveryCharge = 0.0.obs;
   var commisionrate = 20.00.obs;
+  var mainPrice = 0.0.obs;
+  var selectedVariant = "".obs;
 
   @override
   void onInit() {
@@ -109,11 +111,13 @@ class CartController extends GetxController {
         print('Calculated Distance: $distance');
         final commision = vendor.commissionRate;
         double charge;
-        if (distance <= 6) {
+        if (distance <= 2) {
           charge = 0.600;
-        } else if (distance <= 10) {
+        } else if (distance <= 4) {
+          charge = 0.700;
+        } else if (distance <= 6) {
           charge = 0.800;
-        } else if (distance <= 12) {
+        } else if (distance <= 7) {
           charge = 0.900;
         } else {
           charge = 1.040;
@@ -160,7 +164,7 @@ class CartController extends GetxController {
     super.onClose();
   }
 
-  void addItemToCart(ProductModel item) {
+  void addItemToCart(ProductModel item, double price, String selectedVariant) {
     if (cartItems.isNotEmpty) {
       // Check if the item is from a different vendor
       final existingVendorId = cartItems.values.first['item'].addedBy;
@@ -177,7 +181,8 @@ class CartController extends GetxController {
             onPressed: () {
               // Clear the cart and add the new item
               cartItems.clear();
-              addItemToCartConfirmed(item);
+              addItemToCartConfirmed(
+                  item: item, price: price, selectedVariant: selectedVariant);
               Get.back(); // Close the dialog
             },
             child: const Text(
@@ -200,15 +205,25 @@ class CartController extends GetxController {
         return;
       }
     }
-    addItemToCartConfirmed(item);
+    addItemToCartConfirmed(
+        item: item, price: price, selectedVariant: selectedVariant);
   }
 
-  void addItemToCartConfirmed(ProductModel item) {
+  void addItemToCartConfirmed(
+      {required ProductModel item,
+      required String selectedVariant,
+      required double price}) {
     if (cartItems.containsKey(item.name)) {
       cartItems[item.name]['quantity'] =
           (cartItems[item.name]['quantity'] + 1).toInt();
     } else {
-      cartItems[item.name] = {'item': item, 'quantity': 1};
+      cartItems[item.name] = {
+        'item': item,
+        'quantity': 1,
+        'mainPrice': price,
+        'selectedVariant': selectedVariant
+      };
+      print(cartItems.values);
     }
     updateItemTotal();
     cartItems.refresh();
@@ -278,7 +293,7 @@ class CartController extends GetxController {
     double total = 0.0;
     cartItems.forEach((key, value) {
       if (value['item'] != null && value['quantity'] != null) {
-        final itemPrice = value['item'].itemPrice ?? 0.0;
+        final itemPrice = value['mainPrice'];
         final quantity = value['quantity'] ?? 0;
         total += (itemPrice * quantity).toDouble();
       }
@@ -334,18 +349,19 @@ class CartController extends GetxController {
         deliveryFee: deliveryFee.value,
         deliveryCharge: deliveryCharge.value,
         discountApplied: 0.0,
-        items: cartItems.values
-            .map((value) => Item(
-                  addedBy: value['item'].addedBy.toString(),
-                  itemName: value['item'].name,
-                  localName: value['item'].localName,
-                  itemPrice:
-                      double.tryParse(value['item'].itemPrice.toString()) ?? 0,
-                  itemQuantity: (value['quantity'] as num).toInt(),
-                  total:
-                      (value['item'].itemPrice * value['quantity']).toDouble(),
-                ))
-            .toList(),
+        items: cartItems.values.map((value) {
+          String itemName =
+              "${value['item'].name} (${value['selectedVariant']})";
+          return Item(
+            addedBy: value['item'].addedBy.toString(),
+            itemName:
+                value['selectedVariant'] == "" ? value['item'].name : itemName,
+            localName: value['item'].localName,
+            itemPrice: value['mainPrice'],
+            itemQuantity: (value['quantity'] as num).toInt(),
+            total: (value['item'].itemPrice * value['quantity']).toDouble(),
+          );
+        }).toList(),
         promoCode: null,
         status: 'Pending',
         totalPrice: totalAmount,
@@ -450,4 +466,12 @@ class CartController extends GetxController {
         backgroundColor: kWhite,
         colorText: kDarkOrange);
   }
+  bool isDifferentVariantInCart(ProductModel item, String selectedVariant) {
+  // Check if an item with the same ID but different variant is in the cart
+  return cartItems.entries.any((entry) {
+    final cartItem = entry.value;
+    return cartItem['item'].id == item.vId && cartItem['variant'] != selectedVariant;
+  });
+}
+
 }

@@ -1,1 +1,36 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"ontrend-db","appId":"1:192511537789:android:c475daf3d6b7f6cbf47714","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"ontrend-db","configurations":{"android":"1:192511537789:android:c475daf3d6b7f6cbf47714","ios":"1:192511537789:ios:0e61f0807f233534f47714","web":"1:192511537789:web:2bb333cdd0532e31f47714"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "ontrend-db",
+          "appId": "1:192511537789:android:c475daf3d6b7f6cbf47714",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "ontrend-db",
+          "configurations": {
+            "android": "1:192511537789:android:c475daf3d6b7f6cbf47714",
+            "ios": "1:192511537789:ios:0e61f0807f233534f47714",
+            "web": "1:192511537789:web:2bb333cdd0532e31f47714"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ]
+}

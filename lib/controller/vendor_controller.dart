@@ -143,50 +143,57 @@ class VendorController extends GetxController {
     }
   }
 
-  Future<void> fetchVendorsf() async {
+  void fetchVendorsf() async {
     try {
+      // Ensure we have the user's location
       if (userPosition == null) {
         await fetchUserLocation();
       }
 
-      // Fetch all vendors
-      var vendorsQuerySnapshot = await FirebaseFirestore.instance
+      // Create a single batch request to fetch vendors and items in parallel
+      FirebaseFirestore.instance
           .collection('users')
           .where('role', isEqualTo: 'Vendor')
           .where('vendorType', isEqualTo: 'Food/Restaurant') // Adjust as needed
-          .get();
+          .snapshots()
+          .listen((vendorsQuerySnapshot) async {
+        List<Map<String, dynamic>> vendorsWithDistance = [];
+        List<Future<void>> futures = [];
 
-      // Calculate the distance and filter vendors
-      List<Map<String, dynamic>> vendorsWithDistance = [];
+        for (var doc in vendorsQuerySnapshot.docs) {
+          futures.add(() async {
+            VendorModel vendor = VendorModel.fromJson(doc.data(), doc.id);
+            double distance = calculateDistance(vendor.location);
 
-      for (var doc in vendorsQuerySnapshot.docs) {
-        VendorModel vendor = VendorModel.fromJson(doc.data(), doc.id);
-        double distance = calculateDistance(vendor.location);
+            // Query to check for available items in a vendor (batched requests)
+            var itemsSnapshot = await FirebaseFirestore.instance
+                .collectionGroup('details')
+                .where('addedBy', isEqualTo: vendor.reference.id)
+                .where("isApproved", isEqualTo: true)
+                .where("isDisabled", isEqualTo: false)
+                .get();
 
-        // Check for available items in the vendor
-        var itemsSnapshot = await FirebaseFirestore.instance
-            .collectionGroup('details')
-            .where('addedBy', isEqualTo: vendor.reference.id)
-            .where("isApproved", isEqualTo: true)
-            .where("isDisabled", isEqualTo: false)
-            .get();
-
-        if (itemsSnapshot.docs.isNotEmpty && distance <= 15000.0) {
-          vendorsWithDistance.add({'vendor': vendor, 'distance': distance});
+            if (itemsSnapshot.docs.isNotEmpty && distance <= 20.0) {
+              vendorsWithDistance.add({'vendor': vendor, 'distance': distance});
+            }
+          }());
         }
-      }
 
-      // Sort vendors by ascending order of distance
-      vendorsWithDistance
-          .sort((a, b) => a['distance'].compareTo(b['distance']));
+        // Wait for all vendor processing to complete
+        await Future.wait(futures);
 
-      // Extract the sorted vendor models
-      List<VendorModel> sortedVendors = vendorsWithDistance
-          .map((entry) => entry['vendor'] as VendorModel)
-          .toList();
+        // Sort vendors by ascending order of distance
+        vendorsWithDistance
+            .sort((a, b) => a['distance'].compareTo(b['distance']));
 
-      vendorsListf.assignAll(sortedVendors);
-      log("Filtered and sorted vendors data fetched successfully");
+        // Extract the sorted vendor models
+        List<VendorModel> sortedVendors = vendorsWithDistance
+            .map((entry) => entry['vendor'] as VendorModel)
+            .toList();
+
+        vendorsListf.assignAll(sortedVendors);
+        log("Filtered and sorted vendors data fetched successfully");
+      });
     } catch (e) {
       log('Error fetching vendors: $e');
     }

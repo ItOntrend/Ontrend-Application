@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:ontrend_food_and_e_commerce/utils/constants/firebase_constants.dart';
 import 'package:ontrend_food_and_e_commerce/utils/enums/auth_status.dart';
 import 'package:ontrend_food_and_e_commerce/utils/exception/auth_exception.dart';
@@ -15,6 +16,15 @@ abstract class AuthRepository {
       if (authResult.user != null) {
         await LocalStorage.instance.writeDataToPrefs(
             key: HiveKeys.userData, value: authResult.user!.uid);
+
+        String? token = await FirebaseMessaging.instance.getToken();
+
+        if (token != null) {
+          FirebaseFirestore.instance
+              .collection("users")
+              .doc(authResult.user!.uid)
+              .update({"fcmToken": token});
+        }
         // Singleton.instance.someMethod();
         _status = AuthStatus.successful;
       } else {
@@ -62,6 +72,9 @@ abstract class AuthRepository {
         await authResult.user!.sendEmailVerification();
         await LocalStorage.instance.writeDataToPrefs(
             key: HiveKeys.userData, value: authResult.user!.uid);
+
+        String? token = await FirebaseMessaging.instance.getToken();
+
         // Store additional user information in Firestore
         await FirebaseFirestore.instance
             .collection('users')
@@ -76,6 +89,7 @@ abstract class AuthRepository {
           'timeStamp': timeStamp,
           'emailVerified':
               authResult.user!.emailVerified, // Add email verification status
+          'fcmToken': token
         });
 
         _status = AuthStatus.successful;

@@ -198,6 +198,8 @@ class _HomePageState extends State<HomePage> {
                               Get.to(const AddToCartPage(
                                 addedBy: "",
                                 restaurantName: "",
+                                price: 0,
+                                selectedVariant: "",
                               ));
                             },
                             child: Image.asset("assets/icons/cart_icon.png"),
@@ -208,6 +210,8 @@ class _HomePageState extends State<HomePage> {
                             Get.to(const AddToCartPage(
                               addedBy: "",
                               restaurantName: "",
+                              price: 0,
+                              selectedVariant: "",
                             ));
                           },
                           child: Image.asset("assets/icons/cart_icon.png"),
@@ -291,7 +295,7 @@ class _HomePageState extends State<HomePage> {
                           return ListTile(
                             title: Text(itemName),
                             onTap: () {
-                              final type = item.reference!.path.split('/')[0];
+                              final type = item.reference.path.split('/')[0];
                               Get.to(() => ProfilePage(
                                     userId: item.addedBy,
                                     cat: "",
@@ -319,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                           return ListTile(
                             title: Text(restaurantName),
                             onTap: () {
-                              final typeo = item.reference!.path.split('/')[0];
+                              final typeo = item.reference.path.split('/')[0];
                               Get.to(() => ProfilePage(
                                     userId: item.addedBy,
                                     cat: "",
