@@ -10,6 +10,7 @@ import 'package:ontrend_food_and_e_commerce/controller/language_controller.dart'
 import 'package:ontrend_food_and_e_commerce/controller/vendor_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
+import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/item_view_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/video_playback_controller.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/widgets/video_widget.dart';
 import 'package:ontrend_food_and_e_commerce/view/widgets/food_item_card.dart';
@@ -85,9 +86,7 @@ class _ProfilePageState extends State<ProfilePage>
   void initializeTabController() {
     final Set<String> tagSet = {};
     for (var category in vendorController.ItemsList) {
-      if (category.tag != null) {
-        tagSet.add(category.tag);
-      }
+      tagSet.add(category.tag);
     }
     tagList = tagSet.toList();
 
@@ -126,13 +125,15 @@ class _ProfilePageState extends State<ProfilePage>
   void _onScroll() {
     if (_isScrollAnimating || _isTabAnimating) return;
 
-    for (int index = 0; index < tagList.length; index++) {
-      final keyContext = _keys[tagList[index]]?.currentContext;
-      if (keyContext != null) {
-        final box = keyContext.findRenderObject() as RenderBox?;
-        final pos = box?.localToGlobal(Offset.zero);
-        if (pos != null && pos.dy < 200) {
-          if (_tabController?.index != index) {
+    for (var tag in tagList) {
+      final RenderBox? box =
+          _keys[tag]?.currentContext!.findRenderObject() as RenderBox?;
+      if (box != null) {
+        final position = box.localToGlobal(Offset.zero).dy;
+        if (position >= 0 &&
+            position <= MediaQuery.of(context).size.height / 2) {
+          final index = tagList.indexOf(tag);
+          if (index != _tabController?.index) {
             _tabController?.animateTo(index);
           }
           break;
@@ -144,6 +145,7 @@ class _ProfilePageState extends State<ProfilePage>
   @override
   void dispose() {
     _tabController?.dispose();
+    _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
   }
@@ -181,6 +183,8 @@ class _ProfilePageState extends State<ProfilePage>
                         Get.to(() => AddToCartPage(
                               addedBy: widget.userId,
                               restaurantName: '',
+                              price: 0,
+                              selectedVariant: "",
                             ));
                       },
                       style: ElevatedButton.styleFrom(
@@ -317,8 +321,30 @@ class _ProfilePageState extends State<ProfilePage>
                                   : tag;
                           return Tab(text: displayTag);
                         }).toList(),
+                        onTap: (index) {
+                          final tag = tagList[index];
+                          final itemIndex =
+                              vendorController.ItemsList.indexWhere(
+                                  (item) => item.tag == tag);
+                          if (itemIndex != -1) {
+                            _scrollController.animateTo(
+                              _keys[tag]
+                                      ?.currentContext
+                                      ?.findRenderObject()
+                                      ?.paintBounds
+                                      .top ??
+                                  0,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          }
+                        },
                       ),
-                      ProfileCard(userId: widget.userId),
+                      Container(
+                          width: double.infinity,
+                          height: 152.h,
+                          color: kWhite,
+                          child: ProfileCard(userId: widget.userId)),
                       152.h,
                     ),
                   ),
@@ -342,56 +368,130 @@ class _ProfilePageState extends State<ProfilePage>
                                 );
                               }
 
-                              return SizedBox(
-                                height: 600.h,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  controller: _scrollController,
-                                  shrinkWrap:
-                                      true, // Ensure that the height is bounded
-                                  itemCount: vendorController.ItemsList.length,
-                                  itemBuilder: (context, index) {
-                                    final item =
-                                        vendorController.ItemsList[index];
-                                    final tagKey = item.tag ?? '';
-                                    _keys.putIfAbsent(
-                                        tagKey, () => GlobalKey());
+                              return bannerVideos.isNotEmpty
+                                  ? SizedBox(
+                                      height: 600.h,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        controller: _scrollController,
+                                        shrinkWrap:
+                                            true, // Ensure that the height is bounded
+                                        itemCount:
+                                            vendorController.ItemsList.length,
+                                        itemBuilder: (context, index) {
+                                          final item =
+                                              vendorController.ItemsList[index];
+                                          final tagKey = item.tag;
+                                          _keys.putIfAbsent(
+                                              tagKey, () => GlobalKey());
 
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        if (index == 0 ||
-                                            vendorController
-                                                    .ItemsList[index - 1].tag !=
-                                                item.tag)
-                                          Padding(
-                                            key: _keys[tagKey],
-                                            padding: const EdgeInsets.only(
-                                              top: 16.0,
-                                              left: 16.0,
-                                              right: 16.0,
-                                              bottom: 16.0,
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              if (index == 0 ||
+                                                  vendorController
+                                                          .ItemsList[index - 1]
+                                                          .tag !=
+                                                      item.tag)
+                                                Padding(
+                                                  key: _keys[tagKey],
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    top: 16.0,
+                                                    left: 16.0,
+                                                    right: 16.0,
+                                                    bottom: 16.0,
+                                                  ),
+                                                  child: Text(
+                                                    lang.currentLanguage.value
+                                                                .languageCode ==
+                                                            "ar"
+                                                        ? item.localTag
+                                                        : item.tag,
+                                                    style: TextStyle(
+                                                        fontSize: 18.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  if (item
+                                                      .variants.isNotEmpty) {
+                                                    Get.to(
+                                                      ItemViewPage(item: item),
+                                                    );
+                                                  }
+                                                },
+                                                child: FoodItemCard(
+                                                  item: item,
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  : ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      controller: _scrollController,
+                                      shrinkWrap:
+                                          true, // Ensure that the height is bounded
+                                      itemCount:
+                                          vendorController.ItemsList.length,
+                                      itemBuilder: (context, index) {
+                                        final item =
+                                            vendorController.ItemsList[index];
+                                        final tagKey = item.tag;
+                                        _keys.putIfAbsent(
+                                            tagKey, () => GlobalKey());
+
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            if (index == 0 ||
+                                                vendorController
+                                                        .ItemsList[index - 1]
+                                                        .tag !=
+                                                    item.tag)
+                                              Padding(
+                                                key: _keys[tagKey],
+                                                padding: const EdgeInsets.only(
+                                                  top: 16.0,
+                                                  left: 16.0,
+                                                  right: 16.0,
+                                                  bottom: 16.0,
+                                                ),
+                                                child: Text(
+                                                  lang.currentLanguage.value
+                                                              .languageCode ==
+                                                          "ar"
+                                                      ? item.localTag
+                                                      : item.tag,
+                                                  style: TextStyle(
+                                                      fontSize: 18.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                if (item.variants.isNotEmpty) {
+                                                  Get.to(
+                                                    ItemViewPage(item: item),
+                                                  );
+                                                }
+                                              },
+                                              child: FoodItemCard(
+                                                item: item,
+                                              ),
                                             ),
-                                            child: Text(
-                                              lang.currentLanguage.value
-                                                          .languageCode ==
-                                                      "ar"
-                                                  ? item.localTag
-                                                  : item.tag ?? '',
-                                              style: TextStyle(
-                                                  fontSize: 18.sp,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                        FoodItemCard(
-                                          item: item,
-                                        ),
-                                      ],
+                                          ],
+                                        );
+                                      },
                                     );
-                                  },
-                                ),
-                              );
                             },
                           ),
                         ],

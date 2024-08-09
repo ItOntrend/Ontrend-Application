@@ -7,10 +7,11 @@ import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 
 class AddButton extends StatelessWidget {
   final ProductModel item;
-
+  final double mainPrice;
+  final String selectedVariant;
   const AddButton({
     super.key,
-    required this.item,
+    required this.item, required this.mainPrice, required this.selectedVariant,
   });
 
   @override
@@ -18,7 +19,7 @@ class AddButton extends StatelessWidget {
     final CartController cartController = Get.put(CartController());
     return GestureDetector(
       onTap: () {
-        cartController.addItemToCart(item);
+        cartController.addItemToCart(item,mainPrice,selectedVariant);
       },
       child: Container(
         height: 46.h,

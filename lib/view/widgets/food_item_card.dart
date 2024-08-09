@@ -57,7 +57,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
   @override
   Widget build(BuildContext context) {
     final item = widget.item;
-
+    double price = item.price == 0 ? item.itemPrice : item.price;
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 10, bottom: 8, top: 12),
       margin: const EdgeInsets.symmetric(horizontal: 18).copyWith(bottom: 20),
@@ -143,9 +143,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                 ],
               ),
               Text(
-                item.price == 0.0
-                    ? item.itemPrice.toStringAsFixed(3)
-                    : item.price.toStringAsFixed(3),
+                price.toStringAsFixed(3),
                 style: const TextStyle(
                   fontSize: 14,
                   color: kOrange,
@@ -195,7 +193,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      cartController.addItemToCart(item);
+                                      cartController.addItemToCart(item,price,"");
                                     },
                                     icon: const Icon(Icons.add),
                                     color: kWhite,
@@ -206,10 +204,12 @@ class _FoodItemCardState extends State<FoodItemCard> {
                           )
                         : GestureDetector(
                             onTap: () {
-                              cartController.addItemToCart(item);
+                              cartController.addItemToCart(item,price,"");
                             },
                             child: AddButton(
                               item: item,
+                              mainPrice: price,
+                              selectedVariant: "",
                             ),
                           );
                   }),

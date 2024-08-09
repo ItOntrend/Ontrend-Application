@@ -76,8 +76,11 @@ class ShimmerEffects extends StatelessWidget {
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
       child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
         height: 660.h,
-        color: Colors.white,
       ),
     );
   }

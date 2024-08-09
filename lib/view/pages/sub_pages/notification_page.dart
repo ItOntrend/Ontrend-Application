@@ -38,7 +38,7 @@ class NotificationPage extends StatelessWidget {
                 child: TabBar(
                   overlayColor: const WidgetStatePropertyAll(kTransparent),
                   indicatorPadding: const EdgeInsets.symmetric(horizontal: 10),
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
                   labelStyle: const TextStyle(color: kWhite),
                   unselectedLabelStyle: const TextStyle(color: kBlack),
                   // indicatorColor: kBlue,
@@ -91,9 +91,9 @@ class NotificationPage extends StatelessWidget {
   // Reusable widget for building tab items
   Widget _buildTabItem({required String text}) {
     return Container(
-      margin: const EdgeInsets.only(left: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       // height: 40,
-      // padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
         border: Border.all(

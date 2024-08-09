@@ -16,6 +16,7 @@ class MainBotton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10),
         height: 58.h,
         width: double.infinity,
         decoration: BoxDecoration(

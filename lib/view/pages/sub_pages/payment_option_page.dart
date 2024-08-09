@@ -114,6 +114,11 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
                     ),
                     kDiver,
                     ListTile(
+                      onTap: () {
+                        Get.snackbar(
+                            "Payment Message", "Card payment is not available",
+                            backgroundColor: kDarkOrange.withOpacity(0.4));
+                      },
                       visualDensity: const VisualDensity(
                         vertical: -4,
                       ),
@@ -158,6 +163,8 @@ class _PaymentOptionPageState extends State<PaymentOptionPage> {
                   ],
                 ),
               ),
+              kHiegth10,
+              Center(child: Text("Card payment now unavailable"))
               // Text(
               //   "More Payment Option",
               //   style: TextStyle(

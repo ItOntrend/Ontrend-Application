@@ -1,19 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:ontrend_food_and_e_commerce/controller/cart_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/location_controller.dart';
 import 'package:ontrend_food_and_e_commerce/controller/user_controller.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/colors.dart';
 import 'package:ontrend_food_and_e_commerce/model/core/constant.dart';
-import 'package:ontrend_food_and_e_commerce/utils/local_storage/local_storage.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/order_complete_splash_page.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/payment_option_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/select_location_page.dart';
-import 'package:ontrend_food_and_e_commerce/view/widgets/main_botton.dart';
 
 class BillDetailsCard extends StatefulWidget {
   const BillDetailsCard({
@@ -41,7 +34,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
       margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.symmetric(horizontal: 16)
           .copyWith(bottom: 8, top: 16),
-      height: 290.h,
+      height: 240.h,
       width: double.infinity,
       decoration: BoxDecoration(
         color: kWhite,
@@ -80,7 +73,7 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
               amount: cartController.totalAmount,
               isBold: true,
             ),
-            kHiegth10,
+            kHiegth20,
             GestureDetector(
               onTap: () {
                 Get.to(
@@ -128,55 +121,6 @@ class _BillDetailsCardState extends State<BillDetailsCard> {
             ),
             kHiegth18,
             const Spacer(),
-            MainBotton(
-              onTap: () async {
-                log("Place Order".tr);
-                String userId = await LocalStorage.instance
-                    .dataFromPrefs(key: HiveKeys.userData);
-                log(userId);
-                // Validate if the location information is available
-                if (locationController.currentAddress.value.isEmpty ||
-                    locationController.streetName.value.isEmpty ||
-                    locationController.cityName.value.isEmpty ||
-                    locationController.countryName.value.isEmpty) {
-                  Get.snackbar("Location Required".tr,
-                      "You haven't selected your location".tr,
-                      backgroundColor: kDarkOrange,
-                      colorText: Colors.white,
-                      mainButton: TextButton(
-                          onPressed: () {
-                            Get.to(const SelectLocationPage());
-                          },
-                          child: Text(
-                            "Select Location",
-                            style: GoogleFonts.aDLaMDisplay(
-                                fontSize: 14, color: kWhite),
-                          )));
-                  return;
-                }
-
-                if (cartController.itemTotal > 2) {
-                  String orderId = await cartController.placeOrder(
-                    userId,
-                    'Cash on Delivery',
-                    userController.firstName.value,
-                    userController.number.value,
-                  );
-
-                  Get.to(() => OrderCompleteSplashPage(orderId: orderId));
-                  log("Order placed");
-                } else {
-                  Get.snackbar(
-                    "Minimum Order Amount".tr,
-                    "The item total must be at least 2 OMR".tr,
-                    backgroundColor: kDarkOrange,
-                    colorText: Colors.white,
-                  );
-                  return;
-                }
-              },
-              name: "Place Order".tr,
-            ),
           ],
         );
       }),

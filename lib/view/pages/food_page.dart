@@ -190,6 +190,8 @@ class _FoodPageState extends State<FoodPage> {
                               Get.to(const AddToCartPage(
                                 addedBy: "",
                                 restaurantName: "",
+                                price: 0,
+                                selectedVariant: "",
                               ));
                             },
                             child: Image.asset("assets/icons/cart_icon.png"),
@@ -200,6 +202,8 @@ class _FoodPageState extends State<FoodPage> {
                             Get.to(const AddToCartPage(
                               addedBy: "",
                               restaurantName: "",
+                              price: 0,
+                              selectedVariant: "",
                             ));
                           },
                           child: Image.asset("assets/icons/cart_icon.png"),

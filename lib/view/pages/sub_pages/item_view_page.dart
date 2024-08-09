@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -9,7 +11,7 @@ import 'package:ontrend_food_and_e_commerce/model/item_model.dart';
 import 'package:ontrend_food_and_e_commerce/view/pages/sub_pages/add_to_cart_page.dart';
 
 class ItemViewPage extends StatefulWidget {
-  ItemViewPage({
+  const ItemViewPage({
     super.key,
     required this.item,
   });
@@ -22,6 +24,17 @@ class ItemViewPage extends StatefulWidget {
 
 class _ItemViewPageState extends State<ItemViewPage> {
   final RxString selectedVariant = ''.obs;
+  double price = 0;
+
+  void productPrice() {
+    price = widget.item.price == 0 ? widget.item.itemPrice : widget.item.price;
+  }
+
+  @override
+  void initState() {
+    productPrice();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +103,7 @@ class _ItemViewPageState extends State<ItemViewPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "OMR ${widget.item.price == 0.0 ? widget.item.itemPrice.toStringAsFixed(3) : widget.item.price.toStringAsFixed(3)}",
+                          "OMR ${price.toStringAsFixed(3)}",
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -109,20 +122,33 @@ class _ItemViewPageState extends State<ItemViewPage> {
                       return Obx(() {
                         return Row(
                           children: [
-                            Text('$key'),
-                            Spacer(),
-                            Text('(OMR ${widget.item.variants[key]['price']})'),
+                            Text(key),
+                            const Spacer(),
+                            Text(
+                                '(OMR ${widget.item.variants[key]!['price']})'),
                             Radio<String>(
-                              value: key,
-                              groupValue: selectedVariant.value,
-                              onChanged: (value) {
-                                selectedVariant.value = value!;
-                              },
-                            ),
+                                value: key,
+                                groupValue: selectedVariant.value,
+                                onChanged: (value) {
+                                  if (cartController.isDifferentVariantInCart(
+                                      widget.item, selectedVariant.value)) {
+                                  } else {
+                                    selectedVariant.value = value!;
+
+                                    setState(() {
+                                      price = double.parse(widget
+                                          .item.variants[value]!['price']);
+                                      cartController.mainPrice = price.obs;
+                                      cartController.selectedVariant =
+                                          selectedVariant.value.obs;
+                                    });
+                                    log('Selected variant: ${selectedVariant.value}, Price: $price');
+                                  }
+                                }),
                           ],
                         );
                       });
-                    }),
+                    }).toList(),
                     kHiegth18,
                     Obx(() {
                       final quantity =
@@ -135,7 +161,6 @@ class _ItemViewPageState extends State<ItemViewPage> {
                                     borderRadius: BorderRadius.circular(10),
                                     color: kGreen),
                                 child: Row(
-                                  // crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     IconButton(
@@ -156,8 +181,10 @@ class _ItemViewPageState extends State<ItemViewPage> {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        cartController
-                                            .addItemToCart(widget.item);
+                                        cartController.addItemToCart(
+                                            widget.item,
+                                            price,
+                                            selectedVariant.value);
                                       },
                                       icon: const Icon(Icons.add),
                                       color: kWhite,
@@ -168,7 +195,8 @@ class _ItemViewPageState extends State<ItemViewPage> {
                             )
                           : GestureDetector(
                               onTap: () {
-                                cartController.addItemToCart(widget.item);
+                                cartController.addItemToCart(
+                                    widget.item, price, selectedVariant.value);
                               },
                               child: Center(
                                 child: Container(
@@ -222,9 +250,11 @@ class _ItemViewPageState extends State<ItemViewPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Get.to(() => const AddToCartPage(
+                    Get.to(() => AddToCartPage(
                           addedBy: '',
                           restaurantName: '',
+                          price: price,
+                          selectedVariant: selectedVariant.value,
                         ));
                   },
                   style: ElevatedButton.styleFrom(
