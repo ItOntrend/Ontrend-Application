@@ -272,7 +272,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
   }
 
-  Future<void> _showDeleteAccountConfirmationDialog(
+ Future<void> _showDeleteAccountConfirmationDialog(
       BuildContext context) async {
     return showDialog<void>(
       context: context,
@@ -293,13 +293,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
               child:
                   Text('Delete'.tr, style: const TextStyle(color: kDarkOrange)),
               onPressed: () async {
-                try {
-                  await authController.deleteAccount(context);
-                } catch (e) {
-                  print('Error in deleteAccount: $e');
-                }
                 Navigator.of(context).pop();
-                Get.offAll(() => LoginPage());
+                _showPointsWarningDialog(context);
               },
             ),
           ],
@@ -307,6 +302,48 @@ class _UserProfilePageState extends State<UserProfilePage> {
       },
     );
   }
+
+  Future<void> _showPointsWarningDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: kWhite,
+          title: Text('Warning'.tr),
+          content: Text(
+              'Deleting your account will also remove all your points. Do you wish to continue?'
+                  .tr),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'.tr, style: const TextStyle(color: kBlack)),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: Text('Yes, Delete'.tr,
+                  style: const TextStyle(color: kDarkOrange)),
+              onPressed: () async {
+                try {
+                  await authController.deleteAccount(context);
+                  Navigator.of(context).pop();
+                  Get.offAll(() => LoginPage());
+                } catch (e) {
+                  print("Error deleting account: $e");
+                  Get.snackbar(
+                    'Error'.tr,
+                    'An error occurred while deleting your account. Please try again.'
+                        .tr,
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   whatsapp() async {
     String contact = "+968-98710707";

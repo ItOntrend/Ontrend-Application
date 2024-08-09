@@ -173,10 +173,16 @@ class VendorController extends GetxController {
                 .where("isDisabled", isEqualTo: false)
                 .get();
 
-            if (itemsSnapshot.docs.isNotEmpty && distance <= 20.0) {
-              vendorsWithDistance.add({'vendor': vendor, 'distance': distance});
-            }
-          }());
+        // Check for available items in the vendor
+        var itemsSnapshot = await FirebaseFirestore.instance
+            .collectionGroup('details')
+            .where('addedBy', isEqualTo: vendor.reference.id)
+            .where("isApproved", isEqualTo: true)
+            .where("isDisabled", isEqualTo: false)
+            .get();
+
+        if (itemsSnapshot.docs.isNotEmpty && distance <= 20.0) {
+          vendorsWithDistance.add({'vendor': vendor, 'distance': distance});
         }
 
         // Wait for all vendor processing to complete

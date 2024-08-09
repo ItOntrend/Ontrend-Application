@@ -37,8 +37,18 @@ class _ProfileCardState extends State<ProfileCard> {
     print("vendor is ${widget.userId}");
   }
 
+  double _estimateDeliveryTime(double distance) {
+    // Assume an average speed of 40 km/h
+    const double averageSpeed = 40;
+    final double time = (distance / averageSpeed) * 60; // time in minutes
+    return time;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final v = _vendorController.vendorDetail.value;
+    final dis = _vendorController.calculateDistance(v!.location);
+    double estimatedTime = _estimateDeliveryTime(dis);
     return Container(
       padding: const EdgeInsets.all(12),
       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -47,14 +57,6 @@ class _ProfileCardState extends State<ProfileCard> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: kWhite,
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Colors.grey.withOpacity(0.2),
-        //     spreadRadius: 2,
-        //     blurRadius: 7,
-        //     offset: const Offset(0, 3),
-        //   ),
-        // ],
       ),
       child: Obx(() {
         log("It's About Vendor Profile");
@@ -164,7 +166,7 @@ class _ProfileCardState extends State<ProfileCard> {
                       ),
                     ),
                     Text(
-                      "18 ${"min".tr}".tr,
+                      "${estimatedTime.toStringAsFixed(0)} ${"min".tr}".tr,
                       style: const TextStyle(
                         fontSize: 12,
                         color: kBlack,
